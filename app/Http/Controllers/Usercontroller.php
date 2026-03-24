@@ -3,147 +3,246 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Pegawai;
-use App\Models\SkData;
-use App\Models\AktaYayasan;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Auth;
+use App\Models\User;
+use App\Models\SantriRegistration;
+use App\Models\Gallery;
+use App\Models\Fasilitas;
 use App\Models\AktaWakaf;
 
 class UserController extends Controller
 {
-    // ==================== HOME ====================
-
-    public function home()
+    // ==================== DASHBOARD ====================
+    public function dashboard()
     {
         $stats = [
-            'pegawai_aktif'      => Pegawai::where('status', 'aktif')->count(),
-            'sk_total'           => SkData::count(),
-            'akta_yayasan_total' => AktaYayasan::count(),
-            'akta_wakaf_total'   => AktaWakaf::count(),
+            'santri_pending'  => SantriRegistration::where('status', 'pending')->count(),
+            'santri_diterima' => SantriRegistration::where('status', 'diterima')->count(),
+            'santri_ditolak'  => SantriRegistration::where('status', 'ditolak')->count(),
+            'gallery_total'   => Gallery::where('is_active', true)->count(),
+            'fasilitas_total' => Fasilitas::count(),
+            'akta_wakaf_total'=> AktaWakaf::count(),
         ];
 
-        // Ambil pegawai terbaru untuk ditampilkan di home
-        $pegawaiTerbaru = Pegawai::where('status', 'aktif')
-            ->latest()
-            ->take(6)
-            ->get();
+        $santriTerbaru = SantriRegistration::latest()->take(5)->get();
 
-        return view('user.home', compact('stats', 'pegawaiTerbaru'));
+        return view('users.dashboard', compact('stats', 'santriTerbaru'));
     }
 
-    // ==================== PEGAWAI ====================
-
-    public function pegawaiIndex(Request $request)
+    // ==================== GALLERY ====================
+    public function galleryIndex(Request $request)
     {
-        $query = Pegawai::query();
-
+        $query = Gallery::where('is_active', true);
         if ($request->filled('search')) {
-            $search = $request->search;
-            $query->where(function ($q) use ($search) {
-                $q->where('nama', 'like', "%{$search}%")
-                  ->orWhere('nip', 'like', "%{$search}%")
-                  ->orWhere('jabatan', 'like', "%{$search}%")
-                  ->orWhere('divisi', 'like', "%{$search}%");
-            });
+            $query->where('judul', 'like', '%' . $request->search . '%');
+        }
+        if ($request->filled('kategori')) {
+            $query->where('kategori', $request->kategori);
         }
 
-        if ($request->filled('jabatan')) {
-            $query->where('jabatan', $request->jabatan);
-        }
-
-        if ($request->filled('divisi')) {
-            $query->where('divisi', $request->divisi);
-        }
-
-        // User hanya bisa lihat pegawai aktif
-        $query->where('status', 'aktif');
-
-        $pegawai  = $query->latest()->paginate(12)->withQueryString();
-        $jabatans = Pegawai::where('status', 'aktif')->whereNotNull('jabatan')->distinct()->pluck('jabatan');
-        $divisis  = Pegawai::where('status', 'aktif')->whereNotNull('divisi')->distinct()->pluck('divisi');
-
-        return view('user.pegawai.index', compact('pegawai', 'jabatans', 'divisis'));
+        $galleries = $query->orderBy('urut', 'asc')->paginate(12)->withQueryString();
+        return view('users.gallery.index', compact('galleries'));
     }
 
-    public function pegawaiShow($id)
+    public function galleryShow(Gallery $gallery)
     {
-        // Hanya tampilkan pegawai aktif ke user
-        $pegawai = Pegawai::where('status', 'aktif')->findOrFail($id);
-        return view('user.pegawai.show', compact('pegawai'));
+        return view('users.gallery.show', compact('gallery'));
     }
 
-    // ==================== SK ====================
-
-    public function skIndex(Request $request)
+    public function galleryDestroy(Gallery $gallery)
     {
-        $query = SkData::query();
+        if ($gallery->gambar) {
+            Storage::disk('public')->delete($gallery->gambar);
+        }
+        $gallery->delete();
 
+        return redirect()->route('user.gallery.index')->with('success', 'Foto gallery berhasil dihapus.');
+    }
+
+    // ==================== FASILITAS ====================
+    public function fasilitasIndex(Request $request)
+    {
+        $query = Fasilitas::query();
         if ($request->filled('search')) {
-            $search = $request->search;
-            $query->where(function ($q) use ($search) {
-                $q->where('nomor_sk', 'like', "%{$search}%")
-                  ->orWhere('tentang', 'like', "%{$search}%");
-            });
+            $query->where('nama_fasilitas', 'like', '%' . $request->search . '%');
+        }
+        if ($request->filled('kondisi')) {
+            $query->where('kondisi', $request->kondisi);
         }
 
-        $sk = $query->latest()->paginate(10)->withQueryString();
+        $fasilitas = $query->latest()->paginate(10)->withQueryString();
+        $kategoriList = Fasilitas::select('kategori')->whereNotNull('kategori')->distinct()->pluck('kategori');
 
-        return view('user.sk.index', compact('sk'));
+        return view('users.fasilitas.index', compact('fasilitas', 'kategoriList'));
     }
 
-    public function skShow($id)
+    public function fasilitasShow(Fasilitas $fasilitas)
     {
-        $sk = SkData::findOrFail($id);
-        return view('user.sk.show', compact('sk'));
-    }
-
-    // ==================== AKTA YAYASAN ====================
-
-    public function aktaYayasanIndex(Request $request)
-    {
-        $query = AktaYayasan::query();
-
-        if ($request->filled('search')) {
-            $search = $request->search;
-            $query->where(function ($q) use ($search) {
-                $q->where('nomor_akta', 'like', "%{$search}%")
-                  ->orWhere('notaris', 'like', "%{$search}%");
-            });
-        }
-
-        $aktaYayasan = $query->latest()->paginate(10)->withQueryString();
-
-        return view('user.akta-yayasan.index', compact('aktaYayasan'));
-    }
-
-    public function aktaYayasanShow($id)
-    {
-        $aktaYayasan = AktaYayasan::findOrFail($id);
-        return view('user.akta-yayasan.show', compact('aktaYayasan'));
+        return view('users.fasilitas.show', compact('fasilitas'));
     }
 
     // ==================== AKTA WAKAF ====================
-
-    public function aktaWakafIndex(Request $request)
+    public function aktaWakafIndex()
     {
-        $query = AktaWakaf::query();
-
-        if ($request->filled('search')) {
-            $search = $request->search;
-            $query->where(function ($q) use ($search) {
-                $q->where('nomor_sertifikat', 'like', "%{$search}%")
-                  ->orWhere('nazhir', 'like', "%{$search}%")
-                  ->orWhere('lokasi_tanah', 'like', "%{$search}%");
-            });
-        }
-
-        $aktaWakaf = $query->latest()->paginate(10)->withQueryString();
-
-        return view('user.akta-wakaf.index', compact('aktaWakaf'));
+        $aktaWakaf = AktaWakaf::latest()->paginate(10);
+        return view('users.akta-wakaf.index', compact('aktaWakaf'));
     }
 
     public function aktaWakafShow($id)
     {
         $aktaWakaf = AktaWakaf::findOrFail($id);
-        return view('user.akta-wakaf.show', compact('aktaWakaf'));
+        return view('users.akta-wakaf.show', compact('aktaWakaf'));
+    }
+
+    // ==================== SANTRI (full CRUD) ====================
+    public function santriIndex(Request $request)
+    {
+        $query = SantriRegistration::query();
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function ($q) use ($search) {
+                $q->where('nama_lengkap', 'like', "%{$search}%")
+                  ->orWhere('nisn', 'like', "%{$search}%");
+            });
+        }
+        if ($request->filled('status')) {
+            $query->where('status', $request->status);
+        }
+
+        $santri = $query->latest()->paginate(10)->withQueryString();
+        return view('users.santri.index', compact('santri'));
+    }
+
+    public function santriCreate()
+    {
+        return view('users.santri.create');
+    }
+
+    public function santriStore(Request $request)
+    {
+        $validated = $request->validate([
+            'nama_lengkap'  => 'required|string|max:255',
+            'nisn'          => 'nullable|string|max:50',
+            'asal_sekolah'  => 'required|string|max:255',
+            'tanggal_lahir' => 'nullable|date',
+            'alamat'        => 'nullable|string',
+            'email'         => 'nullable|email|max:255',
+            'no_wali'       => 'required|string|max:20',
+            'nama_wali'     => 'required|string|max:255',
+            'pekerjaan'     => 'nullable|string|max:100',
+            'dok_kk'        => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:20480',
+            'dok_akta'      => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:20480',
+        ]);
+
+        if ($request->hasFile('dok_kk')) {
+            $validated['dok_kk'] = $request->file('dok_kk')->store('santri/kk', 'public');
+        }
+        if ($request->hasFile('dok_akta')) {
+            $validated['dok_akta'] = $request->file('dok_akta')->store('santri/akta', 'public');
+        }
+
+        $validated['status'] = 'pending';
+        SantriRegistration::create($validated);
+
+        return redirect()->route('user.santri.index')->with('success', 'Pendaftaran berhasil!');
+    }
+
+    public function santriShow($id)
+    {
+        $santri = SantriRegistration::findOrFail($id);
+        return view('users.santri.show', compact('santri'));
+    }
+
+    public function santriEdit($id)
+    {
+        $santri = SantriRegistration::findOrFail($id);
+        if ($santri->status !== 'pending') {
+            return redirect()->route('user.santri.index')->with('error', 'Data sudah diproses.');
+        }
+        return view('users.santri.edit', compact('santri'));
+    }
+
+    public function santriUpdate(Request $request, $id)
+    {
+        $santri = SantriRegistration::findOrFail($id);
+        if ($santri->status !== 'pending') {
+            return redirect()->route('user.santri.index')->with('error', 'Data tidak bisa diubah.');
+        }
+
+        $validated = $request->validate([
+            'nama_lengkap'  => 'required|string|max:255',
+            'nisn'          => 'nullable|string|max:50',
+            'asal_sekolah'  => 'required|string|max:255',
+            'tanggal_lahir' => 'nullable|date',
+            'alamat'        => 'nullable|string',
+            'email'         => 'nullable|email|max:255',
+            'no_wali'       => 'required|string|max:20',
+            'nama_wali'     => 'required|string|max:255',
+            'pekerjaan'     => 'nullable|string|max:100',
+            'dok_kk'        => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:20480',
+            'dok_akta'      => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:20480',
+        ]);
+
+        if ($request->hasFile('dok_kk')) {
+            if ($santri->dok_kk) Storage::disk('public')->delete($santri->dok_kk);
+            $validated['dok_kk'] = $request->file('dok_kk')->store('santri/kk', 'public');
+        }
+        if ($request->hasFile('dok_akta')) {
+            if ($santri->dok_akta) Storage::disk('public')->delete($santri->dok_akta);
+            $validated['dok_akta'] = $request->file('dok_akta')->store('santri/akta', 'public');
+        }
+
+        $santri->update($validated);
+        return redirect()->route('user.santri.index')->with('success', 'Data diperbarui.');
+    }
+
+    public function santriDestroy($id)
+    {
+        $santri = SantriRegistration::findOrFail($id);
+        if ($santri->dok_kk)   Storage::disk('public')->delete($santri->dok_kk);
+        if ($santri->dok_akta) Storage::disk('public')->delete($santri->dok_akta);
+        $santri->delete();
+
+        return redirect()->route('user.santri.index')->with('success', 'Data dihapus.');
+    }
+
+    // ==================== PROFILE ====================
+    public function profile()
+    {
+        /** @var \App\Models\User $user */
+        $user = Auth::user();
+        return view('users.profile', compact('user'));
+    }
+
+    public function updateProfile(Request $request)
+    {
+        /** @var \App\Models\User $user */
+        $user = Auth::user();
+
+        $validated = $request->validate([
+            'name'    => 'required|string|max:255',
+            'email'   => 'required|email|max:255|unique:users,email,' . $user->id,
+            'phone'   => 'nullable|string|max:20',
+            'address' => 'nullable|string|max:500',
+        ]);
+
+        $user->update($validated);
+        return back()->with('success', 'Profil berhasil diperbarui.');
+    }
+
+    public function changePassword(Request $request)
+    {
+        $request->validate([
+            'current_password' => 'required|current_password',
+            'password'         => 'required|min:6|confirmed',
+        ]);
+
+        /** @var \App\Models\User $user */
+        $user = Auth::user();
+        $user->update(['password' => Hash::make($request->password)]);
+
+        return back()->with('success', 'Password berhasil diubah.');
     }
 }

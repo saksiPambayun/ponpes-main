@@ -1,152 +1,171 @@
-{{-- resources/views/admin/dashboard.blade.php --}}
-@extends('layouts.admin')
+@extends('layouts.user')
 
 @section('title', 'Dashboard')
 
 @section('content')
-<div class="row">
-    <div class="col-md-3 mb-4">
-        <div class="card bg-primary text-white">
-            <div class="card-body">
-                <div class="d-flex justify-content-between align-items-center">
-                    <div>
-                        <h6 class="mb-0">Total Users</h6>
-                        <h2 class="mt-2 mb-0">{{ \App\Models\User::count() }}</h2>
+    <div class="mb-4">
+        <h4 class="fw-bold">Selamat datang, {{ auth()->user()->name }}! 👋</h4>
+        <p class="text-muted">Berikut ringkasan data terkini.</p>
+    </div>
+
+    {{-- Stats Cards --}}
+    <div class="row g-3 mb-4">
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body d-flex align-items-center gap-3">
+                    <div class="rounded-circle bg-warning bg-opacity-10 p-3">
+                        <i class="fas fa-clock fa-lg text-warning"></i>
                     </div>
-                    <i class="fas fa-users fa-3x opacity-50"></i>
+                    <div>
+                        <div class="text-muted small">Santri Pending</div>
+                        <div class="fs-4 fw-bold">{{ $stats['santri_pending'] }}</div>
+                        <span class="badge bg-warning text-dark">Menunggu verifikasi</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body d-flex align-items-center gap-3">
+                    <div class="rounded-circle bg-success bg-opacity-10 p-3">
+                        <i class="fas fa-user-check fa-lg text-success"></i>
+                    </div>
+                    <div>
+                        <div class="text-muted small">Santri Diterima</div>
+                        <div class="fs-4 fw-bold">{{ $stats['santri_diterima'] }}</div>
+                        <span class="badge bg-success">Terverifikasi</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body d-flex align-items-center gap-3">
+                    <div class="rounded-circle bg-danger bg-opacity-10 p-3">
+                        <i class="fas fa-user-times fa-lg text-danger"></i>
+                    </div>
+                    <div>
+                        <div class="text-muted small">Santri Ditolak</div>
+                        <div class="fs-4 fw-bold">{{ $stats['santri_ditolak'] }}</div>
+                        <span class="badge bg-danger">Tidak diterima</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body d-flex align-items-center gap-3">
+                    <div class="rounded-circle bg-info bg-opacity-10 p-3">
+                        <i class="fas fa-images fa-lg text-info"></i>
+                    </div>
+                    <div>
+                        <div class="text-muted small">Gallery Aktif</div>
+                        <div class="fs-4 fw-bold">{{ $stats['gallery_total'] }}</div>
+                        <a href="{{ route('user.gallery.index') }}" class="small text-info">Lihat gallery →</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body d-flex align-items-center gap-3">
+                    <div class="rounded-circle bg-primary bg-opacity-10 p-3">
+                        <i class="fas fa-building fa-lg text-primary"></i>
+                    </div>
+                    <div>
+                        <div class="text-muted small">Total Fasilitas</div>
+                        <div class="fs-4 fw-bold">{{ $stats['fasilitas_total'] }}</div>
+                        <a href="{{ route('user.fasilitas.index') }}" class="small text-primary">Lihat fasilitas →</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body d-flex align-items-center gap-3">
+                    <div class="rounded-circle bg-secondary bg-opacity-10 p-3">
+                        <i class="fas fa-file-alt fa-lg text-secondary"></i>
+                    </div>
+                    <div>
+                        <div class="text-muted small">Akta Wakaf</div>
+                        <div class="fs-4 fw-bold">{{ $stats['akta_wakaf_total'] }}</div>
+                        <a href="{{ route('user.akta-wakaf.index') }}" class="small text-secondary">Lihat akta →</a>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="col-md-3 mb-4">
-        <div class="card bg-success text-white">
-            <div class="card-body">
-                <div class="d-flex justify-content-between align-items-center">
-                    <div>
-                        <h6 class="mb-0">Active Users</h6>
-                        <h2 class="mt-2 mb-0">{{ \App\Models\User::where('status', 'active')->count() }}</h2>
-                    </div>
-                    <i class="fas fa-user-check fa-3x opacity-50"></i>
-                </div>
-            </div>
+    {{-- Pendaftaran Santri Terbaru --}}
+    <div class="card border-0 shadow-sm">
+        <div class="card-header bg-white d-flex justify-content-between align-items-center">
+            <h6 class="mb-0 fw-bold">Pendaftaran Santri Terbaru</h6>
+            <a href="{{ route('user.santri.create') }}" class="btn btn-sm btn-primary">
+                <i class="fas fa-plus me-1"></i> Daftar Santri Baru
+            </a>
         </div>
-    </div>
-
-    <div class="col-md-3 mb-4">
-        <div class="card bg-warning text-white">
-            <div class="card-body">
-                <div class="d-flex justify-content-between align-items-center">
-                    <div>
-                        <h6 class="mb-0">Admins</h6>
-                        <h2 class="mt-2 mb-0">{{ \App\Models\User::where('role', 'admin')->count() }}</h2>
-                    </div>
-                    <i class="fas fa-user-tie fa-3x opacity-50"></i>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-md-3 mb-4">
-        <div class="card bg-info text-white">
-            <div class="card-body">
-                <div class="d-flex justify-content-between align-items-center">
-                    <div>
-                        <h6 class="mb-0">Regular Users</h6>
-                        <h2 class="mt-2 mb-0">{{ \App\Models\User::where('role', 'user')->count() }}</h2>
-                    </div>
-                    <i class="fas fa-user fa-3x opacity-50"></i>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="row">
-    <div class="col-md-6 mb-4">
-        <div class="card">
-            <div class="card-header">
-                <h5 class="mb-0">Recent Users</h5>
-            </div>
-            <div class="card-body">
-                <div class="table-responsive">
-                    <table class="table">
-                        <thead>
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Nama</th>
+                            <th>Asal Sekolah</th>
+                            <th>Status</th>
+                            <th>Tanggal Daftar</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse($santriTerbaru as $santri)
                             <tr>
-                                <th>User</th>
-                                <th>Role</th>
-                                <th>Status</th>
-                                <th>Joined</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach(\App\Models\User::latest()->take(5)->get() as $user)
-                            <tr>
+                                <td>{{ $santri->nama_lengkap }}</td>
+                                <td>{{ $santri->asal_sekolah ?? '-' }}</td>
                                 <td>
-                                    <div class="d-flex align-items-center">
-                                        <img src="{{ $user->avatar_url }}" alt="Avatar" 
-                                             class="rounded-circle me-2" width="30" height="30">
-                                        <div>
-                                            <strong>{{ $user->name }}</strong><br>
-                                            <small>{{ $user->email }}</small>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    @if($user->role === 'admin')
-                                        <span class="badge bg-primary">Admin</span>
+                                    @if($santri->status === 'pending')
+                                        <span class="badge bg-warning text-dark">
+                                            <i class="fas fa-clock me-1"></i>Pending
+                                        </span>
+                                    @elseif($santri->status === 'diterima')
+                                        <span class="badge bg-success">
+                                            <i class="fas fa-check me-1"></i>Diterima
+                                        </span>
                                     @else
-                                        <span class="badge bg-secondary">User</span>
+                                        <span class="badge bg-danger">
+                                            <i class="fas fa-times me-1"></i>Ditolak
+                                        </span>
                                     @endif
                                 </td>
+                                <td>{{ $santri->created_at->format('d M Y') }}</td>
                                 <td>
-                                    @if($user->status === 'active')
-                                        <span class="badge bg-success">Active</span>
-                                    @else
-                                        <span class="badge bg-danger">Inactive</span>
-                                    @endif
+                                    <a href="{{ route('user.santri.show', $santri->id) }}" class="btn btn-sm btn-outline-info">
+                                        <i class="fas fa-eye"></i>
+                                    </a>
                                 </td>
-                                <td>{{ $user->created_at->diffForHumans() }}</td>
                             </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
+                        @empty
+                            <tr>
+                                <td colspan="5" class="text-center py-4 text-muted">
+                                    Belum ada data santri.
+                                    <a href="{{ route('user.santri.create') }}">Daftar sekarang</a>
+                                </td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
             </div>
         </div>
-    </div>
-
-    <div class="col-md-6 mb-4">
-        <div class="card">
-            <div class="card-header">
-                <h5 class="mb-0">Statistics</h5>
+        @if($santriTerbaru->count() > 0)
+            <div class="card-footer bg-white text-end">
+                <a href="{{ route('user.santri.index') }}" class="btn btn-sm btn-outline-primary">
+                    Lihat semua data santri →
+                </a>
             </div>
-            <div class="card-body">
-                <canvas id="userChart"></canvas>
-            </div>
-        </div>
+        @endif
     </div>
-</div>
-
-@push('scripts')
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script>
-    const ctx = document.getElementById('userChart').getContext('2d');
-    new Chart(ctx, {
-        type: 'pie',
-        data: {
-            labels: ['Active Users', 'Inactive Users', 'Admins', 'Regular Users'],
-            datasets: [{
-                data: [
-                    {{ \App\Models\User::where('status', 'active')->count() }},
-                    {{ \App\Models\User::where('status', 'inactive')->count() }},
-                    {{ \App\Models\User::where('role', 'admin')->count() }},
-                    {{ \App\Models\User::where('role', 'user')->count() }}
-                ],
-                backgroundColor: ['#28a745', '#dc3545', '#007bff', '#17a2b8']
-            }]
-        }
-    });
-</script>
-@endpush
 @endsection
