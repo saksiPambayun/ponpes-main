@@ -13,6 +13,7 @@ use App\Models\Pegawai;
 use App\Models\SkData;
 use App\Models\AktaYayasan;
 use App\Models\AktaWakaf;
+use App\Models\Notification;
 
 class AdminController extends Controller
 {
@@ -158,20 +159,53 @@ class AdminController extends Controller
         return redirect()->route('admin.santri.index')->with('success', 'Data santri berhasil dihapus');
     }
 
-    public function verifySantri($id)
-    {
-        $santri = SantriRegistration::findOrFail($id);
-        $santri->update(['status' => 'diterima', 'alasan_penolakan' => null]);
-        return back()->with('success', 'Santri berhasil diverifikasi dan diterima.');
-    }
+public function verifySantri($id)
+{
+    $santri = SantriRegistration::findOrFail($id);
 
-    public function rejectSantri(Request $request, $id)
-    {
-        $request->validate(['alasan_penolakan' => 'required|string|min:10']);
-        $santri = SantriRegistration::findOrFail($id);
-        $santri->update(['status' => 'ditolak', 'alasan_penolakan' => $request->alasan_penolakan]);
-        return back()->with('success', 'Santri berhasil ditolak.');
-    }
+    $santri->update([
+        'status' => 'diterima',
+        'alasan_penolakan' => null
+    ]);
+
+    Notification::create([
+        'user_id' => $santri->user_id,
+        'type' => 'santri',
+        'title' => 'Pendaftaran Diterima',
+        'message' => 'Selamat! Pendaftaran santri Anda telah diterima.',
+        'data' => json_encode([
+            'santri_id' => $santri->id
+        ])
+    ]);
+
+    return back()->with('success', 'Santri berhasil diverifikasi.');
+}
+
+ public function rejectSantri(Request $request, $id)
+{
+    $request->validate([
+        'alasan_penolakan' => 'required|string|min:10'
+    ]);
+
+    $santri = SantriRegistration::findOrFail($id);
+
+    $santri->update([
+        'status' => 'ditolak',
+        'alasan_penolakan' => $request->alasan_penolakan
+    ]);
+
+    Notification::create([
+        'user_id' => $santri->user_id,
+        'type' => 'santri',
+        'title' => 'Pendaftaran Ditolak',
+        'message' => 'Pendaftaran santri Anda ditolak. Alasan: '.$request->alasan_penolakan,
+        'data' => json_encode([
+            'santri_id' => $santri->id
+        ])
+    ]);
+
+    return back()->with('success', 'Santri berhasil ditolak.');
+}
 
     // ==================== PEGAWAI ====================
 

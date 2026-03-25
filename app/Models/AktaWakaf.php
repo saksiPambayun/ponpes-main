@@ -34,13 +34,11 @@ class AktaWakaf extends Model
      *
      * @return array<string, string>
      */
-    protected function casts(): array
-    {
-        return [
+     protected $casts =[
             'created_at' => 'datetime',
             'updated_at' => 'datetime',
         ];
-    }
+
 
     /**
      * Get the file URL.

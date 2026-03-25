@@ -11,7 +11,7 @@ use App\Http\Controllers\ProgramController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\DataMasterController;
 use App\Http\Controllers\Admin\SantriController;
-use App\Http\Controllers\UserController; 
+use App\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -342,4 +342,12 @@ Route::middleware(['auth'])->prefix('user')->name('user.')->group(function () {
     Route::get('/gallery', [UserController::class, 'galleryIndex'])->name('gallery.index');
     Route::get('/fasilitas', [UserController::class, 'fasilitasIndex'])->name('fasilitas.index');
     Route::get('/akta-wakaf', [UserController::class, 'aktaWakafIndex'])->name('akta-wakaf.index');
+});
+
+//nontification
+Route::middleware(['auth','user'])->prefix('user')->group(function(){
+
+    Route::get('/notifications',[UserController::class,'notifications'])
+    ->name('user.notifications');
+
 });

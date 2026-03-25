@@ -33,14 +33,12 @@ class SkData extends Model
      *
      * @return array<string, string>
      */
-    protected function casts(): array
-    {
-        return [
+    protected $casts =[
             'tanggal_sk' => 'date',
             'created_at' => 'datetime',
             'updated_at' => 'datetime',
         ];
-    }
+
 
     /**
      * Get the file URL.

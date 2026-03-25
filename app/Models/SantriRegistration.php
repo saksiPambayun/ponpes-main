@@ -43,6 +43,10 @@ class SantriRegistration extends Model
             default    => '<span class="px-3 py-1 bg-gray-100 text-gray-800 rounded-full text-xs">-</span>',
         };
     }
+     public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 
     public function verifikator()
     {

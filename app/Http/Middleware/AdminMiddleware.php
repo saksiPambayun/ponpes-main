@@ -1,5 +1,5 @@
 <?php
-// app/Http/Middleware/AdminMiddleware.php
+
 namespace App\Http\Middleware;
 
 use Closure;
@@ -10,10 +10,14 @@ class AdminMiddleware
 {
     public function handle(Request $request, Closure $next)
     {
-        if (Auth::check() && Auth::user()->role === 'admin' && Auth::user()->status === 'active') {
-            return $next($request);
+        if (!Auth::check()) {
+            return redirect('/login');
         }
 
-        return redirect()->route('login')->with('error', 'Unauthorized access.');
+        if (Auth::user()->role !== 'admin') {
+            abort(403,'Akses hanya untuk admin');
+        }
+
+        return $next($request);
     }
 }

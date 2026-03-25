@@ -99,9 +99,23 @@
             <a href="{{ route('user.santri.index') }}"
                 class="nav-link {{ request()->routeIs('user.santri.*') ? 'active' : '' }}">
                 <i class="fas fa-user-graduate me-2"></i> Pendaftaran Santri
-                @php $pendingSantri = \App\Models\SantriRegistration::where('status', 'pending')->count(); @endphp
-                @if($pendingSantri > 0)
-                    <span class="badge bg-warning text-dark ms-1">{{ $pendingSantri }}</span>
+                @php
+$pendingSantri = \App\Models\SantriRegistration::where('status','pending')->count();
+$diterimaSantri = \App\Models\SantriRegistration::where('status','diterima')->count();
+$ditolakSantri = \App\Models\SantriRegistration::where('status','ditolak')->count();
+@endphp
+
+@if($pendingSantri > 0)
+<span class="badge bg-warning text-dark ms-1">{{ $pendingSantri }}</span>
+@endif
+
+@if($diterimaSantri > 0)
+<span class="badge bg-success ms-1">{{ $diterimaSantri }}</span>
+@endif
+
+@if($ditolakSantri > 0)
+<span class="badge bg-danger ms-1">{{ $ditolakSantri }}</span>
+@endif
                 @endif
             </a>
 
@@ -140,10 +154,22 @@
                 <i class="fas fa-home me-1"></i>
                 @yield('title', 'Dashboard')
             </div>
-            <div class="d-flex align-items-center gap-2">
-                <span class="badge bg-secondary">User</span>
-                <strong class="small">{{ auth()->user()->name }}</strong>
-            </div>
+          <div class="d-flex align-items-center gap-3">
+
+@php
+$notif = \App\Models\SantriRegistration::where('status','diterima')->count();
+@endphp
+
+@if($notif > 0)
+<span class="badge bg-success">
+<i class="fas fa-bell"></i> {{ $notif }}
+</span>
+@endif
+
+<span class="badge bg-secondary">User</span>
+<strong class="small">{{ auth()->user()->name }}</strong>
+
+</div>
         </div>
 
         <div class="content-area">
