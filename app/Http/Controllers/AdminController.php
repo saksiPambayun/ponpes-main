@@ -24,22 +24,28 @@ class AdminController extends Controller
         return view('admin.auth.login');
     }
 
-    public function login(Request $request)
-    {
-        $credentials = $request->validate([
-            'email'    => ['required', 'email'],
-            'password' => ['required'],
-        ]);
+   public function login(Request $request)
+{
+    $credentials = $request->only('email','password');
 
-        if (Auth::attempt($credentials)) {
-            $request->session()->regenerate();
-            return redirect()->intended('admin/dashboard');
+    if(Auth::attempt($credentials)){
+
+        $user = Auth::user();
+
+        // kalau admin
+        if($user->role == 'admin'){
+            return redirect()->route('admin.dashboard');
         }
 
-        return back()->withErrors([
-            'email' => 'Email atau password yang Anda masukkan salah.',
-        ])->onlyInput('email');
+        // kalau user
+        if($user->role == 'user'){
+            return redirect()->route('user.dashboard');
+        }
+
     }
+
+    return back()->with('error','Email atau password salah');
+}
 
     // ==================== DASHBOARD ====================
 

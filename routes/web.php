@@ -324,30 +324,73 @@ Route::prefix('admin')->name('admin.')->group(function () {
     });
 });
 
-// =====================================================
-// SAYA TAMBAHKAN: ROUTE KHUSUS USER (SANTRI) DI BAWAH INI
-// =====================================================
-Route::middleware(['auth'])->prefix('user')->name('user.')->group(function () {
-    Route::get('/dashboard', [UserController::class, 'dashboard'])->name('dashboard');
-    Route::get('/profile', [UserController::class, 'profile'])->name('profile');
-    Route::post('/profile/update', [UserController::class, 'updateProfile'])->name('profile.update');
-    Route::post('/profile/change-password', [UserController::class, 'changePassword'])->name('password.update');
-    Route::get('/santri', [UserController::class, 'santriIndex'])->name('santri.index');
-    Route::get('/santri/create', [UserController::class, 'santriCreate'])->name('santri.create');
-    Route::post('/santri', [UserController::class, 'santriStore'])->name('santri.store');
-    Route::get('/santri/{id}', [UserController::class, 'santriShow'])->name('santri.show');
-    Route::get('/santri/{id}/edit', [UserController::class, 'santriEdit'])->name('santri.edit');
-    Route::put('/santri/{id}', [UserController::class, 'santriUpdate'])->name('santri.update');
-    Route::delete('/santri/{id}', [UserController::class, 'santriDestroy'])->name('santri.destroy');
-    Route::get('/gallery', [UserController::class, 'galleryIndex'])->name('gallery.index');
-    Route::get('/fasilitas', [UserController::class, 'fasilitasIndex'])->name('fasilitas.index');
-    Route::get('/akta-wakaf', [UserController::class, 'aktaWakafIndex'])->name('akta-wakaf.index');
-});
-
 //nontification
 Route::middleware(['auth','user'])->prefix('user')->group(function(){
 
     Route::get('/notifications',[UserController::class,'notifications'])
     ->name('user.notifications');
+
+});
+
+// TAMBAHAN ROUTE KHUSUS USER (TIDAK MENGUBAH ROUTE LAMA)
+Route::middleware(['auth'])->prefix('user')->name('user.')->group(function () {
+
+    // DASHBOARD USER
+    Route::get('/dashboard', [UserController::class, 'dashboard'])
+        ->name('dashboard');
+
+    // PROFILE USER
+    Route::get('/profile', [UserController::class, 'profile'])
+        ->name('profile');
+    Route::post('/profile/update', [UserController::class, 'updateProfile'])
+        ->name('profile.update');
+    Route::post('/profile/change-password', [UserController::class, 'changePassword'])
+        ->name('password.update');
+
+    // PENDAFTARAN SANTRI
+    Route::get('/santri', [UserController::class, 'santriIndex'])
+        ->name('santri.index');
+    Route::get('/santri/create', [UserController::class, 'santriCreate'])
+        ->name('santri.create');
+    Route::post('/santri', [UserController::class, 'santriStore'])
+        ->name('santri.store');
+    Route::get('/santri/{id}', [UserController::class, 'santriShow'])
+        ->name('santri.show');
+    Route::get('/santri/{id}/edit', [UserController::class, 'santriEdit'])
+        ->name('santri.edit');
+    Route::put('/santri/{id}', [UserController::class, 'santriUpdate'])
+        ->name('santri.update');
+    Route::delete('/santri/{id}', [UserController::class, 'santriDestroy'])
+        ->name('santri.destroy');
+
+    // GALLERY (DARI ADMIN)
+    Route::get('/gallery', [UserController::class, 'galleryIndex'])
+        ->name('gallery.index');
+    Route::get('/gallery/{id}', [UserController::class, 'galleryShow'])
+        ->name('gallery.show');
+
+    // FASILITAS (DARI ADMIN)
+    Route::get('/fasilitas', [UserController::class, 'fasilitasIndex'])
+        ->name('fasilitas.index');
+
+    // PROGRAM (DARI ADMIN)
+    Route::get('/program', [UserController::class, 'programIndex'])
+        ->name('program.index');
+
+    // STRUKTUR ORGANISASI
+    Route::get('/struktur-organisasi', [UserController::class, 'strukturIndex'])
+        ->name('struktur.index');
+
+    // AKTA WAKAF
+    Route::get('/akta-wakaf', [UserController::class, 'aktaWakafIndex'])
+        ->name('akta-wakaf.index');
+
+    // AKTA YAYASAN
+    Route::get('/akta-yayasan', [UserController::class, 'aktaYayasanIndex'])
+        ->name('akta-yayasan.index');
+
+    // NOTIFIKASI USER
+    Route::get('/notifications', [UserController::class, 'notifications'])
+        ->name('notifications');
 
 });

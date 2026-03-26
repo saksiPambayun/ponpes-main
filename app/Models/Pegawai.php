@@ -13,24 +13,30 @@ class Pegawai extends Model
     protected $table = 'pegawai';
 
     protected $fillable = [
-        'nip',
-        'nama',
-        'email',
-        'no_telepon',
-        'jabatan',
-        'divisi',
-        'status',
-        'tipe_pegawai',
-        'tanggal_bergabung',
-        'tempat_lahir',
-        'tanggal_lahir',
-        'jenis_kelamin',
-        'agama',
-        'alamat',
-        'foto_ktp',
-        'foto_npwp',
-        'foto_ijazah',
-    ];
+    'user_id',
+    'nip',
+    'nama',
+    'email',
+    'no_telepon',
+    'jabatan',
+    'divisi',
+    'status',
+    'tipe_pegawai',
+    'tanggal_bergabung',
+    'tempat_lahir',
+    'tanggal_lahir',
+    'jenis_kelamin',
+    'agama',
+    'alamat',
+    'foto_ktp',
+    'foto_npwp',
+    'foto_ijazah'
+];
+
+public function user()
+{
+    return $this->belongsTo(User::class);
+}
 
     protected $casts = [
         'tanggal_bergabung' => 'date',

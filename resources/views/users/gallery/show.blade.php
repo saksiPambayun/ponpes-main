@@ -42,7 +42,7 @@
                         <label class="text-muted small">Kategori</label>
                         <div>
                             <span class="badge
-                                {{ $gallery->kategori == 'kegiatan' ? 'bg-primary' :
+                                    {{ $gallery->kategori == 'kegiatan' ? 'bg-primary' :
         ($gallery->kategori == 'prestasi' ? 'bg-warning text-dark' : 'bg-secondary') }}">
                                 {{ ucfirst($gallery->kategori) }}
                             </span>
@@ -97,4 +97,3 @@
 
     </div>
 @endsection
-```

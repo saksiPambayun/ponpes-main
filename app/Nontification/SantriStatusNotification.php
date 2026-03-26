@@ -5,7 +5,6 @@ namespace App\Notifications;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 use Illuminate\Notifications\Messages\MailMessage;
-use App\Models\SantriRegistration;
 
 class SantriStatusNotification extends Notification
 {
@@ -13,36 +12,45 @@ class SantriStatusNotification extends Notification
 
     protected $santri;
 
-    public function __construct(SantriRegistration $santri)
+    public function __construct($santri)
     {
         $this->santri = $santri;
     }
 
     public function via($notifiable)
     {
-        return ['database']; // simpan ke database
+        return ['mail','database'];
     }
 
-    public function toDatabase($notifiable)
+    public function toMail($notifiable)
+    {
+        if($this->santri->status == 'diterima'){
+            return (new MailMessage)
+                ->subject('Pendaftaran Santri Diterima')
+                ->greeting('Assalamu\'alaikum')
+                ->line('Selamat! Pendaftaran santri Anda telah diterima.')
+                ->line('Nama: '.$this->santri->nama_lengkap)
+                ->line('Silakan login ke dashboard untuk melihat detail.')
+                ->action('Lihat Dashboard', url('/user/dashboard'))
+                ->line('Terima kasih.');
+        }
+
+        return (new MailMessage)
+            ->subject('Pendaftaran Santri Ditolak')
+            ->greeting('Assalamu\'alaikum')
+            ->line('Mohon maaf, pendaftaran santri Anda ditolak.')
+            ->line('Nama: '.$this->santri->nama_lengkap)
+            ->line('Alasan: '.$this->santri->alasan_penolakan)
+            ->action('Lihat Dashboard', url('/user/dashboard'))
+            ->line('Silakan perbaiki data jika diperlukan.');
+    }
+
+    public function toArray($notifiable)
     {
         return [
-            'santri_id' => $this->santri->id,
             'nama' => $this->santri->nama_lengkap,
             'status' => $this->santri->status,
-            'pesan' => $this->message(),
+            'alasan' => $this->santri->alasan_penolakan,
         ];
-    }
-
-    private function message()
-    {
-        if ($this->santri->status == 'diterima') {
-            return 'Selamat! Pendaftaran santri anda diterima.';
-        }
-
-        if ($this->santri->status == 'ditolak') {
-            return 'Maaf, pendaftaran santri anda ditolak.';
-        }
-
-        return 'Pendaftaran santri anda sedang diproses.';
     }
 }
