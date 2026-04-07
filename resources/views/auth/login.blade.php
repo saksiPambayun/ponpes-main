@@ -370,7 +370,7 @@
                 <div class="demo-item">
                     <i class="fas fa-lock"></i>
                     <span class="demo-label">Password:</span>
-                    <code class="demo-code">admin123</code>
+                    <code class="demo-code">password</code>
                 </div>
             </div>
         </div>

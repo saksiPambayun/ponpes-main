@@ -1,0 +1,155 @@
+<?php
+
+namespace App\Http\Controllers\User;
+
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use App\Models\User;
+use App\Models\Gallery;
+use App\Models\Fasilitas;
+use App\Models\Program;
+use App\Models\StrukturOrganisasi;
+use App\Models\AktaYayasan;
+use App\Models\AktaWakaf;
+
+class UserController extends Controller
+{
+    // Dashboard User
+    public function dashboard()
+    {
+        $user = Auth::user();
+        return view('user.dashboard', compact('user'));
+    }
+
+    // Profile User
+    public function profile()
+    {
+        $user = Auth::user();
+        return view('user.profile.index', compact('user'));
+    }
+
+    // Edit Profile
+    public function editProfile()
+    {
+        $user = Auth::user();
+        return view('user.profile.edit', compact('user'));
+    }
+
+    // Update Profile
+    public function updateProfile(Request $request)
+    {
+        $user = Auth::user();
+
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'phone' => 'nullable|string|max:20',
+            'address' => 'nullable|string|max:500',
+        ]);
+
+        $user->update([
+            'name' => $request->name,
+            'phone' => $request->phone,
+            'address' => $request->address,
+        ]);
+
+        return redirect()->route('user.profile')->with('success', 'Profil berhasil diupdate!');
+    }
+
+    // Ganti Password
+    public function changePassword(Request $request)
+    {
+        $request->validate([
+            'current_password' => 'required',
+            'new_password' => 'required|min:6|confirmed',
+        ]);
+
+        $user = Auth::user();
+
+        if (!Hash::check($request->current_password, $user->password)) {
+            return back()->with('error', 'Password saat ini salah!');
+        }
+
+        $user->update([
+            'password' => Hash::make($request->new_password),
+        ]);
+
+        return back()->with('success', 'Password berhasil diubah!');
+    }
+
+    // Upload Avatar
+    public function uploadAvatar(Request $request)
+    {
+        $request->validate([
+            'avatar' => 'required|image|mimes:jpeg,png,jpg|max:2048',
+        ]);
+
+        $user = Auth::user();
+
+        if ($request->hasFile('avatar')) {
+            $file = $request->file('avatar');
+            $filename = time() . '_' . $user->id . '.' . $file->getClientOriginalExtension();
+            $path = $file->storeAs('avatars', $filename, 'public');
+
+            $user->update(['avatar' => $path]);
+        }
+
+        return back()->with('success', 'Avatar berhasil diupload!');
+    }
+
+    // Gallery (Read Only)
+    public function galleryIndex()
+    {
+        $galleries = Gallery::latest()->paginate(12);
+        return view('user.gallery.index', compact('galleries'));
+    }
+
+    public function galleryShow($id)
+    {
+        $gallery = Gallery::findOrFail($id);
+        return view('user.gallery.show', compact('gallery'));
+    }
+
+    // Fasilitas (Read Only)
+    public function fasilitasIndex()
+    {
+        $fasilitas = Fasilitas::latest()->paginate(10);
+        return view('user.fasilitas.index', compact('fasilitas'));
+    }
+
+    // Program (Read Only)
+    public function programIndex()
+    {
+        $programs = Program::latest()->paginate(10);
+        return view('user.program.index', compact('programs'));
+    }
+
+    // Struktur Organisasi (Read Only)
+    public function strukturIndex()
+    {
+        $struktur = StrukturOrganisasi::latest()->get();
+        return view('user.struktur.index', compact('struktur'));
+    }
+
+    // Akta Yayasan (Read Only)
+    public function aktaYayasanIndex()
+    {
+        $akta = AktaYayasan::latest()->get();
+        return view('user.akta-yayasan.index', compact('akta'));
+    }
+
+    // Akta Wakaf (Read Only)
+    public function aktaWakafIndex()
+    {
+        $akta = AktaWakaf::latest()->get();
+        return view('user.akta-wakaf.index', compact('akta'));
+    }
+
+    // Notifikasi (jika pakai database notifications)
+    public function notifications()
+    {
+        $notifications = Auth::user()->notifications()->paginate(10);
+        return view('user.notifications.index', compact('notifications'));
+    }
+}

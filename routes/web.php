@@ -11,7 +11,7 @@ use App\Http\Controllers\ProgramController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\DataMasterController;
 use App\Http\Controllers\Admin\SantriController;
-use App\Http\Controllers\UserController;
+use App\Http\Controllers\user\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,19 +19,22 @@ use App\Http\Controllers\UserController;
 |--------------------------------------------------------------------------
 */
 
-// Redirect root to admin dashboard
+// Redirect root to login
 Route::get('/', function () {
-    return redirect()->route('admin.dashboard');
+    return redirect()->route('login');
 });
 
-// === REVISI: Login Routes (Tanpa Middleware) ===
-Route::get('/login', [AdminController::class, 'showLoginForm'])->name('login');
-Route::post('/login', [AdminController::class, 'login'])->name('login.post');
-Route::post('/logout', [AdminController::class, 'logout'])->name('logout');
+// === LOGIN ROUTES (Fix) ===
+Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
+Route::post('/login', [LoginController::class, 'login'])->name('login.post');
+Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
 // register
-Route::get('/register', [AuthController::class,'register'])->name('register');
-Route::post('/register', [AuthController::class,'registerProcess'])->name('register.process');
+// Route::get('/register', [AuthController::class,'register'])->name('register');
+// Route::post('/register', [AuthController::class,'registerProcess'])->name('register.process');
+
+Route::get('/register', [App\Http\Controllers\Auth\RegisterController::class, 'showRegister'])->name('register');
+Route::post('/register', [App\Http\Controllers\Auth\RegisterController::class, 'register'])->name('register.process');
 
 // Admin Routes
 Route::prefix('admin')
@@ -42,6 +45,14 @@ Route::prefix('admin')
     // Dashboard
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
 
+    Route::get('/test-user', function() {
+    if (auth()->check()) {
+        return "Anda login sebagai: " . auth()->user()->name . " - Role: " . auth()->user()->role;
+    } else {
+        return "Belum login. Silakan login dulu.";
+    }
+});
+
     // Santri Registrations
     Route::get('/santri', [AdminController::class, 'santriIndex'])->name('santri.index');
     Route::get('/santri/create', [AdminController::class, 'santriCreate'])->name('santri.create');
@@ -51,29 +62,7 @@ Route::prefix('admin')
     Route::put('/santri/{id}', [AdminController::class, 'santriUpdate'])->name('santri.update');
     Route::delete('/santri/{id}', [AdminController::class, 'santriDestroy'])->name('santri.destroy');
     Route::post('/santri/{id}/verify', [AdminController::class, 'verifySantri'])->name('santri.verify');
-    Route::post('/santri/{id}/reject', [SantriController::class, 'reject'])->name('santri.reject');
-
-
-Route::prefix('admin')->name('admin.')->middleware(['auth', 'checkRole:admin'])->group(function () {
-
-    // Dashboard
-    Route::get('/dashboard', function () {
-        return view('admin.dashboard');
-    })->name('dashboard');
-
-    // RESOURCE SANTRI
-    Route::resource('santri', SantriController::class);
-
-    // CUSTOM ROUTES untuk verifikasi
-    Route::post('/santri/{id}/verify', [SantriController::class, 'verify'])->name('santri.verify');
-    Route::post('/santri/{id}/reject', [SantriController::class, 'reject'])->name('santri.reject');
-
-    // Bulk action
-    Route::post('/santri/bulk-action', [SantriController::class, 'bulkAction'])->name('santri.bulk-action');
-
-    // Restore
-    Route::post('/santri/{id}/restore', [SantriController::class, 'restore'])->name('santri.restore');
-});
+    Route::post('/santri/{id}/reject', [AdminController::class, 'reject'])->name('santri.reject');
 
     // Employees/Pegawai
     Route::get('/pegawai', [AdminController::class, 'pegawaiIndex'])->name('pegawai.index');
@@ -111,7 +100,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'checkRole:admin'])-
     Route::put('/akta-wakaf/{id}', [AdminController::class, 'aktaWakafUpdate'])->name('akta-wakaf.update');
     Route::delete('/akta-wakaf/{id}', [AdminController::class, 'aktaWakafDestroy'])->name('akta-wakaf.destroy');
 
-    // === TAMBAHAN: DATA MASTER ROUTES ===
+    // === DATA MASTER ROUTES ===
     Route::prefix('data-master')->name('data-master.')->group(function () {
 
         // Halaman utama Data Master
@@ -125,7 +114,6 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'checkRole:admin'])-
         Route::get('/struktur-organisasi', [DataMasterController::class, 'strukturOrganisasi'])->name('struktur-organisasi');
         Route::post('/struktur-organisasi', [DataMasterController::class, 'strukturOrganisasiStore'])->name('struktur-organisasi.store');
         Route::put('/struktur-organisasi/{id}', [DataMasterController::class, 'strukturOrganisasiUpdate'])->name('struktur-organisasi.update');
-        // Delete Struktur
         Route::delete('/struktur-organisasi/{id}', [DataMasterController::class, 'strukturOrganisasiDestroy'])->name('struktur-organisasi.destroy');
 
         // Fasilitas
@@ -142,6 +130,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'checkRole:admin'])-
         // Program
         Route::get('/program', [DataMasterController::class, 'program'])->name('program');
         Route::post('/program', [DataMasterController::class, 'programStore'])->name('program.store');
+        Route::get('/program/{id}', [UserController::class, 'programShow'])->name('program.show');
         Route::put('/program/{id}', [DataMasterController::class, 'programUpdate'])->name('program.update');
         Route::delete('/program/{id}', [DataMasterController::class, 'programDestroy'])->name('program.destroy');
     });
@@ -151,50 +140,24 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'checkRole:admin'])-
     Route::post('/profile/update', [AdminController::class, 'updateProfile'])->name('profile.update');
     Route::post('/profile/change-password', [AdminController::class, 'changePassword'])->name('profile.change-password');
     Route::post('/profile/change-email', [AdminController::class, 'changeEmail'])->name('profile.change-email');
-
-    // Logout (Di dalam prefix admin agar konsisten)
-    Route::post('/logout', [AdminController::class, 'logout'])->name('logout');
 });
 
-// ================= DATA MASTER =================
-Route::prefix('data-master')->name('data-master.')->group(function () {
+// Route untuk admin dengan role check
 
-    // Halaman utama Data Master
-    Route::get('/', [DataMasterController::class, 'index'])->name('index');
+//----------------------------------------------
+    // CUSTOM ROUTES untuk verifikasi
+    Route::post('/santri/{id}/verify', [SantriController::class, 'verify'])->name('santri.verify');
+    Route::post('/santri/{id}/reject', [SantriController::class, 'reject'])->name('santri.reject');
 
-    // Profil Yayasan
-    Route::get('/profil-yayasan', [DataMasterController::class, 'profilYayasan'])->name('profil-yayasan');
-    Route::post('/profil-yayasan', [DataMasterController::class, 'profilYayasanStore'])->name('profil-yayasan.store');
+    // Bulk action
+    Route::post('/santri/bulk-action', [SantriController::class, 'bulkAction'])->name('santri.bulk-action');
 
-    // Struktur Organisasi
-    Route::get('/struktur-organisasi', [DataMasterController::class, 'strukturOrganisasi'])->name('struktur-organisasi');
-    Route::post('/struktur-organisasi', [DataMasterController::class, 'strukturOrganisasiStore'])->name('struktur-organisasi.store');
-    Route::put('/struktur-organisasi/{id}', [DataMasterController::class, 'strukturOrganisasiUpdate'])->name('struktur-organisasi.update');
-    Route::delete('/struktur-organisasi/{id}', [DataMasterController::class, 'strukturOrganisasiDestroy'])->name('struktur-organisasi.destroy');
-
-    // Fasilitas
-    Route::get('/fasilitas', [DataMasterController::class, 'fasilitas'])->name('fasilitas');
-    Route::post('/fasilitas', [DataMasterController::class, 'fasilitasStore'])->name('fasilitas.store');
-    Route::put('/fasilitas/{id}', [DataMasterController::class, 'fasilitasUpdate'])->name('fasilitas.update');
-    Route::delete('/fasilitas/{id}', [DataMasterController::class, 'fasilitasDestroy'])->name('fasilitas.destroy');
-
- // Gallery
-Route::get('/gallery', [DataMasterController::class, 'gallery'])->name('gallery.index');
-Route::post('/gallery', [DataMasterController::class, 'galleryStore'])->name('gallery.store');
-Route::delete('/gallery/{id}', [DataMasterController::class, 'galleryDestroy'])->name('gallery.destroy');
-Route::get('gallery/{id}', [DataMasterController::class, 'galleryShow'])
-    ->name('gallery.show');
-    // Program
-    Route::get('/program', [DataMasterController::class, 'program'])->name('program');
-    Route::post('/program', [DataMasterController::class, 'programStore'])->name('program.store');
-    Route::put('/program/{id}', [DataMasterController::class, 'programUpdate'])->name('program.update');
-    Route::delete('/program/{id}', [DataMasterController::class, 'programDestroy'])->name('program.destroy');
-
-});
+    // Restore
+    Route::post('/santri/{id}/restore', [SantriController::class, 'restore'])->name('santri.restore');
+//----------------------------------------------
 
 // Route untuk Data Master Fasilitas
 Route::prefix('admin')->name('admin.')->group(function () {
-    // Route untuk Fasilitas
     Route::resource('data-master/fasilitas', FasilitasController::class)
          ->names([
              'index' => 'data-master.fasilitas.index',
@@ -237,7 +200,7 @@ Route::prefix('admin/data-master')->middleware('auth')->group(function () {
 Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () {
     Route::resource('data-master/program', ProgramController::class)
         ->names('program');
-        });
+});
 
 Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
@@ -279,6 +242,8 @@ Route::prefix('admin')->middleware('auth')->group(function () {
         [ProfilYayasanController::class,'index']
     )->name('admin.profil-yayasan.index');
 
+});
+
 Route::prefix('admin/data-master')->middleware('auth')->name('data-master.')->group(function () {
 
     // Struktur Organisasi
@@ -300,7 +265,6 @@ Route::prefix('admin/data-master')->middleware('auth')->name('data-master.')->gr
     Route::delete('/struktur-organisasi/{id}', [DataMasterController::class, 'strukturOrganisasiDestroy'])
         ->name('struktur-organisasi.destroy');
 
-});
 });
 
 Route::prefix('admin')->middleware(['auth'])->group(function () {
@@ -324,73 +288,76 @@ Route::prefix('admin')->name('admin.')->group(function () {
     });
 });
 
-//nontification
-Route::middleware(['auth','user'])->prefix('user')->group(function(){
+//notification
+Route::get('/notifications', [UserController::class, 'notifications'])->name('notifications');
+Route::post('/notifications/{id}/mark-read', [UserController::class, 'markAsRead'])->name('notifications.mark-read');
+Route::post('/notifications/mark-all-read', [UserController::class, 'markAllRead'])->name('notifications.mark-all-read');
+Route::get('/notifications/unread-count', [UserController::class, 'unreadCount'])->name('notifications.unread-count');
 
-    Route::get('/notifications',[UserController::class,'notifications'])
-    ->name('user.notifications');
+// ROUTE KHUSUS USER
+Route::middleware(['auth', 'user'])->prefix('user')->name('user.')->group(function () {
 
+Route::get('/check-user', function() {
+    if (!auth()->check()) {
+        return "Belum login. Silakan login terlebih dahulu.";
+    }
+
+    $user = auth()->user();
+    return "Login sebagai: " . $user->name . "<br>Email: " . $user->email . "<br>Role: " . $user->role;
 });
 
-// TAMBAHAN ROUTE KHUSUS USER (TIDAK MENGUBAH ROUTE LAMA)
-Route::middleware(['auth'])->prefix('user')->name('user.')->group(function () {
+    // DASHBOARD
+    Route::get('/dashboard', [UserController::class, 'dashboard'])->name('dashboard');
 
-    // DASHBOARD USER
-    Route::get('/dashboard', [UserController::class, 'dashboard'])
-        ->name('dashboard');
+    // ===================== PROFILE =====================
+    Route::get('/profile', [UserController::class, 'profile'])->name('profile');
+    Route::get('/profile/edit', [UserController::class, 'editProfile'])->name('profile.edit');
+    Route::put('/profile', [UserController::class, 'updateProfile'])->name('profile.update');
+    Route::post('/profile/change-password', [UserController::class, 'changePassword'])->name('profile.change-password');
+    Route::post('/profile/upload-avatar', [UserController::class, 'uploadAvatar'])->name('profile.upload-avatar');
 
-    // PROFILE USER
-    Route::get('/profile', [UserController::class, 'profile'])
-        ->name('profile');
-    Route::post('/profile/update', [UserController::class, 'updateProfile'])
-        ->name('profile.update');
-    Route::post('/profile/change-password', [UserController::class, 'changePassword'])
-        ->name('password.update');
+    // ===================== SANTRI =====================
+    Route::get('/santri', [UserController::class, 'santriIndex'])->name('santri.index');
+    Route::get('/santri/create', [UserController::class, 'santriCreate'])->name('santri.create');
+    Route::post('/santri', [UserController::class, 'santriStore'])->name('santri.store');
+    Route::get('/santri/{id}', [UserController::class, 'santriShow'])->name('santri.show');
+    Route::get('/santri/{id}/edit', [UserController::class, 'santriEdit'])->name('santri.edit');
+    Route::put('/santri/{id}', [UserController::class, 'santriUpdate'])->name('santri.update');
+    Route::delete('/santri/{id}', [UserController::class, 'santriDestroy'])->name('santri.destroy');
 
-    // PENDAFTARAN SANTRI
-    Route::get('/santri', [UserController::class, 'santriIndex'])
-        ->name('santri.index');
-    Route::get('/santri/create', [UserController::class, 'santriCreate'])
-        ->name('santri.create');
-    Route::post('/santri', [UserController::class, 'santriStore'])
-        ->name('santri.store');
-    Route::get('/santri/{id}', [UserController::class, 'santriShow'])
-        ->name('santri.show');
-    Route::get('/santri/{id}/edit', [UserController::class, 'santriEdit'])
-        ->name('santri.edit');
-    Route::put('/santri/{id}', [UserController::class, 'santriUpdate'])
-        ->name('santri.update');
-    Route::delete('/santri/{id}', [UserController::class, 'santriDestroy'])
-        ->name('santri.destroy');
+    // ===================== GALLERY =====================
+    Route::get('/gallery', [UserController::class, 'galleryIndex'])->name('gallery.index');
+    Route::get('/gallery/{id}', [UserController::class, 'galleryShow'])->name('gallery.show');
 
-    // GALLERY (DARI ADMIN)
-    Route::get('/gallery', [UserController::class, 'galleryIndex'])
-        ->name('gallery.index');
-    Route::get('/gallery/{id}', [UserController::class, 'galleryShow'])
-        ->name('gallery.show');
+    // ===================== FASILITAS =====================
+    Route::get('/fasilitas', [UserController::class, 'fasilitasIndex'])->name('fasilitas.index');
+    Route::get('/fasilitas/{id}', [UserController::class, 'fasilitasShow'])->name('fasilitas.show');
 
-    // FASILITAS (DARI ADMIN)
-    Route::get('/fasilitas', [UserController::class, 'fasilitasIndex'])
-        ->name('fasilitas.index');
+    // ===================== PROGRAM =====================
+    Route::get('/program', [UserController::class, 'programIndex'])->name('program.index');
+    Route::get('/program/{id}', [UserController::class, 'programShow'])->name('program.show');
 
-    // PROGRAM (DARI ADMIN)
-    Route::get('/program', [UserController::class, 'programIndex'])
-        ->name('program.index');
+    // ===================== STRUKTUR ORGANISASI =====================
+    Route::get('/struktur-organisasi', [UserController::class, 'strukturIndex'])->name('struktur.index');
+    Route::get('/struktur-organisasi/{id}', [UserController::class, 'strukturShow'])->name('struktur.show');
 
-    // STRUKTUR ORGANISASI
-    Route::get('/struktur-organisasi', [UserController::class, 'strukturIndex'])
-        ->name('struktur.index');
+    // ===================== PROFIL YAYASAN =====================
+    Route::get('/profil-yayasan', [UserController::class, 'profilYayasanIndex'])->name('profil-yayasan.index');
+    Route::get('/profil-yayasan/{id}', [UserController::class, 'profilYayasanShow'])->name('profil-yayasan.show');
 
-    // AKTA WAKAF
-    Route::get('/akta-wakaf', [UserController::class, 'aktaWakafIndex'])
-        ->name('akta-wakaf.index');
+    // ===================== AKTA YAYASAN =====================
+    Route::get('/akta-yayasan', [UserController::class, 'aktaYayasanIndex'])->name('akta-yayasan.index');
+    Route::get('/akta-yayasan/{id}', [UserController::class, 'aktaYayasanShow'])->name('akta-yayasan.show');
 
-    // AKTA YAYASAN
-    Route::get('/akta-yayasan', [UserController::class, 'aktaYayasanIndex'])
-        ->name('akta-yayasan.index');
+    // ===================== AKTA WAKAF =====================
+    Route::get('/akta-wakaf', [UserController::class, 'aktaWakafIndex'])->name('akta-wakaf.index');
+    Route::get('/akta-wakaf/{id}', [UserController::class, 'aktaWakafShow'])->name('akta-wakaf.show');
 
-    // NOTIFIKASI USER
-    Route::get('/notifications', [UserController::class, 'notifications'])
-        ->name('notifications');
+    // ===================== NOTIFICATIONS =====================
+    Route::get('/notifications', [UserController::class, 'notifications'])->name('notifications');
+    Route::post('/notifications/{id}/mark-read', [UserController::class, 'markAsRead'])->name('notifications.mark-read');
+    Route::post('/notifications/mark-all-read', [UserController::class, 'markAllRead'])->name('notifications.mark-all-read');
+    Route::get('/notifications/unread-count', [UserController::class, 'unreadCount'])->name('notifications.unread-count');
 
+    Route::get('/user-test', [App\Http\Controllers\User\UserController::class, 'dashboard'])->middleware('auth');
 });

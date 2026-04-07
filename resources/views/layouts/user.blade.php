@@ -4,252 +4,166 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@yield('title', 'Dashboard') - Portal User</title>
-
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <title>@yield('title', 'User Panel') - Yayasan</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
-    <style>
-        body {
-            background-color: #f5f6fa;
-        }
-
-        .sidebar {
-            width: 250px;
-            min-height: 100vh;
-            background: linear-gradient(160deg, #1a237e 0%, #283593 100%);
-            position: fixed;
-            top: 0;
-            left: 0;
-            z-index: 100;
-            padding-top: 1rem;
-        }
-
-        .sidebar .brand {
-            color: white;
-            padding: 1rem 1.5rem 1.5rem;
-            font-weight: 700;
-            font-size: 1.1rem;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .sidebar .nav-link {
-            color: rgba(255, 255, 255, 0.75);
-            padding: 0.65rem 1.5rem;
-            border-radius: 0;
-            transition: all 0.2s;
-            font-size: 0.9rem;
-        }
-
-        .sidebar .nav-link:hover,
-        .sidebar .nav-link.active {
-            color: white;
-            background: rgba(255, 255, 255, 0.15);
-            padding-left: 2rem;
-        }
-
-        .sidebar .nav-link i {
-            width: 20px;
-        }
-
-        .sidebar .nav-section {
-            color: rgba(255, 255, 255, 0.4);
-            font-size: 0.7rem;
-            font-weight: 600;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            padding: 1rem 1.5rem 0.3rem;
-        }
-
-        .main-content {
-            margin-left: 250px;
-            min-height: 100vh;
-        }
-
-        .topbar {
-            background: white;
-            padding: 0.75rem 1.5rem;
-            border-bottom: 1px solid #e9ecef;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .content-area {
-            padding: 1.5rem;
-        }
-    </style>
-
-    @stack('styles')
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@2.8.2/dist/alpine.min.js" defer></script>
 </head>
+<body class="bg-gray-100">
 
-<body>
+    <!-- Top Navbar -->
+    <nav class="bg-indigo-700 shadow-lg">
+        <div class="px-4">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <a href="{{ route('user.dashboard') }}" class="flex items-center">
+                        <img src="{{ asset('gallery/logoo.jpeg') }}" class="h-10 w-10 rounded-lg object-cover" alt="Logo">
+                        <span class="ml-3 text-white font-bold text-lg">Yayasan Panel</span>
+                    </a>
+                </div>
+<a href="{{ route('user.notifications') }}" class="text-white hover:text-indigo-200 relative">
+    <i class="fas fa-bell text-xl"></i>
+    <span id="notification-badge"
+        class="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full px-1.5 py-0.5 min-w-[18px] text-center hidden">0</span>
+</a>
 
-    {{-- Sidebar --}}
-    <div class="sidebar">
+                    <div class="relative" x-data="{ open: false }">
+                        <button @click="open = !open" class="flex items-center space-x-2 focus:outline-none">
+                            @if(Auth::user()->avatar)
+                                <img src="{{ asset('storage/' . Auth::user()->avatar) }}" class="h-8 w-8 rounded-full object-cover">
+                            @else
+                                <div class="h-8 w-8 rounded-full bg-indigo-500 flex items-center justify-center text-white">
+                                    {{ substr(Auth::user()->name, 0, 1) }}
+                                </div>
+                            @endif
+                            <span class="text-white">{{ Auth::user()->name }}</span>
+                            <i class="fas fa-chevron-down text-white text-sm"></i>
+                        </button>
 
-        <div class="brand">
-            <i class="fas fa-mosque me-2"></i>Portal Yayasan
-        </div>
-
-        <nav class="mt-2">
-
-            <div class="nav-section">Menu</div>
-
-            <a href="{{ route('user.dashboard') }}"
-                class="nav-link {{ request()->routeIs('user.dashboard') ? 'active' : '' }}">
-                <i class="fas fa-home me-2"></i> Dashboard
-            </a>
-
-            {{-- DATA SANTRI --}}
-            <div class="nav-section">Data</div>
-
-            @php
-                $santriUser = \App\Models\SantriRegistration::where('user_id', auth()->id());
-
-                $pendingSantri = (clone $santriUser)->where('status', 'pending')->count();
-                $diterimaSantri = (clone $santriUser)->where('status', 'diterima')->count();
-                $ditolakSantri = (clone $santriUser)->where('status', 'ditolak')->count();
-            @endphp
-
-            <a href="{{ route('user.santri.index') }}"
-                class="nav-link {{ request()->routeIs('user.santri.*') ? 'active' : '' }}">
-
-                <i class="fas fa-user-graduate me-2"></i>
-                Pendaftaran Santri
-
-                @if($pendingSantri > 0)
-                    <span class="badge bg-warning text-dark ms-1">{{ $pendingSantri }}</span>
-                @endif
-
-                @if($diterimaSantri > 0)
-                    <span class="badge bg-success ms-1">{{ $diterimaSantri }}</span>
-                @endif
-
-                @if($ditolakSantri > 0)
-                    <span class="badge bg-danger ms-1">{{ $ditolakSantri }}</span>
-                @endif
-
-            </a>
-
-            {{-- INFORMASI --}}
-            <div class="nav-section">Informasi</div>
-
-            <a href="{{ route('user.gallery.index') }}"
-                class="nav-link {{ request()->routeIs('user.gallery.*') ? 'active' : '' }}">
-                <i class="fas fa-images me-2"></i> Gallery
-            </a>
-
-            <a href="{{ route('user.fasilitas.index') }}"
-                class="nav-link {{ request()->routeIs('user.fasilitas.*') ? 'active' : '' }}">
-                <i class="fas fa-building me-2"></i> Fasilitas
-            </a>
-
-            <a href="{{ route('user.program.index') }}"
-                class="nav-link {{ request()->routeIs('user.program.*') ? 'active' : '' }}">
-                <i class="fas fa-book me-2"></i> Program
-            </a>
-
-            <a href="{{ route('user.struktur.index') }}"
-                class="nav-link {{ request()->routeIs('user.struktur.*') ? 'active' : '' }}">
-                <i class="fas fa-sitemap me-2"></i> Struktur Organisasi
-            </a>
-
-            <a href="{{ route('user.akta-wakaf.index') }}"
-                class="nav-link {{ request()->routeIs('user.akta-wakaf.*') ? 'active' : '' }}">
-                <i class="fas fa-file-alt me-2"></i> Akta Wakaf
-            </a>
-
-            <a href="{{ route('user.akta-yayasan.index') }}"
-                class="nav-link {{ request()->routeIs('user.akta-yayasan.*') ? 'active' : '' }}">
-                <i class="fas fa-file-signature me-2"></i> Akta Yayasan
-            </a>
-
-            {{-- AKUN --}}
-            <div class="nav-section">Akun</div>
-
-            <a href="{{ route('user.profile') }}"
-                class="nav-link {{ request()->routeIs('user.profile*') ? 'active' : '' }}">
-                <i class="fas fa-user-cog me-2"></i> Profil Saya
-            </a>
-
-            <form method="POST" action="{{ route('logout') }}">
-                @csrf
-                <button type="submit" class="nav-link btn btn-link w-100 text-start border-0 text-white">
-
-                    <i class="fas fa-sign-out-alt me-2"></i> Logout
-
-                </button>
-            </form>
-
-        </nav>
-    </div>
-
-    {{-- MAIN CONTENT --}}
-    <div class="main-content">
-
-        <div class="topbar">
-
-            <div class="text-muted small">
-                <i class="fas fa-home me-1"></i>
-                @yield('title', 'Dashboard')
+                        <div x-show="open" @click.away="open = false" class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-20">
+                            <a href="{{ route('user.profile') }}" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">
+                                <i class="fas fa-user mr-2"></i> Profil Saya
+                            </a>
+                            <hr class="my-1">
+                            <form method="POST" action="{{ route('logout') }}">
+                                @csrf
+                                <button type="submit" class="w-full text-left px-4 py-2 text-red-600 hover:bg-gray-100">
+                                    <i class="fas fa-sign-out-alt mr-2"></i> Logout
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
             </div>
-
-            <div class="d-flex align-items-center gap-3">
-
-                @php
-                    $notif = \App\Models\SantriRegistration::where('user_id', auth()->id())
-                        ->where('status', 'diterima')
-                        ->count();
-                @endphp
-
-                @if($notif > 0)
-                    <span class="badge bg-success">
-                        <i class="fas fa-bell"></i> {{ $notif }}
-                    </span>
-                @endif
-
-                <span class="badge bg-secondary">User</span>
-
-                <strong class="small">
-                    {{ auth()->user()->name }}
-                </strong>
-
-            </div>
-
         </div>
+    </nav>
 
+    <div class="flex">
+        <!-- Sidebar -->
+        <aside class="w-64 bg-indigo-800 min-h-screen">
+            <div class="py-4">
+                <div class="px-4 mb-6">
+                    <div class="bg-indigo-700 rounded-lg p-3 text-center">
+                        <p class="text-indigo-200 text-sm">Welcome,</p>
+                        <p class="text-white font-semibold">{{ Auth::user()->name }}</p>
+                        <span class="text-xs text-indigo-300">User</span>
+                    </div>
+                </div>
 
-        <div class="content-area">
+               <nav class="space-y-1">
+    <a href="{{ route('user.dashboard') }}" class="flex items-center px-4 py-2 text-indigo-100 hover:bg-indigo-700 transition">
+        <i class="fas fa-tachometer-alt w-5"></i>
+        <span class="ml-3">Dashboard</span>
+    </a>
 
+    <div class="border-t border-indigo-700 my-2"></div>
+
+    <p class="px-4 text-xs text-indigo-300 uppercase tracking-wider mt-4">Data Master</p>
+
+    <a href="{{ route('user.profil-yayasan.index') }}" class="flex items-center px-4 py-2 text-indigo-100 hover:bg-indigo-700 transition">
+        <i class="fas fa-building w-5"></i>
+        <span class="ml-3">Profil Yayasan</span>
+    </a>
+
+    <a href="{{ route('user.struktur.index') }}" class="flex items-center px-4 py-2 text-indigo-100 hover:bg-indigo-700 transition">
+        <i class="fas fa-sitemap w-5"></i>
+        <span class="ml-3">Struktur Organisasi</span>
+    </a>
+
+    <a href="{{ route('user.fasilitas.index') }}" class="flex items-center px-4 py-2 text-indigo-100 hover:bg-indigo-700 transition">
+        <i class="fas fa-building w-5"></i>
+        <span class="ml-3">Fasilitas</span>
+    </a>
+
+    <a href="{{ route('user.gallery.index') }}" class="flex items-center px-4 py-2 text-indigo-100 hover:bg-indigo-700 transition">
+        <i class="fas fa-images w-5"></i>
+        <span class="ml-3">Gallery</span>
+    </a>
+
+    <a href="{{ route('user.program.index') }}" class="flex items-center px-4 py-2 text-indigo-100 hover:bg-indigo-700 transition">
+        <i class="fas fa-chalkboard-user w-5"></i>
+        <span class="ml-3">Program</span>
+    </a>
+
+    <div class="border-t border-indigo-700 my-2"></div>
+
+    <p class="px-4 text-xs text-indigo-300 uppercase tracking-wider mt-4">Dokumen</p>
+
+    <a href="{{ route('user.akta-yayasan.index') }}" class="flex items-center px-4 py-2 text-indigo-100 hover:bg-indigo-700 transition">
+        <i class="fas fa-file-alt w-5"></i>
+        <span class="ml-3">Akta Yayasan</span>
+    </a>
+
+    <a href="{{ route('user.akta-wakaf.index') }}" class="flex items-center px-4 py-2 text-indigo-100 hover:bg-indigo-700 transition">
+        <i class="fas fa-file-contract w-5"></i>
+        <span class="ml-3">Akta Wakaf</span>
+    </a>
+
+    <div class="border-t border-indigo-700 my-2"></div>
+
+    <p class="px-4 text-xs text-indigo-300 uppercase tracking-wider mt-4">Pendaftaran</p>
+
+    <a href="{{ route('user.santri.index') }}" class="flex items-center px-4 py-2 text-indigo-100 hover:bg-indigo-700 transition">
+        <i class="fas fa-user-graduate w-5"></i>
+        <span class="ml-3">Data Santri</span>
+    </a>
+
+    <a href="{{ route('user.profile') }}" class="flex items-center px-4 py-2 text-indigo-100 hover:bg-indigo-700 transition">
+        <i class="fas fa-user-circle w-5"></i>
+        <span class="ml-3">Profil Saya</span>
+    </a>
+
+    <a href="{{ route('user.notifications') }}" class="flex items-center px-4 py-2 text-indigo-100 hover:bg-indigo-700 transition">
+        <i class="fas fa-bell w-5"></i>
+        <span class="ml-3">Notifikasi</span>
+    </a>
+</nav>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="flex-1 p-6">
             @if(session('success'))
-                <div class="alert alert-success alert-dismissible fade show">
-                    <i class="fas fa-check-circle me-2"></i>
-                    {{ session('success') }}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                <div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 mb-4 rounded shadow">
+                    <i class="fas fa-check-circle mr-2"></i> {{ session('success') }}
                 </div>
             @endif
-
 
             @if(session('error'))
-                <div class="alert alert-danger alert-dismissible fade show">
-                    <i class="fas fa-exclamation-circle me-2"></i>
-                    {{ session('error') }}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-4 rounded shadow">
+                    <i class="fas fa-exclamation-circle mr-2"></i> {{ session('error') }}
                 </div>
             @endif
 
+            @if($errors->any())
+                <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-4 rounded shadow">
+                    <i class="fas fa-exclamation-circle mr-2"></i> {{ $errors->first() }}
+                </div>
+            @endif
 
             @yield('content')
-
-        </div>
-
+        </main>
     </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
-    @stack('scripts')
-
 </body>
-
 </html>

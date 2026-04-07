@@ -26,20 +26,6 @@ class AuthController extends Controller
             'address' => 'nullable|max:255',
         ]);
 
-        User::create([
-            'name' => $request->name,
-            'username' => $request->username, // ✅ PERBAIKAN UTAMA
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-
-            // DEFAULT BIAR AMAN
-            'role' => 'user',
-            'status' => 'active',
-
-            // OPTIONAL
-            'phone' => $request->phone,
-            'address' => $request->address,
-        ]);
 
         return redirect()->route('login')
             ->with('success', 'Register berhasil, silakan login');

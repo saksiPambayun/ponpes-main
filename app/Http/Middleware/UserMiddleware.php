@@ -10,14 +10,10 @@ class UserMiddleware
 {
     public function handle(Request $request, Closure $next)
     {
-        if (!Auth::check()) {
-            return redirect('/login');
+        if (Auth::check() && Auth::user()->role === 'user') {
+            return $next($request);
         }
 
-        if (Auth::user()->role !== 'user') {
-            abort(403,'Akses hanya untuk user');
-        }
-
-        return $next($request);
+        return redirect('/login')->with('error', 'Akses ditolak. Anda bukan user.');
     }
 }

@@ -8,49 +8,60 @@ use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
 {
-
-    public function showLogin()
+    public function showLoginForm()
     {
+        if (Auth::check()) {
+            $user = Auth::user();
+            if ($user->role === 'admin' || $user->role === 'superadmin') {
+                return redirect()->route('admin.dashboard');
+            }
+            return redirect()->route('user.dashboard');
+        }
+
         return view('auth.login');
     }
 
     public function login(Request $request)
     {
-
-        $credentials = $request->validate([
-            'email'=>'required|email',
-            'password'=>'required'
+        $request->validate([
+            'email'    => 'required|email',
+            'password' => 'required',
         ]);
 
-        if(Auth::attempt($credentials)){
+        $credentials = $request->only('email', 'password');
+        $remember    = $request->boolean('remember');
 
+        if (Auth::attempt($credentials, $remember)) {
             $request->session()->regenerate();
 
             $user = Auth::user();
 
-            if($user->role == 'superadmin' || $user->role == 'admin'){
-                return redirect()->route('admin.dashboard');
+            // Cek status user
+            if ($user->status === 'inactive') {
+                Auth::logout();
+                return back()->withErrors([
+                    'email' => 'Akun Anda tidak aktif. Hubungi administrator.',
+                ])->onlyInput('email');
             }
 
-            if($user->role == 'user'){
-                return redirect()->route('user.dashboard');
+            // Redirect berdasarkan role
+            if ($user->role === 'admin' || $user->role === 'superadmin') {
+                return redirect()->intended(route('admin.dashboard'));
             }
+
+            return redirect()->intended(route('user.dashboard'));
         }
 
         return back()->withErrors([
-            'email'=>'Email atau password salah'
-        ]);
+            'email' => 'Email atau password yang Anda masukkan salah.',
+        ])->onlyInput('email');
     }
 
     public function logout(Request $request)
     {
-
         Auth::logout();
-
         $request->session()->invalidate();
-
         $request->session()->regenerateToken();
-
-        return redirect('/login');
+        return redirect()->route('login');
     }
 }

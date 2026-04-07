@@ -100,6 +100,11 @@ class ProgramController extends Controller
 
         return view('data-master.program.show', $data);
     }
+    public function programShow($id)
+{
+    $program = Program::findOrFail($id);
+    return view('user.program.show', compact('program'));
+}
 
     /**
      * Show the form for editing the program.
@@ -124,7 +129,7 @@ class ProgramController extends Controller
             'nama_program'    => 'required|string|max:255',
             'deskripsi'       => 'required|string',
             'kategori'        => 'required|in:pendidikan,sosial,keagamaan,kesehatan',
-            
+
             'tanggal_mulai'   => 'nullable|date',
             'tanggal_selesai' => 'nullable|date|after_or_equal:tanggal_mulai',
             'gambar'          => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
