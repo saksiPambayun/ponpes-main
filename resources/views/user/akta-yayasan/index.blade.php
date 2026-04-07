@@ -8,43 +8,36 @@
 
         @if($akta->count() > 0)
             <div class="overflow-x-auto">
-                <table class="w-full border-collapse">
+                <table class="min-w-full bg-white">
                     <thead>
                         <tr class="bg-gray-100">
-                            <th class="border p-3 text-left">No</th>
-                            <th class="border p-3 text-left">Nomor Akta</th>
-                            <th class="border p-3 text-left">Tanggal</th>
-                            <th class="border p-3 text-left">Notaris</th>
-                            <th class="border p-3 text-center">Aksi</th>
+                            <th class="px-4 py-2 border">No</th>
+                            <th class="px-4 py-2 border">Nomor Akta</th>
+                            <th class="px-4 py-2 border">Tanggal</th>
+                            <th class="px-4 py-2 border">Notaris</th>
+                            <th class="px-4 py-2 border">Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach($akta as $key => $item)
                             <tr class="hover:bg-gray-50">
-                                <td class="border p-3">{{ $akta->firstItem() + $key }}</td>
-                                <td class="border p-3 font-medium">{{ $item->nomor_akta ?? '-' }}</td>
-                                <td class="border p-3">
-                                    {{ $item->tanggal_akta ? \Carbon\Carbon::parse($item->tanggal_akta)->format('d M Y') : '-' }}
-                                </td>
-                                <td class="border p-3">{{ $item->notaris ?? '-' }}</td>
-                                <td class="border p-3 text-center">
+                                <td class="px-4 py-2 border text-center">{{ $akta->firstItem() + $key }}</td>
+                                <td class="px-4 py-2 border">{{ $item->nomor_akta ?? '-' }}</td>
+                                <td class="px-4 py-2 border">{{ $item->tanggal_akta ?? '-' }}</td>
+                                <td class="px-4 py-2 border">{{ $item->notaris ?? '-' }}</td>
+                                <td class="px-4 py-2 border text-center">
                                     <a href="{{ route('user.akta-yayasan.show', $item->id) }}"
-                                        class="text-indigo-600 hover:text-indigo-800">
-                                        <i class="fas fa-eye"></i> Detail
-                                    </a>
+                                        class="text-blue-600 hover:underline">Detail</a>
                                 </td>
                             </tr>
                         @endforeach
                     </tbody>
                 </table>
             </div>
-            <div class="mt-4">
-                {{ $akta->links() }}
-            </div>
+            <div class="mt-4">{{ $akta->links() }}</div>
         @else
             <div class="text-center py-12">
-                <i class="fas fa-file-alt text-6xl text-gray-300 mb-4"></i>
-                <p class="text-gray-500">Belum ada data akta yayasan.</p>
+                <p class="text-gray-500">Belum ada data.</p>
             </div>
         @endif
     </div>

@@ -14,6 +14,7 @@ use App\Models\SkData;
 use App\Models\AktaYayasan;
 use App\Models\AktaWakaf;
 use App\Models\Notification;
+use App\Traits\NotifiableTrait;
 
 class AdminController extends Controller
 {

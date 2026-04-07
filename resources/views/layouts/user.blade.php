@@ -165,5 +165,28 @@
             @yield('content')
         </main>
     </div>
+  <script>
+// Fungsi untuk update notifikasi
+function updateNotifications() {
+    fetch('{{ route("user.notifications.unread") }}')
+        .then(response => response.json())
+        .then(data => {
+            const badge = document.getElementById('notification-badge');
+            if (badge) {
+                if (data.count > 0) {
+                    badge.textContent = data.count;
+                    badge.classList.remove('hidden');
+                } else {
+                    badge.classList.add('hidden');
+                }
+            }
+        })
+        .catch(error => console.error('Error:', error));
+}
+
+// Cek notifikasi setiap 30 detik
+setInterval(updateNotifications, 30000);
+updateNotifications();
+</script>
 </body>
 </html>

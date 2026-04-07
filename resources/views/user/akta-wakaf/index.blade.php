@@ -8,41 +8,36 @@
 
         @if($akta->count() > 0)
             <div class="overflow-x-auto">
-                <table class="w-full border-collapse">
+                <table class="min-w-full bg-white">
                     <thead>
                         <tr class="bg-gray-100">
-                            <th class="border p-3 text-left">No</th>
-                            <th class="border p-3 text-left">Nomor Sertifikat</th>
-                            <th class="border p-3 text-left">Nazhir</th>
-                            <th class="border p-3 text-left">Lokasi</th>
-                            <th class="border p-3 text-center">Aksi</th>
+                            <th class="px-4 py-2 border">No</th>
+                            <th class="px-4 py-2 border">Nomor Sertifikat</th>
+                            <th class="px-4 py-2 border">Nazhir</th>
+                            <th class="px-4 py-2 border">Lokasi</th>
+                            <th class="px-4 py-2 border">Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach($akta as $key => $item)
                             <tr class="hover:bg-gray-50">
-                                <td class="border p-3">{{ $akta->firstItem() + $key }}</td>
-                                <td class="border p-3 font-medium">{{ $item->nomor_sertifikat ?? '-' }}</td>
-                                <td class="border p-3">{{ $item->nazhir ?? '-' }}</td>
-                                <td class="border p-3">{{ $item->lokasi_tanah ?? '-' }}</td>
-                                <td class="border p-3 text-center">
+                                <td class="px-4 py-2 border text-center">{{ $akta->firstItem() + $key }}</td>
+                                <td class="px-4 py-2 border">{{ $item->nomor_sertifikat ?? '-' }}</td>
+                                <td class="px-4 py-2 border">{{ $item->nazhir ?? '-' }}</td>
+                                <td class="px-4 py-2 border">{{ $item->lokasi_tanah ?? '-' }}</td>
+                                <td class="px-4 py-2 border text-center">
                                     <a href="{{ route('user.akta-wakaf.show', $item->id) }}"
-                                        class="text-indigo-600 hover:text-indigo-800">
-                                        <i class="fas fa-eye"></i> Detail
-                                    </a>
+                                        class="text-blue-600 hover:underline">Detail</a>
                                 </td>
                             </tr>
                         @endforeach
                     </tbody>
                 </table>
             </div>
-            <div class="mt-4">
-                {{ $akta->links() }}
-            </div>
+            <div class="mt-4">{{ $akta->links() }}</div>
         @else
             <div class="text-center py-12">
-                <i class="fas fa-file-contract text-6xl text-gray-300 mb-4"></i>
-                <p class="text-gray-500">Belum ada data akta wakaf.</p>
+                <p class="text-gray-500">Belum ada data.</p>
             </div>
         @endif
     </div>

@@ -16,7 +16,7 @@ use App\Http\Controllers\user\UserController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
-|--------------------------------------------------------------------------
+|---------------------------------------------------------------------------
 */
 
 // Redirect root to login
@@ -354,10 +354,10 @@ Route::get('/check-user', function() {
     Route::get('/akta-wakaf/{id}', [UserController::class, 'aktaWakafShow'])->name('akta-wakaf.show');
 
     // ===================== NOTIFICATIONS =====================
-    Route::get('/notifications', [UserController::class, 'notifications'])->name('notifications');
-    Route::post('/notifications/{id}/mark-read', [UserController::class, 'markAsRead'])->name('notifications.mark-read');
-    Route::post('/notifications/mark-all-read', [UserController::class, 'markAllRead'])->name('notifications.mark-all-read');
-    Route::get('/notifications/unread-count', [UserController::class, 'unreadCount'])->name('notifications.unread-count');
+Route::get('/notifications', [UserController::class, 'notifications'])->name('notifications');
+Route::get('/notifications/unread', [UserController::class, 'getUnreadNotifications'])->name('notifications.unread');
+Route::post('/notifications/{id}/mark-read', [UserController::class, 'markAsRead'])->name('notifications.mark-read');
+Route::post('/notifications/mark-all-read', [UserController::class, 'markAllRead'])->name('notifications.mark-all-read');
 
     Route::get('/user-test', [App\Http\Controllers\User\UserController::class, 'dashboard'])->middleware('auth');
 });

@@ -16,6 +16,7 @@ use App\Models\Program;
 use App\Models\SantriRegistration;
 use App\Models\StrukturOrganisasi;
 use App\Models\Notification;
+use App\Traits\NotifiableTrait;
 
 class UserController extends Controller
 {
@@ -261,29 +262,55 @@ class UserController extends Controller
         return view('user.akta-wakaf.show', compact('akta'));
     }
 
-    // Notifications
-    public function notifications()
-    {
-        $notifications = Notification::where('user_id', Auth::id())->latest()->paginate(10);
-        return view('user.notification.index', compact('notifications'));
-    }
+   public function notifications()
+{
+    $notifications = Notification::where('user_id', Auth::id())
+        ->latest()
+        ->paginate(10);
 
-    public function markAsRead($id)
-    {
-        $notification = Notification::where('id', $id)->where('user_id', Auth::id())->firstOrFail();
-        $notification->update(['read_at' => now()]);
-        return back()->with('success', 'Notifikasi ditandai sudah dibaca');
-    }
+    // Tandai semua sebagai sudah dibaca
+    Notification::where('user_id', Auth::id())
+        ->whereNull('read_at')
+        ->update(['read_at' => now()]);
 
-    public function markAllRead()
-    {
-        Notification::where('user_id', Auth::id())->whereNull('read_at')->update(['read_at' => now()]);
-        return back()->with('success', 'Semua notifikasi ditandai sudah dibaca');
-    }
+    return view('user.notification.index', compact('notifications'));
+}
 
-    public function unreadCount()
-    {
-        $count = Notification::where('user_id', Auth::id())->whereNull('read_at')->count();
-        return response()->json(['count' => $count]);
-    }
+public function getUnreadNotifications()
+{
+    $unreadCount = Notification::where('user_id', Auth::id())
+        ->whereNull('read_at')
+        ->count();
+
+    $unreadNotifications = Notification::where('user_id', Auth::id())
+        ->whereNull('read_at')
+        ->latest()
+        ->take(5)
+        ->get();
+
+    return response()->json([
+        'count' => $unreadCount,
+        'notifications' => $unreadNotifications
+    ]);
+}
+
+public function markAsRead($id)
+{
+    $notification = Notification::where('id', $id)
+        ->where('user_id', Auth::id())
+        ->firstOrFail();
+
+    $notification->update(['read_at' => now()]);
+
+    return response()->json(['success' => true]);
+}
+
+public function markAllRead()
+{
+    Notification::where('user_id', Auth::id())
+        ->whereNull('read_at')
+        ->update(['read_at' => now()]);
+
+    return back()->with('success', 'Semua notifikasi telah ditandai dibaca');
+}
 }

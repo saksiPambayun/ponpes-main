@@ -10,10 +10,12 @@ return new class extends Migration
     {
         Schema::create('notifications', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->nullable()->constrained('users')->onDelete('cascade');
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->string('title');
             $table->text('message');
-            $table->enum('type', ['info', 'success', 'warning', 'danger'])->default('info');
+            $table->string('type')->default('info'); // info, success, warning, danger
+            $table->string('related_id')->nullable(); // ID santri atau data terkait
+            $table->string('related_type')->nullable(); // model terkait
             $table->timestamp('read_at')->nullable();
             $table->timestamps();
         });
