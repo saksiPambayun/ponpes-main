@@ -25,28 +25,27 @@ class AdminController extends Controller
         return view('admin.auth.login');
     }
 
-   public function login(Request $request)
-{
-    $credentials = $request->only('email','password');
+    public function login(Request $request)
+    {
+        $credentials = $request->only('email', 'password');
 
-    if(Auth::attempt($credentials)){
+        if (Auth::attempt($credentials)) {
 
-        $user = Auth::user();
+            $user = Auth::user();
 
-        // kalau admin
-        if($user->role == 'admin'){
-            return redirect()->route('admin.dashboard');
+            // kalau admin
+            if ($user->role == 'admin') {
+                return redirect()->route('admin.dashboard');
+            }
+
+            // kalau user
+            if ($user->role == 'user') {
+                return redirect()->route('user.dashboard');
+            }
         }
 
-        // kalau user
-        if($user->role == 'user'){
-            return redirect()->route('user.dashboard');
-        }
-
+        return back()->with('error', 'Email atau password salah');
     }
-
-    return back()->with('error','Email atau password salah');
-}
 
     // ==================== DASHBOARD ====================
 
@@ -93,8 +92,8 @@ class AdminController extends Controller
             'no_wali'       => 'required|string|max:20',
             'nama_wali'     => 'required|string|max:255',
             'pekerjaan'     => 'nullable|string|max:100',
-            'dok_kk'        => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:20480',
-            'dok_akta'      => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:20480',
+            'dok_akta'      => 'nullable|file|mimetypes:image/jpeg,image/png,image/webp,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document|max:20480',
+            'dok_kk'        => 'nullable|file|mimetypes:image/jpeg,image/png,image/webp,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document|max:20480',
         ]);
 
         if ($request->hasFile('dok_kk')) {
@@ -136,8 +135,8 @@ class AdminController extends Controller
             'no_wali'       => 'required|string|max:20',
             'nama_wali'     => 'required|string|max:255',
             'pekerjaan'     => 'nullable|string|max:100',
-            'dok_kk'        => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:20480',
-            'dok_akta'      => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:20480',
+            'dok_kk'        => 'nullable|file|mimetypes:image/jpeg,image/png,image/webp,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document|max:20480',
+            'dok_akta'      => 'nullable|file|mimetypes:image/jpeg,image/png,image/webp,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document|max:20480',
         ]);
 
         if ($request->hasFile('dok_kk')) {
@@ -166,53 +165,53 @@ class AdminController extends Controller
         return redirect()->route('admin.santri.index')->with('success', 'Data santri berhasil dihapus');
     }
 
-public function verifySantri($id)
-{
-    $santri = SantriRegistration::findOrFail($id);
+    public function verifySantri($id)
+    {
+        $santri = SantriRegistration::findOrFail($id);
 
-    $santri->update([
-        'status' => 'diterima',
-        'alasan_penolakan' => null
-    ]);
+        $santri->update([
+            'status' => 'diterima',
+            'alasan_penolakan' => null
+        ]);
 
-    Notification::create([
-        'user_id' => $santri->user_id,
-        'type' => 'santri',
-        'title' => 'Pendaftaran Diterima',
-        'message' => 'Selamat! Pendaftaran santri Anda telah diterima.',
-        'data' => json_encode([
-            'santri_id' => $santri->id
-        ])
-    ]);
+        Notification::create([
+            'user_id' => $santri->user_id,
+            'type' => 'santri',
+            'title' => 'Pendaftaran Diterima',
+            'message' => 'Selamat! Pendaftaran santri Anda telah diterima.',
+            'data' => json_encode([
+                'santri_id' => $santri->id
+            ])
+        ]);
 
-    return back()->with('success', 'Santri berhasil diverifikasi.');
-}
+        return back()->with('success', 'Santri berhasil diverifikasi.');
+    }
 
- public function rejectSantri(Request $request, $id)
-{
-    $request->validate([
-        'alasan_penolakan' => 'required|string|min:10'
-    ]);
+    public function rejectSantri(Request $request, $id)
+    {
+        $request->validate([
+            'alasan_penolakan' => 'required|string|min:10'
+        ]);
 
-    $santri = SantriRegistration::findOrFail($id);
+        $santri = SantriRegistration::findOrFail($id);
 
-    $santri->update([
-        'status' => 'ditolak',
-        'alasan_penolakan' => $request->alasan_penolakan
-    ]);
+        $santri->update([
+            'status' => 'ditolak',
+            'alasan_penolakan' => $request->alasan_penolakan
+        ]);
 
-    Notification::create([
-        'user_id' => $santri->user_id,
-        'type' => 'santri',
-        'title' => 'Pendaftaran Ditolak',
-        'message' => 'Pendaftaran santri Anda ditolak. Alasan: '.$request->alasan_penolakan,
-        'data' => json_encode([
-            'santri_id' => $santri->id
-        ])
-    ]);
+        Notification::create([
+            'user_id' => $santri->user_id,
+            'type' => 'santri',
+            'title' => 'Pendaftaran Ditolak',
+            'message' => 'Pendaftaran santri Anda ditolak. Alasan: ' . $request->alasan_penolakan,
+            'data' => json_encode([
+                'santri_id' => $santri->id
+            ])
+        ]);
 
-    return back()->with('success', 'Santri berhasil ditolak.');
-}
+        return back()->with('success', 'Santri berhasil ditolak.');
+    }
 
     // ==================== PEGAWAI ====================
 
@@ -224,8 +223,8 @@ public function verifySantri($id)
             $search = $request->search;
             $query->where(function ($q) use ($search) {
                 $q->where('nama', 'like', "%{$search}%")
-                  ->orWhere('nip', 'like', "%{$search}%")
-                  ->orWhere('jabatan', 'like', "%{$search}%");
+                    ->orWhere('nip', 'like', "%{$search}%")
+                    ->orWhere('jabatan', 'like', "%{$search}%");
             });
         }
 
@@ -379,7 +378,7 @@ public function verifySantri($id)
             'nomor_sk'   => 'required|string|max:100',
             'tentang'    => 'nullable|string|max:255',
             'tanggal_sk' => 'nullable|date',
-            'file_sk'    => 'nullable|file|mimes:pdf,doc,docx|max:5120',
+            'file_sk'    => 'nullable|file|mimetypes:image/jpeg,image/png,image/webp,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document|max:5120',
         ]);
         if ($request->hasFile('file_sk')) {
             $validated['file_sk'] = $request->file('file_sk')->store('sk', 'public');
@@ -405,7 +404,7 @@ public function verifySantri($id)
             'nomor_sk'   => 'required|string|max:100',
             'tentang'    => 'nullable|string|max:255',
             'tanggal_sk' => 'nullable|date',
-            'file_sk'    => 'nullable|file|mimes:pdf,doc,docx|max:5120',
+            'file_sk'    => 'nullable|file|mimetypes:image/jpeg,image/png,image/webp,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document|max:5120',
         ]);
         if ($request->hasFile('file_sk')) {
             if ($sk->file_sk) Storage::disk('public')->delete($sk->file_sk);
@@ -439,9 +438,10 @@ public function verifySantri($id)
     {
         $validated = $request->validate([
             'nomor_akta'  => 'nullable|string|max:100',
-            'tanggal_akta'=> 'nullable|date',
+            'tanggal_akta' => 'nullable|date',
             'notaris'     => 'nullable|string|max:255',
-            'file_akta'   => 'nullable|file|mimes:pdf,doc,docx|max:5120',
+            // 'file_akta' => 'required|mimes:jpg,jpeg,png,pdf,doc,docx|max:5120',
+            'file_akta' => 'required|file|mimetypes:image/jpeg,image/png,image/webp,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document|max:5120',
         ]);
         if ($request->hasFile('file_akta')) {
             $validated['file_akta'] = $request->file('file_akta')->store('akta-yayasan', 'public');
@@ -465,9 +465,9 @@ public function verifySantri($id)
         $aktaYayasan = AktaYayasan::findOrFail($id);
         $validated = $request->validate([
             'nomor_akta'  => 'nullable|string|max:100',
-            'tanggal_akta'=> 'nullable|date',
+            'tanggal_akta' => 'nullable|date',
             'notaris'     => 'nullable|string|max:255',
-            'file_akta'   => 'nullable|file|mimes:pdf,doc,docx|max:5120',
+            'file_akta' => 'required|mimetypes:image/jpeg,image/png,image/webp,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document|max:5120',
         ]);
         if ($request->hasFile('file_akta')) {
             if ($aktaYayasan->file_akta) Storage::disk('public')->delete($aktaYayasan->file_akta);
@@ -504,7 +504,8 @@ public function verifySantri($id)
             'nazhir'           => 'nullable|string|max:255',
             'lokasi_tanah'     => 'nullable|string|max:255',
             'luas_tanah'       => 'nullable|string|max:50',
-            'file_sertifikat'  => 'nullable|file|mimes:pdf,doc,docx|max:5120',
+            // 'file_sertifikat'  => 'nullable|file|mimes:jpg,jpeg,png,pdf,doc,docx|max:5120',
+            'file_sertifikat' => 'required|mimetypes:image/jpeg,image/png,image/webp,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document|max:5120',
         ]);
         if ($request->hasFile('file_sertifikat')) {
             $validated['file_sertifikat'] = $request->file('file_sertifikat')->store('akta-wakaf', 'public');
@@ -531,7 +532,7 @@ public function verifySantri($id)
             'nazhir'           => 'nullable|string|max:255',
             'lokasi_tanah'     => 'nullable|string|max:255',
             'luas_tanah'       => 'nullable|string|max:50',
-            'file_sertifikat'  => 'nullable|file|mimes:pdf,doc,docx|max:5120',
+            'file_sertifikat' => 'required|mimetypes:image/jpeg,image/png,image/webp,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document|max:5120',
         ]);
         if ($request->hasFile('file_sertifikat')) {
             if ($aktaWakaf->file_sertifikat) Storage::disk('public')->delete($aktaWakaf->file_sertifikat);

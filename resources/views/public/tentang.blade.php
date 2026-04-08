@@ -1,8 +1,289 @@
-@extends('layouts.app')
+<!DOCTYPE html>
+<html lang="en">
 
-@section('title', 'Tentang')
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Tentang</title>
 
-@section('content')
+    <link href="https://fonts.googleapis.com/css2?family=Cabin:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Cabin:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('css/navbar.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/footer.css') }}">
+</head>
+<style>
+    .hero-tentang {
+        height: 650px;
+        background-image: url("/images/hero.png");
+        background-size: cover;
+        background-position: center;
+        position: relative;
+        font-family: "Cabin", sans-serif;
+    }
+
+    .hero-overlay {
+        height: 100%;
+        width: 100%;
+        background: rgba(22, 101, 52, 0.45);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        padding: 20px;
+    }
+
+    .hero-title {
+        font-size: 64px;
+        color: white;
+        font-weight: 700;
+        margin-bottom: 15px;
+        text-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    }
+
+    .tentang-section {
+        padding: 80px 0;
+    }
+
+    .judul-tentang {
+        text-align: center;
+        font-size: 38px;
+        font-weight: 700;
+        color: #0c6b1f;
+        margin-bottom: 50px;
+    }
+
+    .foto-besar {
+        width: 100%;
+        border-radius: 18px;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    .foto-kanan {
+        width: 100%;
+        border-radius: 18px;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        margin-top: 80px;
+    }
+
+    .text-tentang {
+        font-size: 16px;
+        line-height: 1.8;
+        color: #333;
+    }
+
+    .card-visi,
+    .card-misi {
+        background: #dfe7dc;
+        padding: 30px;
+        border-radius: 16px;
+        transition: 0.3s;
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .card-visi h3,
+    .card-misi h3 {
+        color: #0c6b1f;
+        font-weight: 700;
+        margin-bottom: 15px;
+    }
+
+    .card-misi ul {
+        padding-left: 18px;
+    }
+
+    .card-misi li {
+        margin-bottom: 8px;
+    }
+
+    .card-visi:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+    }
+
+    .card-misi:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+    }
+
+    .adart-section {
+        padding: 100px 0;
+    }
+
+    .gambar-adart {
+        width: 100%;
+        max-width: 567px;
+        display: block;
+        margin: auto;
+    }
+
+    .judul-adart {
+        color: #0f6b1e;
+        font-size: 34px;
+        font-weight: 700;
+        margin-bottom: 20px;
+    }
+
+    .text-adart {
+        font-size: 15px;
+        line-height: 1.7;
+        margin-bottom: 15px;
+        color: #333;
+    }
+
+    .btn-adart {
+        display: inline-block;
+        margin-top: 10px;
+        padding: 12px 32px;
+        border-radius: 10px;
+        background: linear-gradient(90deg, #4f8f4d, #cddfa9);
+        color: white;
+        text-decoration: none;
+        font-weight: 500;
+        transition: 0.3s;
+    }
+
+    .btn-adart:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+    }
+
+    .struktur-section {
+        padding: 100px 0;
+    }
+
+    .judul-struktur {
+        font-size: 32px;
+        font-weight: 700;
+        color: #0f6b1e;
+        margin-bottom: 20px;
+    }
+
+    .text-struktur {
+        font-size: 16px;
+        line-height: 1.7;
+        margin-bottom: 15px;
+        color: #333;
+    }
+
+    .struktur-card {
+        position: relative;
+        display: block;
+        background: #e6efd8;
+        padding: 20px;
+        border-radius: 16px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        text-decoration: none;
+        overflow: hidden;
+    }
+
+    .struktur-card img {
+        width: 100%;
+        border-radius: 10px;
+        transition: 0.4s;
+        filter: blur(2px);
+    }
+
+    .struktur-card img:hover {
+        filter: blur(0px);
+    }
+
+    .struktur-overlay {
+        position: absolute;
+        bottom: 20px;
+        left: 20px;
+        right: 20px;
+        background: linear-gradient(90deg, #4f8f4d, #cddfa9);
+        color: white;
+        text-align: center;
+        padding: 10px;
+        border-radius: 8px;
+        font-weight: 500;
+        opacity: 0;
+        transition: 0.3s;
+    }
+
+    .struktur-card:hover img {
+        transform: scale(1.05);
+    }
+
+    .struktur-card:hover .struktur-overlay {
+        opacity: 1;
+    }
+
+    .legalitas-section {
+        padding: 100px 0;
+        background: #e9f0e4;
+    }
+
+    .judul-legalitas {
+        font-size: 34px;
+        font-weight: 700;
+        color: #0f6b1e;
+        margin-bottom: 10px;
+    }
+
+    .deskripsi-legalitas {
+        max-width: 700px;
+        margin: auto;
+        font-size: 15px;
+        color: #333;
+    }
+
+    .legalitas-card {
+        background: #f5f5f5;
+        padding: 20px;
+        border-radius: 16px;
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+        transition: 0.3s;
+    }
+
+    .legalitas-card:hover {
+        transform: translateY(-6px);
+    }
+
+    .legalitas-img {
+        height: 180px;
+        background: #9bbf84;
+        border-radius: 14px;
+        margin-bottom: 15px;
+    }
+
+    .legalitas-img img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .legalitas-card h5 {
+        color: #0f6b1e;
+        font-weight: 600;
+    }
+
+    .btn-legalitas {
+        display: inline-block;
+        margin-top: 30px;
+        padding: 12px 40px;
+        border-radius: 10px;
+        background: linear-gradient(90deg, #4f8f4d, #cddfa9);
+        color: white;
+        text-decoration: none;
+        font-weight: 500;
+        transition: 0.3s;
+    }
+
+    .btn-legalitas:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+    }
+</style>
+
+<body>
+    @include('components.navbar')
     <section class="hero-tentang">
         <div class="hero-overlay">
             <h1 class="hero-title">Tentang Kami</h1>
@@ -21,8 +302,10 @@
 
                 <div class="col-lg-5">
                     <p class="text-tentang">
-                        Pondok Pesantren Al-Ifadah didirikan sebagai wujud komitmen dalam menghadirkan pendidikan Islam yang
-                        berkualitas serta berorientasi pada pembentukan karakter dan akhlak mulia. Sejak awal berdirinya,
+                        Pondok Pesantren Al-Ifadah didirikan sebagai wujud komitmen dalam menghadirkan pendidikan Islam
+                        yang
+                        berkualitas serta berorientasi pada pembentukan karakter dan akhlak mulia. Sejak awal
+                        berdirinya,
                         pesantren ini memiliki tujuan untuk mencetak generasi yang tidak hanya unggul dalam ilmu
                         pengetahuan, tetapi juga kokoh dalam nilai-nilai keislaman.
                     </p>
@@ -30,12 +313,14 @@
                         Berawal dari semangat dakwah dan kepedulian terhadap pendidikan umat, Pondok Pesantren Al-Ifadah
                         terus berkembang dari waktu ke waktu, baik dari segi program pendidikan, jumlah santri, maupun
                         fasilitas pendukung. Dengan memadukan pendidikan formal dan pembinaan keagamaan, pesantren ini
-                        berupaya menciptakan lingkungan belajar yang kondusif, disiplin, serta berlandaskan Al-Qur’an dan
+                        berupaya menciptakan lingkungan belajar yang kondusif, disiplin, serta berlandaskan Al-Qur’an
+                        dan
                         Sunnah.
                     </p>
                     <p class="text-tentang">
                         Hingga saat ini, Pondok Pesantren Al-Ifadah senantiasa berkomitmen untuk meningkatkan mutu
-                        pendidikan dan pelayanan, demi melahirkan generasi yang berilmu, berakhlak, dan siap berkontribusi
+                        pendidikan dan pelayanan, demi melahirkan generasi yang berilmu, berakhlak, dan siap
+                        berkontribusi
                         bagi masyarakat, bangsa, dan agama.
                     </p>
                 </div>
@@ -94,7 +379,7 @@
                         dan peraturan yang berlaku guna menjaga profesionalitas,
                         transparansi, dan keberlangsungan lembaga.
                     </p>
-                    <a href="#" class="btn-adart">
+                    <a href="{{ route('tentang') }}" class="btn-adart">
                         Unduh Dokumen AD / ART
                     </a>
                 </div>
@@ -149,7 +434,9 @@
                 <div class="col-lg-3 col-md-6 mb-4">
                     <div class="legalitas-card">
                         <div class="legalitas-img">
-                            <img src="{{ asset('images/1.png') }}" alt="Akta Yayasan">
+                            @if ($aktaYayasan)
+                                <img src="{{ asset('storage/' . $aktaYayasan->file_akta) }}">
+                            @endif
                         </div>
                         <h5>Akta Yayasan</h5>
                     </div>
@@ -158,7 +445,9 @@
                 <div class="col-lg-3 col-md-6 mb-4">
                     <div class="legalitas-card">
                         <div class="legalitas-img">
-                            <img src="{{ asset('images/2.png') }}" alt="Izin Operasional">
+                            @if ($aktaWakaf)
+                                <img src="{{ asset('storage/' . $aktaWakaf->file_sertifikat) }}">
+                            @endif
                         </div>
                         <h5>Tanah Waqaf</h5>
                     </div>
@@ -167,20 +456,14 @@
                 <div class="col-lg-3 col-md-6 mb-4">
                     <div class="legalitas-card">
                         <div class="legalitas-img">
-                            <img src="{{ asset('images/1.png') }}" alt="SK Mendirikan Yayasan">
+                            @if ($sk)
+                                <img src="{{ asset('storage/' . $sk->file_sk) }}">
+                            @endif
                         </div>
-                        <h5>SK Mendirikan Yayasan</h5>
+                        <h5>SK Pendirian Yayasan</h5>
                     </div>
                 </div>
 
-                <div class="col-lg-3 col-md-6 mb-4">
-                    <div class="legalitas-card">
-                        <div class="legalitas-img">
-                            <img src="{{ asset('images/2.png') }}" alt="Akta Yayasan">
-                        </div>
-                        <h5>Akta Yayasan</h5>
-                    </div>
-                </div>
             </div>
 
 
@@ -191,5 +474,7 @@
         </div>
 
     </section>
+    @include('components.footer')
+</body>
 
-@endsection
+</html>

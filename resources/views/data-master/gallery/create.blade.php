@@ -492,221 +492,221 @@
 @endpush
 
 @section('content')
-    <div class="page-wrapper">
+<div class="page-wrapper">
 
-        {{-- Page Header --}}
-        <div class="page-header">
-            <div class="page-header-left">
-                <div class="page-icon">
-                    <i class="fas fa-images"></i>
-                </div>
-                <div class="page-title">
-                    <h1>Tambah Gallery</h1>
-                    <p><i class="fas fa-calendar-alt mr-1"></i>{{ now()->format('d F Y') }}</p>
-                </div>
+    {{-- Page Header --}}
+    <div class="page-header">
+        <div class="page-header-left">
+            <div class="page-icon">
+                <i class="fas fa-images"></i>
             </div>
-
-            <a href="{{ route('admin.data-master.gallery.index') }}" class="btn-back">
-                <i class="fas fa-arrow-left"></i> Kembali
-            </a>
+            <div class="page-title">
+                <h1>Tambah Gallery</h1>
+                <p><i class="fas fa-calendar-alt mr-1"></i>{{ now()->format('d F Y') }}</p>
+            </div>
         </div>
 
-        <form action="{{ route('admin.data-master.gallery.store') }}" method="POST" enctype="multipart/form-data" id="galleryForm">
-            @csrf
+        <a href="{{ route('data-master.gallery.index') }}" class="btn-back">
+            <i class="fas fa-arrow-left"></i> Kembali
+        </a>
+    </div>
 
-            <div class="form-layout">
+    <form action="{{ route('data-master.gallery.store') }}" method="POST" enctype="multipart/form-data" id="galleryForm">
+        @csrf
 
-                {{-- ── LEFT COLUMN ── --}}
-                <div>
+        <div class="form-layout">
 
-                    {{-- Info Utama --}}
-                    <div class="form-card" style="margin-bottom: 1.5rem;">
-                        <div class="form-card-header">
-                            <i class="fas fa-info-circle"></i>
-                            <span>Informasi Gallery</span>
-                        </div>
-                        <div class="form-card-body">
+            {{-- ── LEFT COLUMN ── --}}
+            <div>
 
-                            <div class="form-group">
-                                <label>Judul <span class="req">*</span></label>
-                                <input type="text"
-                                       name="judul"
-                                       class="form-control @error('judul') is-invalid @enderror"
-                                       value="{{ old('judul') }}"
-                                       placeholder="Masukkan judul gallery"
-                                       required>
-                                @error('judul')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-
-                            <div class="form-group">
-                                <label>Kategori <span class="req">*</span></label>
-                                <select name="kategori"
-                                        class="form-control @error('kategori') is-invalid @enderror"
-                                        id="kategoriSelect"
-                                        required>
-                                    <option value="">Pilih Kategori</option>
-                                    <option value="kegiatan" {{ old('kategori') == 'kegiatan' ? 'selected' : '' }}>Kegiatan</option>
-                                    <option value="prestasi" {{ old('kategori') == 'prestasi' ? 'selected' : '' }}>Prestasi</option>
-                                    <option value="umum"     {{ old('kategori') == 'umum'     ? 'selected' : '' }}>Umum</option>
-                                </select>
-                                <div class="kategori-hints">
-                                    <span class="kat-badge kegiatan" onclick="setKat('kegiatan')">Kegiatan</span>
-                                    <span class="kat-badge prestasi" onclick="setKat('prestasi')">Prestasi</span>
-                                    <span class="kat-badge umum"     onclick="setKat('umum')">Umum</span>
-                                </div>
-                                @error('kategori')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-
-                            <div class="form-group mb-0">
-                                <label>Tanggal Kegiatan <span class="opt">(opsional)</span></label>
-                                <input type="date"
-                                       name="tanggal_kegiatan"
-                                       class="form-control @error('tanggal_kegiatan') is-invalid @enderror"
-                                       value="{{ old('tanggal_kegiatan') }}">
-                                @error('tanggal_kegiatan')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-
-                        </div>
-                        </div>
+                {{-- Info Utama --}}
+                <div class="form-card" style="margin-bottom: 1.5rem;">
+                    <div class="form-card-header">
+                        <i class="fas fa-info-circle"></i>
+                        <span>Informasi Gallery</span>
                     </div>
-                </div>
+                    <div class="form-card-body">
 
-                {{-- ── RIGHT COLUMN ── --}}
-                <div>
-
-                    {{-- Upload Gambar --}}
-                    <div class="form-card" style="margin-bottom: 1.5rem;">
-                        <div class="form-card-header">
-                            <i class="fas fa-cloud-upload-alt"></i>
-                            <span>Upload Gambar</span>
-                        </div>
-                        <div class="form-card-body">
-
-                            {{-- Preview --}}
-                            <div class="preview-box" id="previewBox">
-                                <img id="previewImg" src="#" alt="Preview">
-                                <div class="preview-overlay">
-                                    <span class="preview-filename" id="previewName"></span>
-                                    <button type="button" class="preview-remove" onclick="clearImage()">
-                                        <i class="fas fa-times mr-1"></i>Hapus
-                                    </button>
-                                </div>
-                            </div>
-
-                            {{-- Upload Area --}}
-                            <div class="file-upload-wrapper" id="uploadWrapper">
-                                <div class="file-upload-area @error('gambar') border-danger @enderror" id="dropZone">
-                                    <input type="file"
-                                           name="gambar"
-                                           id="gambar"
-                                           accept="image/*"
-                                           onchange="handleFile(this)"
-                                           {{ !old('gambar') ? 'required' : '' }}>
-                                    <div class="upload-icon-wrap">
-                                        <i class="fas fa-image"></i>
-                                    </div>
-                                    <p class="upload-main-text mb-0">Klik atau drag & drop gambar</p>
-                                    <p class="upload-sub-text mb-0">JPEG, PNG, JPG, GIF &bull; Maks 5MB</p>
-                                </div>
-                            </div>
-
-                            @error('gambar')
-                                <div class="invalid-feedback d-flex mt-2">{{ $message }}</div>
-                            @enderror
-
-                        </div>
-                    </div>
-
-                    {{-- Deskripsi --}}
-                    <div class="sub-card">
-                        <div class="section-label">Deskripsi</div>
-
-                        <div class="form-group mb-0">
-                            <label>Deskripsi <span class="opt">(opsional)</span></label>
-                            <textarea name="deskripsi"
-                                      class="form-control @error('deskripsi') is-invalid @enderror"
-                                      rows="4"
-                                      placeholder="Tuliskan deskripsi singkat tentang foto ini...">{{ old('deskripsi') }}</textarea>
-                            @error('deskripsi')
+                        <div class="form-group">
+                            <label>Judul <span class="req">*</span></label>
+                            <input type="text"
+                                   name="judul"
+                                   class="form-control @error('judul') is-invalid @enderror"
+                                   value="{{ old('judul') }}"
+                                   placeholder="Masukkan judul gallery"
+                                   required>
+                            @error('judul')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
+
+                        <div class="form-group">
+                            <label>Kategori <span class="req">*</span></label>
+                            <select name="kategori"
+                                    class="form-control @error('kategori') is-invalid @enderror"
+                                    id="kategoriSelect"
+                                    required>
+                                <option value="">Pilih Kategori</option>
+                                <option value="kegiatan" {{ old('kategori') == 'kegiatan' ? 'selected' : '' }}>Kegiatan</option>
+                                <option value="prestasi" {{ old('kategori') == 'prestasi' ? 'selected' : '' }}>Prestasi</option>
+                                <option value="umum"     {{ old('kategori') == 'umum'     ? 'selected' : '' }}>Umum</option>
+                            </select>
+                            <div class="kategori-hints">
+                                <span class="kat-badge kegiatan" onclick="setKat('kegiatan')">Kegiatan</span>
+                                <span class="kat-badge prestasi" onclick="setKat('prestasi')">Prestasi</span>
+                                <span class="kat-badge umum"     onclick="setKat('umum')">Umum</span>
+                            </div>
+                            @error('kategori')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        <div class="form-group mb-0">
+                            <label>Tanggal Kegiatan <span class="opt">(opsional)</span></label>
+                            <input type="date"
+                                   name="tanggal_kegiatan"
+                                   class="form-control @error('tanggal_kegiatan') is-invalid @enderror"
+                                   value="{{ old('tanggal_kegiatan') }}">
+                            @error('tanggal_kegiatan')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+
                     </div>
-
+                    </div>
                 </div>
             </div>
 
-            {{-- ── Action Buttons ── --}}
-            <div class="sub-card" style="margin-top: 1.5rem;">
-                <div class="form-actions">
-                    <button type="submit" class="btn-save">
-                        <i class="fas fa-save"></i> Simpan Gallery
-                    </button>
+            {{-- ── RIGHT COLUMN ── --}}
+            <div>
 
-                    <button type="reset" class="btn-reset" onclick="resetForm()">
-                        <i class="fas fa-undo"></i> Reset
-                    </button>
+                {{-- Upload Gambar --}}
+                <div class="form-card" style="margin-bottom: 1.5rem;">
+                    <div class="form-card-header">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <span>Upload Gambar</span>
+                    </div>
+                    <div class="form-card-body">
 
-                    <a href="{{ route('admin.data-master.gallery.index') }}" class="btn-cancel">
-                        <i class="fas fa-times"></i> Batal
-                    </a>
+                        {{-- Preview --}}
+                        <div class="preview-box" id="previewBox">
+                            <img id="previewImg" src="#" alt="Preview">
+                            <div class="preview-overlay">
+                                <span class="preview-filename" id="previewName"></span>
+                                <button type="button" class="preview-remove" onclick="clearImage()">
+                                    <i class="fas fa-times mr-1"></i>Hapus
+                                </button>
+                            </div>
+                        </div>
 
-                    <div class="required-note"><span>*</span> Wajib diisi</div>
+                        {{-- Upload Area --}}
+                        <div class="file-upload-wrapper" id="uploadWrapper">
+                            <div class="file-upload-area @error('gambar') border-danger @enderror" id="dropZone">
+                                <input type="file"
+                                       name="gambar"
+                                       id="gambar"
+                                       accept="image/*"
+                                       onchange="handleFile(this)"
+                                       {{ !old('gambar') ? 'required' : '' }}>
+                                <div class="upload-icon-wrap">
+                                    <i class="fas fa-image"></i>
+                                </div>
+                                <p class="upload-main-text mb-0">Klik atau drag & drop gambar</p>
+                                <p class="upload-sub-text mb-0">JPEG, PNG, JPG, GIF &bull; Maks 5MB</p>
+                            </div>
+                        </div>
+
+                        @error('gambar')
+                            <div class="invalid-feedback d-flex mt-2">{{ $message }}</div>
+                        @enderror
+
+                    </div>
                 </div>
+
+                {{-- Deskripsi --}}
+                <div class="sub-card">
+                    <div class="section-label">Deskripsi</div>
+
+                    <div class="form-group mb-0">
+                        <label>Deskripsi <span class="opt">(opsional)</span></label>
+                        <textarea name="deskripsi"
+                                  class="form-control @error('deskripsi') is-invalid @enderror"
+                                  rows="4"
+                                  placeholder="Tuliskan deskripsi singkat tentang foto ini...">{{ old('deskripsi') }}</textarea>
+                        @error('deskripsi')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
+                </div>
+
             </div>
+        </div>
 
-        </form>
-    </div>
+        {{-- ── Action Buttons ── --}}
+        <div class="sub-card" style="margin-top: 1.5rem;">
+            <div class="form-actions">
+                <button type="submit" class="btn-save">
+                    <i class="fas fa-save"></i> Simpan Gallery
+                </button>
 
-    @push('scripts')
-    <script>
-        // ── Preview gambar
-        function handleFile(input) {
-            const file = input.files[0];
-            if (!file) return;
+                <button type="reset" class="btn-reset" onclick="resetForm()">
+                    <i class="fas fa-undo"></i> Reset
+                </button>
 
-            const reader = new FileReader();
-            reader.onload = e => {
-                document.getElementById('previewImg').src = e.target.result;
-                document.getElementById('previewName').textContent = file.name;
-                document.getElementById('previewBox').style.display = 'block';
-                document.getElementById('uploadWrapper').style.display = 'none';
-            };
-            reader.readAsDataURL(file);
-        }
+                <a href="{{ route('data-master.gallery.index') }}" class="btn-cancel">
+                    <i class="fas fa-times"></i> Batal
+                </a>
 
-        function clearImage() {
-            document.getElementById('previewBox').style.display = 'none';
-            document.getElementById('uploadWrapper').style.display = 'block';
-            document.getElementById('gambar').value = '';
-        }
+                <div class="required-note"><span>*</span> Wajib diisi</div>
+            </div>
+        </div>
 
-        // ── Kategori quick-select
-        function setKat(val) {
-            document.getElementById('kategoriSelect').value = val;
-        }
+    </form>
+</div>
 
-        // ── Toggle label
-        // Init label color
-        toggleLabel.style.color = toggleInput.checked ? '#6366f1' : '#a0aec0';
+@push('scripts')
+<script>
+    // ── Preview gambar
+    function handleFile(input) {
+        const file = input.files[0];
+        if (!file) return;
 
-        // ── Reset
-        function resetForm() {
-            clearImage();
-            document.getElementById('toggleLabel').textContent = 'Aktif';
-            document.getElementById('toggleLabel').style.color = '#6366f1';
-        }
+        const reader = new FileReader();
+        reader.onload = e => {
+            document.getElementById('previewImg').src = e.target.result;
+            document.getElementById('previewName').textContent = file.name;
+            document.getElementById('previewBox').style.display = 'block';
+            document.getElementById('uploadWrapper').style.display = 'none';
+        };
+        reader.readAsDataURL(file);
+    }
 
-        // ── Drag & drop highlight
-        const dropZone = document.getElementById('dropZone');
-        ['dragenter', 'dragover'].forEach(e => dropZone.addEventListener(e, () => dropZone.classList.add('dragover')));
-        ['dragleave', 'drop'].forEach(e => dropZone.addEventListener(e, () => dropZone.classList.remove('dragover')));
-    </script>
-    @endpush
+    function clearImage() {
+        document.getElementById('previewBox').style.display = 'none';
+        document.getElementById('uploadWrapper').style.display = 'block';
+        document.getElementById('gambar').value = '';
+    }
+
+    // ── Kategori quick-select
+    function setKat(val) {
+        document.getElementById('kategoriSelect').value = val;
+    }
+
+    // ── Toggle label
+    // Init label color
+    toggleLabel.style.color = toggleInput.checked ? '#6366f1' : '#a0aec0';
+
+    // ── Reset
+    function resetForm() {
+        clearImage();
+        document.getElementById('toggleLabel').textContent = 'Aktif';
+        document.getElementById('toggleLabel').style.color = '#6366f1';
+    }
+
+    // ── Drag & drop highlight
+    const dropZone = document.getElementById('dropZone');
+    ['dragenter', 'dragover'].forEach(e => dropZone.addEventListener(e, () => dropZone.classList.add('dragover')));
+    ['dragleave', 'drop'].forEach(e => dropZone.addEventListener(e, () => dropZone.classList.remove('dragover')));
+</script>
+@endpush
 @endsection

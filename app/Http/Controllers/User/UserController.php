@@ -14,6 +14,7 @@ use App\Models\Gallery;
 use App\Models\ProfilYayasan;
 use App\Models\Program;
 use App\Models\SantriRegistration;
+use App\Models\SkData;
 use App\Models\StrukturOrganisasi;
 use App\Models\Notification;
 use App\Traits\NotifiableTrait;
@@ -104,6 +105,27 @@ class UserController extends Controller
         }
 
         return back()->with('success', 'Avatar berhasil diupload!');
+    }
+
+
+    // Legalitas
+    public function legalitas()
+    {
+        $aktaYayasan = AktaYayasan::latest()->first();
+        $aktaWakaf = AktaWakaf::latest()->first();
+        $sk = SkData::latest()->first();
+
+        return view('public.legalitas', compact('aktaYayasan', 'aktaWakaf', 'sk'));
+    }
+
+// Tentang
+    public function tentang()
+    {
+        $aktaYayasan = AktaYayasan::latest()->first();
+        $aktaWakaf = AktaWakaf::latest()->first();
+        $sk = SkData::latest()->first();
+
+        return view('public.tentang', compact('aktaYayasan', 'aktaWakaf', 'sk'));
     }
 
     // Santri
@@ -262,55 +284,55 @@ class UserController extends Controller
         return view('user.akta-wakaf.show', compact('akta'));
     }
 
-   public function notifications()
-{
-    $notifications = Notification::where('user_id', Auth::id())
-        ->latest()
-        ->paginate(10);
+    public function notifications()
+    {
+        $notifications = Notification::where('user_id', Auth::id())
+            ->latest()
+            ->paginate(10);
 
-    // Tandai semua sebagai sudah dibaca
-    Notification::where('user_id', Auth::id())
-        ->whereNull('read_at')
-        ->update(['read_at' => now()]);
+        // Tandai semua sebagai sudah dibaca
+        Notification::where('user_id', Auth::id())
+            ->whereNull('read_at')
+            ->update(['read_at' => now()]);
 
-    return view('user.notification.index', compact('notifications'));
-}
+        return view('user.notification.index', compact('notifications'));
+    }
 
-public function getUnreadNotifications()
-{
-    $unreadCount = Notification::where('user_id', Auth::id())
-        ->whereNull('read_at')
-        ->count();
+    public function getUnreadNotifications()
+    {
+        $unreadCount = Notification::where('user_id', Auth::id())
+            ->whereNull('read_at')
+            ->count();
 
-    $unreadNotifications = Notification::where('user_id', Auth::id())
-        ->whereNull('read_at')
-        ->latest()
-        ->take(5)
-        ->get();
+        $unreadNotifications = Notification::where('user_id', Auth::id())
+            ->whereNull('read_at')
+            ->latest()
+            ->take(5)
+            ->get();
 
-    return response()->json([
-        'count' => $unreadCount,
-        'notifications' => $unreadNotifications
-    ]);
-}
+        return response()->json([
+            'count' => $unreadCount,
+            'notifications' => $unreadNotifications
+        ]);
+    }
 
-public function markAsRead($id)
-{
-    $notification = Notification::where('id', $id)
-        ->where('user_id', Auth::id())
-        ->firstOrFail();
+    public function markAsRead($id)
+    {
+        $notification = Notification::where('id', $id)
+            ->where('user_id', Auth::id())
+            ->firstOrFail();
 
-    $notification->update(['read_at' => now()]);
+        $notification->update(['read_at' => now()]);
 
-    return response()->json(['success' => true]);
-}
+        return response()->json(['success' => true]);
+    }
 
-public function markAllRead()
-{
-    Notification::where('user_id', Auth::id())
-        ->whereNull('read_at')
-        ->update(['read_at' => now()]);
+    public function markAllRead()
+    {
+        Notification::where('user_id', Auth::id())
+            ->whereNull('read_at')
+            ->update(['read_at' => now()]);
 
-    return back()->with('success', 'Semua notifikasi telah ditandai dibaca');
-}
+        return back()->with('success', 'Semua notifikasi telah ditandai dibaca');
+    }
 }

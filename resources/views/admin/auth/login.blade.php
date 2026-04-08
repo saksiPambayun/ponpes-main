@@ -11,10 +11,24 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
-        :root {
+        /* :root {
             --primary-gradient: linear-gradient(135deg, #4f46e5 0%, #313294 100%);
             --bg-gradient: linear-gradient(135deg, #1e1b4b 0%, #581c87 50%, #1e1b4b 100%);
             --shadow-primary: 0 4px 12px rgba(79, 70, 229, 0.4);
+        } */
+
+        :root {
+            --primary-gradient: linear-gradient(135deg, #4f46e5 0%, #313294 100%);
+            --register-gradient: linear-gradient(135deg, #0e096f 0%, #6366f1 100%);
+            --register-hover: linear-gradient(135deg, #4f46e5 0%, #313294 100%);
+            --bg-gradient: linear-gradient(135deg, #1e1b4b 0%, #581c87 50%, #1e1b4b 100%);
+            --shadow-primary: 0 4px 12px rgba(79, 70, 229, 0.4);
+            --shadow-register: 0 4px 6px -1px rgba(14, 9, 111, 0.3);
+            --shadow-register-hover: 0 6px 15px -3px rgba(14, 9, 111, 0.5);
+            --border-radius-card: 1.5rem;
+            --border-radius-button: 0.75rem;
+            --border-radius-register: 3rem;
+            --transition-default: all 0.3s ease;
         }
 
         * {
@@ -84,11 +98,28 @@
             font-size: 0.875rem;
         }
 
+        /*
         .login-card {
             background: rgba(255, 255, 255, 0.95);
             border-radius: 1.5rem;
             box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
             padding: 2rem;
+        } */
+
+        .login-card {
+            background: white;
+            border-radius: var(--border-radius-card);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            padding: 2rem;
+            transition: var(--transition-default);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.95);
+        }
+
+        .login-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.6);
         }
 
         .alert-error {
@@ -303,14 +334,14 @@
         </div>
 
         <div class="login-card">
-            @if(session('error'))
+            @if (session('error'))
                 <div class="alert-error" role="alert">
                     <i class="fas fa-exclamation-circle"></i>
                     {{ session('error') }}
                 </div>
             @endif
 
-            @if($errors->any())
+            @if ($errors->any())
                 <div class="alert-error" role="alert">
                     <i class="fas fa-exclamation-circle"></i>
                     {{ $errors->first() }}

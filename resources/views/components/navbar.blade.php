@@ -41,9 +41,14 @@
                     Pendaftaran
                 </a>
             </li>
+            <li>
+                <a href="{{ route('hubungi') }}" class="{{ request()->routeIs('hubungi') ? 'active' : '' }}">
+                    Hubungi Kami
+                </a>
+            </li>
         </ul>
 
-        <a href="{{ route('hubungi') }}" class="btn-contact">Hubungi Kami</a>
+        <a href="{{ route('login') }}" class="btn-contact">Login / Register</a>
 
     </div>
 </nav>

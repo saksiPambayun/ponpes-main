@@ -11,6 +11,23 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
+        
+        :root {
+            --primary-gradient: linear-gradient(135deg, #005F02 0%, #0a8f0a 100%);
+            --register-gradient: linear-gradient(135deg, #004401 0%, #00a86b 100%);
+            --register-hover: linear-gradient(135deg, #006400 0%, #00c853 100%);
+            --bg-gradient: linear-gradient(135deg, #002d00 0%, #005F02 50%, #002d00 100%);
+
+            --shadow-primary: 0 4px 12px rgba(0, 95, 2, 0.4);
+            --shadow-register: 0 4px 6px -1px rgba(0, 68, 1, 0.3);
+            --shadow-register-hover: 0 6px 15px -3px rgba(0, 68, 1, 0.5);
+
+            --border-radius-card: 1.5rem;
+            --border-radius-button: 0.75rem;
+            --border-radius-register: 3rem;
+            --transition-default: all 0.3s ease;
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -19,7 +36,7 @@
 
         body {
             font-family: 'Inter', sans-serif;
-            background: linear-gradient(135deg, #1e1b4b 0%, #581c87 50%, #1e1b4b 100%);
+            background: var(--bg-gradient);
             min-height: 100vh;
             display: flex;
             align-items: center;
@@ -97,7 +114,7 @@
         }
 
         .register-card::-webkit-scrollbar-thumb {
-            background: #4f46e5;
+            background: #006400;
             border-radius: 3px;
         }
 
@@ -155,8 +172,8 @@
 
         .input-field:focus {
             outline: none;
-            border-color: #4f46e5;
-            box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.15);
+            border-color: #00a86b;
+            box-shadow: var(--shadow-primary);
         }
 
         .input-field.error {
@@ -183,27 +200,26 @@
         }
 
         .btn-primary {
-            background: linear-gradient(135deg, #4f46e5 0%, #313294 100%);
+            background: var(--primary-gradient);
             color: white;
             border: none;
             padding: 0.875rem 1.5rem;
             border-radius: 0.75rem;
             font-weight: 600;
-            font-size: 1rem;
+            font-size: 1.125rem;
             width: 100%;
             cursor: pointer;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.4);
+            box-shadow: var(--shadow-register);
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 0.5rem;
-            margin-top: 1rem;
         }
 
         .btn-primary:hover {
             transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(79, 70, 229, 0.5);
+            box-shadow: var(--shadow-register-hover);
         }
 
         .divider {
@@ -227,26 +243,26 @@
         }
 
         .btn-login {
-            background: linear-gradient(135deg, #0e096f 0%, #6366f1 100%);
+            background: var(--primary-gradient);
             color: white;
             border: none;
             padding: 0.875rem 1.5rem;
-            border-radius: 3rem;
+            border-radius: 0.75rem;
             font-weight: 600;
-            font-size: 1rem;
+            font-size: 1.125rem;
             width: 100%;
             cursor: pointer;
             transition: all 0.3s ease;
-            display: inline-flex;
+            box-shadow: var(--shadow-register);
+            display: flex;
             align-items: center;
             justify-content: center;
-            gap: 0.75rem;
-            text-decoration: none;
+            gap: 0.5rem;
         }
 
         .btn-login:hover {
             transform: translateY(-2px);
-            background: linear-gradient(135deg, #4f46e5 0%, #313294 100%);
+            box-shadow: var(--shadow-register-hover);
         }
 
         .footer {

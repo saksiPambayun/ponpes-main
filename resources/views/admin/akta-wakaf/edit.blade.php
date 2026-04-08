@@ -39,7 +39,7 @@
                     <div class="col-span-2">
                         <label class="block text-sm font-medium text-gray-700 mb-2">Upload Sertifikat (Kosongkan jika tidak
                             diubah)</label>
-                        <input type="file" name="file_sertifikat" accept=".pdf,.doc,.docx"
+                        <input type="file" name="file_sertifikat" accept=".jpg,.png,.jpeg,.pdf,.doc,.docx"
                             class="input-field w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none">
                         @if($aktaWakaf->file_sertifikat)
                             <p class="text-xs text-gray-500 mt-1">File saat ini: {{ basename($aktaWakaf->file_sertifikat) }}</p>
@@ -48,7 +48,7 @@
                                 <i class="fas fa-download mr-1"></i>Download File
                             </a>
                         @endif
-                        <p class="text-xs text-gray-500 mt-1">Format: PDF, DOC, DOCX (Max: 5MB)</p>
+                        <p class="text-xs text-gray-500 mt-1">Format: JPG, PNG, JPEG, PDF, DOC, DOCX (Max: 5MB)</p>
                         @error('file_sertifikat')
                             <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                         @enderror
