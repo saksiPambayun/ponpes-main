@@ -165,7 +165,7 @@ class AdminController extends Controller
         return redirect()->route('admin.santri.index')->with('success', 'Data santri berhasil dihapus');
     }
 
-    public function verifySantri($id)
+    public function verify($id)
     {
         $santri = SantriRegistration::findOrFail($id);
 
@@ -187,31 +187,41 @@ class AdminController extends Controller
         return back()->with('success', 'Santri berhasil diverifikasi.');
     }
 
-    public function rejectSantri(Request $request, $id)
-    {
+   public function rejectSantri(Request $request, $id)
+{
+    // Validasi alasan penolakan (opsional, tergantung form Anda)
+    if ($request->has('alasan_penolakan')) {
         $request->validate([
             'alasan_penolakan' => 'required|string|min:10'
         ]);
+    }
 
-        $santri = SantriRegistration::findOrFail($id);
+    $santri = SantriRegistration::findOrFail($id);
 
-        $santri->update([
-            'status' => 'ditolak',
-            'alasan_penolakan' => $request->alasan_penolakan
-        ]);
+    $santri->update([
+        'status' => 'ditolak',
+        'alasan_penolakan' => $request->alasan_penolakan ?? 'Pendaftaran ditolak oleh admin'
+    ]);
 
+    // Buat notifikasi jika user_id tersedia
+    if ($santri->user_id) {
         Notification::create([
             'user_id' => $santri->user_id,
             'type' => 'santri',
             'title' => 'Pendaftaran Ditolak',
-            'message' => 'Pendaftaran santri Anda ditolak. Alasan: ' . $request->alasan_penolakan,
+            'message' => 'Pendaftaran santri Anda ditolak. Alasan: ' . ($request->alasan_penolakan ?? 'Tidak ada alasan'),
             'data' => json_encode([
                 'santri_id' => $santri->id
             ])
         ]);
-
-        return back()->with('success', 'Santri berhasil ditolak.');
     }
+
+    return redirect()
+        ->route('admin.santri.index')
+        ->with('success', 'Santri berhasil ditolak.');
+}
+
+
 
     // ==================== PEGAWAI ====================
 

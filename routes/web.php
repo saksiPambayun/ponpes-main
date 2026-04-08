@@ -62,7 +62,7 @@ Route::prefix('admin')
         Route::put('/santri/{id}', [AdminController::class, 'santriUpdate'])->name('santri.update');
         Route::delete('/santri/{id}', [AdminController::class, 'santriDestroy'])->name('santri.destroy');
         Route::post('/santri/{id}/verify', [AdminController::class, 'verifySantri'])->name('santri.verify');
-        Route::post('/santri/{id}/reject', [AdminController::class, 'reject'])->name('santri.reject');
+        Route::post('/santri/{id}/reject', [AdminController::class, 'rejectSantri'])->name('santri.reject');
 
         // Employees/Pegawai
         Route::get('/pegawai', [AdminController::class, 'pegawaiIndex'])->name('pegawai.index');
