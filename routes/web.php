@@ -43,14 +43,6 @@ Route::prefix('admin')
         // Dashboard
         Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
 
-        Route::get('/test-user', function () {
-            if (auth()->check()) {
-                return "Anda login sebagai: " . auth()->user()->name . " - Role: " . auth()->user()->role;
-            } else {
-                return "Belum login. Silakan login dulu.";
-            }
-        });
-
         // Santri Registrations
         Route::get('/santri', [AdminController::class, 'santriIndex'])->name('santri.index');
         Route::get('/santri/create', [AdminController::class, 'santriCreate'])->name('santri.create');
@@ -62,7 +54,7 @@ Route::prefix('admin')
         Route::post('/santri/{id}/verify', [AdminController::class, 'verifySantri'])->name('santri.verify');
         Route::post('/santri/{id}/reject', [AdminController::class, 'rejectSantri'])->name('santri.reject');
 
-        // Employees/Pegawai
+        // Pegawai
         Route::get('/pegawai', [AdminController::class, 'pegawaiIndex'])->name('pegawai.index');
         Route::get('/pegawai/create', [AdminController::class, 'pegawaiCreate'])->name('pegawai.create');
         Route::post('/pegawai/store', [AdminController::class, 'pegawaiStore'])->name('pegawai.store');
@@ -71,7 +63,7 @@ Route::prefix('admin')
         Route::put('/pegawai/{id}', [AdminController::class, 'pegawaiUpdate'])->name('pegawai.update');
         Route::delete('/pegawai/{id}', [AdminController::class, 'pegawaiDestroy'])->name('pegawai.destroy');
 
-        // SK (Surat Keputusan)
+        // SK
         Route::get('/sk', [AdminController::class, 'skIndex'])->name('sk.index');
         Route::get('/sk/create', [AdminController::class, 'skCreate'])->name('sk.create');
         Route::post('/sk', [AdminController::class, 'skStore'])->name('sk.store');
@@ -100,13 +92,12 @@ Route::prefix('admin')
 
         // === DATA MASTER ROUTES ===
         Route::prefix('data-master')->name('data-master.')->group(function () {
-
-            // Halaman utama Data Master
             Route::get('/', [DataMasterController::class, 'index'])->name('index');
 
             // Profil Yayasan
-            Route::get('/profil-yayasan', [DataMasterController::class, 'profilYayasan'])->name('profil-yayasan');
-            Route::post('/profil-yayasan', [DataMasterController::class, 'profilYayasanStore'])->name('profil-yayasan.store');
+            Route::get('/profil-yayasan', [ProfilYayasanController::class, 'index'])->name('profil-yayasan');
+            Route::get('/profil-yayasan/edit', [ProfilYayasanController::class, 'edit'])->name('profil-yayasan.edit');
+            Route::post('/profil-yayasan/update', [ProfilYayasanController::class, 'update'])->name('profil-yayasan.update');
 
             // Struktur Organisasi
             Route::get('/struktur-organisasi', [DataMasterController::class, 'strukturOrganisasi'])->name('struktur-organisasi');
@@ -114,23 +105,9 @@ Route::prefix('admin')
             Route::put('/struktur-organisasi/{id}', [DataMasterController::class, 'strukturOrganisasiUpdate'])->name('struktur-organisasi.update');
             Route::delete('/struktur-organisasi/{id}', [DataMasterController::class, 'strukturOrganisasiDestroy'])->name('struktur-organisasi.destroy');
 
-            // Fasilitas
-           /* Route::get('/fasilitas', [DataMasterController::class, 'fasilitas'])->name('fasilitas');
-            Route::post('/fasilitas', [DataMasterController::class, 'fasilitasStore'])->name('fasilitas.store');
-            Route::put('/fasilitas/{id}', [DataMasterController::class, 'fasilitasUpdate'])->name('fasilitas.update');
-            Route::delete('/fasilitas/{id}', [DataMasterController::class, 'fasilitasDestroy'])->name('fasilitas.destroy');*/
-
-            // Gallery
-            Route::get('/gallery', [DataMasterController::class, 'gallery'])->name('gallery');
-            Route::post('/gallery', [DataMasterController::class, 'galleryStore'])->name('gallery.store');
-            /*Route::delete('/gallery/{id}', [DataMasterController::class, 'galleryDestroy'])->name('gallery.destroy');*/
-
-            // Program
-            Route::get('/program', [DataMasterController::class, 'program'])->name('program');
-            Route::post('/program', [DataMasterController::class, 'programStore'])->name('program.store');
-            Route::get('/program/{id}', [UserController::class, 'programShow'])->name('program.show');
-            Route::put('/program/{id}', [DataMasterController::class, 'programUpdate'])->name('program.update');
-            Route::delete('/program/{id}', [DataMasterController::class, 'programDestroy'])->name('program.destroy');
+            // Fasilitas - sudah menggunakan route manual di bawah
+            // Gallery - sudah menggunakan route resource di bawah
+            // Program - sudah menggunakan route resource di bawah
         });
 
         // Profile & Settings
@@ -139,6 +116,7 @@ Route::prefix('admin')
         Route::post('/profile/change-password', [AdminController::class, 'changePassword'])->name('profile.change-password');
         Route::post('/profile/change-email', [AdminController::class, 'changeEmail'])->name('profile.change-email');
     });
+
 
 // Route untuk admin dengan role check
 
@@ -201,7 +179,7 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
     Route::resource('program', ProgramController::class);
 });
 
-Route::prefix('admin')->middleware('auth')->group(function () {
+/*Route::prefix('admin')->middleware('auth')->group(function () {
 
     Route::get(
         '/data-master/profil-yayasan',
@@ -240,9 +218,9 @@ Route::prefix('admin')->middleware('auth')->group(function () {
         '/data-master/profil-yayasan',
         [ProfilYayasanController::class, 'index']
     )->name('admin.profil-yayasan.index');
-});
+});*/
 
-Route::prefix('admin/data-master')->middleware('auth')->name('data-master.')->group(function () {
+/*Route::prefix('admin/data-master')->middleware('auth')->name('data-master.')->group(function () {
 
     // Struktur Organisasi
     Route::get('/struktur-organisasi', [DataMasterController::class, 'strukturOrganisasi'])
@@ -262,7 +240,7 @@ Route::prefix('admin/data-master')->middleware('auth')->name('data-master.')->gr
 
     Route::delete('/struktur-organisasi/{id}', [DataMasterController::class, 'strukturOrganisasiDestroy'])
         ->name('struktur-organisasi.destroy');
-});
+});*/
 
 Route::prefix('admin')->middleware(['auth'])->group(function () {
     Route::resource(

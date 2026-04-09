@@ -1,9 +1,7 @@
-@extends('admin.layout')
+<?php $__env->startSection('title', 'Tambah Anggota Organisasi'); ?>
+<?php $__env->startSection('page-title', 'Tambah Anggota Organisasi'); ?>
 
-@section('title', 'Tambah Anggota Organisasi')
-@section('page-title', 'Tambah Anggota Organisasi')
-
-@push('styles')
+<?php $__env->startPush('styles'); ?>
     <style>
         .page-wrapper {
             background: #f0f4f8;
@@ -355,11 +353,11 @@
             margin-bottom: 0.5rem;
         }
     </style>
-@endpush
+<?php $__env->stopPush(); ?>
 
-@section('content')
+<?php $__env->startSection('content'); ?>
     <div class="page-wrapper">
-        {{-- Page Header --}}
+        
         <div class="page-header">
             <div class="page-header-left">
                 <div class="page-icon">
@@ -367,32 +365,32 @@
                 </div>
                 <div class="page-title">
                     <h1>Tambah Anggota Organisasi</h1>
-                    <p><i class="fas fa-calendar-alt mr-1"></i>{{ now()->format('d F Y') }}</p>
+                    <p><i class="fas fa-calendar-alt mr-1"></i><?php echo e(now()->format('d F Y')); ?></p>
                 </div>
             </div>
 
-            <a href="{{ route('admin.data-master.struktur-organisasi.index') }}" class="btn-back">
+            <a href="<?php echo e(route('admin.data-master.struktur-organisasi.index')); ?>" class="btn-back">
                 <i class="fas fa-arrow-left"></i> Kembali
             </a>
         </div>
 
-        {{-- Error Summary --}}
-        @if($errors->any())
+        
+        <?php if($errors->any()): ?>
             <div class="alert-error-box"
                 style="display: flex; gap: 12px; background: #fff5f5; border-left: 4px solid #ef4444; border-radius: 10px; padding: 12px 16px; margin-bottom: 20px;">
                 <i class="fas fa-exclamation-circle" style="color: #ef4444;"></i>
                 <div>
                     <p style="font-weight: 700; color: #991b1b; margin: 0 0 4px;">Terdapat beberapa kesalahan:</p>
                     <ul style="margin: 0; padding-left: 18px; color: #b91c1c; font-size: 0.8rem;">
-                        @foreach($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
+                        <?php $__currentLoopData = $errors->all(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $error): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                            <li><?php echo e($error); ?></li>
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                     </ul>
                 </div>
             </div>
-        @endif
+        <?php endif; ?>
 
-        {{-- Form Card --}}
+        
         <div class="form-card">
             <div class="form-card-header">
                 <i class="fas fa-clipboard-list"></i>
@@ -400,42 +398,84 @@
             </div>
 
             <div class="form-card-body">
-                <form action="{{ route('admin.data-master.struktur-organisasi.store') }}" method="POST"
+                <form action="<?php echo e(route('admin.data-master.struktur-organisasi.store')); ?>" method="POST"
                     enctype="multipart/form-data">
-                    @csrf
+                    <?php echo csrf_field(); ?>
 
-                    {{-- Section: Identitas Anggota --}}
+                    
                     <div class="section-label">Identitas Anggota</div>
 
                     <div class="row" style="display: flex; flex-wrap: wrap; gap: 1.5rem;">
                         <div class="col-md-6" style="flex: 1; min-width: 250px;">
                             <div class="form-group">
                                 <label>Nama Lengkap <span class="req">*</span></label>
-                                <input type="text" name="nama" class="form-control @error('nama') is-invalid @enderror"
-                                    value="{{ old('nama') }}" placeholder="Masukkan nama lengkap" required>
-                                @error('nama') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                                <input type="text" name="nama" class="form-control <?php $__errorArgs = ['nama'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>"
+                                    value="<?php echo e(old('nama')); ?>" placeholder="Masukkan nama lengkap" required>
+                                <?php $__errorArgs = ['nama'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> <div class="invalid-feedback"><?php echo e($message); ?></div> <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                             </div>
 
                             <div class="form-group">
                                 <label>Jabatan <span class="req">*</span></label>
                                 <input type="text" name="jabatan"
-                                    class="form-control @error('jabatan') is-invalid @enderror" value="{{ old('jabatan') }}"
+                                    class="form-control <?php $__errorArgs = ['jabatan'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>" value="<?php echo e(old('jabatan')); ?>"
                                     placeholder="Contoh: Ketua Umum, Sekretaris" required>
-                                @error('jabatan') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                                <?php $__errorArgs = ['jabatan'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> <div class="invalid-feedback"><?php echo e($message); ?></div> <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                             </div>
 
                             <div class="form-group">
                                 <label>Divisi <span class="req">*</span></label>
-                                <select name="divisi" class="form-control @error('divisi') is-invalid @enderror" required>
+                                <select name="divisi" class="form-control <?php $__errorArgs = ['divisi'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>" required>
                                     <option value="">Pilih Divisi</option>
-                                    <option value="pengurus" {{ old('divisi') == 'pengurus' ? 'selected' : '' }}>Pengurus
+                                    <option value="pengurus" <?php echo e(old('divisi') == 'pengurus' ? 'selected' : ''); ?>>Pengurus
                                     </option>
-                                    <option value="pengawas" {{ old('divisi') == 'pengawas' ? 'selected' : '' }}>Pengawas
+                                    <option value="pengawas" <?php echo e(old('divisi') == 'pengawas' ? 'selected' : ''); ?>>Pengawas
                                     </option>
-                                    <option value="pelaksana" {{ old('divisi') == 'pelaksana' ? 'selected' : '' }}>Pelaksana
+                                    <option value="pelaksana" <?php echo e(old('divisi') == 'pelaksana' ? 'selected' : ''); ?>>Pelaksana
                                     </option>
                                 </select>
-                                @error('divisi') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                                <?php $__errorArgs = ['divisi'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> <div class="invalid-feedback"><?php echo e($message); ?></div> <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                             </div>
                         </div>
 
@@ -443,28 +483,56 @@
                             <div class="form-group">
                                 <label>Telepon <span class="opt">(opsional)</span></label>
                                 <input type="text" name="telepon"
-                                    class="form-control @error('telepon') is-invalid @enderror" value="{{ old('telepon') }}"
+                                    class="form-control <?php $__errorArgs = ['telepon'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>" value="<?php echo e(old('telepon')); ?>"
                                     placeholder="08xxxxxxxxxx">
-                                @error('telepon') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                                <?php $__errorArgs = ['telepon'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> <div class="invalid-feedback"><?php echo e($message); ?></div> <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                             </div>
 
                             <div class="form-group">
                                 <label>Email <span class="opt">(opsional)</span></label>
-                                <input type="email" name="email" class="form-control @error('email') is-invalid @enderror"
-                                    value="{{ old('email') }}" placeholder="email@example.com">
-                                @error('email') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                                <input type="email" name="email" class="form-control <?php $__errorArgs = ['email'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>"
+                                    value="<?php echo e(old('email')); ?>" placeholder="email@example.com">
+                                <?php $__errorArgs = ['email'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> <div class="invalid-feedback"><?php echo e($message); ?></div> <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                             </div>
                         </div>
                     </div>
 
-                    {{-- Section: Informasi Tambahan --}}
+                    
                     <div class="section-label">Informasi Tambahan</div>
 
                     <div class="row" style="display: flex; flex-wrap: wrap; gap: 1.5rem;">
                         <div class="col-md-4" style="flex: 1; min-width: 150px;">
                             <div class="form-group">
                                 <label>Urutan <span class="opt">(opsional)</span></label>
-                                <input type="number" name="urutan" class="form-control" value="{{ old('urutan', 0) }}"
+                                <input type="number" name="urutan" class="form-control" value="<?php echo e(old('urutan', 0)); ?>"
                                     min="0" placeholder="0">
                             </div>
                         </div>
@@ -473,8 +541,8 @@
                             <div class="form-group">
                                 <label>Status</label>
                                 <select name="status" class="form-control">
-                                    <option value="aktif" {{ old('status') == 'aktif' ? 'selected' : '' }}>Aktif</option>
-                                    <option value="nonaktif" {{ old('status') == 'nonaktif' ? 'selected' : '' }}>Nonaktif
+                                    <option value="aktif" <?php echo e(old('status') == 'aktif' ? 'selected' : ''); ?>>Aktif</option>
+                                    <option value="nonaktif" <?php echo e(old('status') == 'nonaktif' ? 'selected' : ''); ?>>Nonaktif
                                     </option>
                                 </select>
                             </div>
@@ -498,19 +566,40 @@
                                 <div id="previewContainer" style="margin-top: 0.5rem; display: none;">
                                     <img id="previewImg" src="#" alt="Preview" class="preview-img">
                                 </div>
-                                @error('foto') <div class="invalid-feedback d-block">{{ $message }}</div> @enderror
+                                <?php $__errorArgs = ['foto'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> <div class="invalid-feedback d-block"><?php echo e($message); ?></div> <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                             </div>
                         </div>
                     </div>
 
                     <div class="form-group">
                         <label>Deskripsi <span class="opt">(opsional)</span></label>
-                        <textarea name="deskripsi" class="form-control @error('deskripsi') is-invalid @enderror" rows="3"
-                            placeholder="Tuliskan deskripsi singkat tentang anggota...">{{ old('deskripsi') }}</textarea>
-                        @error('deskripsi') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                        <textarea name="deskripsi" class="form-control <?php $__errorArgs = ['deskripsi'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>" rows="3"
+                            placeholder="Tuliskan deskripsi singkat tentang anggota..."><?php echo e(old('deskripsi')); ?></textarea>
+                        <?php $__errorArgs = ['deskripsi'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> <div class="invalid-feedback"><?php echo e($message); ?></div> <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                     </div>
 
-                    {{-- Action Buttons --}}
+                    
                     <div class="form-actions">
                         <button type="submit" class="btn-save">
                             <i class="fas fa-save"></i> Simpan Anggota
@@ -520,7 +609,7 @@
                             <i class="fas fa-undo"></i> Reset
                         </button>
 
-                        <a href="{{ route('admin.data-master.struktur-organisasi.index') }}" class="btn-cancel">
+                        <a href="<?php echo e(route('admin.data-master.struktur-organisasi.index')); ?>" class="btn-cancel">
                             <i class="fas fa-times"></i> Batal
                         </a>
 
@@ -567,4 +656,6 @@
             previewImg.src = '#';
         }
     </script>
-@endsection
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('admin.layout', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH D:\ponpes-main\resources\views/admin/data-master/struktur-organisasi/create.blade.php ENDPATH**/ ?>

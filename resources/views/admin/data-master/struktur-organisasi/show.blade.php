@@ -3,177 +3,221 @@
 @section('title', 'Detail Anggota Organisasi')
 
 @section('content')
-<div class="container-fluid">
+    <div class="page-wrapper" style="background: #f8fafc; min-height: 100vh; padding: 1.5rem;">
 
-    {{-- Header --}}
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <div>
-            <h4 class="mb-1 font-weight-bold">Detail Anggota Organisasi</h4>
-            <nav aria-label="breadcrumb">
-                <ol class="breadcrumb mb-0 bg-transparent p-0">
-                    <li class="breadcrumb-item">
-                        <a href="{{ url('/admin/dashboard') }}">Dashboard</a>
-                    </li>
-                    <li class="breadcrumb-item">
-                        <a href="{{ route('admin.data-master.struktur-organisasi.index') }}">Struktur Organisasi</a>
-                    </li>
-                    <li class="breadcrumb-item active">Detail</li>
-                </ol>
-            </nav>
-        </div>
-        <div>
-            <a href="{{ route('admin.data-master.struktur-organisasi.edit', $anggota) }}"
-               class="btn btn-warning mr-2">
-                <i class="fas fa-edit mr-1"></i> Edit
-            </a>
-            <a href="{{ route('admin.data-master.struktur-organisasi.index') }}"
-               class="btn btn-secondary">
-                <i class="fas fa-arrow-left mr-1"></i> Kembali
-            </a>
-        </div>
-    </div>
-
-    <div class="row">
-
-        {{-- Card Profil --}}
-        <div class="col-lg-4 mb-4">
-            <div class="card border-0 shadow-sm text-center py-4">
-                @if($anggota->foto)
-                    <div class="mb-3">
-                        <img src="{{ asset('storage/' . $anggota->foto) }}"
-                             alt="{{ $anggota->nama }}"
-                             class="rounded-circle shadow"
-                             style="width:120px;height:120px;object-fit:cover;">
-                    </div>
-                @else
-                    <div class="d-flex justify-content-center mb-3">
-                        <div class="rounded-circle bg-light d-flex align-items-center
-                                    justify-content-center shadow"
-                             style="width:120px;height:120px;">
-                            <i class="fas fa-user fa-3x text-muted"></i>
-                        </div>
-                    </div>
-                @endif
-
-                <h5 class="font-weight-bold mb-1">{{ $anggota->nama }}</h5>
-                <p class="text-muted mb-2">{{ $anggota->jabatan }}</p>
-
-                @php
-                    $divisiColor = [
-                        'pengurus'  => 'warning',
-                        'pengawas'  => 'info',
-                        'pelaksana' => 'secondary',
-                        'lainnya'   => 'dark',
-                    ];
-                @endphp
-
-                <div class="d-flex justify-content-center mb-3">
-                    <span class="badge badge-{{ $divisiColor[$anggota->divisi] ?? 'secondary' }} px-3 py-2 mr-2">
-                        {{ ucfirst($anggota->divisi) }}
-                    </span>
-                    <span class="badge badge-{{ $anggota->status === 'aktif' ? 'success' : 'danger' }} px-3 py-2">
-                        {{ $anggota->status === 'aktif' ? 'Aktif' : 'Non Aktif' }}
-                    </span>
-                </div>
-
-                @if($anggota->telepon || $anggota->email)
-                <hr class="mx-3">
-                <div class="px-3 text-left">
-                    @if($anggota->telepon)
-                    <p class="mb-2 small">
-                        <i class="fas fa-phone mr-2 text-primary"></i>{{ $anggota->telepon }}
+        <!-- Header -->
+        <div style="margin-bottom: 1.5rem;">
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+                <div>
+                    <h1 style="font-size: 1.5rem; font-weight: 600; color: #1e293b; margin: 0 0 0.25rem 0;">Detail Anggota
+                        Organisasi</h1>
+                    <p style="font-size: 0.85rem; color: #64748b; margin: 0;">Informasi lengkap anggota struktur organisasi
                     </p>
-                    @endif
-                    @if($anggota->email)
-                    <p class="mb-0 small">
-                        <i class="fas fa-envelope mr-2 text-primary"></i>{{ $anggota->email }}
-                    </p>
-                    @endif
                 </div>
-                @endif
-            </div>
-        </div>
-
-        {{-- Detail Info --}}
-        <div class="col-lg-8">
-
-            <div class="card border-0 shadow-sm mb-4">
-                <div class="card-header bg-white font-weight-bold border-bottom py-3">
-                    <i class="fas fa-info-circle mr-2 text-primary"></i>Informasi Detail
-                </div>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-sm-6 mb-3">
-                            <small class="text-muted d-block">Nama Lengkap</small>
-                            <strong>{{ $anggota->nama }}</strong>
-                        </div>
-                        <div class="col-sm-6 mb-3">
-                            <small class="text-muted d-block">Jabatan</small>
-                            <strong>{{ $anggota->jabatan }}</strong>
-                        </div>
-                        <div class="col-sm-4 mb-3">
-                            <small class="text-muted d-block">Divisi</small>
-                            <span class="badge badge-{{ $divisiColor[$anggota->divisi] ?? 'secondary' }}">
-                                {{ ucfirst($anggota->divisi) }}
-                            </span>
-                        </div>
-                        <div class="col-sm-4 mb-3">
-                            <small class="text-muted d-block">Status</small>
-                            <span class="badge badge-{{ $anggota->status === 'aktif' ? 'success' : 'danger' }}">
-                                {{ $anggota->status === 'aktif' ? 'Aktif' : 'Non Aktif' }}
-                            </span>
-                        </div>
-                        <div class="col-sm-4 mb-3">
-                            <small class="text-muted d-block">Urutan Tampil</small>
-                            <strong>{{ $anggota->urutan }}</strong>
-                        </div>
-                        <div class="col-sm-6 mb-3">
-                            <small class="text-muted d-block">Telepon</small>
-                            <strong>{{ $anggota->telepon ?? '-' }}</strong>
-                        </div>
-                        <div class="col-sm-6 mb-3">
-                            <small class="text-muted d-block">Email</small>
-                            <strong>{{ $anggota->email ?? '-' }}</strong>
-                        </div>
-                        @if($anggota->deskripsi)
-                        <div class="col-12 mb-3">
-                            <small class="text-muted d-block">Deskripsi</small>
-                            <p class="mb-0">{{ $anggota->deskripsi }}</p>
-                        </div>
-                        @endif
-                        <div class="col-sm-6 mb-3">
-                            <small class="text-muted d-block">Ditambahkan</small>
-                            <span>{{ $anggota->created_at->format('d M Y, H:i') }}</span>
-                        </div>
-                        <div class="col-sm-6">
-                            <small class="text-muted d-block">Diperbarui</small>
-                            <span>{{ $anggota->updated_at->format('d M Y, H:i') }}</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            {{-- Aksi Hapus --}}
-            <div class="card border-0 shadow-sm">
-                <div class="card-body d-flex justify-content-end">
-                    <form action="{{ route('admin.data-master.struktur-organisasi.destroy', $anggota) }}"
-                          method="POST"
-                          onsubmit="return confirm('Yakin ingin menghapus anggota ini?')">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="btn btn-danger mr-2">
-                            <i class="fas fa-trash mr-1"></i> Hapus
-                        </button>
-                    </form>
+                <div style="display: flex; gap: 0.5rem;">
                     <a href="{{ route('admin.data-master.struktur-organisasi.edit', $anggota) }}"
-                       class="btn btn-warning">
-                        <i class="fas fa-edit mr-1"></i> Edit
+                        style="display: inline-flex; align-items: center; gap: 0.5rem; background: #f59e0b; color: white; padding: 0.5rem 1rem; border-radius: 8px; text-decoration: none; font-size: 0.85rem; font-weight: 500; transition: all 0.2s;">
+                        <i class="fas fa-edit"></i> Edit
+                    </a>
+                    <a href="{{ route('admin.data-master.struktur-organisasi.index') }}"
+                        style="display: inline-flex; align-items: center; gap: 0.5rem; background: #64748b; color: white; padding: 0.5rem 1rem; border-radius: 8px; text-decoration: none; font-size: 0.85rem; font-weight: 500; transition: all 0.2s;">
+                        <i class="fas fa-arrow-left"></i> Kembali
                     </a>
                 </div>
             </div>
+        </div>
 
+        <div class="row" style="display: flex; flex-wrap: wrap; gap: 1.5rem;">
+
+            <!-- Card Profil (Sidebar Kiri) -->
+            <div class="col-lg-4" style="flex: 1; min-width: 280px;">
+                <div
+                    style="background: white; border-radius: 16px; border: 1px solid #e2e8f0; overflow: hidden; text-align: center; padding: 1.5rem;">
+                    <!-- Foto Profil -->
+                    @if($anggota->foto)
+                        <div style="margin-bottom: 1rem;">
+                            <img src="{{ asset('storage/' . $anggota->foto) }}" alt="{{ $anggota->nama }}"
+                                style="width: 120px; height: 120px; object-fit: cover; border-radius: 50%; border: 3px solid #e2e8f0; box-shadow: 0 4px 12px rgba(0,0,0,0.08);">
+                        </div>
+                    @else
+                        <div style="margin-bottom: 1rem;">
+                            <div
+                                style="width: 120px; height: 120px; background: linear-gradient(135deg, #e2e8f0, #cbd5e0); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto; border: 3px solid #e2e8f0;">
+                                <i class="fas fa-user" style="color: #64748b; font-size: 2.5rem;"></i>
+                            </div>
+                        </div>
+                    @endif
+
+                    <h3 style="font-size: 1.25rem; font-weight: 600; color: #1e293b; margin: 0 0 0.25rem 0;">
+                        {{ $anggota->nama }}</h3>
+                    <p style="color: #64748b; font-size: 0.85rem; margin-bottom: 1rem;">{{ $anggota->jabatan }}</p>
+
+                    <!-- Badge Divisi & Status -->
+                    <div style="display: flex; justify-content: center; gap: 0.5rem; margin-bottom: 1.5rem;">
+                        <span style="display: inline-block; padding: 0.25rem 0.75rem; border-radius: 20px; font-size: 0.7rem; font-weight: 600;
+                            @if($anggota->divisi == 'pengurus') background: #eef2ff; color: #3b82f6;
+                            @elseif($anggota->divisi == 'pengawas') background: #fce7f3; color: #ec489a;
+                            @else background: #dcfce7; color: #22c55e; @endif">
+                            {{ ucfirst($anggota->divisi) }}
+                        </span>
+                        <span style="display: inline-block; padding: 0.25rem 0.75rem; border-radius: 20px; font-size: 0.7rem; font-weight: 600;
+                            @if($anggota->status == 'aktif') background: #dcfce7; color: #166534;
+                            @else background: #fef3c7; color: #92400e; @endif">
+                            {{ $anggota->status == 'aktif' ? 'Aktif' : 'Nonaktif' }}
+                        </span>
+                    </div>
+
+                    <!-- Kontak -->
+                    @if($anggota->telepon || $anggota->email)
+                        <hr style="border-color: #e2e8f0; margin: 1rem 0;">
+                        <div style="text-align: left;">
+                            @if($anggota->telepon)
+                                <p
+                                    style="margin-bottom: 0.5rem; font-size: 0.85rem; display: flex; align-items: center; gap: 0.5rem;">
+                                    <i class="fas fa-phone" style="color: #3b82f6; width: 20px;"></i>
+                                    <span style="color: #475569;">{{ $anggota->telepon }}</span>
+                                </p>
+                            @endif
+                            @if($anggota->email)
+                                <p style="margin-bottom: 0; font-size: 0.85rem; display: flex; align-items: center; gap: 0.5rem;">
+                                    <i class="fas fa-envelope" style="color: #3b82f6; width: 20px;"></i>
+                                    <span style="color: #475569;">{{ $anggota->email }}</span>
+                                </p>
+                            @endif
+                        </div>
+                    @endif
+                </div>
+            </div>
+
+            <!-- Detail Info (Sidebar Kanan) -->
+            <div class="col-lg-7" style="flex: 2; min-width: 300px;">
+
+                <!-- Informasi Detail Card -->
+                <div
+                    style="background: white; border-radius: 16px; border: 1px solid #e2e8f0; overflow: hidden; margin-bottom: 1.5rem;">
+                    <div style="padding: 1rem 1.5rem; border-bottom: 1px solid #e2e8f0; background: #f8fafc;">
+                        <h4 style="font-size: 0.9rem; font-weight: 600; color: #1e293b; margin: 0;">
+                            <i class="fas fa-info-circle" style="color: #3b82f6; margin-right: 0.5rem;"></i>
+                            Informasi Detail
+                        </h4>
+                    </div>
+                    <div style="padding: 1.5rem;">
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem;">
+                            <div>
+                                <p style="font-size: 0.7rem; font-weight: 500; color: #64748b; margin: 0 0 0.25rem 0;">Nama
+                                    Lengkap</p>
+                                <p style="font-size: 0.9rem; font-weight: 500; color: #1e293b; margin: 0;">
+                                    {{ $anggota->nama }}</p>
+                            </div>
+                            <div>
+                                <p style="font-size: 0.7rem; font-weight: 500; color: #64748b; margin: 0 0 0.25rem 0;">
+                                    Jabatan</p>
+                                <p style="font-size: 0.9rem; font-weight: 500; color: #1e293b; margin: 0;">
+                                    {{ $anggota->jabatan }}</p>
+                            </div>
+                            <div>
+                                <p style="font-size: 0.7rem; font-weight: 500; color: #64748b; margin: 0 0 0.25rem 0;">
+                                    Divisi</p>
+                                <span style="display: inline-block; padding: 0.2rem 0.6rem; border-radius: 20px; font-size: 0.7rem; font-weight: 500;
+                                    @if($anggota->divisi == 'pengurus') background: #eef2ff; color: #3b82f6;
+                                    @elseif($anggota->divisi == 'pengawas') background: #fce7f3; color: #ec489a;
+                                    @else background: #dcfce7; color: #22c55e; @endif">
+                                    {{ ucfirst($anggota->divisi) }}
+                                </span>
+                            </div>
+                            <div>
+                                <p style="font-size: 0.7rem; font-weight: 500; color: #64748b; margin: 0 0 0.25rem 0;">
+                                    Status</p>
+                                <span style="display: inline-block; padding: 0.2rem 0.6rem; border-radius: 20px; font-size: 0.7rem; font-weight: 500;
+                                    @if($anggota->status == 'aktif') background: #dcfce7; color: #166534;
+                                    @else background: #fef3c7; color: #92400e; @endif">
+                                    {{ $anggota->status == 'aktif' ? 'Aktif' : 'Nonaktif' }}
+                                </span>
+                            </div>
+                            <div>
+                                <p style="font-size: 0.7rem; font-weight: 500; color: #64748b; margin: 0 0 0.25rem 0;">
+                                    Urutan Tampil</p>
+                                <p style="font-size: 0.9rem; font-weight: 500; color: #1e293b; margin: 0;">
+                                    {{ $anggota->urutan ?? 0 }}</p>
+                            </div>
+                            <div>
+                                <p style="font-size: 0.7rem; font-weight: 500; color: #64748b; margin: 0 0 0.25rem 0;">
+                                    Telepon</p>
+                                <p style="font-size: 0.9rem; font-weight: 500; color: #1e293b; margin: 0;">
+                                    {{ $anggota->telepon ?? '-' }}</p>
+                            </div>
+                            <div>
+                                <p style="font-size: 0.7rem; font-weight: 500; color: #64748b; margin: 0 0 0.25rem 0;">Email
+                                </p>
+                                <p style="font-size: 0.9rem; font-weight: 500; color: #1e293b; margin: 0;">
+                                    {{ $anggota->email ?? '-' }}</p>
+                            </div>
+                            <div>
+                                <p style="font-size: 0.7rem; font-weight: 500; color: #64748b; margin: 0 0 0.25rem 0;">
+                                    Ditambahkan</p>
+                                <p style="font-size: 0.85rem; color: #475569; margin: 0;">
+                                    {{ $anggota->created_at->format('d M Y, H:i') }}</p>
+                            </div>
+                            <div>
+                                <p style="font-size: 0.7rem; font-weight: 500; color: #64748b; margin: 0 0 0.25rem 0;">
+                                    Diperbarui</p>
+                                <p style="font-size: 0.85rem; color: #475569; margin: 0;">
+                                    {{ $anggota->updated_at->format('d M Y, H:i') }}</p>
+                            </div>
+                        </div>
+
+                        @if($anggota->deskripsi)
+                            <hr style="border-color: #e2e8f0; margin: 1rem 0;">
+                            <div>
+                                <p style="font-size: 0.7rem; font-weight: 500; color: #64748b; margin: 0 0 0.25rem 0;">Deskripsi
+                                </p>
+                                <p style="font-size: 0.85rem; color: #475569; margin: 0; line-height: 1.5;">
+                                    {{ $anggota->deskripsi }}</p>
+                            </div>
+                        @endif
+                    </div>
+                </div>
+
+                <!-- Aksi Hapus -->
+                <div style="background: white; border-radius: 16px; border: 1px solid #e2e8f0; overflow: hidden;">
+                    <div
+                        style="padding: 1rem 1.5rem; display: flex; justify-content: flex-end; gap: 0.75rem; flex-wrap: wrap;">
+                        <form action="{{ route('admin.data-master.struktur-organisasi.destroy', $anggota) }}" method="POST"
+                            onsubmit="return confirm('Yakin ingin menghapus anggota {{ $anggota->nama }}?')"
+                            style="display: inline-block;">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit"
+                                style="display: inline-flex; align-items: center; gap: 0.5rem; background: #ef4444; color: white; padding: 0.5rem 1rem; border-radius: 8px; border: none; cursor: pointer; font-size: 0.85rem; font-weight: 500; transition: all 0.2s;"
+                                onmouseover="this.style.background='#dc2626'" onmouseout="this.style.background='#ef4444'">
+                                <i class="fas fa-trash"></i> Hapus Anggota
+                            </button>
+                        </form>
+                        <a href="{{ route('admin.data-master.struktur-organisasi.edit', $anggota) }}"
+                            style="display: inline-flex; align-items: center; gap: 0.5rem; background: #f59e0b; color: white; padding: 0.5rem 1rem; border-radius: 8px; text-decoration: none; font-size: 0.85rem; font-weight: 500; transition: all 0.2s;">
+                            <i class="fas fa-edit"></i> Edit Anggota
+                        </a>
+                    </div>
+                </div>
+
+            </div>
         </div>
     </div>
 
-</div>
+    <style>
+        @media (max-width: 768px) {
+            .page-wrapper {
+                padding: 1rem !important;
+            }
+
+            .row {
+                flex-direction: column;
+            }
+
+            .col-lg-4,
+            .col-lg-7 {
+                width: 100%;
+            }
+        }
+    </style>
 @endsection

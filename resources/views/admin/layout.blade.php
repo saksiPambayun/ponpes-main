@@ -269,8 +269,6 @@
 
                 <ul class="navbar-nav">
 
-
-
                     <!-- DATA MASTER -->
                     <div class="mb-6">
                         <p class="text-xs font-semibold text-indigo-200 uppercase tracking-wider mb-3 px-3">
@@ -278,7 +276,7 @@
                         </p>
 
                         <!-- Profil Yayasan -->
-                        <a href="{{ route('admin.profil-yayasan.index') }}"
+                        <a href="{{ route('admin.data-master.profil-yayasan') }}"
                             class="sidebar-item flex items-center px-4 py-3 text-indigo-100 rounded-lg mb-1 hover:bg-indigo-700">
                             <div
                                 class="icon-wrapper w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center mr-3">
@@ -312,7 +310,7 @@
                             class="sidebar-item flex items-center px-4 py-3 text-indigo-100 rounded-lg mb-1 hover:bg-indigo-700">
                             <div
                                 class="icon-wrapper w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center mr-3">
-                                <i class="fas fa-calendar-alt"></i>
+                                <i class="fas fa-images"></i>
                             </div>
                             <span class="font-medium">Gallery</span>
                         </a>
@@ -327,10 +325,13 @@
                             <span class="font-medium">Program</span>
                         </a>
                     </div>
+
+                    <!-- DOKUMEN LEGAL -->
                     <div class="mb-6">
                         <p class="text-xs font-semibold text-indigo-200 uppercase tracking-wider mb-3 px-3">Dokumen
-                            Legal
-                        </p>
+                            Legal</p>
+
+                        <!-- SK -->
                         <a href="{{ route('admin.sk.index') }}"
                             class="sidebar-item flex items-center px-4 py-3 text-indigo-100 rounded-lg mb-1 {{ request()->routeIs('admin.sk.*') ? 'active' : '' }}">
                             <div
@@ -339,6 +340,8 @@
                             </div>
                             <span class="font-medium">Data SK</span>
                         </a>
+
+                        <!-- Akta Yayasan -->
                         <a href="{{ route('admin.akta-yayasan.index') }}"
                             class="sidebar-item flex items-center px-4 py-3 text-indigo-100 rounded-lg mb-1 {{ request()->routeIs('admin.akta-yayasan.*') ? 'active' : '' }}">
                             <div
@@ -347,6 +350,8 @@
                             </div>
                             <span class="font-medium">Akta Yayasan</span>
                         </a>
+
+                        <!-- Akta Wakaf -->
                         <a href="{{ route('admin.akta-wakaf.index') }}"
                             class="sidebar-item flex items-center px-4 py-3 text-indigo-100 rounded-lg mb-1 {{ request()->routeIs('admin.akta-wakaf.*') ? 'active' : '' }}">
                             <div
@@ -354,19 +359,6 @@
                                 <i class="fas fa-landmark"></i>
                             </div>
                             <span class="font-medium">Akta Wakaf</span>
-                        </a>
-                    </div>
-
-                    <div>
-                        <p class="text-xs font-semibold text-indigo-200 uppercase tracking-wider mb-3 px-3">Pengaturan
-                        </p>
-                        <a href="{{ route('admin.profile') }}"
-                            class="sidebar-item flex items-center px-4 py-3 text-indigo-100 rounded-lg mb-1 {{ request()->routeIs('admin.profile') ? 'active' : '' }}">
-                            <div
-                                class="icon-wrapper w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center mr-3">
-                                <i class="fas fa-user-cog"></i>
-                            </div>
-                            <span class="font-medium">Profil Admin</span>
                         </a>
                     </div>
             </nav>

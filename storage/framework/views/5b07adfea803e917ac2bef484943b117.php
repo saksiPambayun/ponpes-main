@@ -1,8 +1,6 @@
-@extends('admin.layout')
+<?php $__env->startSection('title', 'Struktur Organisasi'); ?>
 
-@section('title', 'Struktur Organisasi')
-
-@section('content')
+<?php $__env->startSection('content'); ?>
     <div class="page-wrapper" style="background: #f8fafc; min-height: 100vh; padding: 1.5rem;">
 
         <!-- Header -->
@@ -13,7 +11,7 @@
 
         <!-- Tombol Tambah -->
         <div style="margin-bottom: 1.5rem;">
-            <a href="{{ route('admin.data-master.struktur-organisasi.create') }}"
+            <a href="<?php echo e(route('admin.data-master.struktur-organisasi.create')); ?>"
                 style="display: inline-flex; align-items: center; gap: 0.5rem; background: #3b82f6; color: white; padding: 0.6rem 1.25rem; border-radius: 8px; text-decoration: none; font-size: 0.85rem; font-weight: 500; transition: all 0.2s; border: none; cursor: pointer;">
                 <i class="fas fa-plus" style="font-size: 0.8rem;"></i>
                 Tambah Anggota
@@ -32,7 +30,7 @@
                             style="font-size: 0.7rem; font-weight: 500; color: #64748b; margin: 0 0 0.25rem 0; text-transform: uppercase;">
                             Total Anggota</p>
                         <h3 style="font-size: 1.75rem; font-weight: 700; color: #1e293b; margin: 0;">
-                            {{ $stats['total'] ?? 0 }}</h3>
+                            <?php echo e($stats['total'] ?? 0); ?></h3>
                     </div>
                     <div
                         style="width: 40px; height: 40px; background: #eef2ff; border-radius: 10px; display: flex; align-items: center; justify-content: center;">
@@ -50,7 +48,7 @@
                             style="font-size: 0.7rem; font-weight: 500; color: #64748b; margin: 0 0 0.25rem 0; text-transform: uppercase;">
                             Aktif</p>
                         <h3 style="font-size: 1.75rem; font-weight: 700; color: #1e293b; margin: 0;">
-                            {{ $stats['aktif'] ?? 0 }}</h3>
+                            <?php echo e($stats['aktif'] ?? 0); ?></h3>
                     </div>
                     <div
                         style="width: 40px; height: 40px; background: #dcfce7; border-radius: 10px; display: flex; align-items: center; justify-content: center;">
@@ -68,7 +66,7 @@
                             style="font-size: 0.7rem; font-weight: 500; color: #64748b; margin: 0 0 0.25rem 0; text-transform: uppercase;">
                             Pengurus</p>
                         <h3 style="font-size: 1.75rem; font-weight: 700; color: #1e293b; margin: 0;">
-                            {{ $stats['pengurus'] ?? 0 }}</h3>
+                            <?php echo e($stats['pengurus'] ?? 0); ?></h3>
                     </div>
                     <div
                         style="width: 40px; height: 40px; background: #fef3c7; border-radius: 10px; display: flex; align-items: center; justify-content: center;">
@@ -86,7 +84,7 @@
                             style="font-size: 0.7rem; font-weight: 500; color: #64748b; margin: 0 0 0.25rem 0; text-transform: uppercase;">
                             Pengawas</p>
                         <h3 style="font-size: 1.75rem; font-weight: 700; color: #1e293b; margin: 0;">
-                            {{ $stats['pengawas'] ?? 0 }}</h3>
+                            <?php echo e($stats['pengawas'] ?? 0); ?></h3>
                     </div>
                     <div
                         style="width: 40px; height: 40px; background: #fce7f3; border-radius: 10px; display: flex; align-items: center; justify-content: center;">
@@ -104,7 +102,7 @@
                             style="font-size: 0.7rem; font-weight: 500; color: #64748b; margin: 0 0 0.25rem 0; text-transform: uppercase;">
                             Pelaksana</p>
                         <h3 style="font-size: 1.75rem; font-weight: 700; color: #1e293b; margin: 0;">
-                            {{ $stats['pelaksana'] ?? 0 }}</h3>
+                            <?php echo e($stats['pelaksana'] ?? 0); ?></h3>
                     </div>
                     <div
                         style="width: 40px; height: 40px; background: #e0e7ff; border-radius: 10px; display: flex; align-items: center; justify-content: center;">
@@ -123,9 +121,9 @@
                 <select id="filterDivisi"
                     style="width: 100%; padding: 0.5rem 0.75rem; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 0.85rem; background: white;">
                     <option value="">Semua Divisi</option>
-                    <option value="pengurus" {{ request('divisi') == 'pengurus' ? 'selected' : '' }}>Pengurus</option>
-                    <option value="pengawas" {{ request('divisi') == 'pengawas' ? 'selected' : '' }}>Pengawas</option>
-                    <option value="pelaksana" {{ request('divisi') == 'pelaksana' ? 'selected' : '' }}>Pelaksana</option>
+                    <option value="pengurus" <?php echo e(request('divisi') == 'pengurus' ? 'selected' : ''); ?>>Pengurus</option>
+                    <option value="pengawas" <?php echo e(request('divisi') == 'pengawas' ? 'selected' : ''); ?>>Pengawas</option>
+                    <option value="pelaksana" <?php echo e(request('divisi') == 'pelaksana' ? 'selected' : ''); ?>>Pelaksana</option>
                 </select>
             </div>
             <div style="min-width: 130px;">
@@ -134,28 +132,28 @@
                 <select id="filterStatus"
                     style="width: 100%; padding: 0.5rem 0.75rem; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 0.85rem; background: white;">
                     <option value="">Semua Status</option>
-                    <option value="aktif" {{ request('status') == 'aktif' ? 'selected' : '' }}>Aktif</option>
-                    <option value="nonaktif" {{ request('status') == 'nonaktif' ? 'selected' : '' }}>Nonaktif</option>
+                    <option value="aktif" <?php echo e(request('status') == 'aktif' ? 'selected' : ''); ?>>Aktif</option>
+                    <option value="nonaktif" <?php echo e(request('status') == 'nonaktif' ? 'selected' : ''); ?>>Nonaktif</option>
                 </select>
             </div>
             <div style="flex: 1; min-width: 200px;">
                 <label
                     style="font-size: 0.7rem; font-weight: 500; color: #64748b; display: block; margin-bottom: 0.25rem;">Cari</label>
-                <input type="text" id="searchInput" placeholder="Cari nama atau jabatan..." value="{{ request('search') }}"
+                <input type="text" id="searchInput" placeholder="Cari nama atau jabatan..." value="<?php echo e(request('search')); ?>"
                     style="width: 100%; padding: 0.5rem 0.75rem; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 0.85rem;">
             </div>
         </div>
 
         <!-- Notifikasi Sukses -->
-        @if(session('success'))
+        <?php if(session('success')): ?>
             <div
                 style="background: #dcfce7; border-left: 4px solid #22c55e; border-radius: 8px; padding: 0.75rem 1rem; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.5rem;">
                 <i class="fas fa-check-circle" style="color: #22c55e;"></i>
-                <span style="color: #166534; font-size: 0.85rem;">{{ session('success') }}</span>
+                <span style="color: #166534; font-size: 0.85rem;"><?php echo e(session('success')); ?></span>
                 <button onclick="this.parentElement.remove()"
                     style="margin-left: auto; background: none; border: none; cursor: pointer; color: #22c55e;">&times;</button>
             </div>
-        @endif
+        <?php endif; ?>
 
         <!-- Tabel Data -->
         <div style="background: white; border-radius: 12px; border: 1px solid #e2e8f0; overflow: hidden;">
@@ -173,62 +171,66 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @forelse($anggota as $key => $item)
+                        <?php $__empty_1 = true; $__currentLoopData = $anggota; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
                             <tr style="border-bottom: 1px solid #f1f5f9;">
                                 <td style="padding: 0.9rem 1rem; font-size: 0.85rem; color: #475569;">
-                                    {{ $key + $anggota->firstItem() }}
+                                    <?php echo e($key + $anggota->firstItem()); ?>
+
                                 </td>
                                 <td style="padding: 0.9rem 1rem;">
-                                    @if($item->foto)
-                                        <img src="{{ Storage::url($item->foto) }}"
+                                    <?php if($item->foto): ?>
+                                        <img src="<?php echo e(Storage::url($item->foto)); ?>"
                                             style="width: 36px; height: 36px; object-fit: cover; border-radius: 50%;">
-                                    @else
+                                    <?php else: ?>
                                         <div style="width: 36px; height: 36px; background: #f1f5f9; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
                                             <i class="fas fa-user" style="color: #94a3b8; font-size: 0.9rem;"></i>
                                         </div>
-                                    @endif
+                                    <?php endif; ?>
                                 </td>
                                 <td style="padding: 0.9rem 1rem; font-weight: 500; color: #1e293b; font-size: 0.85rem;">
-                                    {{ $item->nama }}
+                                    <?php echo e($item->nama); ?>
+
                                 </td>
-                                <td style="padding: 0.9rem 1rem; color: #475569; font-size: 0.85rem;">{{ $item->jabatan }}</td>
+                                <td style="padding: 0.9rem 1rem; color: #475569; font-size: 0.85rem;"><?php echo e($item->jabatan); ?></td>
                                 <td style="padding: 0.9rem 1rem;">
                                     <span style="display: inline-block; padding: 0.2rem 0.5rem; border-radius: 20px; font-size: 0.7rem; font-weight: 500;
-                                        @if($item->divisi == 'pengurus') background: #eef2ff; color: #3b82f6;
-                                        @elseif($item->divisi == 'pengawas') background: #fce7f3; color: #ec489a;
-                                        @else background: #dcfce7; color: #22c55e; @endif">
-                                        {{ ucfirst($item->divisi) }}
+                                        <?php if($item->divisi == 'pengurus'): ?> background: #eef2ff; color: #3b82f6;
+                                        <?php elseif($item->divisi == 'pengawas'): ?> background: #fce7f3; color: #ec489a;
+                                        <?php else: ?> background: #dcfce7; color: #22c55e; <?php endif; ?>">
+                                        <?php echo e(ucfirst($item->divisi)); ?>
+
                                     </span>
                                 </td>
                                 <td style="padding: 0.9rem 1rem;">
                                     <span style="display: inline-block; padding: 0.2rem 0.5rem; border-radius: 20px; font-size: 0.7rem; font-weight: 500;
-                                        @if($item->status == 'aktif') background: #dcfce7; color: #166534;
-                                        @else background: #fef3c7; color: #92400e; @endif">
-                                        {{ ucfirst($item->status) }}
+                                        <?php if($item->status == 'aktif'): ?> background: #dcfce7; color: #166534;
+                                        <?php else: ?> background: #fef3c7; color: #92400e; <?php endif; ?>">
+                                        <?php echo e(ucfirst($item->status)); ?>
+
                                     </span>
                                 </td>
                                 <td style="padding: 0.9rem 1rem; text-align: center;">
                                     <div style="display: flex; gap: 0.5rem; justify-content: center;">
                                         <!-- Tombol SHOW (Detail) -->
-                                        <a href="{{ route('admin.data-master.struktur-organisasi.show', $item->id) }}"
+                                        <a href="<?php echo e(route('admin.data-master.struktur-organisasi.show', $item->id)); ?>"
                                             style="background: none; padding: 0.3rem 0.6rem; border-radius: 6px; text-decoration: none; color: #10b981; font-size: 0.75rem; transition: all 0.2s;"
                                             onmouseover="this.style.background='#d1fae5'"
                                             onmouseout="this.style.background='none'">
                                             <i class="fas fa-eye"></i> Detail
                                         </a>
                                         <!-- Tombol EDIT -->
-                                        <a href="{{ route('admin.data-master.struktur-organisasi.edit', $item->id) }}"
+                                        <a href="<?php echo e(route('admin.data-master.struktur-organisasi.edit', $item->id)); ?>"
                                             style="background: none; padding: 0.3rem 0.6rem; border-radius: 6px; text-decoration: none; color: #3b82f6; font-size: 0.75rem; transition: all 0.2s;"
                                             onmouseover="this.style.background='#eef2ff'"
                                             onmouseout="this.style.background='none'">
                                             <i class="fas fa-edit"></i> Edit
                                         </a>
                                         <!-- Tombol HAPUS -->
-                                        <form action="{{ route('admin.data-master.struktur-organisasi.destroy', $item->id) }}"
+                                        <form action="<?php echo e(route('admin.data-master.struktur-organisasi.destroy', $item->id)); ?>"
                                             method="POST" style="display: inline-block;"
-                                            onsubmit="return confirm('Yakin hapus {{ $item->nama }}?')">
-                                            @csrf
-                                            @method('DELETE')
+                                            onsubmit="return confirm('Yakin hapus <?php echo e($item->nama); ?>?')">
+                                            <?php echo csrf_field(); ?>
+                                            <?php echo method_field('DELETE'); ?>
                                             <button type="submit"
                                                 style="background: none; padding: 0.3rem 0.6rem; border-radius: 6px; color: #ef4444; border: none; cursor: pointer; font-size: 0.75rem; transition: all 0.2s;"
                                                 onmouseover="this.style.background='#fef2f2'"
@@ -239,29 +241,30 @@
                                     </div>
                                 </td>
                             </tr>
-                        @empty
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
                             <tr>
                                 <td colspan="7" style="padding: 3rem; text-align: center;">
                                     <i class="fas fa-users"
                                         style="font-size: 2.5rem; color: #cbd5e1; margin-bottom: 0.75rem; display: block;"></i>
                                     <p style="color: #64748b; margin: 0;">Belum ada data anggota</p>
-                                    <a href="{{ route('admin.data-master.struktur-organisasi.create') }}"
+                                    <a href="<?php echo e(route('admin.data-master.struktur-organisasi.create')); ?>"
                                         style="display: inline-block; margin-top: 0.75rem; color: #3b82f6; text-decoration: none; font-size: 0.85rem;">
                                         <i class="fas fa-plus"></i> Tambah anggota pertama
                                     </a>
                                 </td>
                             </tr>
-                        @endforelse
+                        <?php endif; ?>
                     </tbody>
                 </table>
             </div>
 
             <!-- Pagination -->
-            @if($anggota->hasPages())
+            <?php if($anggota->hasPages()): ?>
                 <div style="padding: 0.9rem 1rem; border-top: 1px solid #e2e8f0; background: #f8fafc;">
-                    {{ $anggota->links() }}
+                    <?php echo e($anggota->links()); ?>
+
                 </div>
-            @endif
+            <?php endif; ?>
         </div>
     </div>
 
@@ -322,4 +325,6 @@
             }
         }
     </style>
-@endsection
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('admin.layout', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH D:\ponpes-main\resources\views/admin/data-master/struktur-organisasi/index.blade.php ENDPATH**/ ?>

@@ -41,9 +41,9 @@ class StrukturOrganisasiController extends Controller
             'pelaksana' => StrukturOrganisasi::where('divisi', 'pelaksana')->count(),
         ];
 
-        return view('data-master.struktur-organisasi.index', [
+        // PERBAIKI - tambahkan 'admin.' prefix
+        return view('admin.data-master.struktur-organisasi.index', [
             'title'         => 'Struktur Organisasi',
-            'active'        => 'data-master',
             'anggota'       => $anggota,
             'stats'         => $stats,
             'divisiOptions' => StrukturOrganisasi::divisiOptions(),
@@ -52,57 +52,61 @@ class StrukturOrganisasiController extends Controller
 
     public function create()
     {
-        return view('data-master.struktur-organisasi.create', [
+        // PERBAIKI - tambahkan 'admin.' prefix
+        return view('admin.data-master.struktur-organisasi.create', [
             'title'         => 'Tambah Anggota Organisasi',
-            'active'        => 'data-master',
             'divisiOptions' => StrukturOrganisasi::divisiOptions(),
         ]);
     }
 
-    public function store(Request $request)
-    {
-        $request->validate([
-            'nama'      => 'required|string|max:255',
-            'jabatan'   => 'required|string|max:255',
-            'divisi'    => 'required|in:pengurus,pengawas,pelaksana,lainnya',
-            'urutan'    => 'nullable|integer|min:0',
-            'telepon'   => 'nullable|string|max:20',
-            'email'     => 'nullable|email|max:255',
-            'deskripsi' => 'nullable|string',
-            'foto'      => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
-        ]);
+public function store(Request $request)
+{
+    $request->validate([
+        'nama'      => 'required|string|max:255',
+        'jabatan'   => 'required|string|max:255',
+        'divisi'    => 'required|in:pengurus,pengawas,pelaksana',
+        'urutan'    => 'nullable|integer|min:0',
+        'telepon'   => 'nullable|string|max:20',
+        'email'     => 'nullable|email|max:255',
+        'deskripsi' => 'nullable|string',
+        'status'    => 'nullable|in:aktif,nonaktif',
+        'foto'      => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+    ]);
 
-        $data = $request->only([
-            'nama', 'jabatan', 'divisi', 'urutan',
-            'telepon', 'email', 'deskripsi', 'status',
-        ]);
+    $data = $request->only([
+        'nama', 'jabatan', 'divisi', 'urutan',
+        'telepon', 'email', 'deskripsi', 'status',
+    ]);
 
-        $data['urutan'] = $data['urutan'] ?? 0;
+    $data['urutan'] = $data['urutan'] ?? 0;
+    $data['status'] = $data['status'] ?? 'aktif';
 
-        if ($request->hasFile('foto')) {
-            $data['foto'] = $request->file('foto')->store('struktur-organisasi', 'public');
-        }
-
-        StrukturOrganisasi::create($data);
-
-        return redirect()->route('data-master.struktur-organisasi')
-            ->with('success', 'Anggota organisasi berhasil ditambahkan!');
+    if ($request->hasFile('foto')) {
+        $data['foto'] = $request->file('foto')->store('struktur-organisasi', 'public');
     }
+
+    StrukturOrganisasi::create($data);
+
+    // PASTIKAN redirect ini menggunakan session flash
+    return redirect()
+        ->route('admin.data-master.struktur-organisasi.index')
+        ->with('success', 'Anggota organisasi berhasil ditambahkan!');
+}
 
     public function show(StrukturOrganisasi $strukturOrganisasi)
     {
-        return view('data-master.struktur-organisasi.show', [
+        // PERBAIKI - tambahkan 'admin.' prefix
+        return view('admin.data-master.struktur-organisasi.show', [
             'title'   => 'Detail Anggota',
-            'active'  => 'data-master',
             'anggota' => $strukturOrganisasi,
         ]);
     }
 
     public function edit(StrukturOrganisasi $strukturOrganisasi)
     {
-        return view('data-master.struktur-organisasi.edit', [
+        // PERBAIKI - tambahkan 'admin.' prefix
+        return view('admin.data-master.struktur-organisasi.edit', [
             'title'         => 'Edit Anggota Organisasi',
-            'active'        => 'data-master',
             'anggota'       => $strukturOrganisasi,
             'divisiOptions' => StrukturOrganisasi::divisiOptions(),
         ]);
@@ -144,7 +148,8 @@ class StrukturOrganisasiController extends Controller
 
         $strukturOrganisasi->update($data);
 
-        return redirect()->route('admin.data-master.struktur-organisasi')
+        // PERBAIKI - redirect ke route yang benar
+        return redirect()->route('admin.data-master.struktur-organisasi.index')
             ->with('success', 'Anggota organisasi berhasil diperbarui!');
     }
 
@@ -156,7 +161,8 @@ class StrukturOrganisasiController extends Controller
 
         $strukturOrganisasi->delete();
 
-        return redirect()->route('admin.data-master.struktur-organisasi')
+        // PERBAIKI - redirect ke route yang benar
+        return redirect()->route('admin.data-master.struktur-organisasi.index')
             ->with('success', 'Anggota organisasi berhasil dihapus!');
     }
 }
