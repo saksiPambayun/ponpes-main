@@ -13,8 +13,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="{{ asset('css/navbar.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/footer.css') }}">
+    <link rel="stylesheet" href="<?php echo e(asset('css/navbar.css')); ?>">
+    <link rel="stylesheet" href="<?php echo e(asset('css/footer.css')); ?>">
 </head>
 <style>
     * {
@@ -488,7 +488,7 @@
 </style>
 
 <body>
-    @include('components.navbar')
+    <?php echo $__env->make('components.navbar', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
     <section class="hero">
         <div class="hero-overlay"></div>
         <div class="hero-content">
@@ -503,10 +503,10 @@
             </p>
 
             <div class="hero-buttons">
-                <a href="{{ route('pendaftaran') }}" class="btn-primary">
+                <a href="<?php echo e(route('pendaftaran')); ?>" class="btn-primary">
                     Daftar Sekarang
                 </a>
-                <a href="{{ route('tentang') }}" class="btn-secondary">
+                <a href="<?php echo e(route('tentang')); ?>" class="btn-secondary">
                     Tentang Kami
                 </a>
             </div>
@@ -516,7 +516,7 @@
     <section class="about-section">
         <div class="about-container">
             <div class="about-image reveal-left">
-                <img src="{{ asset('images/pict 2.png') }}" alt="Tentang Kami">
+                <img src="<?php echo e(asset('images/pict 2.png')); ?>" alt="Tentang Kami">
             </div>
             <div class="about-text reveal-right">
                 <h2>Tentang Kami</h2>
@@ -530,7 +530,7 @@
                 </p>
             </div>
             <div class="about-link">
-                <a href="{{ route('tentang') }}">Lihat selengkapnya →</a>
+                <a href="<?php echo e(route('tentang')); ?>">Lihat selengkapnya →</a>
             </div>
         </div>
     </section>
@@ -539,33 +539,19 @@
         <div class="program-container">
             <h2 class="program-title reveal-top">Program Pendidikan</h2>
             <div class="program-cards">
-                @foreach ($program as $p)
+                <?php $__currentLoopData = $program; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $p): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                     <div class="program-card">
-                        <h3>{{ $p->nama_program }}</h3>
-                        <p>{{ $p->deskripsi }}</p>
+                        <h3><?php echo e($p->nama_program); ?></h3>
+                        <p><?php echo e($p->deskripsi); ?></p>
                         <div class="card-line"></div>
                     </div>
-                @endforeach
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
 
-                {{-- <h3>Tahfidz Murni</h3>
-                    <p>
-                        Program khusus bagi santri yang fokus menghafal Al-Qur’an
-                        tanpa sekolah formal. Santri wajib mengikuti madrasah diniyah
-                        dan kajian kitab salaf sebagai penguatan ilmu syar’i.
-                    </p> --}}
+                
 
-                {{-- <h3>Tahfidz & Sekolah Formal</h3>
-                    <p>
-                        Program terpadu antara hafalan Al-Qur’an dan pendidikan formal (MTs/SMA).
-                        Cocok bagi santri yang ingin menghafal sekaligus menempuh pendidikan umum.
-                    </p> --}}
+                
 
-                {{-- <h3>Tahfidz 30 Juz & Surat Pilihan</h3>
-                    <p>
-                        Program target hafalan 30 juz atau surat tertentu.
-                        Wajib mengikuti sekolah dan menyelesaikan hafalan
-                        dengan sistem bin-nadzhar.
-                    </p> --}}
+                
             </div>
         </div>
     </section>
@@ -574,16 +560,16 @@
         <div class="fasilitas-container">
             <h2 class="fasilitas-title">Fasilitas</h2>
             <div class="fasilitas-grid">
-                @foreach ($fasilitas as $item)
+                <?php $__currentLoopData = $fasilitas; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                     <div class="fasilitas-card">
-                        <img src="{{ asset('storage/' . $item->foto) }}">
-                        <h3>{{ $item->nama_fasilitas }}</h3>
+                        <img src="<?php echo e(asset('storage/' . $item->foto)); ?>">
+                        <h3><?php echo e($item->nama_fasilitas); ?></h3>
                     </div>
-                @endforeach
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
             </div>
 
             <div class="fasilitas-link">
-                <a href="{{ route('fasilitas') }}">Lihat selengkapnya →</a>
+                <a href="<?php echo e(route('fasilitas')); ?>">Lihat selengkapnya →</a>
             </div>
         </div>
     </section>
@@ -594,23 +580,25 @@
             <div class="galeri-wrapper">
                 <button class="galeri-btn btn-prev">&#10094;</button>
                 <div class="galeri-carousel">
-                    @foreach ($galeri as $index => $g)
+                    <?php $__currentLoopData = $galeri; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $g): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                         <div
                             class="galeri-card 
-            {{ $index == 0 ? 'active' : '' }}
-            {{ $index == 1 ? 'next' : '' }}
-            {{ $index == count($galeri) - 1 ? 'prev' : '' }}">
+            <?php echo e($index == 0 ? 'active' : ''); ?>
 
-                            <img src="{{ asset('storage/' . $g->gambar) }}">
+            <?php echo e($index == 1 ? 'next' : ''); ?>
+
+            <?php echo e($index == count($galeri) - 1 ? 'prev' : ''); ?>">
+
+                            <img src="<?php echo e(asset('storage/' . $g->gambar)); ?>">
                         </div>
-                    @endforeach
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                 </div>
 
                 <button class="galeri-btn btn-next">&#10095;</button>
             </div>
 
             <div class="galeri-link">
-                <a href="{{ route('galeri') }}">Lihat selengkapnya →</a>
+                <a href="<?php echo e(route('galeri')); ?>">Lihat selengkapnya →</a>
             </div>
         </div>
     </section>
@@ -618,7 +606,7 @@
     <section class="cta-pendaftaran">
         <div class="cta-container">
             <div class="cta-left">
-                <img src="{{ asset('images/logo.png') }}" alt="Logo PPAI">
+                <img src="<?php echo e(asset('images/logo.png')); ?>" alt="Logo PPAI">
             </div>
 
             <div class="cta-right">
@@ -629,12 +617,12 @@
                 </p>
 
                 <div class="cta-buttons">
-                    <a href="{{ route('pendaftaran') }}" class="cta-primary">Daftar Sekarang</a>
+                    <a href="<?php echo e(route('pendaftaran')); ?>" class="cta-primary">Daftar Sekarang</a>
                 </div>
             </div>
         </div>
     </section>
-    @include('components.footer')
+    <?php echo $__env->make('components.footer', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         const cards = document.querySelectorAll('.galeri-card');
@@ -671,3 +659,4 @@
 </body>
 
 </html>
+<?php /**PATH C:\laragon\www\ponpes-main\resources\views/public/home_user.blade.php ENDPATH**/ ?>

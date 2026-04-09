@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\StrukturOrganisasiController;
-use App\Http\Controllers\AuthController;
+// use App\Http\Controllers\AuthController;
 use App\Http\Controllers\GalleryController;
 use App\Http\Controllers\ProfilYayasanController;
 use App\Http\Controllers\FasilitasController;
@@ -20,9 +20,7 @@ use App\Http\Controllers\user\UserController;
 */
 
 // Redirect root to login
-Route::get('/', function () {
-    return view('public.home_user');
-})->name('home');
+Route::get('/', [UserController::class, 'home'])->name('home');
 
 // === LOGIN ROUTES (Fix) ===
 Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
@@ -374,22 +372,56 @@ Route::middleware(['auth', 'user'])->prefix('user')->name('user.')->group(functi
     Route::get('/user-test', [App\Http\Controllers\User\UserController::class, 'dashboard'])->middleware('auth');
 });
 
+// Route::get('/home', [UserController::class, 'home'])->name('home');
+
+// Route::get('/tentang', [UserController::class, 'tentang'])->name('tentang');
+
+// // Route::get('/tentang', fn() => view('public.tentang'))->name('tentang');
+
+// Route::get('/struktur', fn() => view('public.struktur'))->name('struktur');
+
+// Route::get('/legalitas', [UserController::class, 'legalitas'])->name('legalitas');
+
+// /*Route::get('/fasilitas', fn() => view('public.fasilitas'))->name('fasilitas');*/
+
+// Route::get('/galeri', fn() => view('public.galeri'))->name('galeri');
+
+// Route::get('/pendaftaran', fn() => view('public.pendaftaran_user'))->name('pendaftaran');
+
+// Route::get('/form', fn() => view('public.form'))->name('form');
+
+// Route::get('/hubungi', fn() => view('public.hubungi'))->name('hubungi');
+
+
+// HOME
 Route::get('/home', [UserController::class, 'home'])->name('home');
 
-Route::get('/tentang', [UserController::class, 'tentang'])->name('tentang');
+// TENTANG
+Route::get('/tentang', [UserController::class, 'profilYayasanIndex'])->name('tentang');
 
-// Route::get('/tentang', fn() => view('public.tentang'))->name('tentang');
+// STRUKTUR
+Route::get('/struktur', [UserController::class, 'strukturIndex'])->name('struktur');
 
-Route::get('/struktur', fn() => view('public.struktur'))->name('struktur');
+// LEGALITAS (akta yayasan + wakaf)
+Route::get('/legalitas', function () {
+    return view('public.legalitas');
+})->name('legalitas');
 
-Route::get('/legalitas', [UserController::class, 'legalitas'])->name('legalitas');
+// FASILITAS
+Route::get('/fasilitas', [UserController::class, 'fasilitasIndex'])->name('fasilitas');
 
-/*Route::get('/fasilitas', fn() => view('public.fasilitas'))->name('fasilitas');*/
+// GALERI
+Route::get('/galeri', [UserController::class, 'galleryIndex'])->name('galeri');
 
-Route::get('/galeri', fn() => view('public.galeri'))->name('galeri');
+// PROGRAM
+// Route::get('/program', [UserController::class, 'programIndex'])->name('program');
 
-Route::get('/pendaftaran', fn() => view('public.pendaftaran_user'))->name('pendaftaran');
+// PENDAFTARAN
+Route::get('/pendaftaran', function () {
+    return view('public.pendaftaran');
+})->name('pendaftaran');
 
-Route::get('/form', fn() => view('public.form'))->name('form');
-
-Route::get('/hubungi', fn() => view('public.hubungi'))->name('hubungi');
+// HUBUNGI
+Route::get('/hubungi', function () {
+    return view('public.hubungi');
+})->name('hubungi');
