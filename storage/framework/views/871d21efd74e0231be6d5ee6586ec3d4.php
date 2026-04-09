@@ -4,8 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>@yield('title', 'Admin Dashboard') - Yayasan Management</title>
+    <meta name="csrf-token" content="<?php echo e(csrf_token()); ?>">
+    <title><?php echo $__env->yieldContent('title', 'Admin Dashboard'); ?> - Yayasan Management</title>
 
     <script src="https://cdn.tailwindcss.com"></script>
 
@@ -197,7 +197,7 @@
         }
     </style>
 
-    @stack('styles')
+    <?php echo $__env->yieldPushContent('styles'); ?>
 </head>
 
 <body>
@@ -208,7 +208,7 @@
             <div class="h-20 flex items-center justify-center border-b border-indigo-400/30 px-6">
                 <div class="flex items-center space-x-3">
                     <div class="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center overflow-hidden">
-                        <img src="{{ asset('gallery/logoo.jpeg') }}" class="w-9 h-9 object-contain">
+                        <img src="<?php echo e(asset('gallery/logoo.jpeg')); ?>" class="w-9 h-9 object-contain">
                     </div>
                     <div>
                         <h1 class="text-xl font-bold text-white">Pondok Pesantren</h1>
@@ -221,8 +221,8 @@
             <nav class="flex-1 overflow-y-auto py-6 px-4">
                 <div class="mb-6">
                     <p class="text-xs font-semibold text-indigo-200 uppercase tracking-wider mb-3 px-3">Main Menu</p>
-                    <a href="{{ route('admin.dashboard') }}"
-                        class="sidebar-item flex items-center px-4 py-3 text-white rounded-lg mb-1 {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
+                    <a href="<?php echo e(route('admin.dashboard')); ?>"
+                        class="sidebar-item flex items-center px-4 py-3 text-white rounded-lg mb-1 <?php echo e(request()->routeIs('admin.dashboard') ? 'active' : ''); ?>">
                         <div
                             class="icon-wrapper w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center mr-3">
                             <i class="fas fa-home"></i>
@@ -233,32 +233,32 @@
 
                 <div class="mb-6">
                     <p class="text-xs font-semibold text-indigo-200 uppercase tracking-wider mb-3 px-3">Pendaftaran</p>
-                    <a href="{{ route('admin.santri.index') }}"
-                        class="sidebar-item flex items-center px-4 py-3 text-indigo-100 rounded-lg mb-1 {{ request()->routeIs('admin.santri.*') ? 'active' : '' }}">
+                    <a href="<?php echo e(route('admin.santri.index')); ?>"
+                        class="sidebar-item flex items-center px-4 py-3 text-indigo-100 rounded-lg mb-1 <?php echo e(request()->routeIs('admin.santri.*') ? 'active' : ''); ?>">
                         <div
                             class="icon-wrapper w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center mr-3">
                             <i class="fas fa-user-graduate"></i>
                         </div>
                         <span class="font-medium">Data Santri</span>
-                        @php
+                        <?php
                             // Menggunakan try-catch agar jika tabel belum ada tidak bikin error se-aplikasi
                             try {
                                 $pendingCount = \App\Models\SantriRegistration::where('status', 'pending')->count();
                             } catch (\Exception $e) {
                                 $pendingCount = 0;
                             }
-                        @endphp
-                        @if($pendingCount > 0)
+                        ?>
+                        <?php if($pendingCount > 0): ?>
                             <span
-                                class="ml-auto bg-red-500 text-white text-xs px-2 py-0.5 rounded-full">{{ $pendingCount }}</span>
-                        @endif
+                                class="ml-auto bg-red-500 text-white text-xs px-2 py-0.5 rounded-full"><?php echo e($pendingCount); ?></span>
+                        <?php endif; ?>
                     </a>
                 </div>
 
                 <div class="mb-6">
                     <p class="text-xs font-semibold text-indigo-200 uppercase tracking-wider mb-3 px-3">Kepegawaian</p>
-                    <a href="{{ route('admin.pegawai.index') }}"
-                        class="sidebar-item flex items-center px-4 py-3 text-indigo-100 rounded-lg mb-1 {{ request()->routeIs('admin.pegawai.*') ? 'active' : '' }}">
+                    <a href="<?php echo e(route('admin.pegawai.index')); ?>"
+                        class="sidebar-item flex items-center px-4 py-3 text-indigo-100 rounded-lg mb-1 <?php echo e(request()->routeIs('admin.pegawai.*') ? 'active' : ''); ?>">
                         <div
                             class="icon-wrapper w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center mr-3">
                             <i class="fas fa-users"></i>
@@ -278,7 +278,7 @@
                         </p>
 
                         <!-- Profil Yayasan -->
-                        <a href="{{ route('admin.profil-yayasan.index') }}"
+                        <a href="<?php echo e(route('admin.profil-yayasan.index')); ?>"
                             class="sidebar-item flex items-center px-4 py-3 text-indigo-100 rounded-lg mb-1 hover:bg-indigo-700">
                             <div
                                 class="icon-wrapper w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center mr-3">
@@ -288,7 +288,7 @@
                         </a>
 
                         <!-- Struktur Organisasi -->
-                        <a href="{{ route('admin.data-master.struktur-organisasi.index') }}"
+                        <a href="<?php echo e(route('admin.data-master.struktur-organisasi.index')); ?>"
                             class="sidebar-item flex items-center px-4 py-3 text-indigo-100 rounded-lg mb-1 hover:bg-indigo-700">
                             <div
                                 class="icon-wrapper w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center mr-3">
@@ -298,7 +298,7 @@
                         </a>
 
                         <!-- Fasilitas -->
-                        <a href="{{ route('admin.data-master.fasilitas.index') }}"
+                        <a href="<?php echo e(route('admin.data-master.fasilitas.index')); ?>"
                             class="sidebar-item flex items-center px-4 py-3 text-indigo-100 rounded-lg mb-1 hover:bg-indigo-700">
                             <div
                                 class="icon-wrapper w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center mr-3">
@@ -308,7 +308,7 @@
                         </a>
 
                         <!-- Gallery -->
-                        <a href="{{ route('admin.data-master.gallery.index') }}"
+                        <a href="<?php echo e(route('admin.data-master.gallery.index')); ?>"
                             class="sidebar-item flex items-center px-4 py-3 text-indigo-100 rounded-lg mb-1 hover:bg-indigo-700">
                             <div
                                 class="icon-wrapper w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center mr-3">
@@ -318,7 +318,7 @@
                         </a>
 
                         <!-- Program -->
-                        <a href="{{ route('admin.program.index') }}"
+                        <a href="<?php echo e(route('admin.program.index')); ?>"
                             class="sidebar-item flex items-center px-4 py-3 text-indigo-100 rounded-lg mb-1 hover:bg-indigo-700">
                             <div
                                 class="icon-wrapper w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center mr-3">
@@ -331,24 +331,24 @@
                         <p class="text-xs font-semibold text-indigo-200 uppercase tracking-wider mb-3 px-3">Dokumen
                             Legal
                         </p>
-                        <a href="{{ route('admin.sk.index') }}"
-                            class="sidebar-item flex items-center px-4 py-3 text-indigo-100 rounded-lg mb-1 {{ request()->routeIs('admin.sk.*') ? 'active' : '' }}">
+                        <a href="<?php echo e(route('admin.sk.index')); ?>"
+                            class="sidebar-item flex items-center px-4 py-3 text-indigo-100 rounded-lg mb-1 <?php echo e(request()->routeIs('admin.sk.*') ? 'active' : ''); ?>">
                             <div
                                 class="icon-wrapper w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center mr-3">
                                 <i class="fas fa-file-signature"></i>
                             </div>
                             <span class="font-medium">Data SK</span>
                         </a>
-                        <a href="{{ route('admin.akta-yayasan.index') }}"
-                            class="sidebar-item flex items-center px-4 py-3 text-indigo-100 rounded-lg mb-1 {{ request()->routeIs('admin.akta-yayasan.*') ? 'active' : '' }}">
+                        <a href="<?php echo e(route('admin.akta-yayasan.index')); ?>"
+                            class="sidebar-item flex items-center px-4 py-3 text-indigo-100 rounded-lg mb-1 <?php echo e(request()->routeIs('admin.akta-yayasan.*') ? 'active' : ''); ?>">
                             <div
                                 class="icon-wrapper w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center mr-3">
                                 <i class="fas fa-scroll"></i>
                             </div>
                             <span class="font-medium">Akta Yayasan</span>
                         </a>
-                        <a href="{{ route('admin.akta-wakaf.index') }}"
-                            class="sidebar-item flex items-center px-4 py-3 text-indigo-100 rounded-lg mb-1 {{ request()->routeIs('admin.akta-wakaf.*') ? 'active' : '' }}">
+                        <a href="<?php echo e(route('admin.akta-wakaf.index')); ?>"
+                            class="sidebar-item flex items-center px-4 py-3 text-indigo-100 rounded-lg mb-1 <?php echo e(request()->routeIs('admin.akta-wakaf.*') ? 'active' : ''); ?>">
                             <div
                                 class="icon-wrapper w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center mr-3">
                                 <i class="fas fa-landmark"></i>
@@ -360,8 +360,8 @@
                     <div>
                         <p class="text-xs font-semibold text-indigo-200 uppercase tracking-wider mb-3 px-3">Pengaturan
                         </p>
-                        <a href="{{ route('admin.profile') }}"
-                            class="sidebar-item flex items-center px-4 py-3 text-indigo-100 rounded-lg mb-1 {{ request()->routeIs('admin.profile') ? 'active' : '' }}">
+                        <a href="<?php echo e(route('admin.profile')); ?>"
+                            class="sidebar-item flex items-center px-4 py-3 text-indigo-100 rounded-lg mb-1 <?php echo e(request()->routeIs('admin.profile') ? 'active' : ''); ?>">
                             <div
                                 class="icon-wrapper w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center mr-3">
                                 <i class="fas fa-user-cog"></i>
@@ -372,8 +372,8 @@
             </nav>
 
             <div class="p-4 border-t border-indigo-400/30">
-                <form action="{{ route('logout') }}" method="POST">
-                    @csrf
+                <form action="<?php echo e(route('logout')); ?>" method="POST">
+                    <?php echo csrf_field(); ?>
                     <button type="submit"
                         class="flex items-center w-full px-4 py-3 text-red-200 hover:text-white transition rounded-lg hover:bg-white/10">
                         <div class="w-10 h-10 rounded-lg bg-red-500/20 flex items-center justify-center mr-3">
@@ -391,7 +391,7 @@
                     <button class="mobile-menu-btn p-2 rounded-lg hover:bg-gray-100" onclick="toggleSidebar()">
                         <i class="fas fa-bars text-gray-600 text-xl"></i>
                     </button>
-                    <h2 class="text-2xl font-bold text-gray-800">@yield('page-title', 'Dashboard')</h2>
+                    <h2 class="text-2xl font-bold text-gray-800"><?php echo $__env->yieldContent('page-title', 'Dashboard'); ?></h2>
                 </div>
                 <div class="flex items-center space-x-6">
                     <div class="relative">
@@ -403,40 +403,42 @@
                     <div class="flex items-center space-x-3">
                         <div class="text-right">
                             <p class="text-sm font-semibold text-gray-900">
-                                {{ auth()->user()?->name ?? 'Administrator' }}
+                                <?php echo e(auth()->user()?->name ?? 'Administrator'); ?>
+
                             </p>
-                            <p class="text-xs text-gray-500">{{ ucfirst(auth()->user()?->role ?? 'Admin') }}</p>
+                            <p class="text-xs text-gray-500"><?php echo e(ucfirst(auth()->user()?->role ?? 'Admin')); ?></p>
                         </div>
                         <div
                             class="h-12 w-12 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white font-bold shadow-lg">
-                            {{ substr(auth()->user()?->name ?? 'AD', 0, 2) }}
+                            <?php echo e(substr(auth()->user()?->name ?? 'AD', 0, 2)); ?>
+
                         </div>
                     </div>
                 </div>
             </header>
 
             <div class="container mx-auto px-8 py-8">
-                @if(session('success'))
+                <?php if(session('success')): ?>
                     <div class="bg-green-100 border border-green-400 text-green-700 px-6 py-4 rounded-lg relative mb-6"
                         role="alert">
-                        <span class="block sm:inline">{{ session('success') }}</span>
+                        <span class="block sm:inline"><?php echo e(session('success')); ?></span>
                         <span class="absolute top-0 bottom-0 right-0 px-4 py-3" onclick="this.parentElement.remove()">
                             <i class="fas fa-times cursor-pointer"></i>
                         </span>
                     </div>
-                @endif
+                <?php endif; ?>
 
-                @if(session('error'))
+                <?php if(session('error')): ?>
                     <div class="bg-red-100 border border-red-400 text-red-700 px-6 py-4 rounded-lg relative mb-6"
                         role="alert">
-                        <span class="block sm:inline">{{ session('error') }}</span>
+                        <span class="block sm:inline"><?php echo e(session('error')); ?></span>
                         <span class="absolute top-0 bottom-0 right-0 px-4 py-3" onclick="this.parentElement.remove()">
                             <i class="fas fa-times cursor-pointer"></i>
                         </span>
                     </div>
-                @endif
+                <?php endif; ?>
 
-                @yield('content')
+                <?php echo $__env->yieldContent('content'); ?>
             </div>
         </main>
     </div>
@@ -462,7 +464,8 @@
         }, 5000);
     </script>
 
-    @stack('scripts')
+    <?php echo $__env->yieldPushContent('scripts'); ?>
 </body>
 
 </html>
+<?php /**PATH D:\ponpes-main\resources\views/admin/layout.blade.php ENDPATH**/ ?>

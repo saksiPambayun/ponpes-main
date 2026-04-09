@@ -35,7 +35,7 @@ class GalleryController extends Controller
                    ->paginate(12)
                    ->withQueryString();
 
-return view('data-master.gallery.index', compact('galleries'));
+return view('admin.data-master.gallery.index', compact('galleries'));
     }
 
     /**
@@ -43,7 +43,7 @@ return view('data-master.gallery.index', compact('galleries'));
      */
     public function create()
     {
-        return view('data-master.gallery.create');
+        return view('admin.data-master.gallery.create');
     }
 
     /**
@@ -75,7 +75,7 @@ return view('data-master.gallery.index', compact('galleries'));
 
         Gallery::create($data);
 
-        return redirect()->route('data-master.gallery.index')
+        return redirect()->route('admin.data-master.gallery.index')
                          ->with('success', 'Gallery berhasil ditambahkan.');
     }
 
@@ -84,7 +84,7 @@ return view('data-master.gallery.index', compact('galleries'));
      */
     public function show(Gallery $gallery)
     {
-        return view('data-master.gallery.show', compact('gallery'));
+        return view('admin.data-master.gallery.show', compact('gallery'));
     }
 
     /**
@@ -92,7 +92,7 @@ return view('data-master.gallery.index', compact('galleries'));
      */
     public function edit(Gallery $gallery)
     {
-        return view('data-master.gallery.edit', compact('gallery'));
+        return view('admin.data-master.gallery.edit', compact('gallery'));
     }
 
     /**
@@ -127,7 +127,7 @@ return view('data-master.gallery.index', compact('galleries'));
 
         $gallery->update($data);
 
-        return redirect()->route('data-master.gallery.index')
+        return redirect()->route('admin.data-master.gallery.index')
                          ->with('success', 'Gallery berhasil diperbarui.');
     }
 
@@ -143,7 +143,7 @@ return view('data-master.gallery.index', compact('galleries'));
 
         $gallery->delete();
 
-        return redirect()->route('data-master.gallery.index')
+        return redirect()->route('admin.data-master.gallery.index')
                          ->with('success', 'Gallery berhasil dihapus.');
     }
 

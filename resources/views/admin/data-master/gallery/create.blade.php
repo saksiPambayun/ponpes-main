@@ -506,12 +506,12 @@
             </div>
         </div>
 
-        <a href="{{ route('data-master.gallery.index') }}" class="btn-back">
+        <a href="{{ route('admin.data-master.gallery.index') }}" class="btn-back">
             <i class="fas fa-arrow-left"></i> Kembali
         </a>
     </div>
 
-    <form action="{{ route('data-master.gallery.store') }}" method="POST" enctype="multipart/form-data" id="galleryForm">
+    <form action="{{ route('admin.data-master.gallery.store') }}" method="POST" enctype="multipart/form-data" id="galleryForm">
         @csrf
 
         <div class="form-layout">
@@ -653,7 +653,7 @@
                     <i class="fas fa-undo"></i> Reset
                 </button>
 
-                <a href="{{ route('data-master.gallery.index') }}" class="btn-cancel">
+                <a href="{{ route('admin.data-master.gallery.index') }}" class="btn-cancel">
                     <i class="fas fa-times"></i> Batal
                 </a>
 

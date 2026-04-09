@@ -189,7 +189,6 @@ class AdminController extends Controller
 
    public function rejectSantri(Request $request, $id)
 {
-    // Validasi alasan penolakan (opsional, tergantung form Anda)
     if ($request->has('alasan_penolakan')) {
         $request->validate([
             'alasan_penolakan' => 'required|string|min:10'
@@ -203,7 +202,6 @@ class AdminController extends Controller
         'alasan_penolakan' => $request->alasan_penolakan ?? 'Pendaftaran ditolak oleh admin'
     ]);
 
-    // Buat notifikasi jika user_id tersedia
     if ($santri->user_id) {
         Notification::create([
             'user_id' => $santri->user_id,

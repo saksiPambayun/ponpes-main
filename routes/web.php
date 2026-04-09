@@ -117,15 +117,15 @@ Route::prefix('admin')
             Route::delete('/struktur-organisasi/{id}', [DataMasterController::class, 'strukturOrganisasiDestroy'])->name('struktur-organisasi.destroy');
 
             // Fasilitas
-            Route::get('/fasilitas', [DataMasterController::class, 'fasilitas'])->name('fasilitas');
+           /* Route::get('/fasilitas', [DataMasterController::class, 'fasilitas'])->name('fasilitas');
             Route::post('/fasilitas', [DataMasterController::class, 'fasilitasStore'])->name('fasilitas.store');
             Route::put('/fasilitas/{id}', [DataMasterController::class, 'fasilitasUpdate'])->name('fasilitas.update');
-            Route::delete('/fasilitas/{id}', [DataMasterController::class, 'fasilitasDestroy'])->name('fasilitas.destroy');
+            Route::delete('/fasilitas/{id}', [DataMasterController::class, 'fasilitasDestroy'])->name('fasilitas.destroy');*/
 
             // Gallery
             Route::get('/gallery', [DataMasterController::class, 'gallery'])->name('gallery');
             Route::post('/gallery', [DataMasterController::class, 'galleryStore'])->name('gallery.store');
-            Route::delete('/gallery/{id}', [DataMasterController::class, 'galleryDestroy'])->name('gallery.destroy');
+            /*Route::delete('/gallery/{id}', [DataMasterController::class, 'galleryDestroy'])->name('gallery.destroy');*/
 
             // Program
             Route::get('/program', [DataMasterController::class, 'program'])->name('program');
@@ -157,25 +157,20 @@ Route::post('/santri/{id}/restore', [SantriController::class, 'restore'])->name(
 //----------------------------------------------
 
 // Route untuk Data Master Fasilitas
-Route::prefix('admin')->name('admin.')->group(function () {
-    Route::resource('data-master/fasilitas', FasilitasController::class)
-        ->names([
-            'index' => 'data-master.fasilitas.index',
-            'create' => 'data-master.fasilitas.create',
-            'store' => 'data-master.fasilitas.store',
-            'show' => 'data-master.fasilitas.show',
-            'edit' => 'data-master.fasilitas.edit',
-            'update' => 'data-master.fasilitas.update',
-            'destroy' => 'data-master.fasilitas.destroy',
-        ]);
+/*Route::prefix('admin')->name('admin.')->group(function ()  {
+    Route::prefix('data-master')->name('data-master.')->group(function () {
+     Route::resource('fasilitas', FasilitasController::class)->parameters([
+    'fasilitas' => 'fasilitas'
+]);
+    });
 });
 
 Route::prefix('admin')->middleware('auth')->group(function () {
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
     Route::get('/fasilitas', [FasilitasController::class, 'index'])->name('admin.data-master.fasilitas');
-});
+}); */
 
-Route::prefix('admin/data-master')->middleware('auth')->group(function () {
+/*Route::prefix('admin/data-master')->middleware('auth')->group(function () {
 
     Route::get('/gallery', [DataMasterController::class, 'gallery'])
         ->name('data-master.gallery');
@@ -185,16 +180,16 @@ Route::prefix('admin/data-master')->middleware('auth')->group(function () {
 
     Route::post('/gallery/store', [DataMasterController::class, 'galleryStore'])
         ->name('data-master.gallery.store');
-
-    Route::get('/gallery/{id}/edit', [DataMasterController::class, 'galleryEdit'])
-        ->name('data-master.gallery.edit');
-
+//-----
+    Route::get('/gallery/{id}/edit', [GalleryController::class, 'edit'])
+    ->name('data-master.gallery.edit');
+//-----
     Route::put('/gallery/{id}', [DataMasterController::class, 'galleryUpdate'])
         ->name('data-master.gallery.update');
 
     Route::delete('/gallery/{id}', [DataMasterController::class, 'galleryDelete'])
         ->name('data-master.gallery.delete');
-});
+});*/
 
 // program
 Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () {
@@ -280,7 +275,7 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
 
 Route::prefix('admin')->name('admin.')->group(function () {
     Route::prefix('data-master')->name('data-master.')->group(function () {
-        Route::resource('fasilitas', FasilitasController::class);
+       /* Route::resource('fasilitas', FasilitasController::class);*/
         Route::resource('gallery', GalleryController::class);
         Route::resource('program', ProgramController::class);
     });
@@ -288,9 +283,22 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
 Route::prefix('admin')->name('admin.')->group(function () {
     Route::prefix('data-master')->name('data-master.')->group(function () {
-        Route::resource('gallery', GalleryController::class);
+        // Route MANUAL untuk fasilitas
+        Route::get('/fasilitas', [FasilitasController::class, 'index'])->name('fasilitas.index');
+        Route::get('/fasilitas/create', [FasilitasController::class, 'create'])->name('fasilitas.create');
+        Route::post('/fasilitas', [FasilitasController::class, 'store'])->name('fasilitas.store');
+        Route::get('/fasilitas/{id}', [FasilitasController::class, 'show'])->name('fasilitas.show');
+        Route::get('/fasilitas/{id}/edit', [FasilitasController::class, 'edit'])->name('fasilitas.edit');
+        Route::put('/fasilitas/{id}', [FasilitasController::class, 'update'])->name('fasilitas.update');
+        Route::delete('/fasilitas/{id}', [FasilitasController::class, 'destroy'])->name('fasilitas.destroy');
     });
 });
+
+/*Route::prefix('admin')->name('admin.')->group(function () {
+    Route::prefix('data-master')->name('data-master.')->group(function () {
+        Route::resource('gallery', GalleryController::class);
+    });
+});*/
 
 //notification
 Route::get('/notifications', [UserController::class, 'notifications'])->name('notifications');
@@ -334,8 +342,8 @@ Route::middleware(['auth', 'user'])->prefix('user')->name('user.')->group(functi
     Route::get('/gallery/{id}', [UserController::class, 'galleryShow'])->name('gallery.show');
 
     // ===================== FASILITAS =====================
-    Route::get('/fasilitas', [UserController::class, 'fasilitasIndex'])->name('fasilitas.index');
-    Route::get('/fasilitas/{id}', [UserController::class, 'fasilitasShow'])->name('fasilitas.show');
+   /* Route::get('/fasilitas', [UserController::class, 'fasilitasIndex'])->name('fasilitas.index');
+    Route::get('/fasilitas/{id}', [UserController::class, 'fasilitasShow'])->name('fasilitas.show');*/
 
     // ===================== PROGRAM =====================
     Route::get('/program', [UserController::class, 'programIndex'])->name('program.index');
@@ -376,7 +384,7 @@ Route::get('/struktur', fn() => view('public.struktur'))->name('struktur');
 
 Route::get('/legalitas', [UserController::class, 'legalitas'])->name('legalitas');
 
-Route::get('/fasilitas', fn() => view('public.fasilitas'))->name('fasilitas');
+/*Route::get('/fasilitas', fn() => view('public.fasilitas'))->name('fasilitas');*/
 
 Route::get('/galeri', fn() => view('public.galeri'))->name('galeri');
 

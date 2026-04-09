@@ -38,7 +38,7 @@ class FasilitasController extends Controller
                                  ->distinct()
                                  ->pluck('kategori');
 
-        return view('data-master.fasilitas.index', compact('fasilitas', 'kategoriList'));
+        return view('admin.data-master.fasilitas.index', compact('fasilitas', 'kategoriList'));
     }
 
     /**
@@ -46,7 +46,7 @@ class FasilitasController extends Controller
      */
     public function create()
     {
-        return view('data-master.fasilitas.create');
+        return view('admin.data-master.fasilitas.create');
     }
 
     /**
@@ -76,75 +76,82 @@ class FasilitasController extends Controller
 
         Fasilitas::create($data);
 
-        return redirect()->route('data-master.fasilitas.index')
+        return redirect()->route('admin.data-master.fasilitas.index')
                          ->with('success', 'Fasilitas berhasil ditambahkan.');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Fasilitas $fasilitas)
+   public function show($id)
     {
-        return view('data-master.fasilitas.show', compact('fasilitas'));
+         $fasilitas = Fasilitas::findOrFail($id);
+        return view('admin.data-master.fasilitas.show', compact('fasilitas'));
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Fasilitas $fasilitas)
+    public function edit($id)
     {
-        return view('data-master.fasilitas.edit', compact('fasilitas'));
+        $fasilitas = Fasilitas::findOrFail($id);
+        return view('admin.data-master.fasilitas.edit', compact('fasilitas'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Fasilitas $fasilitas)
-    {
-        $request->validate([
-            'nama_fasilitas' => 'required|string|max:255',
-            'kategori' => 'nullable|string|max:100',
-            'jumlah' => 'required|integer|min:0',
-            'deskripsi' => 'nullable|string',
-            'kondisi' => 'required|in:Baik,Rusak Ringan,Rusak Berat',
-            'lokasi' => 'nullable|string|max:255',
-            'tanggal_pengadaan' => 'nullable|date',
-            'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'keterangan' => 'nullable|string',
-        ]);
+   public function update(Request $request, $id)
+{
+    $request->validate([
+        'nama_fasilitas' => 'required|string|max:255',
+        'kategori' => 'nullable|string|max:100',
+        'jumlah' => 'required|integer|min:0',
+        'deskripsi' => 'nullable|string',
+        'kondisi' => 'required|in:Baik,Rusak Ringan,Rusak Berat',
+        'lokasi' => 'nullable|string|max:255',
+        'tanggal_pengadaan' => 'nullable|date',
+        'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+        'keterangan' => 'nullable|string',
+    ]);
 
-        $data = $request->except('foto');
+    // Cari data berdasarkan ID
+    $fasilitas = Fasilitas::findOrFail($id);
 
-        // Upload foto baru jika ada
-        if ($request->hasFile('foto')) {
-            // Hapus foto lama
-            if ($fasilitas->foto) {
-                Storage::disk('public')->delete($fasilitas->foto);
-            }
+    $data = $request->except('foto');
 
-            $fotoPath = $request->file('foto')->store('fasilitas', 'public');
-            $data['foto'] = $fotoPath;
-        }
-
-        $fasilitas->update($data);
-
-        return redirect()->route('data-master.fasilitas.index')
-                         ->with('success', 'Fasilitas berhasil diperbarui.');
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Fasilitas $fasilitas)
-    {
-        // Hapus foto jika ada
+    // Upload foto baru jika ada
+    if ($request->hasFile('foto')) {
+        // Hapus foto lama
         if ($fasilitas->foto) {
             Storage::disk('public')->delete($fasilitas->foto);
         }
 
-        $fasilitas->delete();
-
-        return redirect()->route('data-master.fasilitas.index')
-                         ->with('success', 'Fasilitas berhasil dihapus.');
+        $fotoPath = $request->file('foto')->store('fasilitas', 'public');
+        $data['foto'] = $fotoPath;
     }
+
+    $fasilitas->update($data);
+
+    return redirect()->route('admin.data-master.fasilitas.index')
+                     ->with('success', 'Fasilitas berhasil diperbarui.');
+}
+
+
+    /**
+     * Remove the specified resource from storage.
+     */
+  public function destroy($id)
+{
+    $fasilitas = Fasilitas::findOrFail($id);
+
+    if ($fasilitas->foto) {
+        Storage::disk('public')->delete($fasilitas->foto);
+    }
+
+    $fasilitas->delete();
+
+    return redirect()->route('admin.data-master.fasilitas.index')
+                     ->with('success', 'Fasilitas berhasil dihapus.');
+}
 }
