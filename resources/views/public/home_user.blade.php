@@ -540,31 +540,52 @@
             <h2 class="program-title reveal-top">Program Pendidikan</h2>
             <div class="program-cards">
                 <div class="program-card reveal-left">
-                    <h3>Tahfidz Murni</h3>
+                    {{-- <h3>Tahfidz Murni</h3>
                     <p>
                         Program khusus bagi santri yang fokus menghafal Al-Qur’an
                         tanpa sekolah formal. Santri wajib mengikuti madrasah diniyah
                         dan kajian kitab salaf sebagai penguatan ilmu syar’i.
-                    </p>
+                    </p> --}}
+
+                    @foreach ($program as $p)
+                        <div class="card">
+                            <h3>{{ $p->nama_program }}</h3>
+                            <p>{{ $p->deskripsi }}</p>
+                        </div>
+                    @endforeach
                     <div class="card-line"></div>
                 </div>
 
                 <div class="program-card reveal-bottom">
-                    <h3>Tahfidz & Sekolah Formal</h3>
+                    {{-- <h3>Tahfidz & Sekolah Formal</h3>
                     <p>
                         Program terpadu antara hafalan Al-Qur’an dan pendidikan formal (MTs/SMA).
                         Cocok bagi santri yang ingin menghafal sekaligus menempuh pendidikan umum.
-                    </p>
+                    </p> --}}
+
+                    @foreach ($program as $p)
+                        <div class="card">
+                            <h3>{{ $p->nama_program }}</h3>
+                            <p>{{ $p->deskripsi }}</p>
+                        </div>
+                    @endforeach
                     <div class="card-line"></div>
                 </div>
 
                 <div class="program-card reveal-right">
-                    <h3>Tahfidz 30 Juz & Surat Pilihan</h3>
+                    {{-- <h3>Tahfidz 30 Juz & Surat Pilihan</h3>
                     <p>
                         Program target hafalan 30 juz atau surat tertentu.
                         Wajib mengikuti sekolah dan menyelesaikan hafalan
                         dengan sistem bin-nadzhar.
-                    </p>
+                    </p> --}}
+
+                    @foreach ($program as $p)
+                        <div class="card">
+                            <h3>{{ $p->nama_program }}</h3>
+                            <p>{{ $p->deskripsi }}</p>
+                        </div>
+                    @endforeach
                     <div class="card-line"></div>
                 </div>
             </div>
@@ -576,33 +597,75 @@
             <h2 class="fasilitas-title">Fasilitas</h2>
             <div class="fasilitas-grid">
                 <div class="fasilitas-card">
-                    <img src="{{ asset('images/hero.png') }}" alt="Masjid">
-                    <h3>Masjid</h3>
+                    {{-- <img src="{{ asset('images/hero.png') }}" alt="Masjid">
+                    <h3>Masjid</h3> --}}
+
+                    @foreach ($fasilitas as $item)
+                        <div class="card">
+                            <img src="{{ asset('storage/' . $item->gambar) }}">
+                            <h3>{{ $item->nama }}</h3>
+                        </div>
+                    @endforeach
                 </div>
 
                 <div class="fasilitas-card">
-                    <img src="{{ asset('images/hero.png') }}" alt="Asrama">
-                    <h3>Asrama</h3>
+                    {{-- <img src="{{ asset('images/hero.png') }}" alt="Asrama">
+                    <h3>Asrama</h3> --}}
+
+                    @foreach ($fasilitas as $item)
+                        <div class="card">
+                            <img src="{{ asset('storage/' . $item->gambar) }}">
+                            <h3>{{ $item->nama }}</h3>
+                        </div>
+                    @endforeach
                 </div>
 
                 <div class="fasilitas-card">
-                    <img src="{{ asset('images/hero.png') }}" alt="Kamar Mandi">
-                    <h3>Kamar Mandi</h3>
+                    {{-- <img src="{{ asset('images/hero.png') }}" alt="Kamar Mandi">
+                    <h3>Kamar Mandi</h3> --}}
+
+                    @foreach ($fasilitas as $item)
+                        <div class="card">
+                            <img src="{{ asset('storage/' . $item->gambar) }}">
+                            <h3>{{ $item->nama }}</h3>
+                        </div>
+                    @endforeach
                 </div>
 
                 <div class="fasilitas-card">
-                    <img src="{{ asset('images/hero.png') }}" alt="Ruang Belajar">
-                    <h3>Ruang Belajar</h3>
+                    {{-- <img src="{{ asset('images/hero.png') }}" alt="Ruang Belajar">
+                    <h3>Ruang Belajar</h3> --}}
+
+                    @foreach ($fasilitas as $item)
+                        <div class="card">
+                            <img src="{{ asset('storage/' . $item->gambar) }}">
+                            <h3>{{ $item->nama }}</h3>
+                        </div>
+                    @endforeach
                 </div>
 
                 <div class="fasilitas-card">
-                    <img src="{{ asset('images/hero.png') }}" alt="Lapangan Olahraga">
-                    <h3>Lapangan Olahraga</h3>
+                    {{-- <img src="{{ asset('images/hero.png') }}" alt="Lapangan Olahraga">
+                    <h3>Lapangan Olahraga</h3> --}}
+
+                    @foreach ($fasilitas as $item)
+                        <div class="card">
+                            <img src="{{ asset('storage/' . $item->gambar) }}">
+                            <h3>{{ $item->nama }}</h3>
+                        </div>
+                    @endforeach
                 </div>
 
                 <div class="fasilitas-card">
-                    <img src="{{ asset('images/hero.png') }}" alt="Kantin">
-                    <h3>Kantin</h3>
+                    {{-- <img src="{{ asset('images/hero.png') }}" alt="Kantin">
+                    <h3>Kantin</h3> --}}
+
+                    @foreach ($fasilitas as $item)
+                        <div class="card">
+                            <img src="{{ asset('storage/' . $item->gambar) }}">
+                            <h3>{{ $item->nama }}</h3>
+                        </div>
+                    @endforeach
                 </div>
             </div>
 
@@ -619,15 +682,27 @@
                 <button class="galeri-btn btn-prev">&#10094;</button>
                 <div class="galeri-carousel">
                     <div class="galeri-card active">
-                        <img src="{{ asset('images/g2.png') }}" alt="">
+                        {{-- <img src="{{ asset('images/g2.png') }}" alt=""> --}}
+
+                        @foreach ($galeri as $g)
+                            <img src="{{ asset('storage/' . $g->gambar) }}">
+                        @endforeach
                     </div>
 
                     <div class="galeri-card">
-                        <img src="{{ asset('images/g4.png') }}" alt="">
+                        {{-- <img src="{{ asset('images/g4.png') }}" alt=""> --}}
+
+                        @foreach ($galeri as $g)
+                            <img src="{{ asset('storage/' . $g->gambar) }}">
+                        @endforeach
                     </div>
 
                     <div class="galeri-card">
-                        <img src="{{ asset('images/g6.png') }}" alt="">
+                        {{-- <img src="{{ asset('images/g6.png') }}" alt=""> --}}
+
+                        @foreach ($galeri as $g)
+                            <img src="{{ asset('storage/' . $g->gambar) }}">
+                        @endforeach
                     </div>
                 </div>
 
@@ -661,7 +736,7 @@
     </section>
     @include('components.footer')
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-        <script>
+    <script>
         const cards = document.querySelectorAll('.galeri-card');
         const nextBtn = document.querySelector('.btn-next');
         const prevBtn = document.querySelector('.btn-prev');

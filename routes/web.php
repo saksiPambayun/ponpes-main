@@ -374,7 +374,7 @@ Route::middleware(['auth', 'user'])->prefix('user')->name('user.')->group(functi
     Route::get('/user-test', [App\Http\Controllers\User\UserController::class, 'dashboard'])->middleware('auth');
 });
 
-Route::get('/', fn() => view('public.home_user'))->name('home');
+Route::get('/home', [UserController::class, 'home'])->name('home');
 
 Route::get('/tentang', [UserController::class, 'tentang'])->name('tentang');
 

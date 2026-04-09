@@ -107,6 +107,16 @@ class UserController extends Controller
         return back()->with('success', 'Avatar berhasil diupload!');
     }
 
+    // Home
+
+    public function home()
+    {
+        $galeri = Gallery::latest()->take(3)->get();
+        $fasilitas = Fasilitas::latest()->take(3)->get();
+        $program = Program::latest()->take(3)->get(); // INI YANG PENTING
+
+        return view('public.home_user', compact('galeri', 'fasilitas', 'program'));
+    }
 
     // Legalitas
     public function legalitas()
@@ -118,7 +128,7 @@ class UserController extends Controller
         return view('public.legalitas', compact('aktaYayasan', 'aktaWakaf', 'sk'));
     }
 
-// Tentang
+    // Tentang
     public function tentang()
     {
         $aktaYayasan = AktaYayasan::latest()->first();
