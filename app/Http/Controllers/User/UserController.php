@@ -259,7 +259,11 @@ class UserController extends Controller
     public function profilYayasanIndex()
     {
         $profil = ProfilYayasan::first();
-        return view('user.profil-yayasan.index', compact('profil'));
+        $aktaYayasan = AktaYayasan::first();
+        $aktaWakaf = AktaWakaf::first();
+        $sk = SkData::latest()->first();
+
+        return view('public.tentang', compact('profil', 'aktaYayasan', 'aktaWakaf', 'sk'));
     }
 
     public function profilYayasanShow($id)

@@ -15,7 +15,7 @@ class ProfilYayasanController extends Controller
     {
         $profil = ProfilYayasan::getProfil();
 
-        return view('data-master.profil-yayasan.index', [
+        return view('admin.data-master.profil-yayasan.index', [
             'title'  => 'Profil Yayasan',
             'active' => 'data-master',
             'profil' => $profil,
@@ -27,7 +27,7 @@ class ProfilYayasanController extends Controller
      */
     public function create()
     {
-        return view('data-master.profil-yayasan.create', [
+        return view('admin.data-master.profil-yayasan.create', [
             'title'  => 'Tambah Profil Yayasan',
             'active' => 'data-master',
         ]);
@@ -90,7 +90,7 @@ class ProfilYayasanController extends Controller
     {
         $profil = ProfilYayasan::getProfil();
 
-        return view('data-master.profil-yayasan.edit', [
+        return view('admin.data-master.profil-yayasan.edit', [
             'title'  => 'Edit Profil Yayasan',
             'active' => 'data-master',
             'profil' => $profil,
