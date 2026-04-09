@@ -1,31 +1,29 @@
-@extends('admin.layout')
+<?php $__env->startSection('title', 'Data Program'); ?>
 
-@section('title', 'Data Program')
-
-@section('content')
+<?php $__env->startSection('content'); ?>
 
     <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
         <div>
             <h3 class="text-xl font-bold text-gray-900">Data Program</h3>
             <p class="text-gray-500 text-sm mt-1">Kelola semua program kegiatan pesantren</p>
         </div>
-        <a href="{{ route('admin.program.create') }}"
+        <a href="<?php echo e(route('admin.program.create')); ?>"
             class="btn-primary px-6 py-2 rounded-lg text-white font-medium inline-flex items-center">
             <i class="fas fa-plus mr-2"></i>Tambah Program
         </a>
     </div>
 
-    {{-- Alert Success --}}
-    @if(session('success'))
+    
+    <?php if(session('success')): ?>
         <div class="mb-4 p-4 bg-green-100 border border-green-300 text-green-800 rounded-lg flex items-center gap-2">
             <i class="fas fa-check-circle"></i>
-            <span>{{ session('success') }}</span>
+            <span><?php echo e(session('success')); ?></span>
         </div>
-    @endif
+    <?php endif; ?>
 
     <div class="card overflow-hidden">
 
-        {{-- Search Bar --}}
+        
         <div class="p-6 border-b border-gray-200">
             <div class="flex flex-col md:flex-row gap-4">
                 <div class="flex-1">
@@ -56,46 +54,50 @@
                         </tr>
                     </thead>
                     <tbody class="bg-white divide-y divide-gray-200" id="programTable">
-                        @forelse($programs as $item)
+                        <?php $__empty_1 = true; $__currentLoopData = $programs; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
                             <tr class="hover:bg-gray-50 transition-colors">
 
-                                {{-- Nama Program --}}
+                                
                                 <td class="px-4 py-4">
                                     <div class="flex items-center gap-3">
                                         <div
                                             class="w-9 h-9 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-700 font-bold text-sm shrink-0">
-                                            {{ strtoupper(substr($item->nama_program, 0, 2)) }}
+                                            <?php echo e(strtoupper(substr($item->nama_program, 0, 2))); ?>
+
                                         </div>
-                                        <p class="text-sm font-semibold text-gray-900">{{ $item->nama_program }}</p>
+                                        <p class="text-sm font-semibold text-gray-900"><?php echo e($item->nama_program); ?></p>
                                     </div>
                                 </td>
 
-                                {{-- Kategori --}}
+                                
                                 <td class="px-4 py-4 text-sm text-gray-600">
-                                    {{ $item->kategori ?? '-' }}
+                                    <?php echo e($item->kategori ?? '-'); ?>
+
                                 </td>
 
-                                {{-- Tanggal Mulai --}}
+                                
                                 <td class="px-4 py-4 text-sm text-gray-600 whitespace-nowrap">
-                                    {{ $item->tanggal_mulai ? \Carbon\Carbon::parse($item->tanggal_mulai)->format('d M Y') : '-' }}
+                                    <?php echo e($item->tanggal_mulai ? \Carbon\Carbon::parse($item->tanggal_mulai)->format('d M Y') : '-'); ?>
+
                                 </td>
 
-                                {{-- Tanggal Selesai --}}
+                                
                                 <td class="px-4 py-4 text-sm text-gray-600 whitespace-nowrap">
-                                    {{ $item->tanggal_selesai ? \Carbon\Carbon::parse($item->tanggal_selesai)->format('d M Y') : '-' }}
+                                    <?php echo e($item->tanggal_selesai ? \Carbon\Carbon::parse($item->tanggal_selesai)->format('d M Y') : '-'); ?>
+
                                 </td>
 
-                                {{-- Aksi --}}
+                                
                                 <td class="px-4 py-4">
                                     <div class="flex items-center justify-center gap-1">
-                                        <a href="{{ route('admin.program.edit', $item->id) }}"
+                                        <a href="<?php echo e(route('admin.program.edit', $item->id)); ?>"
                                             class="p-1.5 rounded-lg text-blue-600 hover:bg-blue-50 transition" title="Edit">
                                             <i class="fas fa-edit text-sm"></i>
                                         </a>
-                                        <form action="{{ route('admin.program.destroy', $item->id) }}" method="POST"
+                                        <form action="<?php echo e(route('admin.program.destroy', $item->id)); ?>" method="POST"
                                             class="inline" onsubmit="return confirm('Yakin ingin menghapus program ini?')">
-                                            @csrf
-                                            @method('DELETE')
+                                            <?php echo csrf_field(); ?>
+                                            <?php echo method_field('DELETE'); ?>
                                             <button type="submit"
                                                 class="p-1.5 rounded-lg text-red-600 hover:bg-red-50 transition" title="Hapus">
                                                 <i class="fas fa-trash text-sm"></i>
@@ -105,7 +107,7 @@
                                 </td>
 
                             </tr>
-                        @empty
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
                             <tr>
                                 <td colspan="6" class="px-6 py-12 text-center">
                                     <i class="fas fa-inbox text-4xl text-gray-300 mb-3 block"></i>
@@ -113,19 +115,20 @@
                                     <p class="text-gray-400 text-sm mt-1">Tambahkan program baru untuk memulai</p>
                                 </td>
                             </tr>
-                        @endforelse
+                        <?php endif; ?>
                     </tbody>
                 </table>
             </div>
 
             <div class="p-6 border-t border-gray-200">
-                {{ $programs->links() }}
+                <?php echo e($programs->links()); ?>
+
             </div>
         </div>
 
-@endsection
+<?php $__env->stopSection(); ?>
 
-    @push('scripts')
+    <?php $__env->startPush('scripts'); ?>
         <script>
             // Search
             document.getElementById('searchInput').addEventListener('keyup', function () {
@@ -147,4 +150,6 @@
                 });
             });
         </script>
-    @endpush
+    <?php $__env->stopPush(); ?>
+
+<?php echo $__env->make('admin.layout', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH D:\ponpes-main\resources\views/admin/data-master/program/index.blade.php ENDPATH**/ ?>

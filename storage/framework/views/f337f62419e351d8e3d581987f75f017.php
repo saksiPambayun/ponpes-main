@@ -1,38 +1,36 @@
-@extends('admin.layout')
+<?php $__env->startSection('title', 'Edit Program'); ?>
 
-@section('title', 'Edit Program')
-
-@section('content')
+<?php $__env->startSection('content'); ?>
     <div class="container-fluid px-4 py-4">
 
-        {{-- Header --}}
+        
         <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
             <div>
                 <h4 class="text-2xl font-bold text-gray-800 mb-1">Edit Program</h4>
-                <p class="text-sm text-gray-600">Ubah data program: {{ $program->nama_program }}</p>
+                <p class="text-sm text-gray-600">Ubah data program: <?php echo e($program->nama_program); ?></p>
             </div>
-            <a href="{{ route('admin.program.index') }}"
+            <a href="<?php echo e(route('admin.program.index')); ?>"
                 class="mt-3 md:mt-0 bg-white border border-gray-300 hover:bg-gray-100 text-gray-700 font-medium py-2 px-4 rounded-lg transition duration-200 inline-flex items-center">
                 <i class="fas fa-arrow-left mr-2"></i> Kembali
             </a>
         </div>
 
-        {{-- Alert jika ada error --}}
-        @if($errors->any())
+        
+        <?php if($errors->any()): ?>
             <div class="mb-4 p-4 bg-red-100 border border-red-300 text-red-800 rounded-lg flex items-start gap-3">
                 <i class="fas fa-exclamation-circle mt-1"></i>
                 <div>
                     <strong class="font-bold">Terjadi kesalahan:</strong>
                     <ul class="mt-1 list-disc list-inside text-sm">
-                        @foreach($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
+                        <?php $__currentLoopData = $errors->all(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $error): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                            <li><?php echo e($error); ?></li>
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                     </ul>
                 </div>
             </div>
-        @endif
+        <?php endif; ?>
 
-        {{-- Form Card --}}
+        
         <div class="bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden">
             <div class="bg-gray-50 px-6 py-4 border-b border-gray-200">
                 <h5 class="font-semibold text-gray-700 flex items-center">
@@ -42,60 +40,102 @@
             </div>
 
             <div class="p-6">
-                <form action="{{ route('admin.program.update', $program->id) }}" method="POST"
+                <form action="<?php echo e(route('admin.program.update', $program->id)); ?>" method="POST"
                     enctype="multipart/form-data">
-                    @csrf
-                    @method('PUT')
+                    <?php echo csrf_field(); ?>
+                    <?php echo method_field('PUT'); ?>
 
-                    {{-- Informasi Dasar --}}
+                    
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-                        {{-- Nama Program --}}
+                        
                         <div class="col-span-2 md:col-span-1">
                             <label class="block text-sm font-medium text-gray-700 mb-2">
                                 Nama Program <span class="text-red-500">*</span>
                             </label>
                             <input type="text" name="nama_program"
-                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 @error('nama_program') border-red-500 @enderror"
-                                value="{{ old('nama_program', $program->nama_program) }}"
+                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 <?php $__errorArgs = ['nama_program'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> border-red-500 <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>"
+                                value="<?php echo e(old('nama_program', $program->nama_program)); ?>"
                                 placeholder="Masukkan nama program">
-                            @error('nama_program')
-                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                            @enderror
+                            <?php $__errorArgs = ['nama_program'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                <p class="mt-1 text-sm text-red-600"><?php echo e($message); ?></p>
+                            <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                         </div>
 
-                        {{-- Kategori --}}
+                        
                         <div class="col-span-2 md:col-span-1">
                             <label class="block text-sm font-medium text-gray-700 mb-2">
                                 Kategori <span class="text-red-500">*</span>
                             </label>
                             <select name="kategori"
-                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 @error('kategori') border-red-500 @enderror">
+                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 <?php $__errorArgs = ['kategori'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> border-red-500 <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>">
                                 <option value="">-- Pilih Kategori --</option>
-                                <option value="pendidikan" {{ old('kategori', $program->kategori) == 'pendidikan' ? 'selected' : '' }}>📚 Pendidikan</option>
-                                <option value="sosial" {{ old('kategori', $program->kategori) == 'sosial' ? 'selected' : '' }}>❤️ Sosial</option>
-                                <option value="keagamaan" {{ old('kategori', $program->kategori) == 'keagamaan' ? 'selected' : '' }}>🕌 Keagamaan</option>
-                                <option value="kesehatan" {{ old('kategori', $program->kategori) == 'kesehatan' ? 'selected' : '' }}>🏥 Kesehatan</option>
+                                <option value="pendidikan" <?php echo e(old('kategori', $program->kategori) == 'pendidikan' ? 'selected' : ''); ?>>📚 Pendidikan</option>
+                                <option value="sosial" <?php echo e(old('kategori', $program->kategori) == 'sosial' ? 'selected' : ''); ?>>❤️ Sosial</option>
+                                <option value="keagamaan" <?php echo e(old('kategori', $program->kategori) == 'keagamaan' ? 'selected' : ''); ?>>🕌 Keagamaan</option>
+                                <option value="kesehatan" <?php echo e(old('kategori', $program->kategori) == 'kesehatan' ? 'selected' : ''); ?>>🏥 Kesehatan</option>
                             </select>
-                            @error('kategori')
-                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                            @enderror
+                            <?php $__errorArgs = ['kategori'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                <p class="mt-1 text-sm text-red-600"><?php echo e($message); ?></p>
+                            <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                         </div>
                     </div>
 
-                    {{-- Deskripsi --}}
+                    
                     <div class="mb-6">
                         <label class="block text-sm font-medium text-gray-700 mb-2">
                             Deskripsi <span class="text-red-500">*</span>
                         </label>
                         <textarea name="deskripsi" rows="5"
-                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 @error('deskripsi') border-red-500 @enderror"
-                            placeholder="Jelaskan deskripsi program secara detail...">{{ old('deskripsi', $program->deskripsi) }}</textarea>
-                        @error('deskripsi')
-                            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                        @enderror
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 <?php $__errorArgs = ['deskripsi'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> border-red-500 <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>"
+                            placeholder="Jelaskan deskripsi program secara detail..."><?php echo e(old('deskripsi', $program->deskripsi)); ?></textarea>
+                        <?php $__errorArgs = ['deskripsi'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                            <p class="mt-1 text-sm text-red-600"><?php echo e($message); ?></p>
+                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                     </div>
 
-                    {{-- Waktu Pelaksanaan --}}
+                    
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-2">
@@ -103,7 +143,7 @@
                             </label>
                             <input type="date" name="tanggal_mulai"
                                 class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-                                value="{{ old('tanggal_mulai', $program->tanggal_mulai ? $program->tanggal_mulai->format('Y-m-d') : '') }}">
+                                value="<?php echo e(old('tanggal_mulai', $program->tanggal_mulai ? $program->tanggal_mulai->format('Y-m-d') : '')); ?>">
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-2">
@@ -111,51 +151,58 @@
                             </label>
                             <input type="date" name="tanggal_selesai"
                                 class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-                                value="{{ old('tanggal_selesai', $program->tanggal_selesai ? $program->tanggal_selesai->format('Y-m-d') : '') }}">
+                                value="<?php echo e(old('tanggal_selesai', $program->tanggal_selesai ? $program->tanggal_selesai->format('Y-m-d') : '')); ?>">
                         </div>
                     </div>
 
-                    {{-- Status --}}
+                    
                     <div class="mb-6">
                         <label class="block text-sm font-medium text-gray-700 mb-2">
                             Status <span class="text-red-500">*</span>
                         </label>
                         <div class="flex flex-wrap gap-4">
                             <label class="inline-flex items-center">
-                                <input type="radio" name="status" value="aktif" class="form-radio text-indigo-600" {{ old('status', $program->status) == 'aktif' ? 'checked' : '' }}>
+                                <input type="radio" name="status" value="aktif" class="form-radio text-indigo-600" <?php echo e(old('status', $program->status) == 'aktif' ? 'checked' : ''); ?>>
                                 <span class="ml-2 text-gray-700">Aktif</span>
                             </label>
                             <label class="inline-flex items-center">
-                                <input type="radio" name="status" value="selesai" class="form-radio text-indigo-600" {{ old('status', $program->status) == 'selesai' ? 'checked' : '' }}>
+                                <input type="radio" name="status" value="selesai" class="form-radio text-indigo-600" <?php echo e(old('status', $program->status) == 'selesai' ? 'checked' : ''); ?>>
                                 <span class="ml-2 text-gray-700">Selesai</span>
                             </label>
                             <label class="inline-flex items-center">
-                                <input type="radio" name="status" value="dinunda" class="form-radio text-indigo-600" {{ old('status', $program->status) == 'dinunda' ? 'checked' : '' }}>
+                                <input type="radio" name="status" value="dinunda" class="form-radio text-indigo-600" <?php echo e(old('status', $program->status) == 'dinunda' ? 'checked' : ''); ?>>
                                 <span class="ml-2 text-gray-700">Ditunda</span>
                             </label>
                         </div>
-                        @error('status')
-                            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                        @enderror
+                        <?php $__errorArgs = ['status'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                            <p class="mt-1 text-sm text-red-600"><?php echo e($message); ?></p>
+                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                     </div>
 
-                    {{-- Upload Gambar --}}
+                    
                     <div class="mb-6">
                         <label class="block text-sm font-medium text-gray-700 mb-2">
                             Gambar Program
                         </label>
 
-                        {{-- Tampilkan gambar lama jika ada --}}
-                        @if($program->gambar)
+                        
+                        <?php if($program->gambar): ?>
                             <div class="mb-3 p-3 border border-gray-200 rounded-lg bg-gray-50 flex items-center">
-                                <img src="{{ asset('storage/' . $program->gambar) }}" alt="Current Image"
+                                <img src="<?php echo e(asset('storage/' . $program->gambar)); ?>" alt="Current Image"
                                     class="w-16 h-16 object-cover rounded-lg">
                                 <div class="ml-3">
                                     <p class="text-sm text-gray-600">Gambar saat ini</p>
-                                    <p class="text-xs text-gray-500">{{ basename($program->gambar) }}</p>
+                                    <p class="text-xs text-gray-500"><?php echo e(basename($program->gambar)); ?></p>
                                 </div>
                             </div>
-                        @endif
+                        <?php endif; ?>
 
                         <div class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center bg-gray-50 cursor-pointer hover:border-indigo-500 hover:bg-indigo-50 transition"
                             id="uploadArea" onclick="document.getElementById('gambar').click()">
@@ -170,14 +217,28 @@
                         </div>
 
                         <input type="file" name="gambar" id="gambar"
-                            class="hidden @error('gambar') border-red-500 @enderror" accept="image/*"
+                            class="hidden <?php $__errorArgs = ['gambar'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> border-red-500 <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>" accept="image/*"
                             onchange="previewImage(this)">
 
-                        @error('gambar')
-                            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                        @enderror
+                        <?php $__errorArgs = ['gambar'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                            <p class="mt-1 text-sm text-red-600"><?php echo e($message); ?></p>
+                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
 
-                        {{-- Preview Image --}}
+                        
                         <div id="previewContainer" class="mt-3 hidden">
                             <div class="flex items-center p-3 border border-gray-200 rounded-lg bg-gray-50">
                                 <img id="preview" src="#" alt="Preview" class="rounded-lg"
@@ -196,9 +257,9 @@
                         <p class="mt-1 text-xs text-gray-500">Kosongkan jika tidak ingin mengubah gambar</p>
                     </div>
 
-                    {{-- Tombol Submit --}}
+                    
                     <div class="flex gap-3 justify-end border-t border-gray-200 pt-6">
-                        <a href="{{ route('admin.program.index') }}"
+                        <a href="<?php echo e(route('admin.program.index')); ?>"
                             class="bg-white border border-gray-300 hover:bg-gray-100 text-gray-700 font-medium py-2 px-6 rounded-lg transition">
                             <i class="fas fa-times mr-2"></i>Batal
                         </a>
@@ -212,9 +273,9 @@
         </div>
 
     </div>
-@endsection
+<?php $__env->stopSection(); ?>
 
-@push('scripts')
+<?php $__env->startPush('scripts'); ?>
     <script>
         // Preview Image
         function previewImage(input) {
@@ -284,4 +345,6 @@
             });
         }
     </script>
-@endpush
+<?php $__env->stopPush(); ?>
+
+<?php echo $__env->make('admin.layout', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH D:\ponpes-main\resources\views/admin/data-master/program/edit.blade.php ENDPATH**/ ?>

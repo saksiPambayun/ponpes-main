@@ -20,7 +20,6 @@ class ProgramController extends Controller
             $query->where('kategori', $request->kategori);
         }
 
-
         // Search
         if ($request->filled('search')) {
             $query->where('nama_program', 'like', '%' . $request->search . '%');
@@ -35,28 +34,19 @@ class ProgramController extends Controller
             'dinunda'   => Program::where('status', 'dinunda')->count(),
         ];
 
-        $data = [
-            'title'    => 'Program',
-            'active'   => 'data-master',
-            'programs' => $programs,
-            'stats'    => $stats,
-        ];
-
-        return view('data-master.program.index', $data);
+        // PERBAIKI - tambahkan 'admin.' prefix
+        return view('admin.data-master.program.index', compact('programs', 'stats'));
     }
 
     /**
      * Show the form for creating a new program.
      */
-    public function create()
-    {
-        $data = [
-            'title'  => 'Tambah Program',
-            'active' => 'data-master',
-        ];
-
-        return view('data-master.program.create', $data);
-    }
+   public function create()
+{
+    return view('admin.data-master.program.create', [
+        'title' => 'Tambah Program'
+    ]);
+}
 
     /**
      * Store a newly created program.
@@ -92,32 +82,26 @@ class ProgramController extends Controller
      */
     public function show(Program $program)
     {
-        $data = [
-            'title'   => 'Detail Program',
-            'active'  => 'data-master',
-            'program' => $program,
-        ];
-
-        return view('data-master.program.show', $data);
+        // PERBAIKI - tambahkan 'admin.' prefix
+        return view('admin.data-master.program.show', compact('program'));
     }
+
+    /**
+     * Show program for user frontend
+     */
     public function programShow($id)
-{
-    $program = Program::findOrFail($id);
-    return view('user.program.show', compact('program'));
-}
+    {
+        $program = Program::findOrFail($id);
+        return view('user.program.show', compact('program'));
+    }
 
     /**
      * Show the form for editing the program.
      */
     public function edit(Program $program)
     {
-        $data = [
-            'title'   => 'Edit Program',
-            'active'  => 'data-master',
-            'program' => $program,
-        ];
-
-        return view('data-master.program.edit', $data);
+        // PERBAIKI - tambahkan 'admin.' prefix
+        return view('admin.data-master.program.edit', compact('program'));
     }
 
     /**
@@ -129,7 +113,6 @@ class ProgramController extends Controller
             'nama_program'    => 'required|string|max:255',
             'deskripsi'       => 'required|string',
             'kategori'        => 'required|in:pendidikan,sosial,keagamaan,kesehatan',
-
             'tanggal_mulai'   => 'nullable|date',
             'tanggal_selesai' => 'nullable|date|after_or_equal:tanggal_mulai',
             'gambar'          => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
@@ -151,7 +134,7 @@ class ProgramController extends Controller
         $program->update($data);
 
         return redirect()->route('admin.program.index')
-    ->with('success', 'Program berhasil diperbarui!');
+            ->with('success', 'Program berhasil diperbarui!');
     }
 
     /**
