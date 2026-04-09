@@ -34,19 +34,16 @@ class ProgramController extends Controller
             'dinunda'   => Program::where('status', 'dinunda')->count(),
         ];
 
-        // PERBAIKI - tambahkan 'admin.' prefix
         return view('admin.data-master.program.index', compact('programs', 'stats'));
     }
 
     /**
      * Show the form for creating a new program.
      */
-   public function create()
-{
-    return view('admin.data-master.program.create', [
-        'title' => 'Tambah Program'
-    ]);
-}
+    public function create()
+    {
+        return view('admin.data-master.program.create');
+    }
 
     /**
      * Store a newly created program.
@@ -59,17 +56,13 @@ class ProgramController extends Controller
             'kategori'        => 'required|in:pendidikan,sosial,keagamaan,kesehatan',
             'tanggal_mulai'   => 'nullable|date',
             'tanggal_selesai' => 'nullable|date|after_or_equal:tanggal_mulai',
-            'gambar'          => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+            // Hapus validasi gambar
         ]);
 
         $data = $request->only([
             'nama_program', 'deskripsi', 'kategori',
             'status', 'tanggal_mulai', 'tanggal_selesai',
         ]);
-
-        if ($request->hasFile('gambar')) {
-            $data['gambar'] = $request->file('gambar')->store('programs', 'public');
-        }
 
         Program::create($data);
 
@@ -82,7 +75,6 @@ class ProgramController extends Controller
      */
     public function show(Program $program)
     {
-        // PERBAIKI - tambahkan 'admin.' prefix
         return view('admin.data-master.program.show', compact('program'));
     }
 
@@ -100,7 +92,6 @@ class ProgramController extends Controller
      */
     public function edit(Program $program)
     {
-        // PERBAIKI - tambahkan 'admin.' prefix
         return view('admin.data-master.program.edit', compact('program'));
     }
 
@@ -115,21 +106,13 @@ class ProgramController extends Controller
             'kategori'        => 'required|in:pendidikan,sosial,keagamaan,kesehatan',
             'tanggal_mulai'   => 'nullable|date',
             'tanggal_selesai' => 'nullable|date|after_or_equal:tanggal_mulai',
-            'gambar'          => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+            // Hapus validasi gambar
         ]);
 
         $data = $request->only([
             'nama_program', 'deskripsi', 'kategori',
             'status', 'tanggal_mulai', 'tanggal_selesai',
         ]);
-
-        if ($request->hasFile('gambar')) {
-            // Hapus gambar lama
-            if ($program->gambar) {
-                Storage::disk('public')->delete($program->gambar);
-            }
-            $data['gambar'] = $request->file('gambar')->store('programs', 'public');
-        }
 
         $program->update($data);
 
@@ -142,10 +125,6 @@ class ProgramController extends Controller
      */
     public function destroy(Program $program)
     {
-        if ($program->gambar) {
-            Storage::disk('public')->delete($program->gambar);
-        }
-
         $program->delete();
 
         return redirect()->route('admin.program.index')

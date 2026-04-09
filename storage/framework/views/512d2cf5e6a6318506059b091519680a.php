@@ -1,10 +1,8 @@
-@extends('admin.layout')
+<?php $__env->startSection('title', 'Detail Program'); ?>
 
-@section('title', 'Detail Program')
-
-@section('content')
+<?php $__env->startSection('content'); ?>
     <div class="page-wrapper" style="background: #f0f4f8; min-height: 100vh; padding: 2rem;">
-        {{-- Page Header --}}
+        
         <div class="page-header" style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem;">
             <div class="page-header-left" style="display: flex; align-items: center; gap: 1rem;">
                 <div class="page-icon" style="width: 48px; height: 48px; background: linear-gradient(135deg, #4361ee, #7209b7); border-radius: 14px; display: flex; align-items: center; justify-content: center;">
@@ -12,20 +10,20 @@
                 </div>
                 <div>
                     <h1 style="font-size: 1.35rem; font-weight: 700; color: #1a1f36; margin: 0;">Detail Program</h1>
-                    <p style="font-size: 0.8rem; color: #8898aa; margin: 0;">Informasi lengkap program: {{ $program->nama_program }}</p>
+                    <p style="font-size: 0.8rem; color: #8898aa; margin: 0;">Informasi lengkap program: <?php echo e($program->nama_program); ?></p>
                 </div>
             </div>
             <div class="action-buttons" style="display: flex; gap: 0.5rem;">
-                <a href="{{ route('admin.program.edit', $program->id) }}" class="btn-edit" style="display: inline-flex; align-items: center; gap: 0.45rem; padding: 0.55rem 1.1rem; background: linear-gradient(135deg, #f59e0b, #d97706); border: none; border-radius: 10px; color: #fff; font-size: 0.82rem; font-weight: 600; text-decoration: none;">
+                <a href="<?php echo e(route('admin.program.edit', $program->id)); ?>" class="btn-edit" style="display: inline-flex; align-items: center; gap: 0.45rem; padding: 0.55rem 1.1rem; background: linear-gradient(135deg, #f59e0b, #d97706); border: none; border-radius: 10px; color: #fff; font-size: 0.82rem; font-weight: 600; text-decoration: none;">
                     <i class="fas fa-edit"></i> Edit
                 </a>
-                <a href="{{ route('admin.program.index') }}" class="btn-back" style="display: inline-flex; align-items: center; gap: 0.45rem; padding: 0.55rem 1.1rem; background: #fff; border: 1.5px solid #e2e8f0; border-radius: 10px; color: #4a5568; font-size: 0.82rem; font-weight: 600; text-decoration: none;">
+                <a href="<?php echo e(route('admin.program.index')); ?>" class="btn-back" style="display: inline-flex; align-items: center; gap: 0.45rem; padding: 0.55rem 1.1rem; background: #fff; border: 1.5px solid #e2e8f0; border-radius: 10px; color: #4a5568; font-size: 0.82rem; font-weight: 600; text-decoration: none;">
                     <i class="fas fa-arrow-left"></i> Kembali
                 </a>
             </div>
         </div>
 
-        {{-- Content --}}
+        
         <div style="background: #fff; border-radius: 20px; border: none; box-shadow: 0 2px 20px rgba(0,0,0,0.06); overflow: hidden;">
             <div class="detail-card-header" style="background: linear-gradient(135deg, #4361ee, #7209b7); padding: 1.2rem 1.8rem; display: flex; align-items: center; gap: 0.75rem;">
                 <i class="fas fa-clipboard-list" style="color: rgba(255,255,255,0.85); font-size: 1rem;"></i>
@@ -36,59 +34,59 @@
                 <table style="width: 100%; border-collapse: collapse;">
                     <tr style="border-bottom: 1px solid #f0f4f8;">
                         <th style="width: 35%; padding: 1rem 0; font-size: 0.82rem; font-weight: 600; color: #64748b; text-align: left;">Nama Program</th>
-                        <td style="padding: 1rem 0; font-size: 0.87rem; color: #1a1f36; font-weight: 500;">{{ $program->nama_program }}</td>
+                        <td style="padding: 1rem 0; font-size: 0.87rem; color: #1a1f36; font-weight: 500;"><?php echo e($program->nama_program); ?></td>
                     </tr>
                     <tr style="border-bottom: 1px solid #f0f4f8;">
                         <th style="padding: 1rem 0; font-size: 0.82rem; font-weight: 600; color: #64748b; text-align: left;">Kategori</th>
                         <td style="padding: 1rem 0;">
-                            @if($program->kategori == 'pendidikan')
+                            <?php if($program->kategori == 'pendidikan'): ?>
                                 <span style="display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 600; background: #dbeafe; color: #1e40af;">📚 Pendidikan</span>
-                            @elseif($program->kategori == 'sosial')
+                            <?php elseif($program->kategori == 'sosial'): ?>
                                 <span style="display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 600; background: #dcfce7; color: #166534;">❤️ Sosial</span>
-                            @elseif($program->kategori == 'keagamaan')
+                            <?php elseif($program->kategori == 'keagamaan'): ?>
                                 <span style="display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 600; background: #fef3c7; color: #92400e;">🕌 Keagamaan</span>
-                            @elseif($program->kategori == 'kesehatan')
+                            <?php elseif($program->kategori == 'kesehatan'): ?>
                                 <span style="display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 600; background: #fee2e2; color: #991b1b;">🏥 Kesehatan</span>
-                            @endif
+                            <?php endif; ?>
                         </td>
                     </tr>
                     <tr style="border-bottom: 1px solid #f0f4f8;">
                         <th style="padding: 1rem 0; font-size: 0.82rem; font-weight: 600; color: #64748b; text-align: left;">Status</th>
                         <td style="padding: 1rem 0;">
-                            @if($program->status == 'aktif')
+                            <?php if($program->status == 'aktif'): ?>
                                 <span style="display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 600; background: #dcfce7; color: #15803d;">Aktif</span>
-                            @elseif($program->status == 'selesai')
+                            <?php elseif($program->status == 'selesai'): ?>
                                 <span style="display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 600; background: #e2e8f0; color: #475569;">Selesai</span>
-                            @else
+                            <?php else: ?>
                                 <span style="display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 600; background: #fef3c7; color: #92400e;">Ditunda</span>
-                            @endif
+                            <?php endif; ?>
                         </td>
                     </tr>
                     <tr style="border-bottom: 1px solid #f0f4f8;">
                         <th style="padding: 1rem 0; font-size: 0.82rem; font-weight: 600; color: #64748b; text-align: left;">Tanggal Mulai</th>
-                        <td style="padding: 1rem 0; font-size: 0.87rem; color: #1a1f36;">{{ $program->tanggal_mulai ? $program->tanggal_mulai->format('d F Y') : '-' }}</td>
+                        <td style="padding: 1rem 0; font-size: 0.87rem; color: #1a1f36;"><?php echo e($program->tanggal_mulai ? $program->tanggal_mulai->format('d F Y') : '-'); ?></td>
                     </tr>
                     <tr style="border-bottom: 1px solid #f0f4f8;">
                         <th style="padding: 1rem 0; font-size: 0.82rem; font-weight: 600; color: #64748b; text-align: left;">Tanggal Selesai</th>
-                        <td style="padding: 1rem 0; font-size: 0.87rem; color: #1a1f36;">{{ $program->tanggal_selesai ? $program->tanggal_selesai->format('d F Y') : '-' }}</td>
+                        <td style="padding: 1rem 0; font-size: 0.87rem; color: #1a1f36;"><?php echo e($program->tanggal_selesai ? $program->tanggal_selesai->format('d F Y') : '-'); ?></td>
                     </tr>
                     <tr style="border-bottom: 1px solid #f0f4f8;">
                         <th style="padding: 1rem 0; font-size: 0.82rem; font-weight: 600; color: #64748b; text-align: left;">Deskripsi</th>
-                        <td style="padding: 1rem 0; font-size: 0.87rem; color: #1a1f36; line-height: 1.6;">{{ $program->deskripsi }}</td>
+                        <td style="padding: 1rem 0; font-size: 0.87rem; color: #1a1f36; line-height: 1.6;"><?php echo e($program->deskripsi); ?></td>
                     </tr>
                     <tr style="border-bottom: 1px solid #f0f4f8;">
                         <th style="padding: 1rem 0; font-size: 0.82rem; font-weight: 600; color: #64748b; text-align: left;">Dibuat Pada</th>
-                        <td style="padding: 1rem 0; font-size: 0.87rem; color: #1a1f36;">{{ $program->created_at->format('d F Y H:i') }}</td>
+                        <td style="padding: 1rem 0; font-size: 0.87rem; color: #1a1f36;"><?php echo e($program->created_at->format('d F Y H:i')); ?></td>
                     </tr>
                     <tr>
                         <th style="padding: 1rem 0; font-size: 0.82rem; font-weight: 600; color: #64748b; text-align: left;">Terakhir Update</th>
-                        <td style="padding: 1rem 0; font-size: 0.87rem; color: #1a1f36;">{{ $program->updated_at->format('d F Y H:i') }}</td>
+                        <td style="padding: 1rem 0; font-size: 0.87rem; color: #1a1f36;"><?php echo e($program->updated_at->format('d F Y H:i')); ?></td>
                     </tr>
                 </table>
             </div>
         </div>
 
-        {{-- Aksi Cepat --}}
+        
         <div style="margin-top: 1.5rem; background: #fff; border-radius: 20px; border: none; box-shadow: 0 2px 20px rgba(0,0,0,0.06); overflow: hidden;">
             <div class="detail-card-header" style="background: linear-gradient(135deg, #4361ee, #7209b7); padding: 1.2rem 1.8rem; display: flex; align-items: center; gap: 0.75rem;">
                 <i class="fas fa-bolt" style="color: rgba(255,255,255,0.85); font-size: 1rem;"></i>
@@ -96,12 +94,12 @@
             </div>
             <div class="detail-card-body" style="padding: 1.8rem;">
                 <div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
-                    <a href="{{ route('admin.program.edit', $program->id) }}" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.6rem 1.2rem; background: linear-gradient(135deg, #f59e0b, #d97706); color: #fff; border-radius: 10px; text-decoration: none; font-size: 0.85rem; font-weight: 600;">
+                    <a href="<?php echo e(route('admin.program.edit', $program->id)); ?>" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.6rem 1.2rem; background: linear-gradient(135deg, #f59e0b, #d97706); color: #fff; border-radius: 10px; text-decoration: none; font-size: 0.85rem; font-weight: 600;">
                         <i class="fas fa-edit"></i> Edit Program
                     </a>
-                    <form action="{{ route('admin.program.destroy', $program->id) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus program ini?')" style="display: inline;">
-                        @csrf
-                        @method('DELETE')
+                    <form action="<?php echo e(route('admin.program.destroy', $program->id)); ?>" method="POST" onsubmit="return confirm('Yakin ingin menghapus program ini?')" style="display: inline;">
+                        <?php echo csrf_field(); ?>
+                        <?php echo method_field('DELETE'); ?>
                         <button type="submit" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.6rem 1.2rem; background: #fff5f5; border: 1.5px solid #fed7d7; border-radius: 10px; color: #e53e3e; font-size: 0.85rem; font-weight: 600; cursor: pointer;">
                             <i class="fas fa-trash"></i> Hapus Program
                         </button>
@@ -110,4 +108,6 @@
             </div>
         </div>
     </div>
-@endsection
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('admin.layout', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH D:\ponpes-main\resources\views/admin/data-master/program/show.blade.php ENDPATH**/ ?>

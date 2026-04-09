@@ -3,254 +3,84 @@
 @section('title', 'Tambah Program')
 
 @section('content')
-    <div class="container-fluid px-4 py-4">
-
-        {{-- Header --}}
-        <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
-            <div>
-                <h4 class="text-2xl font-bold text-gray-800 mb-1">Tambah Program</h4>
-                <p class="text-sm text-gray-600">Lengkapi form berikut untuk menambah program baru</p>
+    <div class="page-wrapper" style="background: #f0f4f8; min-height: 100vh; padding: 2rem;">
+        {{-- Page Header --}}
+        <div class="page-header" style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 2rem;">
+            <div class="page-header-left" style="display: flex; align-items: center; gap: 1rem;">
+                <div class="page-icon" style="width: 48px; height: 48px; background: linear-gradient(135deg, #4361ee, #7209b7); border-radius: 14px; display: flex; align-items: center; justify-content: center;">
+                    <i class="fas fa-plus-circle" style="color: #fff; font-size: 1.1rem;"></i>
+                </div>
+                <div>
+                    <h1 style="font-size: 1.35rem; font-weight: 700; color: #1a1f36; margin: 0;">Tambah Program</h1>
+                    <p style="font-size: 0.8rem; color: #8898aa; margin: 0;">Lengkapi form berikut untuk menambah program baru</p>
+                </div>
             </div>
-            <a href="{{ route('admin.program.index') }}"
-                class="mt-3 md:mt-0 bg-white border border-gray-300 hover:bg-gray-100 text-gray-700 font-medium py-2 px-4 rounded-lg transition duration-200 inline-flex items-center">
-                <i class="fas fa-arrow-left mr-2"></i> Kembali
+            <a href="{{ route('admin.program.index') }}" class="btn-back" style="display: inline-flex; align-items: center; gap: 0.45rem; padding: 0.55rem 1.1rem; background: #fff; border: 1.5px solid #e2e8f0; border-radius: 10px; color: #4a5568; font-size: 0.82rem; font-weight: 600; text-decoration: none;">
+                <i class="fas fa-arrow-left"></i> Kembali
             </a>
         </div>
 
-        {{-- Alert jika ada error --}}
-        @if($errors->any())
-            <div class="mb-4 p-4 bg-red-100 border border-red-300 text-red-800 rounded-lg flex items-start gap-3">
-                <i class="fas fa-exclamation-circle mt-1"></i>
-                <div>
-                    <strong class="font-bold">Terjadi kesalahan:</strong>
-                    <ul class="mt-1 list-disc list-inside text-sm">
-                        @foreach($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
-            </div>
-        @endif
-
         {{-- Form Card --}}
-        <div class="bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden">
-            <div class="bg-gray-50 px-6 py-4 border-b border-gray-200">
-                <h5 class="font-semibold text-gray-700 flex items-center">
-                    <i class="fas fa-plus-circle text-indigo-500 mr-2"></i>
-                    Form Tambah Program
-                </h5>
+        <div class="form-card" style="background: #fff; border-radius: 20px; border: none; box-shadow: 0 2px 20px rgba(0,0,0,0.06); overflow: hidden;">
+            <div class="form-card-header" style="background: linear-gradient(135deg, #4361ee, #7209b7); padding: 1.2rem 1.8rem; display: flex; align-items: center; gap: 0.75rem;">
+                <i class="fas fa-clipboard-list" style="color: rgba(255,255,255,0.85);"></i>
+                <span style="color: #fff; font-size: 0.95rem; font-weight: 600;">Form Tambah Program</span>
             </div>
 
-            <div class="p-6">
-                <form action="{{ route('admin.program.store') }}" method="POST" enctype="multipart/form-data">
+            <div class="form-card-body" style="padding: 1.8rem;">
+                <form action="{{ route('admin.program.store') }}" method="POST">
                     @csrf
 
-                    {{-- Informasi Dasar --}}
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-                        {{-- Nama Program --}}
-                        <div class="col-span-2 md:col-span-1">
-                            <label class="block text-sm font-medium text-gray-700 mb-2">
-                                Nama Program <span class="text-red-500">*</span>
-                            </label>
-                            <input type="text" name="nama_program"
-                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 @error('nama_program') border-red-500 @enderror"
-                                value="{{ old('nama_program') }}" placeholder="Masukkan nama program">
-                            @error('nama_program')
-                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                            @enderror
+                    <div class="row" style="display: flex; flex-wrap: wrap; gap: 1.5rem;">
+                        <div class="col-md-6" style="flex: 1; min-width: 250px;">
+                            <div class="form-group" style="margin-bottom: 1.3rem;">
+                                <label style="font-size: 0.82rem; font-weight: 600; color: #2d3748; display: block; margin-bottom: 0.4rem;">Nama Program <span style="color: #e53e3e;">*</span></label>
+                                <input type="text" name="nama_program" class="form-control" style="width: 100%; padding: 0.65rem 0.9rem; border: 1.5px solid #e2e8f0; border-radius: 10px; background: #f8fafc;" value="{{ old('nama_program') }}" placeholder="Masukkan nama program" required>
+                                @error('nama_program') <p class="text-red-500 text-sm mt-1">{{ $message }}</p> @enderror
+                            </div>
+
+                            <div class="form-group" style="margin-bottom: 1.3rem;">
+                                <label style="font-size: 0.82rem; font-weight: 600; color: #2d3748; display: block; margin-bottom: 0.4rem;">Kategori <span style="color: #e53e3e;">*</span></label>
+                                <select name="kategori" class="form-control" style="width: 100%; padding: 0.65rem 0.9rem; border: 1.5px solid #e2e8f0; border-radius: 10px; background: #f8fafc;" required>
+                                    <option value="">-- Pilih Kategori --</option>
+                                    <option value="pendidikan" {{ old('kategori') == 'pendidikan' ? 'selected' : '' }}>📚 Pendidikan</option>
+                                    <option value="sosial" {{ old('kategori') == 'sosial' ? 'selected' : '' }}>❤️ Sosial</option>
+                                    <option value="keagamaan" {{ old('kategori') == 'keagamaan' ? 'selected' : '' }}>🕌 Keagamaan</option>
+                                    <option value="kesehatan" {{ old('kategori') == 'kesehatan' ? 'selected' : '' }}>🏥 Kesehatan</option>
+                                </select>
+                                @error('kategori') <p class="text-red-500 text-sm mt-1">{{ $message }}</p> @enderror
+                            </div>
                         </div>
 
-                        {{-- Kategori --}}
-                        <div class="col-span-2 md:col-span-1">
-                            <label class="block text-sm font-medium text-gray-700 mb-2">
-                                Kategori <span class="text-red-500">*</span>
-                            </label>
-                            <select name="kategori"
-                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 @error('kategori') border-red-500 @enderror">
-                                <option value="">-- Pilih Kategori --</option>
-                                <option value="pendidikan" {{ old('kategori') == 'pendidikan' ? 'selected' : '' }}>📚
-                                    Pendidikan</option>
-                                <option value="sosial" {{ old('kategori') == 'sosial' ? 'selected' : '' }}>❤️ Sosial</option>
-                                <option value="keagamaan" {{ old('kategori') == 'keagamaan' ? 'selected' : '' }}>🕌 Keagamaan
-                                </option>
-                                <option value="kesehatan" {{ old('kategori') == 'kesehatan' ? 'selected' : '' }}>🏥 Kesehatan
-                                </option>
-                            </select>
-                            @error('kategori')
-                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                            @enderror
-                        </div>
-                    </div>
+                        <div class="col-md-6" style="flex: 1; min-width: 250px;">
+                            <div class="form-group" style="margin-bottom: 1.3rem;">
+                                <label style="font-size: 0.82rem; font-weight: 600; color: #2d3748; display: block; margin-bottom: 0.4rem;">Tanggal Mulai</label>
+                                <input type="date" name="tanggal_mulai" class="form-control" style="width: 100%; padding: 0.65rem 0.9rem; border: 1.5px solid #e2e8f0; border-radius: 10px; background: #f8fafc;" value="{{ old('tanggal_mulai') }}">
+                            </div>
 
-                    {{-- Deskripsi --}}
-                    <div class="mb-6">
-                        <label class="block text-sm font-medium text-gray-700 mb-2">
-                            Deskripsi <span class="text-red-500">*</span>
-                        </label>
-                        <textarea name="deskripsi" rows="5"
-                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 @error('deskripsi') border-red-500 @enderror"
-                            placeholder="Jelaskan deskripsi program secara detail...">{{ old('deskripsi') }}</textarea>
-                        @error('deskripsi')
-                            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                        @enderror
-                    </div>
-
-                    {{-- Waktu Pelaksanaan --}}
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">
-                                Tanggal Mulai
-                            </label>
-                            <input type="date" name="tanggal_mulai"
-                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-                                value="{{ old('tanggal_mulai') }}">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">
-                                Tanggal Selesai
-                            </label>
-                            <input type="date" name="tanggal_selesai"
-                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-                                value="{{ old('tanggal_selesai') }}">
-                        </div>
-                    </div>
-
-                    {{-- Upload Gambar --}}
-                    <div class="mb-6">
-                        <label class="block text-sm font-medium text-gray-700 mb-2">
-                            Gambar Program
-                        </label>
-
-                        <div class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center bg-gray-50 cursor-pointer hover:border-indigo-500 hover:bg-indigo-50 transition"
-                            id="uploadArea" onclick="document.getElementById('gambar').click()">
-
-                            <i class="fas fa-cloud-upload-alt fa-3x mb-3 text-gray-400"></i>
-                            <p class="text-gray-600 font-medium mb-1">Pilih Gambar atau Tarik ke Sini</p>
-                            <p class="text-gray-500 text-sm mb-3">Format: JPG, JPEG, PNG, WEBP (Maks. 2MB)</p>
-                            <span
-                                class="inline-block bg-white border border-indigo-500 text-indigo-500 hover:bg-indigo-500 hover:text-white text-sm font-medium py-2 px-4 rounded-full transition">
-                                <i class="fas fa-folder-open mr-2"></i>Browse File
-                            </span>
-                        </div>
-
-                        <input type="file" name="gambar" id="gambar"
-                            class="hidden @error('gambar') border-red-500 @enderror" accept="image/*"
-                            onchange="previewImage(this)">
-
-                        @error('gambar')
-                            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                        @enderror
-
-                        {{-- Preview Image --}}
-                        <div id="previewContainer" class="mt-3 hidden">
-                            <div class="flex items-center p-3 border border-gray-200 rounded-lg bg-gray-50">
-                                <img id="preview" src="#" alt="Preview" class="rounded-lg"
-                                    style="max-height: 80px; max-width: 80px; object-fit: cover;">
-                                <div class="ml-3 flex-grow">
-                                    <p class="font-medium text-gray-700" id="previewName"></p>
-                                    <p class="text-gray-500 text-sm" id="previewSize"></p>
-                                </div>
-                                <button type="button"
-                                    class="bg-white border border-red-500 text-red-500 hover:bg-red-500 hover:text-white w-8 h-8 rounded-full flex items-center justify-center transition"
-                                    onclick="removePreview()">
-                                    <i class="fas fa-times"></i>
-                                </button>
+                            <div class="form-group" style="margin-bottom: 1.3rem;">
+                                <label style="font-size: 0.82rem; font-weight: 600; color: #2d3748; display: block; margin-bottom: 0.4rem;">Tanggal Selesai</label>
+                                <input type="date" name="tanggal_selesai" class="form-control" style="width: 100%; padding: 0.65rem 0.9rem; border: 1.5px solid #e2e8f0; border-radius: 10px; background: #f8fafc;" value="{{ old('tanggal_selesai') }}">
                             </div>
                         </div>
                     </div>
 
-                    {{-- Tombol Submit --}}
-                    <div class="flex gap-3 justify-end border-t border-gray-200 pt-6">
-                        <a href="{{ route('admin.program.index') }}"
-                            class="bg-white border border-gray-300 hover:bg-gray-100 text-gray-700 font-medium py-2 px-6 rounded-lg transition">
-                            <i class="fas fa-times mr-2"></i>Batal
-                        </a>
-                        <button type="submit"
-                            class="bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2 px-6 rounded-lg transition shadow-md">
-                            <i class="fas fa-save mr-2"></i>Simpan Program
+                    <div class="form-group" style="margin-bottom: 1.3rem;">
+                        <label style="font-size: 0.82rem; font-weight: 600; color: #2d3748; display: block; margin-bottom: 0.4rem;">Deskripsi <span style="color: #e53e3e;">*</span></label>
+                        <textarea name="deskripsi" rows="5" class="form-control" style="width: 100%; padding: 0.65rem 0.9rem; border: 1.5px solid #e2e8f0; border-radius: 10px; background: #f8fafc; resize: vertical;" placeholder="Jelaskan deskripsi program secara detail...">{{ old('deskripsi') }}</textarea>
+                        @error('deskripsi') <p class="text-red-500 text-sm mt-1">{{ $message }}</p> @enderror
+                    </div>
+
+                    <div class="form-actions" style="display: flex; align-items: center; gap: 0.75rem; padding-top: 1rem; border-top: 1px solid #f0f4f8; margin-top: 1rem;">
+                        <button type="submit" class="btn-save" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.7rem 1.5rem; background: linear-gradient(135deg, #4361ee, #7209b7); color: #fff; border: none; border-radius: 10px; font-size: 0.87rem; font-weight: 600; cursor: pointer;">
+                            <i class="fas fa-save"></i> Simpan Program
                         </button>
+                        <a href="{{ route('admin.program.index') }}" class="btn-cancel" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.7rem 1.2rem; background: #fff5f5; border: 1.5px solid #fed7d7; border-radius: 10px; color: #e53e3e; font-size: 0.87rem; font-weight: 600; text-decoration: none;">
+                            <i class="fas fa-times"></i> Batal
+                        </a>
                     </div>
                 </form>
             </div>
         </div>
-
-        {{-- Info --}}
-        <div class="text-center mt-4 text-sm text-gray-500">
-            <i class="fas fa-info-circle mr-1"></i>
-            Field dengan tanda <span class="text-red-500">*</span> wajib diisi
-        </div>
-
     </div>
 @endsection
-
-@push('scripts')
-    <script>
-        // Preview Image
-        function previewImage(input) {
-            if (input.files && input.files[0]) {
-                const file = input.files[0];
-
-                // Validasi ukuran (2MB)
-                if (file.size > 2 * 1024 * 1024) {
-                    alert('File terlalu besar! Maksimal 2MB.');
-                    input.value = '';
-                    return;
-                }
-
-                // Validasi tipe file
-                const validTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
-                if (!validTypes.includes(file.type)) {
-                    alert('Format file tidak valid! Gunakan JPG, JPEG, PNG, atau WEBP.');
-                    input.value = '';
-                    return;
-                }
-
-                const reader = new FileReader();
-                reader.onload = function (e) {
-                    document.getElementById('preview').src = e.target.result;
-                    document.getElementById('previewName').textContent = file.name;
-                    document.getElementById('previewSize').textContent = formatBytes(file.size);
-                    document.getElementById('previewContainer').classList.remove('hidden');
-                }
-                reader.readAsDataURL(file);
-            }
-        }
-
-        // Hapus preview
-        function removePreview() {
-            document.getElementById('gambar').value = '';
-            document.getElementById('preview').src = '#';
-            document.getElementById('previewContainer').classList.add('hidden');
-        }
-
-        // Format bytes
-        function formatBytes(bytes, decimals = 2) {
-            if (bytes === 0) return '0 Bytes';
-            const k = 1024;
-            const dm = decimals < 0 ? 0 : decimals;
-            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
-            const i = Math.floor(Math.log(bytes) / Math.log(k));
-            return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
-        }
-
-        // Drag and drop
-        const uploadArea = document.getElementById('uploadArea');
-        if (uploadArea) {
-            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
-                uploadArea.addEventListener(eventName, preventDefaults, false);
-            });
-
-            function preventDefaults(e) {
-                e.preventDefault();
-                e.stopPropagation();
-            }
-
-            uploadArea.addEventListener('drop', function (e) {
-                const dt = e.dataTransfer;
-                const files = dt.files;
-                document.getElementById('gambar').files = files;
-                previewImage(document.getElementById('gambar'));
-            });
-        }
-    </script>
-@endpush
