@@ -13,6 +13,8 @@
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
@@ -386,12 +388,12 @@
                     <h2 class="text-2xl font-bold text-gray-800"><?php echo $__env->yieldContent('page-title', 'Dashboard'); ?></h2>
                 </div>
                 <div class="flex items-center space-x-6">
-                    <div class="relative">
+                    <!--<div class="relative">
                         <button class="p-2 rounded-lg hover:bg-gray-100 relative">
                             <i class="fas fa-bell text-gray-600 text-xl"></i>
                             <span class="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
                         </button>
-                    </div>
+                </div>-->
                     <div class="flex items-center space-x-3">
                         <div class="text-right">
                             <p class="text-sm font-semibold text-gray-900">
@@ -457,6 +459,7 @@
     </script>
 
     <?php echo $__env->yieldPushContent('scripts'); ?>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>

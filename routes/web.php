@@ -95,9 +95,11 @@ Route::prefix('admin')
             Route::get('/', [DataMasterController::class, 'index'])->name('index');
 
             // Profil Yayasan
-            Route::get('/profil-yayasan', [ProfilYayasanController::class, 'index'])->name('profil-yayasan');
-            Route::get('/profil-yayasan/edit', [ProfilYayasanController::class, 'edit'])->name('profil-yayasan.edit');
-            Route::post('/profil-yayasan/update', [ProfilYayasanController::class, 'update'])->name('profil-yayasan.update');
+           // Profil Yayasan
+        Route::get('/profil-yayasan', [ProfilYayasanController::class, 'index'])->name('profil-yayasan');
+        Route::get('/profil-yayasan/edit', [ProfilYayasanController::class, 'edit'])->name('profil-yayasan.edit');
+        Route::post('/profil-yayasan/update', [ProfilYayasanController::class, 'update'])->name('profil-yayasan.update');
+        Route::put('/profil-yayasan/update', [ProfilYayasanController::class, 'update'])->name('profil-yayasan.update.put'); // tambahkan ini untuk method PUT
 
             // Struktur Organisasi
             Route::get('/struktur-organisasi', [DataMasterController::class, 'strukturOrganisasi'])->name('struktur-organisasi');
