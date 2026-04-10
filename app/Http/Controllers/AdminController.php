@@ -187,37 +187,37 @@ class AdminController extends Controller
         return back()->with('success', 'Santri berhasil diverifikasi.');
     }
 
-   public function rejectSantri(Request $request, $id)
-{
-    if ($request->has('alasan_penolakan')) {
-        $request->validate([
-            'alasan_penolakan' => 'required|string|min:10'
+    public function rejectSantri(Request $request, $id)
+    {
+        if ($request->has('alasan_penolakan')) {
+            $request->validate([
+                'alasan_penolakan' => 'required|string|min:10'
+            ]);
+        }
+
+        $santri = SantriRegistration::findOrFail($id);
+
+        $santri->update([
+            'status' => 'ditolak',
+            'alasan_penolakan' => $request->alasan_penolakan ?? 'Pendaftaran ditolak oleh admin'
         ]);
+
+        if ($santri->user_id) {
+            Notification::create([
+                'user_id' => $santri->user_id,
+                'type' => 'santri',
+                'title' => 'Pendaftaran Ditolak',
+                'message' => 'Pendaftaran santri Anda ditolak. Alasan: ' . ($request->alasan_penolakan ?? 'Tidak ada alasan'),
+                'data' => json_encode([
+                    'santri_id' => $santri->id
+                ])
+            ]);
+        }
+
+        return redirect()
+            ->route('admin.santri.index')
+            ->with('success', 'Santri berhasil ditolak.');
     }
-
-    $santri = SantriRegistration::findOrFail($id);
-
-    $santri->update([
-        'status' => 'ditolak',
-        'alasan_penolakan' => $request->alasan_penolakan ?? 'Pendaftaran ditolak oleh admin'
-    ]);
-
-    if ($santri->user_id) {
-        Notification::create([
-            'user_id' => $santri->user_id,
-            'type' => 'santri',
-            'title' => 'Pendaftaran Ditolak',
-            'message' => 'Pendaftaran santri Anda ditolak. Alasan: ' . ($request->alasan_penolakan ?? 'Tidak ada alasan'),
-            'data' => json_encode([
-                'santri_id' => $santri->id
-            ])
-        ]);
-    }
-
-    return redirect()
-        ->route('admin.santri.index')
-        ->with('success', 'Santri berhasil ditolak.');
-}
 
 
 
@@ -386,6 +386,8 @@ class AdminController extends Controller
             'nomor_sk'   => 'required|string|max:100',
             'tentang'    => 'nullable|string|max:255',
             'tanggal_sk' => 'nullable|date',
+            'judul' => 'nullable|string|max:255',
+            'deskripsi'   => 'nullable|string',
             'file_sk'    => 'nullable|file|mimetypes:image/jpeg,image/png,image/webp,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document|max:5120',
         ]);
         if ($request->hasFile('file_sk')) {
@@ -412,6 +414,8 @@ class AdminController extends Controller
             'nomor_sk'   => 'required|string|max:100',
             'tentang'    => 'nullable|string|max:255',
             'tanggal_sk' => 'nullable|date',
+            'judul' => 'nullable|string|max:255',
+            'deskripsi'   => 'nullable|string',
             'file_sk'    => 'nullable|file|mimetypes:image/jpeg,image/png,image/webp,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document|max:5120',
         ]);
         if ($request->hasFile('file_sk')) {
@@ -448,8 +452,9 @@ class AdminController extends Controller
             'nomor_akta'  => 'nullable|string|max:100',
             'tanggal_akta' => 'nullable|date',
             'notaris'     => 'nullable|string|max:255',
-            // 'file_akta' => 'required|mimes:jpg,jpeg,png,pdf,doc,docx|max:5120',
-            'file_akta' => 'required|file|mimetypes:image/jpeg,image/png,image/webp,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document|max:5120',
+            'judul' => 'nullable|string|max:255',
+            'deskripsi'   => 'nullable|string',
+            'file_akta'   => 'required|file|mimetypes:image/jpeg,image/png,image/webp,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document|max:5120',
         ]);
         if ($request->hasFile('file_akta')) {
             $validated['file_akta'] = $request->file('file_akta')->store('akta-yayasan', 'public');
@@ -475,7 +480,9 @@ class AdminController extends Controller
             'nomor_akta'  => 'nullable|string|max:100',
             'tanggal_akta' => 'nullable|date',
             'notaris'     => 'nullable|string|max:255',
-            'file_akta' => 'required|mimetypes:image/jpeg,image/png,image/webp,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document|max:5120',
+            'judul' => 'nullable|string|max:255',
+            'deskripsi'   => 'nullable|string',
+            'file_akta'   => 'required|file|mimetypes:image/jpeg,image/png,image/webp,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document|max:5120',
         ]);
         if ($request->hasFile('file_akta')) {
             if ($aktaYayasan->file_akta) Storage::disk('public')->delete($aktaYayasan->file_akta);
@@ -512,7 +519,8 @@ class AdminController extends Controller
             'nazhir'           => 'nullable|string|max:255',
             'lokasi_tanah'     => 'nullable|string|max:255',
             'luas_tanah'       => 'nullable|string|max:50',
-            // 'file_sertifikat'  => 'nullable|file|mimes:jpg,jpeg,png,pdf,doc,docx|max:5120',
+            'judul' => 'nullable|string|max:255',
+            'deskripsi'   => 'nullable|string',
             'file_sertifikat' => 'required|mimetypes:image/jpeg,image/png,image/webp,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document|max:5120',
         ]);
         if ($request->hasFile('file_sertifikat')) {
@@ -539,7 +547,9 @@ class AdminController extends Controller
             'nomor_sertifikat' => 'nullable|string|max:100',
             'nazhir'           => 'nullable|string|max:255',
             'lokasi_tanah'     => 'nullable|string|max:255',
+            'judul' => 'nullable|string|max:255',
             'luas_tanah'       => 'nullable|string|max:50',
+            'deskripsi'   => 'nullable|string',
             'file_sertifikat' => 'required|mimetypes:image/jpeg,image/png,image/webp,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document|max:5120',
         ]);
         if ($request->hasFile('file_sertifikat')) {
@@ -609,4 +619,3 @@ class AdminController extends Controller
         return redirect('/login');
     }
 }
-

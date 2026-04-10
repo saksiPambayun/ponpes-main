@@ -381,9 +381,7 @@ Route::get('/tentang', [UserController::class, 'profilYayasanIndex'])->name('ten
 Route::get('/struktur', [UserController::class, 'strukturIndex'])->name('struktur');
 
 // LEGALITAS (akta yayasan + wakaf)
-Route::get('/legalitas', function () {
-    return view('public.legalitas');
-})->name('legalitas');
+Route::get('/legalitas', [UserController::class, 'legalitas'])->name('legalitas');
 
 // FASILITAS
 Route::get('/fasilitas', [UserController::class, 'fasilitasIndex'])->name('fasilitas');

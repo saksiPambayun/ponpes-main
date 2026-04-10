@@ -54,7 +54,7 @@ return view('admin.data-master.gallery.index', compact('galleries'));
         $request->validate([
             'judul' => 'required|string|max:255',
             'deskripsi' => 'nullable|string',
-            'gambar' => 'required|image|mimes:jpeg,png,jpg,gif|max:5120', // 5MB
+            'gambar' => 'required|mimetypes:image/jpeg,image/png,image/webp,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document|max:5120',
             'kategori' => 'required|in:kegiatan,prestasi,umum',
             'tanggal_kegiatan' => 'nullable|date',
             'is_active' => 'boolean',
@@ -103,7 +103,7 @@ return view('admin.data-master.gallery.index', compact('galleries'));
         $request->validate([
             'judul' => 'required|string|max:255',
             'deskripsi' => 'nullable|string',
-            'gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:5120',
+            'gambar' => 'nullable|mimetypes:image/jpeg,image/png,image/webp,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document|max:5120',
             'kategori' => 'required|in:kegiatan,prestasi,umum',
             'tanggal_kegiatan' => 'nullable|date',
             'is_active' => 'boolean',

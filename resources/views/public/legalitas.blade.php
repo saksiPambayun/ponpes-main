@@ -108,23 +108,10 @@
                 </div>
 
                 <div class="legalitas-text">
-                    <h2>Akta Yayasan</h2>
+                    <h2>{{ $aktaYayasan->judul ?? 'Akta Yayasan' }}</h2>
 
                     <p>
-                        Yayasan Pondok Pesantren Al-Ifadah didirikan secara resmi berdasarkan
-                        Akta Pendirian Yayasan yang diterbitkan pada tahun 20XX oleh notaris
-                        yang berwenang. Pendirian yayasan ini dilakukan sebagai bentuk
-                        legalitas kelembagaan guna memastikan seluruh kegiatan pendidikan,
-                        pengelolaan administrasi, serta operasional pesantren berjalan
-                        sesuai dengan ketentuan hukum yang berlaku.
-                    </p>
-
-                    <p>
-                        Pembentukan yayasan juga bertujuan untuk memberikan landasan hukum
-                        yang jelas dalam pengembangan lembaga, meningkatkan profesionalitas
-                        tata kelola, serta memperkuat kepercayaan masyarakat terhadap
-                        Pondok Pesantren Al-Ifadah sebagai lembaga pendidikan Islam
-                        yang sah dan terpercaya.
+                        {{ $aktaYayasan->deskripsi ?? 'Deskripsi belum tersedia' }}
                     </p>
                 </div>
             </div>
@@ -136,23 +123,9 @@
                     @endif
                 </div>
                 <div class="legalitas-text">
-                    <h2>Tanah Waqaf</h2>
-
+                    <h2>{{ $aktaWakaf->judul ?? 'Akta Wakaf' }}</h2>
                     <p>
-                        Yayasan Pondok Pesantren Al-Ifadah didirikan secara resmi berdasarkan
-                        Akta Pendirian Yayasan yang diterbitkan pada tahun 20XX oleh notaris
-                        yang berwenang. Pendirian yayasan ini dilakukan sebagai bentuk
-                        legalitas kelembagaan guna memastikan seluruh kegiatan pendidikan,
-                        pengelolaan administrasi, serta operasional pesantren berjalan
-                        sesuai dengan ketentuan hukum yang berlaku.
-                    </p>
-
-                    <p>
-                        Pembentukan yayasan juga bertujuan untuk memberikan landasan hukum
-                        yang jelas dalam pengembangan lembaga, meningkatkan profesionalitas
-                        tata kelola, serta memperkuat kepercayaan masyarakat terhadap
-                        Pondok Pesantren Al-Ifadah sebagai lembaga pendidikan Islam
-                        yang sah dan terpercaya.
+                        {{ $aktaWakaf->deskripsi ?? 'Deskripsi belum tersedia' }}
                     </p>
                 </div>
             </div>
@@ -165,21 +138,10 @@
                 </div>
 
                 <div class="legalitas-text">
-                    <h2>SK Pendirian Yayasan</h2>
+                    <h2>{{ $sk->judul ?? 'Surat Keputusan' }}</h2>
 
                     <p>
-                        Surat Keputusan (SK) Pendirian Yayasan Pondok Pesantren Al-Ifadah merupakan dokumen resmi yang
-                        menjadi dasar hukum berdirinya yayasan sebagai lembaga pendidikan dan sosial yang diakui secara
-                        legal oleh instansi berwenang. Penerbitan SK ini bertujuan untuk memberikan legitimasi dalam
-                        penyelenggaraan kegiatan pendidikan berbasis keagamaan, pengelolaan santri, serta berbagai
-                        aktivitas sosial kemasyarakatan.
-                    </p>
-
-                    <p>
-                        Dengan adanya SK pendirian tersebut, Yayasan Pondok Pesantren Al-Ifadah memiliki landasan hukum
-                        yang jelas dalam menjalankan organisasi, mengembangkan program pendidikan, serta menjalin kerja
-                        sama dengan berbagai pihak. Hal ini juga menjadi bentuk komitmen yayasan dalam menerapkan tata
-                        kelola yang profesional, transparan, dan berkelanjutan demi kemajuan lembaga.
+                        {{ $sk->deskripsi ?? 'Deskripsi belum tersedia' }}
                     </p>
                 </div>
             </div>

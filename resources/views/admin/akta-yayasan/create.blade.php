@@ -28,6 +28,21 @@
                     </div>
 
                     <div class="col-span-2">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">
+                            Judul
+                        </label>
+                        <input type="text" name="judul" value="{{ old('judul', $aktaYayasan->judul ?? '') }}"
+                            class="input-field w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none"
+                            placeholder="Contoh: Akta Yayasan">
+                    </div>
+
+                    <div class="col-span-2">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Deskripsi</label>
+                        <textarea name="deskripsi" rows="4" placeholder="Maksimal 2 paragraf"
+                            class="input-field w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none">{{ old('deskripsi') }}</textarea>
+                    </div>
+
+                    <div class="col-span-2">
                         <label class="block text-sm font-medium text-gray-700 mb-2">Upload File Akta</label>
                         <input type="file" name="file_akta" accept=".jpg,.png,.jpeg,.pdf,.doc,.docx"
                             class="input-field w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none">

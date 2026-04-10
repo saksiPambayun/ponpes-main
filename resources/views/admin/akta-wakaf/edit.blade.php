@@ -6,8 +6,7 @@
 @section('content')
     <div class="max-w-4xl mx-auto">
         <div class="card p-8">
-            <form action="{{ route('admin.akta-wakaf.update', $aktaWakaf->id) }}" method="POST"
-                enctype="multipart/form-data">
+            <form action="{{ route('admin.akta-wakaf.update', $aktaWakaf->id) }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -26,7 +25,8 @@
 
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-2">Lokasi Tanah</label>
-                        <input type="text" name="lokasi_tanah" value="{{ old('lokasi_tanah', $aktaWakaf->lokasi_tanah) }}"
+                        <input type="text" name="lokasi_tanah"
+                            value="{{ old('lokasi_tanah', $aktaWakaf->lokasi_tanah) }}"
                             class="input-field w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none">
                     </div>
 
@@ -37,12 +37,27 @@
                     </div>
 
                     <div class="col-span-2">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Judul</label>
+                        <input type="text" name="judul" value="{{ old('judul', $aktaWakaf->judul) }}"
+                            class="input-field w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none"
+                            placeholder="Contoh: Akta Wakaf">
+                    </div>
+
+                    <div class="col-span-2">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Deskripsi</label>
+                        <textarea name="deskripsi" rows="4"
+                            class="input-field w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none resize-none"
+                            placeholder="Masukkan deskripsi...">{{ old('deskripsi', $aktaWakaf->deskripsi) }}</textarea>
+                    </div>
+
+                    <div class="col-span-2">
                         <label class="block text-sm font-medium text-gray-700 mb-2">Upload Sertifikat (Kosongkan jika tidak
                             diubah)</label>
                         <input type="file" name="file_sertifikat" accept=".jpg,.png,.jpeg,.pdf,.doc,.docx"
                             class="input-field w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none">
-                        @if($aktaWakaf->file_sertifikat)
-                            <p class="text-xs text-gray-500 mt-1">File saat ini: {{ basename($aktaWakaf->file_sertifikat) }}</p>
+                        @if ($aktaWakaf->file_sertifikat)
+                            <p class="text-xs text-gray-500 mt-1">File saat ini: {{ basename($aktaWakaf->file_sertifikat) }}
+                            </p>
                             <a href="{{ asset('storage/' . $aktaWakaf->file_sertifikat) }}" target="_blank"
                                 class="text-indigo-600 text-xs hover:underline">
                                 <i class="fas fa-download mr-1"></i>Download File

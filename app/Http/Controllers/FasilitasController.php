@@ -62,7 +62,7 @@ class FasilitasController extends Controller
             'kondisi' => 'required|in:Baik,Rusak Ringan,Rusak Berat',
             'lokasi' => 'nullable|string|max:255',
             'tanggal_pengadaan' => 'nullable|date',
-            'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'foto' => 'nullable|mimetypes:image/jpeg,image/png,image/webp,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document|max:5120',
             'keterangan' => 'nullable|string',
         ]);
 
@@ -111,7 +111,7 @@ class FasilitasController extends Controller
         'kondisi' => 'required|in:Baik,Rusak Ringan,Rusak Berat',
         'lokasi' => 'nullable|string|max:255',
         'tanggal_pengadaan' => 'nullable|date',
-        'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+        'foto' => 'nullable|mimetypes:image/jpeg,image/png,image/webp,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document|max:5120',
         'keterangan' => 'nullable|string',
     ]);
 

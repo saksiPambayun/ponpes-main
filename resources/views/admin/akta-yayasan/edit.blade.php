@@ -19,14 +19,29 @@
 
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-2">Tanggal Akta</label>
-                        <input type="date" name="tanggal_akta" value="{{ old('tanggal_akta', $aktaYayasan->tanggal_akta) }}"
+                        <input type="date" name="tanggal_akta"
+                            value="{{ old('tanggal_akta', $aktaYayasan->tanggal_akta) }}"
                             class="input-field w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none">
                     </div>
 
-                    <div class="col-span-2">
+                    <div>
                         <label class="block text-sm font-medium text-gray-700 mb-2">Notaris</label>
                         <input type="text" name="notaris" value="{{ old('notaris', $aktaYayasan->notaris) }}"
                             class="input-field w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none">
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Judul</label>
+                        <input type="text" name="judul" value="{{ old('judul', $aktaYayasan->judul) }}"
+                            class="input-field w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none"
+                            placeholder="Contoh: Akta Yayasan">
+                    </div>
+
+                    <div class="col-span-2">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Deskripsi</label>
+                        <textarea name="deskripsi" rows="4"
+                            class="input-field w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none resize-none"
+                            placeholder="Masukkan deskripsi...">{{ old('deskripsi', $aktaYayasan->deskripsi) }}</textarea>
                     </div>
 
                     <div class="col-span-2">
@@ -34,7 +49,7 @@
                             diubah)</label>
                         <input type="file" name="file_akta" accept=".jpg,.png,.jpeg,.pdf,.doc,.docx"
                             class="input-field w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none">
-                        @if($aktaYayasan->file_akta)
+                        @if ($aktaYayasan->file_akta)
                             <p class="text-xs text-gray-500 mt-1">File saat ini: {{ basename($aktaYayasan->file_akta) }}</p>
                             <a href="{{ asset('storage/' . $aktaYayasan->file_akta) }}" target="_blank"
                                 class="text-indigo-600 text-xs hover:underline">

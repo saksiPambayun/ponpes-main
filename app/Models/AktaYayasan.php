@@ -25,6 +25,8 @@ class AktaYayasan extends Model
         'nomor_akta',
         'tanggal_akta',
         'notaris',
+        'judul',
+        'deskripsi',
         'file_akta',
     ];
 

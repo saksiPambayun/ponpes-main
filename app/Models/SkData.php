@@ -25,6 +25,8 @@ class SkData extends Model
         'nomor_sk',
         'tentang',
         'tanggal_sk',
+        'judul',
+        'deskripsi',
         'file_sk',
     ];
 
@@ -33,11 +35,11 @@ class SkData extends Model
      *
      * @return array<string, string>
      */
-    protected $casts =[
-            'tanggal_sk' => 'date',
-            'created_at' => 'datetime',
-            'updated_at' => 'datetime',
-        ];
+    protected $casts = [
+        'tanggal_sk' => 'date',
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
+    ];
 
 
     /**

@@ -26,6 +26,8 @@ class AktaWakaf extends Model
         'nazhir',
         'lokasi_tanah',
         'luas_tanah',
+        'judul',      
+        'deskripsi',  
         'file_sertifikat',
     ];
 
@@ -34,10 +36,10 @@ class AktaWakaf extends Model
      *
      * @return array<string, string>
      */
-     protected $casts =[
-            'created_at' => 'datetime',
-            'updated_at' => 'datetime',
-        ];
+    protected $casts = [
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
+    ];
 
 
     /**

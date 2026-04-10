@@ -27,37 +27,51 @@
                             class="input-field w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none">
                     </div>
 
-                    <div class="col-span-2">
+                    <div>
                         <label class="block text-sm font-medium text-gray-700 mb-2">Tentang</label>
                         <input type="text" name="tentang" value="{{ old('tentang', $sk->tentang) }}"
                             class="input-field w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none">
                     </div>
 
-                    <div class="col-span-2">
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Upload File SK (Kosongkan jika tidak
-                            diubah)</label>
-                        <input type="file" name="file_sk" accept=".jpg,.png,.jpeg,.pdf,.doc,.docx"
-                            class="input-field w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none">
-                        @if($sk->file_sk)
-                            <p class="text-xs text-gray-500 mt-1">File saat ini: {{ basename($sk->file_sk) }}</p>
-                            <a href="{{ asset('storage/' . $sk->file_sk) }}" target="_blank"
-                                class="text-indigo-600 text-xs hover:underline">
-                                <i class="fas fa-download mr-1"></i>Download File
-                            </a>
-                        @endif
-                        <p class="text-xs text-gray-500 mt-1">Format: JPG, PNG, JPEG, PDF, DOC, DOCX (Max: 5MB)</p>
-                        @error('file_sk')
-                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                        @enderror
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Judul</label>
+                        <input type="text" name="judul" value="{{ old('judul', $sk->judul) }}"
+                            class="input-field w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none"
+                            placeholder="Contoh: SK Pendirian Ponpes">
                     </div>
-                </div>
+                    
+                    <div class="col-span-2">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Deskripsi</label>
+                        <textarea name="deskripsi" rows="4"
+                            class="input-field w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none resize-none"
+                            placeholder="Masukkan deskripsi...">{{ old('deskripsi', $sk->deskripsi) }}</textarea>
+                    </div>
 
-                <div class="mt-8 flex justify-end space-x-4">
-                    <a href="{{ route('admin.sk.index') }}"
-                        class="px-6 py-3 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50">Batal</a>
-                    <button type="submit" class="btn-primary px-6 py-3 rounded-lg text-white font-medium">Update
-                        Data</button>
-                </div>
+                        <div class="col-span-2">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Upload File SK (Kosongkan jika tidak
+                                diubah)</label>
+                            <input type="file" name="file_sk" accept=".jpg,.png,.jpeg,.pdf,.doc,.docx"
+                                class="input-field w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none">
+                            @if ($sk->file_sk)
+                                <p class="text-xs text-gray-500 mt-1">File saat ini: {{ basename($sk->file_sk) }}</p>
+                                <a href="{{ asset('storage/' . $sk->file_sk) }}" target="_blank"
+                                    class="text-indigo-600 text-xs hover:underline">
+                                    <i class="fas fa-download mr-1"></i>Download File
+                                </a>
+                            @endif
+                            <p class="text-xs text-gray-500 mt-1">Format: JPG, PNG, JPEG, PDF, DOC, DOCX (Max: 5MB)</p>
+                            @error('file_sk')
+                                <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                            @enderror
+                        </div>
+                    </div>
+
+                    <div class="mt-8 flex justify-end space-x-4">
+                        <a href="{{ route('admin.sk.index') }}"
+                            class="px-6 py-3 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50">Batal</a>
+                        <button type="submit" class="btn-primary px-6 py-3 rounded-lg text-white font-medium">Update
+                            Data</button>
+                    </div>
             </form>
         </div>
     </div>
