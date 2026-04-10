@@ -290,36 +290,6 @@
                         </div>
                     </div>
 
-                    {{-- Upload Foto Gedung --}}
-                    <div class="card border-0 shadow-sm mb-4">
-                        <div class="card-header bg-white fw-semibold border-bottom py-3">
-                            <i class="fas fa-photo-video me-2 text-primary"></i>Foto Gedung
-                        </div>
-                        <div class="card-body text-center py-4">
-                            @if(isset($profil->foto_gedung) && $profil->foto_gedung)
-                                <div id="gedung-preview-wrap" class="mb-3">
-                                    <img id="gedung-preview" src="{{ asset('storage/' . $profil->foto_gedung) }}"
-                                        alt="Foto Gedung" class="img-thumbnail mb-2 w-100"
-                                        style="max-height:160px; object-fit:cover;">
-                                </div>
-                            @else
-                                <div id="gedung-preview-wrap" class="mb-3 d-none">
-                                    <img id="gedung-preview" src="#" alt="Preview Gedung" class="img-thumbnail mb-2 w-100"
-                                        style="max-height:160px; object-fit:cover;">
-                                </div>
-                            @endif
-                            <input type="file" name="foto_gedung"
-                                class="form-control @error('foto_gedung') is-invalid @enderror" accept="image/*"
-                                onchange="previewImg(this,'gedung-preview','gedung-preview-wrap')">
-                            <small class="text-muted d-block mt-2">
-                                <i class="fas fa-info-circle me-1"></i>JPG, PNG, WEBP. Maks 3MB
-                            </small>
-                            @error('foto_gedung')
-                                <div class="text-danger small mt-1">{{ $message }}</div>
-                            @enderror
-                        </div>
-                    </div>
-
                     {{-- Tombol Aksi --}}
                     <div class="card border-0 shadow-sm">
                         <div class="card-body d-grid gap-2 py-3">

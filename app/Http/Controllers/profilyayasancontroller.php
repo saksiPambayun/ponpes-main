@@ -76,7 +76,6 @@ class ProfilYayasanController extends Controller
 
         $profil->update($data);
 
-        return redirect()->route('admin.profil-yayasan.index')
-            ->with('success', 'Profil yayasan berhasil diperbarui!');
+        return redirect()->route('admin.data-master.profil-yayasan')->with('success', 'Profil yayasan berhasil diperbarui.');
     }
 }

@@ -513,50 +513,6 @@ unset($__errorArgs, $__bag); ?>
                     </div>
 
                     
-                    <div class="card border-0 shadow-sm mb-4">
-                        <div class="card-header bg-white fw-semibold border-bottom py-3">
-                            <i class="fas fa-photo-video me-2 text-primary"></i>Foto Gedung
-                        </div>
-                        <div class="card-body text-center py-4">
-                            <?php if(isset($profil->foto_gedung) && $profil->foto_gedung): ?>
-                                <div id="gedung-preview-wrap" class="mb-3">
-                                    <img id="gedung-preview" src="<?php echo e(asset('storage/' . $profil->foto_gedung)); ?>"
-                                        alt="Foto Gedung" class="img-thumbnail mb-2 w-100"
-                                        style="max-height:160px; object-fit:cover;">
-                                </div>
-                            <?php else: ?>
-                                <div id="gedung-preview-wrap" class="mb-3 d-none">
-                                    <img id="gedung-preview" src="#" alt="Preview Gedung" class="img-thumbnail mb-2 w-100"
-                                        style="max-height:160px; object-fit:cover;">
-                                </div>
-                            <?php endif; ?>
-                            <input type="file" name="foto_gedung"
-                                class="form-control <?php $__errorArgs = ['foto_gedung'];
-$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
-if ($__bag->has($__errorArgs[0])) :
-if (isset($message)) { $__messageOriginal = $message; }
-$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
-if (isset($__messageOriginal)) { $message = $__messageOriginal; }
-endif;
-unset($__errorArgs, $__bag); ?>" accept="image/*"
-                                onchange="previewImg(this,'gedung-preview','gedung-preview-wrap')">
-                            <small class="text-muted d-block mt-2">
-                                <i class="fas fa-info-circle me-1"></i>JPG, PNG, WEBP. Maks 3MB
-                            </small>
-                            <?php $__errorArgs = ['foto_gedung'];
-$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
-if ($__bag->has($__errorArgs[0])) :
-if (isset($message)) { $__messageOriginal = $message; }
-$message = $__bag->first($__errorArgs[0]); ?>
-                                <div class="text-danger small mt-1"><?php echo e($message); ?></div>
-                            <?php unset($message);
-if (isset($__messageOriginal)) { $message = $__messageOriginal; }
-endif;
-unset($__errorArgs, $__bag); ?>
-                        </div>
-                    </div>
-
-                    
                     <div class="card border-0 shadow-sm">
                         <div class="card-body d-grid gap-2 py-3">
                             <button type="submit" class="btn btn-primary btn-lg">
