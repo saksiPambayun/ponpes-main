@@ -45,7 +45,7 @@ class RegisterController extends Controller
             'username' => $validated['username'],
             'email' => $validated['email'],
             'password' => Hash::make($validated['password']),
-            'role' => 'admin', // Default role user
+            'role' => 'user', // Default role user
             'status' => 'active',
             'phone' => $request->phone,
             'address' => $request->address,

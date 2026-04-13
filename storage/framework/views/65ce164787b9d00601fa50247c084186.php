@@ -1,7 +1,7 @@
 <nav class="navbar">
-    <div class="nav-container">
+    <div class="nav-container flex justify-between items-center">
 
-        <div class="nav-left">
+        <div class="nav-left flex items-center">
             <img src="<?php echo e(asset('images/logo.png')); ?>" class="logo" alt="Logo">
             <div class="brand">
                 <span class="brand-top">Pondok Pesantren</span>
@@ -9,18 +9,18 @@
             </div>
         </div>
 
-        <ul class="nav-menu">
+        <ul class="nav-menu flex space-x-6">
             <li>
                 <a href="<?php echo e(route('home')); ?>" class="<?php echo e(request()->routeIs('home') ? 'active' : ''); ?>">
                     Beranda
                 </a>
             </li>
-            <li class="dropdown">
+            <li class="dropdown relative">
                 <a href="<?php echo e(route('tentang')); ?>" class="<?php echo e(request()->routeIs('tentang') ? 'active' : ''); ?>">
                     Tentang
                 </a>
 
-                <ul class="dropdown-menu">
+                <ul class="dropdown-menu absolute hidden">
                     <li><a href="<?php echo e(route('struktur')); ?>">Struktur Organisasi</a></li>
                     <li><a href="<?php echo e(route('legalitas')); ?>">Legalitas</a></li>
                 </ul>
@@ -48,8 +48,12 @@
             </li>
         </ul>
 
-        <a href="<?php echo e(route('login')); ?>" class="btn-contact">Login / Register</a>
+        <!-- Tempat tombol login dengan lebar tetap -->
+        <div class="w-[150px] flex justify-end">
+            <?php if(auth()->guard()->guest()): ?>
+                <a href="<?php echo e(route('login')); ?>" class="btn-contact">Login / Register</a>
+            <?php endif; ?>
+        </div>
 
     </div>
-</nav>
-<?php /**PATH D:\ponpes-main\resources\views/components/navbar.blade.php ENDPATH**/ ?>
+</nav><?php /**PATH D:\ponpes-main\resources\views/components/navbar.blade.php ENDPATH**/ ?>

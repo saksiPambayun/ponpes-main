@@ -1,7 +1,7 @@
 <nav class="navbar">
-    <div class="nav-container">
+    <div class="nav-container flex justify-between items-center">
 
-        <div class="nav-left">
+        <div class="nav-left flex items-center">
             <img src="{{ asset('images/logo.png') }}" class="logo" alt="Logo">
             <div class="brand">
                 <span class="brand-top">Pondok Pesantren</span>
@@ -9,18 +9,18 @@
             </div>
         </div>
 
-        <ul class="nav-menu">
+        <ul class="nav-menu flex space-x-6">
             <li>
                 <a href="{{ route('home') }}" class="{{ request()->routeIs('home') ? 'active' : '' }}">
                     Beranda
                 </a>
             </li>
-            <li class="dropdown">
+            <li class="dropdown relative">
                 <a href="{{ route('tentang') }}" class="{{ request()->routeIs('tentang') ? 'active' : '' }}">
                     Tentang
                 </a>
 
-                <ul class="dropdown-menu">
+                <ul class="dropdown-menu absolute hidden">
                     <li><a href="{{ route('struktur') }}">Struktur Organisasi</a></li>
                     <li><a href="{{ route('legalitas') }}">Legalitas</a></li>
                 </ul>
@@ -48,7 +48,11 @@
             </li>
         </ul>
 
-        <a href="{{ route('login') }}" class="btn-contact">Login / Register</a>
+        <div class="w-[150px] flex justify-end">
+            @guest
+                <a href="{{ route('login') }}" class="btn-contact">Login / Register</a>
+            @endguest
+        </div>
 
     </div>
 </nav>

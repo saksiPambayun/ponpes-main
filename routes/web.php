@@ -14,6 +14,9 @@ use App\Http\Controllers\user\UserController;
 use App\Http\Controllers\User\SantriController;
 use App\Http\Controllers\Admin\SantriController as AdminSantriController;
 use App\Http\Controllers\User\SantriController as UserSantriController;
+use App\Http\Controllers\Auth\RegisterController;
+//use App\Http\Controllers\Frontend\User\UserController;
+use App\Http\Controllers\FeedbackController;
 
 /*
 |--------------------------------------------------------------------------
@@ -405,3 +408,7 @@ Route::post('/daftar', [AdminController::class, 'santriStore']);
 Route::post('/daftar', [AdminController::class, 'santriStore'])->name('daftar');
 
 Route::post('/daftar', [App\Http\Controllers\User\SantriRegistrationController::class, 'store'])->name('daftar');
+
+
+//EMAIL
+Route::post('/send-feedback', [FeedbackController::class, 'sendFeedback'])->name('send.feedback');

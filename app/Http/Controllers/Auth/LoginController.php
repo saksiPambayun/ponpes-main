@@ -15,7 +15,8 @@ class LoginController extends Controller
             if ($user->role === 'admin' || $user->role === 'superadmin') {
                 return redirect()->route('admin.dashboard');
             }
-            return redirect()->route('user.dashboard');
+            // User biasa diarahkan ke HOME (bukan dashboard terpisah)
+            return redirect()->route('home');
         }
 
         return view('auth.login');
@@ -49,7 +50,8 @@ class LoginController extends Controller
                 return redirect()->intended(route('admin.dashboard'));
             }
 
-            return redirect()->intended(route('user.dashboard'));
+            // USER BIASA: redirect ke HOME (halaman utama)
+            return redirect()->intended(route('home'));
         }
 
         return back()->withErrors([
@@ -62,6 +64,6 @@ class LoginController extends Controller
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
-        return redirect()->route('login');
+        return redirect()->route('home'); // Redirect ke home setelah logout
     }
 }

@@ -139,20 +139,18 @@ class UserController extends Controller
     }
 
     // Galeri
-    public function galeri()
-    {
-        $galeri = Gallery::first()->get();
-        return view('public.galeri', compact('galeri'));
-    }
+   public function galeri()
+{
+    $galeri = Gallery::all(); // atau Gallery::get()
+    return view('public.galeri', compact('galeri'));
+}
 
-
-    // Fasilitas
-    public function fasilitas()
-    {
-        $fasilitas = Fasilitas::first()->get();
-
-        return view('public.fasilitas', compact('fasilitas'));
-    }
+// Fasilitas
+public function fasilitas()
+{
+    $fasilitas = Fasilitas::all(); 
+    return view('public.fasilitas', compact('fasilitas'));
+}
 
     // Profil Yayasan
     public function profilYayasanIndex()
@@ -173,7 +171,7 @@ class UserController extends Controller
         return view('public.hubungi', compact('profil'));
     }
 
-    //Struktur 
+    //Struktur
 
     public function strukturIndex()
     {
