@@ -98,7 +98,7 @@
             background: #fff;
             border-radius: 20px;
             border: none;
-            box-shadow: 0 2px 20px rgba(0,0,0,0.06);
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.06);
             overflow: hidden;
             margin-bottom: 1.5rem;
         }
@@ -112,7 +112,7 @@
         }
 
         .form-card-header i {
-            color: rgba(255,255,255,0.85);
+            color: rgba(255, 255, 255, 0.85);
             font-size: 1rem;
         }
 
@@ -129,7 +129,7 @@
         .sub-card {
             background: #fff;
             border-radius: 20px;
-            box-shadow: 0 2px 20px rgba(0,0,0,0.06);
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.06);
             padding: 1.75rem;
         }
 
@@ -347,7 +347,7 @@
             left: 0;
             right: 0;
             padding: 0.6rem 0.9rem;
-            background: linear-gradient(transparent, rgba(0,0,0,0.55));
+            background: linear-gradient(transparent, rgba(0, 0, 0, 0.55));
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -364,7 +364,7 @@
         }
 
         .preview-remove {
-            background: rgba(255,255,255,0.25);
+            background: rgba(255, 255, 255, 0.25);
             border: none;
             border-radius: 6px;
             color: #fff;
@@ -482,7 +482,8 @@
             </a>
         </div>
 
-        <form action="{{ route('admin.data-master.gallery.store') }}" method="POST" enctype="multipart/form-data" id="galleryForm">
+        <form action="{{ route('admin.data-master.gallery.store') }}" method="POST" enctype="multipart/form-data"
+            id="galleryForm">
             @csrf
 
             <div class="form-layout">
@@ -496,12 +497,9 @@
                         <div class="form-card-body">
                             <div class="form-group">
                                 <label>Judul <span class="req">*</span></label>
-                                <input type="text"
-                                       name="judul"
-                                       class="form-control @error('judul') is-invalid @enderror"
-                                       value="{{ old('judul') }}"
-                                       placeholder="Masukkan judul gallery"
-                                       required>
+                                <input type="text" name="judul"
+                                    class="form-control @error('judul') is-invalid @enderror" value="{{ old('judul') }}"
+                                    placeholder="Masukkan judul gallery" required>
                                 @error('judul')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -509,13 +507,13 @@
 
                             <div class="form-group">
                                 <label>Kategori <span class="req">*</span></label>
-                                <select name="kategori"
-                                        class="form-control @error('kategori') is-invalid @enderror"
-                                        id="kategoriSelect"
-                                        required>
+                                <select name="kategori" class="form-control @error('kategori') is-invalid @enderror"
+                                    id="kategoriSelect" required>
                                     <option value="">Pilih Kategori</option>
-                                    <option value="kegiatan" {{ old('kategori') == 'kegiatan' ? 'selected' : '' }}>Kegiatan</option>
-                                    <option value="prestasi" {{ old('kategori') == 'prestasi' ? 'selected' : '' }}>Prestasi</option>
+                                    <option value="kegiatan" {{ old('kategori') == 'kegiatan' ? 'selected' : '' }}>Kegiatan
+                                    </option>
+                                    <option value="prestasi" {{ old('kategori') == 'prestasi' ? 'selected' : '' }}>Prestasi
+                                    </option>
                                     <option value="umum" {{ old('kategori') == 'umum' ? 'selected' : '' }}>Umum</option>
                                 </select>
                                 <div class="kategori-hints">
@@ -530,10 +528,9 @@
 
                             <div class="form-group">
                                 <label>Tanggal Kegiatan <span class="opt">(opsional)</span></label>
-                                <input type="date"
-                                       name="tanggal_kegiatan"
-                                       class="form-control @error('tanggal_kegiatan') is-invalid @enderror"
-                                       value="{{ old('tanggal_kegiatan') }}">
+                                <input type="date" name="tanggal_kegiatan"
+                                    class="form-control @error('tanggal_kegiatan') is-invalid @enderror"
+                                    value="{{ old('tanggal_kegiatan') }}">
                                 @error('tanggal_kegiatan')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -562,12 +559,8 @@
 
                             <div class="file-upload-wrapper" id="uploadWrapper">
                                 <div class="file-upload-area @error('gambar') border-danger @enderror" id="dropZone">
-                                    <input type="file"
-                                           name="gambar"
-                                           id="gambarInput"
-                                           accept="image/*"
-                                           onchange="handleFile(this)"
-                                           required>
+                                    <input type="file" name="gambar" id="gambarInput" accept="image/*"
+                                        onchange="handleFile(this)" required>
                                     <div class="upload-icon-wrap">
                                         <i class="fas fa-image"></i>
                                     </div>
@@ -585,11 +578,9 @@
                     <div class="sub-card">
                         <div class="section-label">Deskripsi</div>
                         <div class="form-group">
-                            <label>Deskripsi <span class="opt">(opsional)</span></label>
-                            <textarea name="deskripsi"
-                                      class="form-control @error('deskripsi') is-invalid @enderror"
-                                      rows="4"
-                                      placeholder="Tuliskan deskripsi singkat tentang foto ini...">{{ old('deskripsi') }}</textarea>
+                            <label>Deskripsi <span class="req">*</span></label>
+                            <textarea name="deskripsi" class="form-control @error('deskripsi') is-invalid @enderror" rows="4"
+                                placeholder="Tuliskan deskripsi singkat tentang foto ini..." required>{{ old('deskripsi') }}</textarea>
                             @error('deskripsi')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror

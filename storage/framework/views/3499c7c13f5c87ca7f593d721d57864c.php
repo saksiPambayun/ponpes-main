@@ -1,9 +1,7 @@
-@extends('admin.layout')
+<?php $__env->startSection('title', 'Edit Gallery'); ?>
+<?php $__env->startSection('page-title', 'Edit Gallery'); ?>
 
-@section('title', 'Edit Gallery')
-@section('page-title', 'Edit Gallery')
-
-@push('styles')
+<?php $__env->startPush('styles'); ?>
     <style>
         .form-card {
             background: #fff;
@@ -276,11 +274,11 @@
             color: #2d3748;
         }
     </style>
-@endpush
+<?php $__env->stopPush(); ?>
 
-@section('content')
+<?php $__env->startSection('content'); ?>
     <div class="page-wrapper" style="background: #f0f4f8; min-height: 100vh; padding: 2rem;">
-        {{-- Page Header --}}
+        
         <div class="page-header"
             style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem;">
             <div class="page-header-left" style="display: flex; align-items: center; gap: 1rem;">
@@ -291,17 +289,17 @@
                 <div class="page-title">
                     <h1 style="font-size: 1.35rem; font-weight: 700; color: #1a1f36; margin: 0;">Edit Gallery</h1>
                     <p style="font-size: 0.8rem; color: #8898aa; margin: 0;"><i
-                            class="fas fa-calendar-alt mr-1"></i>{{ now()->format('d F Y') }}</p>
+                            class="fas fa-calendar-alt mr-1"></i><?php echo e(now()->format('d F Y')); ?></p>
                 </div>
             </div>
 
-            <a href="{{ route('admin.data-master.gallery.index') }}" class="btn-back"
+            <a href="<?php echo e(route('admin.data-master.gallery.index')); ?>" class="btn-back"
                 style="display: inline-flex; align-items: center; gap: 0.45rem; padding: 0.55rem 1.1rem; background: #fff; border: 1.5px solid #e2e8f0; border-radius: 10px; color: #4a5568; font-size: 0.82rem; font-weight: 600; text-decoration: none;">
                 <i class="fas fa-arrow-left"></i> Kembali
             </a>
         </div>
 
-        {{-- Form Card --}}
+        
         <div class="form-card">
             <div class="form-card-header">
                 <i class="fas fa-clipboard-list"></i>
@@ -309,10 +307,10 @@
             </div>
 
             <div class="form-card-body">
-                <form action="{{ route('admin.data-master.gallery.update', $gallery->id) }}" method="POST"
+                <form action="<?php echo e(route('admin.data-master.gallery.update', $gallery->id)); ?>" method="POST"
                     enctype="multipart/form-data">
-                    @csrf
-                    @method('PUT')
+                    <?php echo csrf_field(); ?>
+                    <?php echo method_field('PUT'); ?>
 
                     <div class="section-label">Informasi Gallery</div>
 
@@ -321,40 +319,82 @@
                             <div class="form-group">
                                 <label>Judul <span class="req">*</span></label>
                                 <input type="text" name="judul"
-                                    class="form-control @error('judul') is-invalid @enderror"
-                                    value="{{ old('judul', $gallery->judul) }}" required>
-                                @error('judul')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
+                                    class="form-control <?php $__errorArgs = ['judul'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>"
+                                    value="<?php echo e(old('judul', $gallery->judul)); ?>" required>
+                                <?php $__errorArgs = ['judul'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                    <div class="invalid-feedback"><?php echo e($message); ?></div>
+                                <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                             </div>
 
                             <div class="form-group">
                                 <label>Kategori <span class="req">*</span></label>
-                                <select name="kategori" class="form-control @error('kategori') is-invalid @enderror"
+                                <select name="kategori" class="form-control <?php $__errorArgs = ['kategori'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>"
                                     required>
                                     <option value="">Pilih Kategori</option>
                                     <option value="kegiatan"
-                                        {{ old('kategori', $gallery->kategori) == 'kegiatan' ? 'selected' : '' }}>Kegiatan
+                                        <?php echo e(old('kategori', $gallery->kategori) == 'kegiatan' ? 'selected' : ''); ?>>Kegiatan
                                     </option>
                                     <option value="prestasi"
-                                        {{ old('kategori', $gallery->kategori) == 'prestasi' ? 'selected' : '' }}>Prestasi
+                                        <?php echo e(old('kategori', $gallery->kategori) == 'prestasi' ? 'selected' : ''); ?>>Prestasi
                                     </option>
                                     <option value="umum"
-                                        {{ old('kategori', $gallery->kategori) == 'umum' ? 'selected' : '' }}>Umum</option>
+                                        <?php echo e(old('kategori', $gallery->kategori) == 'umum' ? 'selected' : ''); ?>>Umum</option>
                                 </select>
-                                @error('kategori')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
+                                <?php $__errorArgs = ['kategori'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                    <div class="invalid-feedback"><?php echo e($message); ?></div>
+                                <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                             </div>
 
                             <div class="form-group">
                                 <label>Tanggal Kegiatan <span class="opt">(opsional)</span></label>
                                 <input type="date" name="tanggal_kegiatan"
-                                    class="form-control @error('tanggal_kegiatan') is-invalid @enderror"
-                                    value="{{ old('tanggal_kegiatan', $gallery->tanggal_kegiatan ? $gallery->tanggal_kegiatan->format('Y-m-d') : '') }}">
-                                @error('tanggal_kegiatan')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
+                                    class="form-control <?php $__errorArgs = ['tanggal_kegiatan'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>"
+                                    value="<?php echo e(old('tanggal_kegiatan', $gallery->tanggal_kegiatan ? $gallery->tanggal_kegiatan->format('Y-m-d') : '')); ?>">
+                                <?php $__errorArgs = ['tanggal_kegiatan'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                    <div class="invalid-feedback"><?php echo e($message); ?></div>
+                                <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                             </div>
                         </div>
                     </div>
@@ -363,38 +403,61 @@
 
                     <div class="form-group">
                         <label>Deskripsi <span class="req">*</span></label>
-                        <textarea name="deskripsi" class="form-control" placeholder="Tuliskan deskripsi gallery..." rows="4" required>{{ old('deskripsi', $gallery->deskripsi) }}
+                        <textarea name="deskripsi" class="form-control"
+                            placeholder="Tuliskan deskripsi gallery..." rows="4" required><?php echo e(old('deskripsi', $gallery->deskripsi)); ?>
+
                         </textarea>
 
-                        @error('deskripsi')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
+                        <?php $__errorArgs = ['deskripsi'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                            <div class="invalid-feedback"><?php echo e($message); ?></div>
+                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                     </div>
 
                     <div class="section-label">Media</div>
 
                     <div class="form-group">
                         <label>Gambar</label>
-                        @if ($gallery->gambar)
+                        <?php if($gallery->gambar): ?>
                             <div class="current-photo">
-                                <img src="{{ asset('storage/' . $gallery->gambar) }}" alt="{{ $gallery->judul }}">
+                                <img src="<?php echo e(asset('storage/' . $gallery->gambar)); ?>" alt="<?php echo e($gallery->judul); ?>">
                                 <small class="text-muted">Gambar saat ini</small>
                             </div>
-                        @endif
+                        <?php endif; ?>
                         <div class="custom-file">
                             <input type="file" name="gambar"
-                                class="custom-file-input @error('gambar') is-invalid @enderror" id="gambarInput"
+                                class="custom-file-input <?php $__errorArgs = ['gambar'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>" id="gambarInput"
                                 accept="image/*">
                             <label class="custom-file-label" for="gambarInput">Pilih file baru...</label>
                         </div>
                         <small class="text-muted">Format: jpeg, png, jpg, gif | Maks: 5MB (Kosongkan jika tidak ingin
                             mengubah)</small>
-                        @error('gambar')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
+                        <?php $__errorArgs = ['gambar'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                            <div class="invalid-feedback"><?php echo e($message); ?></div>
+                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                     </div>
 
-                    {{-- Preview Gambar Baru --}}
+                    
                     <div class="preview-box" id="previewBox">
                         <img id="previewImg" src="#" alt="Preview">
                     </div>
@@ -404,7 +467,7 @@
                             <i class="fas fa-save"></i> Update
                         </button>
 
-                        <a href="{{ route('admin.data-master.gallery.index') }}" class="btn-cancel">
+                        <a href="<?php echo e(route('admin.data-master.gallery.index')); ?>" class="btn-cancel">
                             <i class="fas fa-times"></i> Batal
                         </a>
                     </div>
@@ -413,7 +476,7 @@
         </div>
     </div>
 
-    @push('scripts')
+    <?php $__env->startPush('scripts'); ?>
         <script>
             // Preview gambar sebelum upload
             const gambarInput = document.getElementById('gambarInput');
@@ -442,5 +505,7 @@
                 }
             });
         </script>
-    @endpush
-@endsection
+    <?php $__env->stopPush(); ?>
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('admin.layout', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\laragon\www\ponpes-main\resources\views/admin/data-master/gallery/edit.blade.php ENDPATH**/ ?>

@@ -96,7 +96,7 @@
             background: #fff;
             border-radius: 20px;
             border: none;
-            box-shadow: 0 2px 20px rgba(0,0,0,0.06);
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.06);
             overflow: hidden;
             margin-bottom: 1.5rem;
         }
@@ -110,7 +110,7 @@
         }
 
         .form-card-header i {
-            color: rgba(255,255,255,0.85);
+            color: rgba(255, 255, 255, 0.85);
             font-size: 1rem;
         }
 
@@ -127,7 +127,7 @@
         .sub-card {
             background: #fff;
             border-radius: 20px;
-            box-shadow: 0 2px 20px rgba(0,0,0,0.06);
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.06);
             padding: 1.75rem;
         }
 
@@ -345,7 +345,7 @@
             left: 0;
             right: 0;
             padding: 0.6rem 0.9rem;
-            background: linear-gradient(transparent, rgba(0,0,0,0.55));
+            background: linear-gradient(transparent, rgba(0, 0, 0, 0.55));
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -362,7 +362,7 @@
         }
 
         .preview-remove {
-            background: rgba(255,255,255,0.25);
+            background: rgba(255, 255, 255, 0.25);
             border: none;
             border-radius: 6px;
             color: #fff;
@@ -480,7 +480,8 @@
             </a>
         </div>
 
-        <form action="<?php echo e(route('admin.data-master.gallery.store')); ?>" method="POST" enctype="multipart/form-data" id="galleryForm">
+        <form action="<?php echo e(route('admin.data-master.gallery.store')); ?>" method="POST" enctype="multipart/form-data"
+            id="galleryForm">
             <?php echo csrf_field(); ?>
 
             <div class="form-layout">
@@ -494,19 +495,16 @@
                         <div class="form-card-body">
                             <div class="form-group">
                                 <label>Judul <span class="req">*</span></label>
-                                <input type="text"
-                                       name="judul"
-                                       class="form-control <?php $__errorArgs = ['judul'];
+                                <input type="text" name="judul"
+                                    class="form-control <?php $__errorArgs = ['judul'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
 $message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?>"
-                                       value="<?php echo e(old('judul')); ?>"
-                                       placeholder="Masukkan judul gallery"
-                                       required>
+unset($__errorArgs, $__bag); ?>" value="<?php echo e(old('judul')); ?>"
+                                    placeholder="Masukkan judul gallery" required>
                                 <?php $__errorArgs = ['judul'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
@@ -521,8 +519,7 @@ unset($__errorArgs, $__bag); ?>
 
                             <div class="form-group">
                                 <label>Kategori <span class="req">*</span></label>
-                                <select name="kategori"
-                                        class="form-control <?php $__errorArgs = ['kategori'];
+                                <select name="kategori" class="form-control <?php $__errorArgs = ['kategori'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -530,11 +527,12 @@ $message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?>"
-                                        id="kategoriSelect"
-                                        required>
+                                    id="kategoriSelect" required>
                                     <option value="">Pilih Kategori</option>
-                                    <option value="kegiatan" <?php echo e(old('kategori') == 'kegiatan' ? 'selected' : ''); ?>>Kegiatan</option>
-                                    <option value="prestasi" <?php echo e(old('kategori') == 'prestasi' ? 'selected' : ''); ?>>Prestasi</option>
+                                    <option value="kegiatan" <?php echo e(old('kategori') == 'kegiatan' ? 'selected' : ''); ?>>Kegiatan
+                                    </option>
+                                    <option value="prestasi" <?php echo e(old('kategori') == 'prestasi' ? 'selected' : ''); ?>>Prestasi
+                                    </option>
                                     <option value="umum" <?php echo e(old('kategori') == 'umum' ? 'selected' : ''); ?>>Umum</option>
                                 </select>
                                 <div class="kategori-hints">
@@ -556,9 +554,8 @@ unset($__errorArgs, $__bag); ?>
 
                             <div class="form-group">
                                 <label>Tanggal Kegiatan <span class="opt">(opsional)</span></label>
-                                <input type="date"
-                                       name="tanggal_kegiatan"
-                                       class="form-control <?php $__errorArgs = ['tanggal_kegiatan'];
+                                <input type="date" name="tanggal_kegiatan"
+                                    class="form-control <?php $__errorArgs = ['tanggal_kegiatan'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -566,7 +563,7 @@ $message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?>"
-                                       value="<?php echo e(old('tanggal_kegiatan')); ?>">
+                                    value="<?php echo e(old('tanggal_kegiatan')); ?>">
                                 <?php $__errorArgs = ['tanggal_kegiatan'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
@@ -609,12 +606,8 @@ $message = $__bag->first($__errorArgs[0]); ?> border-danger <?php unset($message
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?>" id="dropZone">
-                                    <input type="file"
-                                           name="gambar"
-                                           id="gambarInput"
-                                           accept="image/*"
-                                           onchange="handleFile(this)"
-                                           required>
+                                    <input type="file" name="gambar" id="gambarInput" accept="image/*"
+                                        onchange="handleFile(this)" required>
                                     <div class="upload-icon-wrap">
                                         <i class="fas fa-image"></i>
                                     </div>
@@ -639,18 +632,16 @@ unset($__errorArgs, $__bag); ?>
                     <div class="sub-card">
                         <div class="section-label">Deskripsi</div>
                         <div class="form-group">
-                            <label>Deskripsi <span class="opt">(opsional)</span></label>
-                            <textarea name="deskripsi"
-                                      class="form-control <?php $__errorArgs = ['deskripsi'];
+                            <label>Deskripsi <span class="req">*</span></label>
+                            <textarea name="deskripsi" class="form-control <?php $__errorArgs = ['deskripsi'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
 $message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?>"
-                                      rows="4"
-                                      placeholder="Tuliskan deskripsi singkat tentang foto ini..."><?php echo e(old('deskripsi')); ?></textarea>
+unset($__errorArgs, $__bag); ?>" rows="4"
+                                placeholder="Tuliskan deskripsi singkat tentang foto ini..." required><?php echo e(old('deskripsi')); ?></textarea>
                             <?php $__errorArgs = ['deskripsi'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :

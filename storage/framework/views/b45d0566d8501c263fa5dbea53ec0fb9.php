@@ -13,8 +13,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="{{ asset('css/navbar.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/footer.css') }}">
+    <link rel="stylesheet" href="<?php echo e(asset('css/navbar.css')); ?>">
+    <link rel="stylesheet" href="<?php echo e(asset('css/footer.css')); ?>">
 </head>
 <style>
     .fasilitas {
@@ -76,7 +76,7 @@
 </style>
 
 <body>
-    @include('components.navbar')
+    <?php echo $__env->make('components.navbar', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
     <section class="fasilitas">
         <section class="fasilitas-sectionn">
 
@@ -84,64 +84,24 @@
 
             <div class="fasilitas-grid">
 
-                @foreach ($fasilitas as $item)
+                <?php $__currentLoopData = $fasilitas; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                     <div class="fasilitas-card">
                         <div class="fasilitas-img">
-                            <img src="{{ asset('storage/' . $item->foto) }}" alt="{{ $item->nama_fasilitas }}">
+                            <img src="<?php echo e(asset('storage/' . $item->foto)); ?>" alt="<?php echo e($item->nama_fasilitas); ?>">
                         </div>
-                        <p>{{ $item->nama_fasilitas }}</p>
+                        <p><?php echo e($item->nama_fasilitas); ?></p>
                     </div>
-                @endforeach
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
 
 
-                {{--         <div class="fasilitas-card">
-            <div class="fasilitas-img">
-                <img src="{{ asset('images/wudhuw.jpg') }}" alt="Wudhu Wandi">
-            </div>
-            <p>Wudhu Wanita</p>
-        </div>
-
-
-        <div class="fasilitas-card">
-            <div class="fasilitas-img">
-                <img src="{{ asset('images/wudhup.jpg') }}" alt="Wudhu Pria">
-            </div>
-            <p>Wudhu Pria</p>
-        </div>
-
-        <div class="fasilitas-card">
-            <div class="fasilitas-img">
-                <img src="{{ asset('images/kamarmandi1.jpg') }}" alt="Kamar Mandi">
-            </div>
-            <p>Kamar Mandi</p>
-        </div>
-
-        <div class="fasilitas-card">
-            <div class="fasilitas-img">
-                <img src="{{ asset('images/kamarmandi2.jpg') }}" alt="Kamar Mandi">
-            </div>
-            <p>Kamar Mandi</p>
-        </div>
-
-        <div class="fasilitas-card">
-            <div class="fasilitas-img">
-                <img src="{{ asset('images/kamarmandi3.jpg') }}" alt="Kamar Mandi">
-            </div>
-            <p>Kamar Mandi</p>
-        </div>
-
-        <div class="fasilitas-card">
-            <div class="fasilitas-img">
-                <img src="{{ asset('images/kamarmandip.jpg') }}" alt="Kamar Mandi">
-            </div>
-            <p>Kamar Mandi</p>
-        </div> --}}
+                
 
             </div>
 
         </section>
     </section>
-    @include('components.footer')
+    <?php echo $__env->make('components.footer', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
 </body>
 
 </html>
+<?php /**PATH C:\laragon\www\ponpes-main\resources\views/public/fasilitas.blade.php ENDPATH**/ ?>

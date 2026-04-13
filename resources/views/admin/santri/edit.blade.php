@@ -84,69 +84,69 @@
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-2">Kartu Keluarga (KK)</label>
                             {{-- Preview file yang sudah ada --}}
-                            @if($santri->dok_kk)
+                            @if($santri->kk)
                                 <div class="mb-3 p-3 bg-green-50 border border-green-200 rounded-lg">
                                     <p class="text-xs text-green-700 font-medium mb-2">✓ File saat ini:</p>
-                                    @if(in_array(strtolower(pathinfo($santri->dok_kk, PATHINFO_EXTENSION)), ['jpg','jpeg','png']))
-                                        <img src="{{ asset('storage/' . $santri->dok_kk) }}"
+                                    @if(in_array(strtolower(pathinfo($santri->kk, PATHINFO_EXTENSION)), ['jpg','jpeg','png']))
+                                        <img src="{{ asset('storage/' . $santri->kk) }}"
                                             class="h-24 rounded border object-cover mb-2" alt="KK">
                                     @else
                                         <div class="flex items-center gap-2">
                                             <i class="fas fa-file-pdf text-red-500"></i>
-                                            <span class="text-xs text-gray-600 truncate">{{ basename($santri->dok_kk) }}</span>
+                                            <span class="text-xs text-gray-600 truncate">{{ basename($santri->kk) }}</span>
                                         </div>
                                     @endif
-                                    <a href="{{ asset('storage/' . $santri->dok_kk) }}" target="_blank"
+                                    <a href="{{ asset('storage/' . $santri->kk) }}" target="_blank"
                                         class="text-xs text-indigo-600 hover:underline">Lihat file →</a>
                                 </div>
                             @endif
-                            <label for="dok_kk" class="flex flex-col items-center justify-center w-full h-24 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100 transition">
+                            <label for="kk" class="flex flex-col items-center justify-center w-full h-24 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100 transition">
                                 <div class="flex flex-col items-center justify-center">
                                     <i class="fas fa-cloud-upload-alt text-xl text-gray-400 mb-1"></i>
-                                    <p class="text-xs text-gray-500">{{ $santri->dok_kk ? 'Ganti file' : 'Upload file' }} · PDF, JPG, PNG (maks. 20MB)</p>
+                                    <p class="text-xs text-gray-500">{{ $santri->kk ? 'Ganti file' : 'Upload file' }} · PDF, JPG, PNG (maks. 20MB)</p>
                                 </div>
-                                <input id="dok_kk" type="file" name="dok_kk" class="hidden"
+                                <input id="kk" type="file" name="kk" class="hidden"
                                     accept=".pdf,.jpg,.jpeg,.png" onchange="showFileName(this, 'label-kk', 'preview-kk')">
                             </label>
                             <p id="label-kk" class="text-xs text-indigo-600 mt-1 hidden font-medium"></p>
                             <div id="preview-kk" class="mt-2 hidden">
                                 <img class="h-20 rounded border object-cover" alt="preview KK baru">
                             </div>
-                            @error('dok_kk') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
+                            @error('kk') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
                         </div>
 
                         {{-- Akta --}}
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-2">Akta Kelahiran</label>
-                            @if($santri->dok_akta)
+                            @if($santri->foto)
                                 <div class="mb-3 p-3 bg-green-50 border border-green-200 rounded-lg">
                                     <p class="text-xs text-green-700 font-medium mb-2">✓ File saat ini:</p>
-                                    @if(in_array(strtolower(pathinfo($santri->dok_akta, PATHINFO_EXTENSION)), ['jpg','jpeg','png']))
-                                        <img src="{{ asset('storage/' . $santri->dok_akta) }}"
+                                    @if(in_array(strtolower(pathinfo($santri->foto, PATHINFO_EXTENSION)), ['jpg','jpeg','png']))
+                                        <img src="{{ asset('storage/' . $santri->foto) }}"
                                             class="h-24 rounded border object-cover mb-2" alt="Akta">
                                     @else
                                         <div class="flex items-center gap-2">
                                             <i class="fas fa-file-pdf text-red-500"></i>
-                                            <span class="text-xs text-gray-600 truncate">{{ basename($santri->dok_akta) }}</span>
+                                            <span class="text-xs text-gray-600 truncate">{{ basename($santri->foto) }}</span>
                                         </div>
                                     @endif
-                                    <a href="{{ asset('storage/' . $santri->dok_akta) }}" target="_blank"
+                                    <a href="{{ asset('storage/' . $santri->foto) }}" target="_blank"
                                         class="text-xs text-indigo-600 hover:underline">Lihat file →</a>
                                 </div>
                             @endif
-                            <label for="dok_akta" class="flex flex-col items-center justify-center w-full h-24 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100 transition">
+                            <label for="foto" class="flex flex-col items-center justify-center w-full h-24 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100 transition">
                                 <div class="flex flex-col items-center justify-center">
                                     <i class="fas fa-cloud-upload-alt text-xl text-gray-400 mb-1"></i>
-                                    <p class="text-xs text-gray-500">{{ $santri->dok_akta ? 'Ganti file' : 'Upload file' }} · PDF, JPG, PNG (maks. 20MB)</p>
+                                    <p class="text-xs text-gray-500">{{ $santri->foto ? 'Ganti file' : 'Upload file' }} · PDF, JPG, PNG (maks. 20MB)</p>
                                 </div>
-                                <input id="dok_akta" type="file" name="dok_akta" class="hidden"
+                                <input id="foto" type="file" name="foto" class="hidden"
                                     accept=".pdf,.jpg,.jpeg,.png" onchange="showFileName(this, 'label-akta', 'preview-akta')">
                             </label>
                             <p id="label-akta" class="text-xs text-indigo-600 mt-1 hidden font-medium"></p>
                             <div id="preview-akta" class="mt-2 hidden">
                                 <img class="h-20 rounded border object-cover" alt="preview Akta baru">
                             </div>
-                            @error('dok_akta') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
+                            @error('foto') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
                         </div>
 
                     </div>

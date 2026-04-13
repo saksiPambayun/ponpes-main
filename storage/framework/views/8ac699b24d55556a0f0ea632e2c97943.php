@@ -1,285 +1,510 @@
 <?php $__env->startSection('title', 'Edit Profil Yayasan'); ?>
 
 <?php $__env->startSection('content'); ?>
-    <div class="page-wrapper" style="background: #f0f4f8; min-height: 100vh; padding: 2rem;">
+    <div class="container-fluid px-4">
+
         
-        <div class="page-header"
-            style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem;">
-            <div class="header-left" style="display: flex; align-items: center; gap: 1rem;">
-                <div class="header-icon"
-                    style="width: 48px; height: 48px; background: linear-gradient(135deg, #4361ee, #7209b7); border-radius: 14px; display: flex; align-items: center; justify-content: center;">
-                    <i class="fas fa-building" style="color: #fff; font-size: 1.2rem;"></i>
-                </div>
-                <div>
-                    <h1 class="page-title" style="font-size: 1.5rem; font-weight: 700; color: #0f172a; margin: 0;">Edit
-                        Profil Yayasan</h1>
-                    <nav class="breadcrumb-nav"
-                        style="display: flex; align-items: center; gap: 6px; font-size: 0.8rem; color: #64748b; margin-top: 4px;">
-                        <a href="<?php echo e(url('/admin/dashboard')); ?>" class="breadcrumb-link"
-                            style="color: #64748b; text-decoration: none;">Dashboard</a>
-                        <i class="fas fa-chevron-right breadcrumb-sep" style="font-size: 0.6rem;"></i>
-                        <a href="<?php echo e(route('admin.data-master.profil-yayasan.index')); ?>" class="breadcrumb-link"
-                            style="color: #64748b; text-decoration: none;">Profil Yayasan</a>
-                        <i class="fas fa-chevron-right breadcrumb-sep" style="font-size: 0.6rem;"></i>
-                        <span class="breadcrumb-current" style="color: #1e3a5f; font-weight: 600;">Edit</span>
-                    </nav>
-                </div>
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h4 class="mb-1 fw-bold text-dark">Edit Profil Yayasan</h4>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb mb-0">
+                        <li class="breadcrumb-item">
+                            <a href="<?php echo e(url('/admin/dashboard')); ?>" class="text-decoration-none">Dashboard</a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a href="<?php echo e(route('admin.data-master.profil-yayasan')); ?>" class="text-decoration-none">Profil
+                                Yayasan</a>
+                        </li>
+                        <li class="breadcrumb-item active text-muted">Edit</li>
+                    </ol>
+                </nav>
             </div>
-        <a href="<?php echo e(route('admin.data-master.profil-yayasan.index')); ?>" class="btn-secondary-action"
-            style="display: inline-flex; align-items: center; gap: 8px; background: #fff; border: 1px solid #e2e8f0; border-radius: 10px; padding: 10px 18px; text-decoration: none; color: #475569;">
-            <i class="fas fa-arrow-left"></i> Kembali
-        </a>
+            <a href="<?php echo e(route('admin.data-master.profil-yayasan')); ?>" class="btn btn-outline-secondary">
+                <i class="fas fa-arrow-left me-1"></i> Kembali
+            </a>
         </div>
 
         
         <?php if($errors->any()): ?>
-            <div class="alert-error-box"
-                style="display: flex; gap: 12px; background: #fff5f5; border-left: 4px solid #ef4444; border-radius: 10px; padding: 14px 16px; margin-bottom: 20px;">
-                <i class="fas fa-exclamation-circle" style="color: #ef4444;"></i>
-                <div>
-                    <p style="font-weight: 700; color: #991b1b; margin: 0 0 6px;">Terdapat beberapa kesalahan:</p>
-                    <ul style="margin: 0; padding-left: 18px; color: #b91c1c;">
-                        <?php $__currentLoopData = $errors->all(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $error): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                            <li><?php echo e($error); ?></li>
-                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                    </ul>
-                </div>
+            <div class="alert alert-danger alert-dismissible fade show shadow-sm" role="alert">
+                <i class="fas fa-exclamation-circle me-2"></i>
+                <strong>Terdapat beberapa kesalahan:</strong>
+                <ul class="mb-0 mt-1 ps-3">
+                    <?php $__currentLoopData = $errors->all(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $error): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                        <li><?php echo e($error); ?></li>
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                </ul>
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
             </div>
         <?php endif; ?>
 
         <form action="<?php echo e(route('admin.data-master.profil-yayasan.update')); ?>" method="POST" enctype="multipart/form-data">
             <?php echo csrf_field(); ?>
-            <?php echo method_field('PUT'); ?>
 
-            <div class="form-layout"
-                style="display: grid; grid-template-columns: 1fr 320px; gap: 24px; align-items: start;">
+            <div class="row g-4">
+
                 
-                <div class="main-col" style="display: flex; flex-direction: column; gap: 20px;">
+                <div class="col-lg-8">
+
                     
-                    <div class="section-card"
-                        style="background: #fff; border-radius: 20px; box-shadow: 0 2px 20px rgba(0,0,0,0.06); overflow: hidden;">
-                        <div class="section-card-header"
-                            style="background: linear-gradient(135deg, #4361ee, #7209b7); padding: 1rem 1.5rem;">
-                            <div class="section-card-title" style="display: flex; align-items: center; gap: 8px;">
-                                <i class="fas fa-id-card" style="color: #fff;"></i>
-                                <span style="color: #fff; font-weight: 600;">Identitas Yayasan</span>
-                            </div>
+                    <div class="card border-0 shadow-sm mb-4">
+                        <div class="card-header bg-white fw-semibold border-bottom py-3">
+                            <i class="fas fa-id-card me-2 text-primary"></i>Identitas Yayasan
                         </div>
-                        <div class="section-card-body" style="padding: 1.5rem;">
-                            <div style="display: flex; flex-direction: column; gap: 1rem;">
-                                <div>
-                                    <label
-                                        style="font-size: 0.82rem; font-weight: 600; color: #2d3748; display: block; margin-bottom: 0.4rem;">Nama
-                                        Yayasan <span style="color: #e53e3e;">*</span></label>
+                        <div class="card-body py-3">
+                            <div class="row g-3">
+                                <div class="col-md-12">
+                                    <label class="form-label fw-semibold">
+                                        Nama Yayasan <span class="text-danger">*</span>
+                                    </label>
                                     <input type="text" name="nama_yayasan"
-                                        value="<?php echo e(old('nama_yayasan', $profil->nama_yayasan)); ?>"
-                                        style="width: 100%; padding: 0.65rem 0.9rem; border: 1.5px solid #e2e8f0; border-radius: 10px; background: #f8fafc;"
+                                        class="form-control <?php $__errorArgs = ['nama_yayasan'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>"
+                                        value="<?php echo e(old('nama_yayasan', $profil->nama_yayasan ?? '')); ?>"
                                         placeholder="Contoh: Yayasan Peduli Bangsa">
+                                    <?php $__errorArgs = ['nama_yayasan'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                        <div class="invalid-feedback"><?php echo e($message); ?></div>
+                                    <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                                 </div>
-                                <div>
-                                    <label
-                                        style="font-size: 0.82rem; font-weight: 600; color: #2d3748; display: block; margin-bottom: 0.4rem;">Tahun
-                                        Berdiri</label>
+                                <div class="col-md-4">
+                                    <label class="form-label fw-semibold">Tahun Berdiri</label>
                                     <input type="number" name="tahun_berdiri"
-                                        value="<?php echo e(old('tahun_berdiri', $profil->tahun_berdiri)); ?>"
-                                        style="width: 100%; padding: 0.65rem 0.9rem; border: 1.5px solid #e2e8f0; border-radius: 10px; background: #f8fafc;"
+                                        class="form-control <?php $__errorArgs = ['tahun_berdiri'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>"
+                                        value="<?php echo e(old('tahun_berdiri', $profil->tahun_berdiri ?? '')); ?>"
                                         placeholder="Contoh: 2010" min="1900" max="<?php echo e(date('Y')); ?>">
+                                    <?php $__errorArgs = ['tahun_berdiri'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                        <div class="invalid-feedback"><?php echo e($message); ?></div>
+                                    <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                                 </div>
-                                <div>
-                                    <label
-                                        style="font-size: 0.82rem; font-weight: 600; color: #2d3748; display: block; margin-bottom: 0.4rem;">Tentang
-                                        Kami</label>
+                                <div class="col-12">
+                                    <label class="form-label fw-semibold">Tentang Kami</label>
                                     <textarea name="deskripsi" rows="3"
-                                        style="width: 100%; padding: 0.65rem 0.9rem; border: 1.5px solid #e2e8f0; border-radius: 10px; background: #f8fafc; resize: vertical;"
-                                        placeholder="Deskripsi singkat tentang yayasan..."><?php echo e(old('deskripsi', $profil->deskripsi)); ?></textarea>
+                                        class="form-control <?php $__errorArgs = ['deskripsi'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>"
+                                        placeholder="Deskripsi tentang yayasan..."><?php echo e(old('deskripsi', $profil->deskripsi ?? '')); ?></textarea>
+                                    <?php $__errorArgs = ['deskripsi'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                        <div class="invalid-feedback"><?php echo e($message); ?></div>
+                                    <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                                 </div>
                             </div>
                         </div>
                     </div>
 
                     
-                    <div class="section-card"
-                        style="background: #fff; border-radius: 20px; box-shadow: 0 2px 20px rgba(0,0,0,0.06); overflow: hidden;">
-                        <div class="section-card-header"
-                            style="background: linear-gradient(135deg, #4361ee, #7209b7); padding: 1rem 1.5rem;">
-                            <div class="section-card-title" style="display: flex; align-items: center; gap: 8px;">
-                                <i class="fas fa-bullseye" style="color: #fff;"></i>
-                                <span style="color: #fff; font-weight: 600;">Visi & Misi</span>
-                            </div>
+                    <div class="card border-0 shadow-sm mb-4">
+                        <div class="card-header bg-white fw-semibold border-bottom py-3">
+                            <i class="fas fa-bullseye me-2 text-primary"></i>Visi & Misi
                         </div>
-                        <div class="section-card-body" style="padding: 1.5rem;">
-                            <div style="display: flex; flex-direction: column; gap: 1rem;">
-                                <div>
-                                    <label
-                                        style="font-size: 0.82rem; font-weight: 600; color: #2d3748; display: block; margin-bottom: 0.4rem;">Visi</label>
-                                    <textarea name="visi" rows="3"
-                                        style="width: 100%; padding: 0.65rem 0.9rem; border: 1.5px solid #e2e8f0; border-radius: 10px; background: #f8fafc; resize: vertical;"
-                                        placeholder="Visi yayasan..."><?php echo e(old('visi', $profil->visi)); ?></textarea>
+                        <div class="card-body py-3">
+                            <div class="row g-3">
+                                <div class="col-12">
+                                    <label class="form-label fw-semibold">Visi</label>
+                                    <textarea name="visi" rows="3" class="form-control <?php $__errorArgs = ['visi'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>"
+                                        placeholder="Visi yayasan..."><?php echo e(old('visi', $profil->visi ?? '')); ?></textarea>
+                                    <?php $__errorArgs = ['visi'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                        <div class="invalid-feedback"><?php echo e($message); ?></div>
+                                    <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                                 </div>
-                                <div>
-                                    <label
-                                        style="font-size: 0.82rem; font-weight: 600; color: #2d3748; display: block; margin-bottom: 0.4rem;">Misi</label>
-                                    <textarea name="misi" rows="5"
-                                        style="width: 100%; padding: 0.65rem 0.9rem; border: 1.5px solid #e2e8f0; border-radius: 10px; background: #f8fafc; resize: vertical;"
-                                        placeholder="Misi yayasan (bisa ditulis per baris)..."><?php echo e(old('misi', $profil->misi)); ?></textarea>
+                                <div class="col-12">
+                                    <label class="form-label fw-semibold">Misi</label>
+                                    <small class="text-muted d-block mb-1">Bisa ditulis per baris untuk setiap poin
+                                        misi.</small>
+                                    <textarea name="misi" rows="5" class="form-control <?php $__errorArgs = ['misi'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>"
+                                        placeholder="Misi yayasan (bisa ditulis per baris)..."><?php echo e(old('misi', $profil->misi ?? '')); ?></textarea>
+                                    <?php $__errorArgs = ['misi'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                        <div class="invalid-feedback"><?php echo e($message); ?></div>
+                                    <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                                 </div>
                             </div>
                         </div>
                     </div>
 
                     
-                    <div class="section-card"
-                        style="background: #fff; border-radius: 20px; box-shadow: 0 2px 20px rgba(0,0,0,0.06); overflow: hidden;">
-                        <div class="section-card-header"
-                            style="background: linear-gradient(135deg, #4361ee, #7209b7); padding: 1rem 1.5rem;">
-                            <div class="section-card-title" style="display: flex; align-items: center; gap: 8px;">
-                                <i class="fas fa-map-marker-alt" style="color: #fff;"></i>
-                                <span style="color: #fff; font-weight: 600;">Kontak & Alamat</span>
-                            </div>
+                    <div class="card border-0 shadow-sm mb-4">
+                        <div class="card-header bg-white fw-semibold border-bottom py-3">
+                            <i class="fas fa-map-marker-alt me-2 text-primary"></i>Kontak & Alamat
                         </div>
-                        <div class="section-card-body" style="padding: 1.5rem;">
-                            <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem;">
-                                <div style="grid-column: span 2;">
-                                    <label
-                                        style="font-size: 0.82rem; font-weight: 600; color: #2d3748; display: block; margin-bottom: 0.4rem;">Alamat
-                                        Lengkap</label>
-                                    <input type="text" name="alamat" value="<?php echo e(old('alamat', $profil->alamat)); ?>"
-                                        style="width: 100%; padding: 0.65rem 0.9rem; border: 1.5px solid #e2e8f0; border-radius: 10px; background: #f8fafc;"
+                        <div class="card-body py-3">
+                            <div class="row g-3">
+                                <div class="col-12">
+                                    <label class="form-label fw-semibold">Alamat Lengkap</label>
+                                    <input type="text" name="alamat"
+                                        class="form-control <?php $__errorArgs = ['alamat'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>"
+                                        value="<?php echo e(old('alamat', $profil->alamat ?? '')); ?>"
                                         placeholder="Jl. Contoh No. 1, Kelurahan, Kecamatan">
+                                    <?php $__errorArgs = ['alamat'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                        <div class="invalid-feedback"><?php echo e($message); ?></div>
+                                    <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                                 </div>
-                                <div>
-                                    <label
-                                        style="font-size: 0.82rem; font-weight: 600; color: #2d3748; display: block; margin-bottom: 0.4rem;">Kota</label>
-                                    <input type="text" name="kota" value="<?php echo e(old('kota', $profil->kota)); ?>"
-                                        style="width: 100%; padding: 0.65rem 0.9rem; border: 1.5px solid #e2e8f0; border-radius: 10px; background: #f8fafc;"
-                                        placeholder="Contoh: Surabaya">
+                                <div class="col-md-4">
+                                    <label class="form-label fw-semibold">Kota</label>
+                                    <input type="text" name="kota" class="form-control <?php $__errorArgs = ['kota'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>"
+                                        value="<?php echo e(old('kota', $profil->kota ?? '')); ?>" placeholder="Contoh: Surabaya">
+                                    <?php $__errorArgs = ['kota'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                        <div class="invalid-feedback"><?php echo e($message); ?></div>
+                                    <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                                 </div>
-                                <div>
-                                    <label
-                                        style="font-size: 0.82rem; font-weight: 600; color: #2d3748; display: block; margin-bottom: 0.4rem;">Provinsi</label>
-                                    <input type="text" name="provinsi" value="<?php echo e(old('provinsi', $profil->provinsi)); ?>"
-                                        style="width: 100%; padding: 0.65rem 0.9rem; border: 1.5px solid #e2e8f0; border-radius: 10px; background: #f8fafc;"
+                                <div class="col-md-4">
+                                    <label class="form-label fw-semibold">Provinsi</label>
+                                    <input type="text" name="provinsi"
+                                        class="form-control <?php $__errorArgs = ['provinsi'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>"
+                                        value="<?php echo e(old('provinsi', $profil->provinsi ?? '')); ?>"
                                         placeholder="Contoh: Jawa Timur">
+                                    <?php $__errorArgs = ['provinsi'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                        <div class="invalid-feedback"><?php echo e($message); ?></div>
+                                    <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                                 </div>
-                                <div>
-                                    <label
-                                        style="font-size: 0.82rem; font-weight: 600; color: #2d3748; display: block; margin-bottom: 0.4rem;">Kode
-                                        Pos</label>
-                                    <input type="text" name="kode_pos" value="<?php echo e(old('kode_pos', $profil->kode_pos)); ?>"
-                                        style="width: 100%; padding: 0.65rem 0.9rem; border: 1.5px solid #e2e8f0; border-radius: 10px; background: #f8fafc;"
-                                        placeholder="Contoh: 60111">
+                                <div class="col-md-4">
+                                    <label class="form-label fw-semibold">Kode Pos</label>
+                                    <input type="text" name="kode_pos"
+                                        class="form-control <?php $__errorArgs = ['kode_pos'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>"
+                                        value="<?php echo e(old('kode_pos', $profil->kode_pos ?? '')); ?>" placeholder="Contoh: 60111">
+                                    <?php $__errorArgs = ['kode_pos'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                        <div class="invalid-feedback"><?php echo e($message); ?></div>
+                                    <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                                 </div>
-                                <div>
-                                    <label
-                                        style="font-size: 0.82rem; font-weight: 600; color: #2d3748; display: block; margin-bottom: 0.4rem;">Telepon</label>
-                                    <input type="text" name="telepon" value="<?php echo e(old('telepon', $profil->telepon)); ?>"
-                                        style="width: 100%; padding: 0.65rem 0.9rem; border: 1.5px solid #e2e8f0; border-radius: 10px; background: #f8fafc;"
-                                        placeholder="031-12345678">
+                                <div class="col-md-4">
+                                    <label class="form-label fw-semibold">Telepon</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="fas fa-phone text-muted"></i></span>
+                                        <input type="text" name="telepon"
+                                            class="form-control <?php $__errorArgs = ['telepon'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>"
+                                            value="<?php echo e(old('telepon', $profil->telepon ?? '')); ?>" placeholder="031-12345678">
+                                    </div>
+                                    <?php $__errorArgs = ['telepon'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                        <div class="text-danger small mt-1"><?php echo e($message); ?></div>
+                                    <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                                 </div>
-                                <div>
-                                    <label
-                                        style="font-size: 0.82rem; font-weight: 600; color: #2d3748; display: block; margin-bottom: 0.4rem;">Email</label>
-                                    <input type="email" name="email" value="<?php echo e(old('email', $profil->email)); ?>"
-                                        style="width: 100%; padding: 0.65rem 0.9rem; border: 1.5px solid #e2e8f0; border-radius: 10px; background: #f8fafc;"
-                                        placeholder="email@yayasan.org">
+                                <div class="col-md-4">
+                                    <label class="form-label fw-semibold">Email</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="fas fa-envelope text-muted"></i></span>
+                                        <input type="email" name="email"
+                                            class="form-control <?php $__errorArgs = ['email'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>"
+                                            value="<?php echo e(old('email', $profil->email ?? '')); ?>"
+                                            placeholder="email@yayasan.org">
+                                    </div>
+                                    <?php $__errorArgs = ['email'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                        <div class="text-danger small mt-1"><?php echo e($message); ?></div>
+                                    <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                                 </div>
-                                <div style="grid-column: span 2;">
-                                    <label
-                                        style="font-size: 0.82rem; font-weight: 600; color: #2d3748; display: block; margin-bottom: 0.4rem;">Website</label>
-                                    <input type="url" name="website" value="<?php echo e(old('website', $profil->website)); ?>"
-                                        style="width: 100%; padding: 0.65rem 0.9rem; border: 1.5px solid #e2e8f0; border-radius: 10px; background: #f8fafc;"
-                                        placeholder="https://www.yayasan.org">
+                                <div class="col-md-4">
+                                    <label class="form-label fw-semibold">Website</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="fas fa-globe text-muted"></i></span>
+                                        <input type="url" name="website"
+                                            class="form-control <?php $__errorArgs = ['website'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>"
+                                            value="<?php echo e(old('website', $profil->website ?? '')); ?>"
+                                            placeholder="https://www.yayasan.org">
+                                    </div>
+                                    <?php $__errorArgs = ['website'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                        <div class="text-danger small mt-1"><?php echo e($message); ?></div>
+                                    <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                                 </div>
                             </div>
                         </div>
                     </div>
 
                     
-                    <div class="section-card"
-                        style="background: #fff; border-radius: 20px; box-shadow: 0 2px 20px rgba(0,0,0,0.06); overflow: hidden;">
-                        <div class="section-card-header"
-                            style="background: linear-gradient(135deg, #4361ee, #7209b7); padding: 1rem 1.5rem;">
-                            <div class="section-card-title" style="display: flex; align-items: center; gap: 8px;">
-                                <i class="fas fa-share-alt" style="color: #fff;"></i>
-                                <span style="color: #fff; font-weight: 600;">Media Sosial</span>
-                            </div>
+                    <div class="card border-0 shadow-sm mb-4">
+                        <div class="card-header bg-white fw-semibold border-bottom py-3">
+                            <i class="fas fa-share-alt me-2 text-primary"></i>Media Sosial
                         </div>
-                        <div class="section-card-body" style="padding: 1.5rem;">
-                            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem;">
-                                <div>
-                                    <label
-                                        style="font-size: 0.82rem; font-weight: 600; color: #2d3748; display: block; margin-bottom: 0.4rem;"><i
-                                            class="fab fa-instagram"></i> Instagram</label>
-                                    <div style="display: flex; align-items: center;">
-                                        <span
-                                            style="background: #f1f5f9; padding: 0.65rem 0.75rem; border: 1.5px solid #e2e8f0; border-radius: 10px 0 0 10px; border-right: none;">@</span>
+                        <div class="card-body py-3">
+                            <div class="row g-3">
+                                <div class="col-md-4">
+                                    <label class="form-label fw-semibold">
+                                        <i class="fab fa-instagram me-1 text-danger"></i>Instagram
+                                    </label>
+                                    <div class="input-group">
+                                        <span class="input-group-text">@</span>
                                         <input type="text" name="instagram"
-                                            value="<?php echo e(old('instagram', ltrim($profil->instagram, '@'))); ?>"
-                                            style="flex: 1; padding: 0.65rem 0.9rem; border: 1.5px solid #e2e8f0; border-radius: 0 10px 10px 0; background: #f8fafc;"
+                                            class="form-control <?php $__errorArgs = ['instagram'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>"
+                                            value="<?php echo e(old('instagram', ltrim($profil->instagram ?? '', '@'))); ?>"
                                             placeholder="username">
                                     </div>
+                                    <?php $__errorArgs = ['instagram'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                        <div class="text-danger small mt-1"><?php echo e($message); ?></div>
+                                    <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                                 </div>
-                                <div>
-                                    <label
-                                        style="font-size: 0.82rem; font-weight: 600; color: #2d3748; display: block; margin-bottom: 0.4rem;"><i
-                                            class="fab fa-facebook"></i> Facebook</label>
-                                    <input type="text" name="facebook" value="<?php echo e(old('facebook', $profil->facebook)); ?>"
-                                        style="width: 100%; padding: 0.65rem 0.9rem; border: 1.5px solid #e2e8f0; border-radius: 10px; background: #f8fafc;"
-                                        placeholder="Nama halaman atau URL">
+                                <div class="col-md-4">
+                                    <label class="form-label fw-semibold">
+                                        <i class="fab fa-facebook me-1 text-primary"></i>Facebook
+                                    </label>
+                                    <input type="text" name="facebook"
+                                        class="form-control <?php $__errorArgs = ['facebook'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>"
+                                        value="<?php echo e(old('facebook', $profil->facebook ?? '')); ?>"
+                                        placeholder="nama halaman / URL">
+                                    <?php $__errorArgs = ['facebook'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                        <div class="invalid-feedback"><?php echo e($message); ?></div>
+                                    <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                                 </div>
-                                <div>
-                                    <label
-                                        style="font-size: 0.82rem; font-weight: 600; color: #2d3748; display: block; margin-bottom: 0.4rem;"><i
-                                            class="fab fa-youtube"></i> YouTube</label>
-                                    <input type="text" name="youtube" value="<?php echo e(old('youtube', $profil->youtube)); ?>"
-                                        style="width: 100%; padding: 0.65rem 0.9rem; border: 1.5px solid #e2e8f0; border-radius: 10px; background: #f8fafc;"
-                                        placeholder="Nama channel atau URL">
+                                <div class="col-md-4">
+                                    <label class="form-label fw-semibold">
+                                        <i class="fab fa-youtube me-1 text-danger"></i>YouTube
+                                    </label>
+                                    <input type="text" name="youtube"
+                                        class="form-control <?php $__errorArgs = ['youtube'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>"
+                                        value="<?php echo e(old('youtube', $profil->youtube ?? '')); ?>"
+                                        placeholder="nama channel / URL">
+                                    <?php $__errorArgs = ['youtube'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                        <div class="invalid-feedback"><?php echo e($message); ?></div>
+                                    <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                                 </div>
                             </div>
                         </div>
                     </div>
+
                 </div>
 
                 
-                <div class="sidebar-col" style="display: flex; flex-direction: column; gap: 20px;">
+                <div class="col-lg-4">
+
                     
-                    <div class="section-card"
-                        style="background: #fff; border-radius: 20px; box-shadow: 0 2px 20px rgba(0,0,0,0.06); overflow: hidden;">
-                        <div class="section-card-header"
-                            style="background: linear-gradient(135deg, #4361ee, #7209b7); padding: 1rem 1.5rem;">
-                            <div class="section-card-title" style="display: flex; align-items: center; gap: 8px;">
-                                <i class="fas fa-image" style="color: #fff;"></i>
-                                <span style="color: #fff; font-weight: 600;">Logo Yayasan</span>
-                            </div>
+                    <div class="card border-0 shadow-sm mb-4">
+                        <div class="card-header bg-white fw-semibold border-bottom py-3">
+                            <i class="fas fa-image me-2 text-primary"></i>Logo Yayasan
                         </div>
-                        <div class="section-card-body" style="padding: 1.5rem; text-align: center;">
-                            <div id="logoPreviewWrap" style="margin-bottom: 1rem;">
-                                <?php if($profil->logo): ?>
-                                    <img id="logoPreview" src="<?php echo e(asset('storage/' . $profil->logo)); ?>" alt="Logo"
-                                        style="max-width: 100%; max-height: 120px; object-fit: contain;">
-                                <?php else: ?>
-                                    <div id="logoPlaceholder"
-                                        style="padding: 1.5rem; background: #f8fafc; border-radius: 12px; border: 2px dashed #e2e8f0;">
-                                        <i class="fas fa-cloud-upload-alt"
-                                            style="font-size: 2rem; color: #94a3b8; display: block; margin-bottom: 0.5rem;"></i>
-                                        <span style="color: #94a3b8;">Belum ada logo</span>
-                                    </div>
-                                <?php endif; ?>
-                            </div>
-                            <input type="file" name="logo" id="logoInput" style="display: none;" accept="image/*"
-                                onchange="previewLogo(this)">
-                            <button type="button" onclick="document.getElementById('logoInput').click()"
-                                style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.6rem 1rem; background: #f1f5f9; border: 1px solid #e2e8f0; border-radius: 8px; color: #475569; font-size: 0.8rem; font-weight: 600; cursor: pointer;">
-                                <i class="fas fa-folder-open"></i> Pilih Logo
-                            </button>
-                            <p style="font-size: 0.7rem; color: #94a3b8; margin-top: 0.5rem;">JPG, PNG, WEBP, SVG · Maks 2MB
-                            </p>
+                        <div class="card-body text-center py-4">
+                            <?php if(isset($profil->logo) && $profil->logo): ?>
+                                <div id="logo-preview-wrap" class="mb-3">
+                                    <img id="logo-preview" src="<?php echo e(asset('storage/' . $profil->logo)); ?>" alt="Logo"
+                                        class="img-thumbnail mb-2"
+                                        style="max-height:130px; max-width:100%; object-fit:contain;">
+                                </div>
+                            <?php else: ?>
+                                <div id="logo-preview-wrap" class="mb-3 d-none">
+                                    <img id="logo-preview" src="#" alt="Preview Logo" class="img-thumbnail mb-2"
+                                        style="max-height:130px; max-width:100%; object-fit:contain;">
+                                </div>
+                            <?php endif; ?>
+                            <input type="file" name="logo" class="form-control <?php $__errorArgs = ['logo'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>"
+                                accept="image/*" onchange="previewImg(this,'logo-preview','logo-preview-wrap')">
+                            <small class="text-muted d-block mt-2">
+                                <i class="fas fa-info-circle me-1"></i>JPG, PNG, WEBP, SVG. Maks 2MB
+                            </small>
                             <?php $__errorArgs = ['logo'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
 $message = $__bag->first($__errorArgs[0]); ?>
-                                <p style="color: #e53e3e; font-size: 0.75rem; margin-top: 0.5rem;"><?php echo e($message); ?></p>
+                                <div class="text-danger small mt-1"><?php echo e($message); ?></div>
                             <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
@@ -288,38 +513,39 @@ unset($__errorArgs, $__bag); ?>
                     </div>
 
                     
-                    <div class="section-card"
-                        style="background: #fff; border-radius: 20px; box-shadow: 0 2px 20px rgba(0,0,0,0.06); overflow: hidden;">
-                        <div class="section-card-body" style="padding: 1.5rem;">
-                            <button type="submit"
-                                style="display: flex; align-items: center; justify-content: center; gap: 0.5rem; width: 100%; padding: 0.75rem 1rem; background: linear-gradient(135deg, #4361ee, #7209b7); color: #fff; border: none; border-radius: 10px; font-size: 0.9rem; font-weight: 600; cursor: pointer; margin-bottom: 0.75rem;">
-                                <i class="fas fa-save"></i> Simpan Perubahan
+                    <div class="card border-0 shadow-sm">
+                        <div class="card-body d-grid gap-2 py-3">
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                <i class="fas fa-save me-2"></i>Simpan Perubahan
                             </button>
-                            <a href="<?php echo e(route('admin.data-master.profil-yayasan.index')); ?>"
-                                style="display: flex; align-items: center; justify-content: center; gap: 0.5rem; width: 100%; padding: 0.75rem 1rem; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; color: #64748b; font-size: 0.9rem; font-weight: 600; text-decoration: none;">
-                                <i class="fas fa-times"></i> Batal
+                            <a href="<?php echo e(route('admin.data-master.profil-yayasan')); ?>" class="btn btn-outline-secondary">
+                                <i class="fas fa-times me-1"></i>Batal
                             </a>
                         </div>
                     </div>
+
                 </div>
             </div>
+
         </form>
     </div>
-
-    <?php $__env->startPush('scripts'); ?>
-        <script>
-            function previewLogo(input) {
-                const previewWrap = document.getElementById('logoPreviewWrap');
-                if (input.files && input.files[0]) {
-                    const reader = new FileReader();
-                    reader.onload = function (e) {
-                        previewWrap.innerHTML = '<img id="logoPreview" src="' + e.target.result + '" alt="Logo" style="max-width: 100%; max-height: 120px; object-fit: contain;">';
-                    }
-                    reader.readAsDataURL(input.files[0]);
-                }
-            }
-        </script>
-    <?php $__env->stopPush(); ?>
 <?php $__env->stopSection(); ?>
+
+<?php $__env->startPush('scripts'); ?>
+    <script>
+        function previewImg(input, previewId, wrapperId) {
+            const preview = document.getElementById(previewId);
+            const wrapper = document.getElementById(wrapperId);
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = e => {
+                    preview.src = e.target.result;
+                    wrapper.classList.remove('d-none');
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+    </script>
+<?php $__env->stopPush(); ?>
 
 <?php echo $__env->make('admin.layout', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\laragon\www\ponpes-main\resources\views/admin/data-master/profil-yayasan/edit.blade.php ENDPATH**/ ?>

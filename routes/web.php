@@ -10,8 +10,10 @@ use App\Http\Controllers\FasilitasController;
 use App\Http\Controllers\ProgramController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\DataMasterController;
-use App\Http\Controllers\Admin\SantriController;
 use App\Http\Controllers\user\UserController;
+use App\Http\Controllers\User\SantriController;
+use App\Http\Controllers\Admin\SantriController as AdminSantriController;
+use App\Http\Controllers\User\SantriController as UserSantriController;
 
 /*
 |--------------------------------------------------------------------------
@@ -54,6 +56,8 @@ Route::prefix('admin')
         Route::post('/santri/{id}/verify', [AdminController::class, 'verifySantri'])->name('santri.verify');
         Route::post('/santri/{id}/reject', [AdminController::class, 'rejectSantri'])->name('santri.reject');
 
+        
+
         // Pegawai
         Route::get('/pegawai', [AdminController::class, 'pegawaiIndex'])->name('pegawai.index');
         Route::get('/pegawai/create', [AdminController::class, 'pegawaiCreate'])->name('pegawai.create');
@@ -95,11 +99,11 @@ Route::prefix('admin')
             Route::get('/', [DataMasterController::class, 'index'])->name('index');
 
             // Profil Yayasan
-           // Profil Yayasan
-        Route::get('/profil-yayasan', [ProfilYayasanController::class, 'index'])->name('profil-yayasan');
-        Route::get('/profil-yayasan/edit', [ProfilYayasanController::class, 'edit'])->name('profil-yayasan.edit');
-        Route::post('/profil-yayasan/update', [ProfilYayasanController::class, 'update'])->name('profil-yayasan.update');
-        Route::put('/profil-yayasan/update', [ProfilYayasanController::class, 'update'])->name('profil-yayasan.update.put'); // tambahkan ini untuk method PUT
+            // Profil Yayasan
+            Route::get('/profil-yayasan', [ProfilYayasanController::class, 'index'])->name('profil-yayasan');
+            Route::get('/profil-yayasan/edit', [ProfilYayasanController::class, 'edit'])->name('profil-yayasan.edit');
+            Route::post('/profil-yayasan/update', [ProfilYayasanController::class, 'update'])->name('profil-yayasan.update');
+            Route::put('/profil-yayasan/update', [ProfilYayasanController::class, 'update'])->name('profil-yayasan.update.put'); // tambahkan ini untuk method PUT
 
             // Struktur Organisasi
             Route::get('/struktur-organisasi', [DataMasterController::class, 'strukturOrganisasi'])->name('struktur-organisasi');
@@ -121,18 +125,6 @@ Route::prefix('admin')
 
 
 // Route untuk admin dengan role check
-
-//----------------------------------------------
-// CUSTOM ROUTES untuk verifikasi
-Route::post('/santri/{id}/verify', [SantriController::class, 'verify'])->name('santri.verify');
-Route::post('/santri/{id}/reject', [SantriController::class, 'reject'])->name('santri.reject');
-
-// Bulk action
-Route::post('/santri/bulk-action', [SantriController::class, 'bulkAction'])->name('santri.bulk-action');
-
-// Restore
-Route::post('/santri/{id}/restore', [SantriController::class, 'restore'])->name('santri.restore');
-//----------------------------------------------
 
 // Route untuk Data Master Fasilitas
 /*Route::prefix('admin')->name('admin.')->group(function ()  {
@@ -253,7 +245,7 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
 
 Route::prefix('admin')->name('admin.')->group(function () {
     Route::prefix('data-master')->name('data-master.')->group(function () {
-       /* Route::resource('fasilitas', FasilitasController::class);*/
+        /* Route::resource('fasilitas', FasilitasController::class);*/
         Route::resource('gallery', GalleryController::class);
         Route::resource('program', ProgramController::class);
     });
@@ -315,12 +307,14 @@ Route::middleware(['auth', 'user'])->prefix('user')->name('user.')->group(functi
     Route::put('/santri/{id}', [UserController::class, 'santriUpdate'])->name('santri.update');
     Route::delete('/santri/{id}', [UserController::class, 'santriDestroy'])->name('santri.destroy');
 
+
+    
     // ===================== GALLERY =====================
     Route::get('/gallery', [UserController::class, 'galleryIndex'])->name('gallery.index');
     Route::get('/gallery/{id}', [UserController::class, 'galleryShow'])->name('gallery.show');
 
     // ===================== FASILITAS =====================
-   /* Route::get('/fasilitas', [UserController::class, 'fasilitasIndex'])->name('fasilitas.index');
+    /* Route::get('/fasilitas', [UserController::class, 'fasilitasIndex'])->name('fasilitas.index');
     Route::get('/fasilitas/{id}', [UserController::class, 'fasilitasShow'])->name('fasilitas.show');*/
 
     // ===================== PROGRAM =====================
@@ -386,10 +380,10 @@ Route::get('/struktur', [UserController::class, 'strukturIndex'])->name('struktu
 Route::get('/legalitas', [UserController::class, 'legalitas'])->name('legalitas');
 
 // FASILITAS
-Route::get('/fasilitas', [UserController::class, 'fasilitasIndex'])->name('fasilitas');
+Route::get('/fasilitas', [UserController::class, 'fasilitas'])->name('fasilitas');
 
 // GALERI
-Route::get('/galeri', [UserController::class, 'galleryIndex'])->name('galeri');
+Route::get('/galeri', [UserController::class, 'galeri'])->name('galeri');
 
 // PROGRAM
 // Route::get('/program', [UserController::class, 'programIndex'])->name('program');
@@ -399,7 +393,14 @@ Route::get('/pendaftaran', function () {
     return view('public.pendaftaran');
 })->name('pendaftaran');
 
+// FORM
+Route::get('/form', function () {
+    return view('public.form');
+})->name('form');
+
 // HUBUNGI
 Route::get('/hubungi', function () {
     return view('public.hubungi');
 })->name('hubungi');
+
+Route::post('/daftar', [SantriController::class, 'store']);

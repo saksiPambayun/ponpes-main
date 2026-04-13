@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Formulir Pendaftaran</title>
+    <title>Pendaftaran</title>
 
     <link href="https://fonts.googleapis.com/css2?family=Cabin:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Cabin:wght@400;500;600;700&display=swap"
@@ -13,8 +13,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="{{ asset('css/navbar.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/footer.css') }}">
+    <link rel="stylesheet" href="<?php echo e(asset('css/navbar.css')); ?>">
+    <link rel="stylesheet" href="<?php echo e(asset('css/footer.css')); ?>">
 </head>
 <style>
     .hero-pendaftaran {
@@ -272,7 +272,6 @@
     .form-control {
         display: flex;
         flex-direction: column;
-        border: none;
     }
 
     .form-control label {
@@ -289,6 +288,10 @@
         outline: none;
     }
 
+    .form-control input:focus,
+    .form-control textarea:focus {
+        border-color: #166534;
+    }
 
     .radio-group {
         margin-top: 15px;
@@ -302,9 +305,8 @@
 
     .upload-grid {
         display: grid;
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns: 1fr 1fr 1fr;
         gap: 20px;
-        justify-content: center;
     }
 
     .upload-box {
@@ -361,7 +363,6 @@
         font-weight: 600;
         font-size: 16px;
         cursor: pointer;
-        transition: ease 0.2s;
     }
 
     .btn-kirim:hover {
@@ -371,131 +372,109 @@
 </style>
 
 <body>
-    @include('components.navbar')
-    <section class="form-section">
-        <div class="container-form">
-            <h2 class="form-title">
-                <i class="bi bi-journal-text"></i>
-                Formulir Pendaftaran Santri Baru
-            </h2>
-            <p class="form-sub">Lengkapilah data berikut dengan benar!</p>
+    <?php echo $__env->make('components.navbar', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
 
-            <form action="/daftar" method="POST" enctype="multipart/form-data">
-                @csrf <div class="form-group-section">
-                    <h3 class="section-title">
-                        <i class="bi bi-person-lines-fill"></i>
-                        Data Santri
-                    </h3>
-
-                    <div class="grid-form">
-                        <div class="form-control">
-                            <label>Nama Lengkap</label>
-                            <input type="text" name="nama_lengkap" placeholder="Nama sesuai akta kelahiran">
-                        </div>
-
-                        <div class="form-control">
-                            <label>Asal Sekolah</label>
-                            <input type="text" name="asal_sekolah" placeholder="Nama sekolah terakhir">
-                        </div>
-
-                        <div class="form-control">
-                            <label>NISN</label>
-                            <input type="text" name="nisn" placeholder="Nomor Induk Siswa Nasional">
-                        </div>
-
-                        <div class="form-control">
-                            <label>Tempat Lahir</label>
-                            <input type="text" name="tempat_lahir" placeholder="Tempat lahir">
-                        </div>
-
-                        <div class="form-control">
-                            <label>Tanggal Lahir</label>
-                            <input type="date" name="tanggal_lahir" placeholder="Tanggal lahir">
-                        </div>
-
-                        <div class="form-control">
-                            <label>Email</label>
-                            <input type="email" name="email" placeholder="Masukkan email">
-                        </div>
-
-                        <div class="form-control">
-                            <label>Alamat</label>
-                            <textarea name="alamat" rows="3" placeholder="Alamat lengkap"></textarea>
-                        </div>
-
-                    </div>
-
-                    <div class="radio-group">
-                        <label>Jenis Kelamin</label>
-
-                        <div class="radio-option">
-                            <input type="radio" name="jenis_kelamin" value="Laki-laki"> Laki-Laki
-                            <input type="radio" name="jenis_kelamin" value="Perempuan"> Perempuan
-                        </div>
-                    </div>
-                </div>
-
-                <div class="form-group-section">
-                    <h3 class="section-title">
-                        <i class="bi bi-people-fill"></i>
-                        Data Orang Tua
-                    </h3>
-
-                    <div class="grid-form">
-                        <div class="form-control">
-                            <label>Nama Wali</label>
-                            <input type="text" name="nama_wali" placeholder="Nama Wali">
-                        </div>
-
-                        <div class="form-control">
-                            <label>Pekerjaan Wali</label>
-                            <input type="text" name="pekerjaan_wali" placeholder="Pekerjaan">
-                        </div>
-
-                        <div class="form-control">
-                            <label>No. Telepon</label>
-                            <input type="text" name="no_wali" placeholder="No. Telepon">
-                        </div>
-                    </div>
-                </div>
-
-                <div class="form-group-section">
-                    <h3 class="section-title">
-                        <i class="bi bi-upload"></i>
-                        Upload Dokumen
-                    </h3>
-
-                    <div class="upload-grid">
-                        <label class="upload-box">
-                            <i class="bi bi-upload"></i>
-                            <span>Upload Kartu Keluarga</span>
-                            <small>Format JPG, JPEG, PNG, PDF (Maks 2MB)</small>
-                            <input type="file" name="kk" hidden>
-                        </label>
-
-                        <label class="upload-box">
-                            <i class="bi bi-upload"></i>
-                            <span>Upload Pas Foto</span>
-                            <small>Format JPG, JPEG, PNG, PDF (Maks 2MB)</small>
-                            <input type="file" name="foto" hidden>
-                        </label>
-                    </div>
-                </div>
-
-                <div class="checkbox-form">
-                    <input type="checkbox">
-                    <span>Saya menyatakan data yang diisi sudah benar.</span>
-                </div>
-
-                <div class="submit-form">
-                    <button type="submit" class="btn-kirim">
-                        Kirim Formulir
-                    </button>
-                </div>
-            </form>
+    <section class="hero-pendaftaran">
+        <div class="hero-overlay">
+            <div class="hero-content">
+                <h1>Penerimaan Santri Baru</h1>
+                <h2>Tahun Ajaran 2026/2027</h2>
+            </div>
         </div>
     </section>
-    @include('components.footer')
+
+    <section class="pendaftaran-section">
+        <div class="container">
+            <div class="grid-pendaftaran">
+                <div>
+                    <h2 class="title-section">Alur Pendaftaran</h2>
+                    <div class="alur">
+                        <div class="step-item">
+                            <div class="step-circle">1</div>
+                            <p>Isi Formulir</p>
+                        </div>
+
+                        <div class="step-line"></div>
+                        <div class="step-item">
+                            <div class="step-circle">2</div>
+                            <p>Upload Berkas</p>
+                        </div>
+
+                        <div class="step-line"></div>
+                        <div class="step-item">
+                            <div class="step-circle">3</div>
+                            <p>Verifikasi</p>
+                        </div>
+
+                        <div class="step-line"></div>
+                        <div class="step-item">
+                            <div class="step-circle">4</div>
+                            <p>Pengumuman</p>
+                        </div>
+                    </div>
+
+                    <h2 class="title-section mt">Persyaratan Pendaftaran</h2>
+                    <div class="syarat-card">
+                        <div class="syarat-list">
+                            <p><i class="bi bi-file-earmark"></i> Fotokopi Kartu Keluarga</p>
+                            <p><i class="bi bi-image"></i> Pas Foto Berwarna 3x4</p>
+                            <p><i class="bi bi-file-text"></i> Fotokopi Ijazah / SKL</p>
+                        </div>
+
+                        <div class="syarat-list">
+                            <p><i class="bi bi-heart-pulse"></i> Surat Keterangan Sehat</p>
+                            <p><i class="bi bi-journal"></i> Fotokopi Rapor Terakhir</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="info-pendaftaran">
+                    <div class="header-info">
+                        Gelombang Pendaftaran
+                    </div>
+
+                    <div class="gelombang-wrapper">
+                        <div class="gelombang-box">
+                            <h4>Gelombang 1</h4>
+                            <p>10 Maret - 2 Mei 2026</p>
+                        </div>
+
+                        <div class="gelombang-box">
+                            <h4>Gelombang 2</h4>
+                            <p>10 Juni - 2 Juli 2026</p>
+                        </div>
+                    </div>
+
+                    <div class="biaya-card">
+                        <h4>Biaya Pendidikan</h4>
+
+                        <div class="row-biaya">
+                            <span>Biaya Pendaftaran</span>
+                            <span>Rp. 3.000.000</span>
+                        </div>
+
+                        <div class="row-biaya">
+                            <span>Uang Masuk</span>
+                            <span>Rp. 450.000</span>
+                        </div>
+
+                        <div class="row-biaya">
+                            <span>SPP</span>
+                            <span>Rp. 600.000</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="cta-daftar">
+                <a href="<?php echo e(route('form')); ?>" class="btn-daftar">
+                    Isi Formulir Pendaftaran
+                </a>
+            </div>
+        </div>
+    </section>
+    <?php echo $__env->make('components.footer', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
 </body>
 
 </html>
+<?php /**PATH C:\laragon\www\ponpes-main\resources\views/public/pendaftaran.blade.php ENDPATH**/ ?>

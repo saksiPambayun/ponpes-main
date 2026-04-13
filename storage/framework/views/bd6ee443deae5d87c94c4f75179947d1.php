@@ -301,27 +301,11 @@
                 </div>
 
                 <div class="col-lg-5">
-                    <p class="text-tentang">
-                        Pondok Pesantren Al-Ifadah didirikan sebagai wujud komitmen dalam menghadirkan pendidikan Islam
-                        yang
-                        berkualitas serta berorientasi pada pembentukan karakter dan akhlak mulia. Sejak awal
-                        berdirinya,
-                        pesantren ini memiliki tujuan untuk mencetak generasi yang tidak hanya unggul dalam ilmu
-                        pengetahuan, tetapi juga kokoh dalam nilai-nilai keislaman.
-                    </p>
-                    <p class="text-tentang">
-                        Berawal dari semangat dakwah dan kepedulian terhadap pendidikan umat, Pondok Pesantren Al-Ifadah
-                        terus berkembang dari waktu ke waktu, baik dari segi program pendidikan, jumlah santri, maupun
-                        fasilitas pendukung. Dengan memadukan pendidikan formal dan pembinaan keagamaan, pesantren ini
-                        berupaya menciptakan lingkungan belajar yang kondusif, disiplin, serta berlandaskan Al-Qur’an
-                        dan
-                        Sunnah.
-                    </p>
-                    <p class="text-tentang">
-                        Hingga saat ini, Pondok Pesantren Al-Ifadah senantiasa berkomitmen untuk meningkatkan mutu
-                        pendidikan dan pelayanan, demi melahirkan generasi yang berilmu, berakhlak, dan siap
-                        berkontribusi
-                        bagi masyarakat, bangsa, dan agama.
+                    
+
+                    <p>
+                        <?php echo nl2br(e($profil->deskripsi)); ?>
+
                     </p>
                 </div>
             </div>
@@ -330,20 +314,26 @@
                 <div class="col-lg-7">
                     <div class="card-visi mb-4">
                         <h3>Visi</h3>
+                        
+
                         <p>
-                            Menjadi lembaga pendidikan Islam yang unggul dalam membentuk generasi berilmu,
-                            berakhlak mulia, dan berwawasan luas berdasarkan Al-Qur’an dan Sunnah.
+                            <?php echo e($profil->visi ?? 'Visi belum tersedia'); ?>
+
                         </p>
                     </div>
 
                     <div class="card-misi">
                         <h3>Misi</h3>
+                        
+
+                        <?php
+                            $misiList = explode("\n", $profil->misi ?? '');
+                        ?>
+
                         <ul>
-                            <li>Menyelenggarakan pendidikan Islam terpadu.</li>
-                            <li>Membina santri agar berakhlak mulia dan disiplin.</li>
-                            <li>Menciptakan lingkungan belajar yang kondusif.</li>
-                            <li>Menanamkan nilai kepemimpinan dan kemandirian.</li>
-                            <li>Mengembangkan potensi akademik dan keagamaan.</li>
+                            <?php $__currentLoopData = $misiList; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $m): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                <li><?php echo e($m); ?></li>
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                         </ul>
                     </div>
                 </div>
@@ -379,7 +369,7 @@
                         dan peraturan yang berlaku guna menjaga profesionalitas,
                         transparansi, dan keberlangsungan lembaga.
                     </p>
-                    <a href="<?php echo e(route('tentang')); ?>" class="btn-adart">
+                    <a href="<?php echo e(asset('file/AD dan ART Ponpes Al - Ifadah.docx')); ?>" download class="btn-adart">
                         Unduh Dokumen AD / ART
                     </a>
                 </div>

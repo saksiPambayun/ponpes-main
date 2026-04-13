@@ -150,31 +150,57 @@ class UserController extends Controller
         return view('user.santri.create');
     }
 
-    public function santriStore(Request $request)
+    // public function santriStore(Request $request)
+    // {
+    //     $request->validate([
+    //         'nama_lengkap' => 'required|string|max:255',
+    //         'nisn' => 'nullable|string|max:50',
+    //         'asal_sekolah' => 'nullable|string|max:255',
+    //         'tanggal_lahir' => 'nullable|date',
+    //         'alamat' => 'nullable|string',
+    //         'email' => 'nullable|email',
+    //         'no_wali' => 'nullable|string|max:20',
+    //     ]);
+
+    //     SantriRegistration::create([
+    //         'user_id' => Auth::id(),
+    //         'nama_lengkap' => $request->nama_lengkap,
+    //         'nisn' => $request->nisn,
+    //         'asal_sekolah' => $request->asal_sekolah,
+    //         'tanggal_lahir' => $request->tanggal_lahir,
+    //         'alamat' => $request->alamat,
+    //         'email' => $request->email,
+    //         'no_wali' => $request->no_wali,
+    //         'status' => 'pending',
+    //     ]);
+
+    //     return redirect()->route('user.santri.index')->with('success', 'Pendaftaran santri berhasil!');
+    // }
+
+    public function store(Request $request)
     {
-        $request->validate([
-            'nama_lengkap' => 'required|string|max:255',
-            'nisn' => 'nullable|string|max:50',
-            'asal_sekolah' => 'nullable|string|max:255',
-            'tanggal_lahir' => 'nullable|date',
-            'alamat' => 'nullable|string',
-            'email' => 'nullable|email',
-            'no_wali' => 'nullable|string|max:20',
-        ]);
+        // upload file
+        $kk = $request->file('kk')?->store('kk', 'public');
+        $foto = $request->file('foto')?->store('foto', 'public');
 
-        SantriRegistration::create([
-            'user_id' => Auth::id(),
+        \App\Models\Santri::create([
             'nama_lengkap' => $request->nama_lengkap,
-            'nisn' => $request->nisn,
             'asal_sekolah' => $request->asal_sekolah,
+            'nisn' => $request->nisn,
+            'tempat_lahir' => $request->tempat_lahir,
             'tanggal_lahir' => $request->tanggal_lahir,
+            'jenis_kelamin' => $request->jenis_kelamin,
             'alamat' => $request->alamat,
-            'email' => $request->email,
+
+            'nama_wali' => $request->nama_wali,
             'no_wali' => $request->no_wali,
-            'status' => 'pending',
+            'email' => $request->email,
+
+            'kk' => $kk,
+            'foto' => $foto,
         ]);
 
-        return redirect()->route('user.santri.index')->with('success', 'Pendaftaran santri berhasil!');
+        return back()->with('success', 'Pendaftaran berhasil!');
     }
 
     public function santriShow($id)
@@ -204,55 +230,32 @@ class UserController extends Controller
     }
 
     // Gallery
-    public function galleryIndex()
+    // public function galleryIndex()
+    // {
+    //     $galleries = Gallery::latest()->paginate(12);
+    //     return view('user.gallery.index', compact('galleries'));
+    // }
+
+    // public function galleryShow($id)
+    // {
+    //     $gallery = Gallery::findOrFail($id);
+    //     return view('user.gallery.show', compact('gallery'));
+    // }
+
+    // Galeri
+    public function galeri()
     {
-        $galleries = Gallery::latest()->paginate(12);
-        return view('user.gallery.index', compact('galleries'));
+        $galeri = Gallery::first()->get();
+        return view('public.galeri', compact('galeri'));
     }
 
-    public function galleryShow($id)
-    {
-        $gallery = Gallery::findOrFail($id);
-        return view('user.gallery.show', compact('gallery'));
-    }
 
     // Fasilitas
-    public function fasilitasIndex()
+    public function fasilitas()
     {
-        $fasilitas = Fasilitas::latest()->paginate(10);
-        return view('user.fasilitas.index', compact('fasilitas'));
-    }
+        $fasilitas = Fasilitas::first()->get();
 
-    public function fasilitasShow($id)
-    {
-        $fasilitas = Fasilitas::findOrFail($id);
-        return view('user.fasilitas.show', compact('fasilitas'));
-    }
-
-    // Program
-    public function programIndex()
-    {
-        $programs = Program::latest()->paginate(10);
-        return view('user.program.index', compact('programs'));
-    }
-
-    public function programShow($id)
-    {
-        $program = Program::findOrFail($id);
-        return view('user.program.show', compact('program'));
-    }
-
-    // Struktur Organisasi
-    public function strukturIndex()
-    {
-        $struktur = StrukturOrganisasi::latest()->get();
-        return view('user.struktur.index', compact('struktur'));
-    }
-
-    public function strukturShow($id)
-    {
-        $struktur = StrukturOrganisasi::findOrFail($id);
-        return view('user.struktur.show', compact('struktur'));
+        return view('public.fasilitas', compact('fasilitas'));
     }
 
     // Profil Yayasan
@@ -266,87 +269,117 @@ class UserController extends Controller
         return view('public.tentang', compact('profil', 'aktaYayasan', 'aktaWakaf', 'sk'));
     }
 
-    public function profilYayasanShow($id)
-    {
-        $profil = ProfilYayasan::findOrFail($id);
-        return view('user.profil-yayasan.show', compact('profil'));
-    }
 
-    // Akta Yayasan
-    public function aktaYayasanIndex()
-    {
-        $akta = AktaYayasan::latest()->paginate(10);
-        return view('user.akta-yayasan.index', compact('akta'));
-    }
+    //     // Program
+    //     public function programIndex()
+    //     {
+    //         $programs = Program::latest()->paginate(10);
+    //         return view('user.program.index', compact('programs'));
+    //     }
 
-    public function aktaYayasanShow($id)
-    {
-        $akta = AktaYayasan::findOrFail($id);
-        return view('user.akta-yayasan.show', compact('akta'));
-    }
+    //     public function programShow($id)
+    //     {
+    //         $program = Program::findOrFail($id);
+    //         return view('user.program.show', compact('program'));
+    //     }
 
-    // Akta Wakaf
-    public function aktaWakafIndex()
-    {
-        $akta = AktaWakaf::latest()->paginate(10);
-        return view('user.akta-wakaf.index', compact('akta'));
-    }
+    //     // Struktur Organisasi
+    //     public function strukturIndex()
+    //     {
+    //         $struktur = StrukturOrganisasi::latest()->get();
+    //         return view('user.struktur.index', compact('struktur'));
+    //     }
 
-    public function aktaWakafShow($id)
-    {
-        $akta = AktaWakaf::findOrFail($id);
-        return view('user.akta-wakaf.show', compact('akta'));
-    }
+    //     public function strukturShow($id)
+    //     {
+    //         $struktur = StrukturOrganisasi::findOrFail($id);
+    //         return view('user.struktur.show', compact('struktur'));
+    //     }
 
-    public function notifications()
-    {
-        $notifications = Notification::where('user_id', Auth::id())
-            ->latest()
-            ->paginate(10);
 
-        // Tandai semua sebagai sudah dibaca
-        Notification::where('user_id', Auth::id())
-            ->whereNull('read_at')
-            ->update(['read_at' => now()]);
 
-        return view('user.notification.index', compact('notifications'));
-    }
+    //     public function profilYayasanShow($id)
+    //     {
+    //         $profil = ProfilYayasan::findOrFail($id);
+    //         return view('user.profil-yayasan.show', compact('profil'));
+    //     }
 
-    public function getUnreadNotifications()
-    {
-        $unreadCount = Notification::where('user_id', Auth::id())
-            ->whereNull('read_at')
-            ->count();
+    //     // Akta Yayasan
+    //     public function aktaYayasanIndex()
+    //     {
+    //         $akta = AktaYayasan::latest()->paginate(10);
+    //         return view('user.akta-yayasan.index', compact('akta'));
+    //     }
 
-        $unreadNotifications = Notification::where('user_id', Auth::id())
-            ->whereNull('read_at')
-            ->latest()
-            ->take(5)
-            ->get();
+    //     public function aktaYayasanShow($id)
+    //     {
+    //         $akta = AktaYayasan::findOrFail($id);
+    //         return view('user.akta-yayasan.show', compact('akta'));
+    //     }
 
-        return response()->json([
-            'count' => $unreadCount,
-            'notifications' => $unreadNotifications
-        ]);
-    }
+    //     // Akta Wakaf
+    //     public function aktaWakafIndex()
+    //     {
+    //         $akta = AktaWakaf::latest()->paginate(10);
+    //         return view('user.akta-wakaf.index', compact('akta'));
+    //     }
 
-    public function markAsRead($id)
-    {
-        $notification = Notification::where('id', $id)
-            ->where('user_id', Auth::id())
-            ->firstOrFail();
+    //     public function aktaWakafShow($id)
+    //     {
+    //         $akta = AktaWakaf::findOrFail($id);
+    //         return view('user.akta-wakaf.show', compact('akta'));
+    //     }
 
-        $notification->update(['read_at' => now()]);
+    //     public function notifications()
+    //     {
+    //         $notifications = Notification::where('user_id', Auth::id())
+    //             ->latest()
+    //             ->paginate(10);
 
-        return response()->json(['success' => true]);
-    }
+    //         // Tandai semua sebagai sudah dibaca
+    //         Notification::where('user_id', Auth::id())
+    //             ->whereNull('read_at')
+    //             ->update(['read_at' => now()]);
 
-    public function markAllRead()
-    {
-        Notification::where('user_id', Auth::id())
-            ->whereNull('read_at')
-            ->update(['read_at' => now()]);
+    //         return view('user.notification.index', compact('notifications'));
+    //     }
 
-        return back()->with('success', 'Semua notifikasi telah ditandai dibaca');
-    }
+    //     public function getUnreadNotifications()
+    //     {
+    //         $unreadCount = Notification::where('user_id', Auth::id())
+    //             ->whereNull('read_at')
+    //             ->count();
+
+    //         $unreadNotifications = Notification::where('user_id', Auth::id())
+    //             ->whereNull('read_at')
+    //             ->latest()
+    //             ->take(5)
+    //             ->get();
+
+    //         return response()->json([
+    //             'count' => $unreadCount,
+    //             'notifications' => $unreadNotifications
+    //         ]);
+    //     }
+
+    //     public function markAsRead($id)
+    //     {
+    //         $notification = Notification::where('id', $id)
+    //             ->where('user_id', Auth::id())
+    //             ->firstOrFail();
+
+    //         $notification->update(['read_at' => now()]);
+
+    //         return response()->json(['success' => true]);
+    //     }
+
+    //     public function markAllRead()
+    //     {
+    //         Notification::where('user_id', Auth::id())
+    //             ->whereNull('read_at')
+    //             ->update(['read_at' => now()]);
+
+    //         return back()->with('success', 'Semua notifikasi telah ditandai dibaca');
+    //     }
+    // }
 }

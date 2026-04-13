@@ -422,7 +422,6 @@
                         </div>
 
                         <div class="syarat-list">
-                            <p><i class="bi bi-file-earmark-text"></i> Fotokopi Akta Kelahiran</p>
                             <p><i class="bi bi-heart-pulse"></i> Surat Keterangan Sehat</p>
                             <p><i class="bi bi-journal"></i> Fotokopi Rapor Terakhir</p>
                         </div>

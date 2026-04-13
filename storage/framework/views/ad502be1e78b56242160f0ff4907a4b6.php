@@ -13,8 +13,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="{{ asset('css/navbar.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/footer.css') }}">
+    <link rel="stylesheet" href="<?php echo e(asset('css/navbar.css')); ?>">
+    <link rel="stylesheet" href="<?php echo e(asset('css/footer.css')); ?>">
 </head>
 <style>
     .galeri {
@@ -150,7 +150,7 @@
 </style>
 
 <body>
-    @include('components.navbar')
+    <?php echo $__env->make('components.navbar', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
 
     <section class="galeri">
         <section class="galeri-section">
@@ -161,34 +161,31 @@
 
             <div class="galeri-grid">
 
-                {{-- Item 1 --}}
-                {{-- <div class="galeri-item">
-            <img src="{{ asset('images/g2.png') }}" alt="Kegiatan Pesantren">
-            <div class="galeri-overlay">
-                <span class="galeri-tanggal">17 Agustus 2025</span>
-                <p class="galeri-desc">Acara Hadroh dalam Rangka Memperingati HUT RI yang ke-80 Bersama Pengurus Pondok Pesantren Al-Ifadah</p>
-            </div>
-        </div> --}}
+                
+                
 
-                @foreach ($galeri as $item)
+                <?php $__currentLoopData = $galeri; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                     <div class="galeri-item">
-                        <img src="{{ asset('storage/' . $item->gambar) }}" alt="">
+                        <img src="<?php echo e(asset('storage/' . $item->gambar)); ?>" alt="">
 
                         <div class="galeri-overlay">
                             <span class="galeri-tanggal">
-                                {{ \Carbon\Carbon::parse($item->tanggal)->format('d F Y') }}
+                                <?php echo e(\Carbon\Carbon::parse($item->tanggal)->format('d F Y')); ?>
+
                             </span>
                             <p class="galeri-desc">
-                                {{ $item->deskripsi }}
+                                <?php echo e($item->deskripsi); ?>
+
                             </p>
                         </div>
                     </div>
-                @endforeach
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
 
             </div>
         </section>
     </section>
-    @include('components.footer')
+    <?php echo $__env->make('components.footer', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
 </body>
 
 </html>
+<?php /**PATH C:\laragon\www\ponpes-main\resources\views/public/galeri.blade.php ENDPATH**/ ?>

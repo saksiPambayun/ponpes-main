@@ -29,11 +29,11 @@ return new class extends Migration
             if (!Schema::hasColumn('santri_registrations', 'pekerjaan')) {
                 $table->string('pekerjaan')->nullable()->after('nama_wali');
             }
-            if (!Schema::hasColumn('santri_registrations', 'dok_kk')) {
-                $table->string('dok_kk')->nullable()->after('pekerjaan');
+            if (!Schema::hasColumn('santri_registrations', 'kk')) {
+                $table->string('kk')->nullable()->after('pekerjaan');
             }
-            if (!Schema::hasColumn('santri_registrations', 'dok_akta')) {
-                $table->string('dok_akta')->nullable()->after('dok_kk');
+            if (!Schema::hasColumn('santri_registrations', 'foto')) {
+                $table->string('foto')->nullable()->after('kk');
             }
         });
     }
@@ -48,8 +48,8 @@ return new class extends Migration
                 'verified_by',
                 'nama_wali',
                 'pekerjaan',
-                'dok_kk',
-                'dok_akta',
+                'kk',
+                'foto',
             ]);
         });
     }

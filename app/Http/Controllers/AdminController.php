@@ -8,11 +8,13 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
+use App\Models\Santri;
 use App\Models\SantriRegistration;
 use App\Models\Pegawai;
 use App\Models\SkData;
 use App\Models\AktaYayasan;
 use App\Models\AktaWakaf;
+use App\Models\Gallery;
 use App\Models\Notification;
 use App\Traits\NotifiableTrait;
 
@@ -40,7 +42,7 @@ class AdminController extends Controller
 
             // kalau user
             if ($user->role == 'user') {
-                return redirect()->route('user.dashboard');
+                return redirect()->route('home');
             }
         }
 
@@ -69,9 +71,16 @@ class AdminController extends Controller
 
     // ==================== SANTRI ====================
 
+    // public function santriIndex()
+    // {
+    //     $santri = SantriRegistration::latest()->paginate(10);
+    //     return view('admin.santri.index', compact('santri'));
+    // }
+
     public function santriIndex()
     {
-        $santri = SantriRegistration::latest()->paginate(10);
+        $santri = Santri::latest()->paginate(10); // karena kamu pakai ->links()
+
         return view('admin.santri.index', compact('santri'));
     }
 
@@ -92,16 +101,16 @@ class AdminController extends Controller
             'no_wali'       => 'required|string|max:20',
             'nama_wali'     => 'required|string|max:255',
             'pekerjaan'     => 'nullable|string|max:100',
-            'dok_akta'      => 'nullable|file|mimetypes:image/jpeg,image/png,image/webp,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document|max:20480',
-            'dok_kk'        => 'nullable|file|mimetypes:image/jpeg,image/png,image/webp,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document|max:20480',
+            'foto'      => 'nullable|file|mimetypes:image/jpeg,image/png,image/webp,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document|max:20480',
+            'kk'        => 'nullable|file|mimetypes:image/jpeg,image/png,image/webp,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document|max:20480',
         ]);
 
-        if ($request->hasFile('dok_kk')) {
-            $validated['dok_kk'] = $request->file('dok_kk')->store('santri/kk', 'public');
+        if ($request->hasFile('kk')) {
+            $validated['kk'] = $request->file('kk')->store('santri/kk', 'public');
         }
 
-        if ($request->hasFile('dok_akta')) {
-            $validated['dok_akta'] = $request->file('dok_akta')->store('santri/akta', 'public');
+        if ($request->hasFile('foto')) {
+            $validated['foto'] = $request->file('foto')->store('santri/akta', 'public');
         }
 
         SantriRegistration::create($validated);
@@ -135,18 +144,18 @@ class AdminController extends Controller
             'no_wali'       => 'required|string|max:20',
             'nama_wali'     => 'required|string|max:255',
             'pekerjaan'     => 'nullable|string|max:100',
-            'dok_kk'        => 'nullable|file|mimetypes:image/jpeg,image/png,image/webp,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document|max:20480',
-            'dok_akta'      => 'nullable|file|mimetypes:image/jpeg,image/png,image/webp,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document|max:20480',
+            'kk'        => 'nullable|file|mimetypes:image/jpeg,image/png,image/webp,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document|max:20480',
+            'foto'      => 'nullable|file|mimetypes:image/jpeg,image/png,image/webp,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document|max:20480',
         ]);
 
-        if ($request->hasFile('dok_kk')) {
-            if ($santri->dok_kk) Storage::disk('public')->delete($santri->dok_kk);
-            $validated['dok_kk'] = $request->file('dok_kk')->store('santri/kk', 'public');
+        if ($request->hasFile('kk')) {
+            if ($santri->kk) Storage::disk('public')->delete($santri->kk);
+            $validated['kk'] = $request->file('kk')->store('santri/kk', 'public');
         }
 
-        if ($request->hasFile('dok_akta')) {
-            if ($santri->dok_akta) Storage::disk('public')->delete($santri->dok_akta);
-            $validated['dok_akta'] = $request->file('dok_akta')->store('santri/akta', 'public');
+        if ($request->hasFile('foto')) {
+            if ($santri->foto) Storage::disk('public')->delete($santri->foto);
+            $validated['foto'] = $request->file('foto')->store('santri/akta', 'public');
         }
 
         $santri->update($validated);
@@ -158,34 +167,23 @@ class AdminController extends Controller
     {
         $santri = SantriRegistration::findOrFail($id);
 
-        if ($santri->dok_kk)   Storage::disk('public')->delete($santri->dok_kk);
-        if ($santri->dok_akta) Storage::disk('public')->delete($santri->dok_akta);
+        if ($santri->kk)   Storage::disk('public')->delete($santri->kk);
+        if ($santri->foto) Storage::disk('public')->delete($santri->foto);
 
         $santri->delete();
         return redirect()->route('admin.santri.index')->with('success', 'Data santri berhasil dihapus');
     }
 
-    public function verify($id)
+    public function verifySantri($id)
     {
-        $santri = SantriRegistration::findOrFail($id);
+        $santri = Santri::findOrFail($id);
 
-        $santri->update([
-            'status' => 'diterima',
-            'alasan_penolakan' => null
-        ]);
+        $santri->status = 'diterima';
+        $santri->tanggal_verifikasi = now();
+        $santri->save();
 
-        Notification::create([
-            'user_id' => $santri->user_id,
-            'type' => 'santri',
-            'title' => 'Pendaftaran Diterima',
-            'message' => 'Selamat! Pendaftaran santri Anda telah diterima.',
-            'data' => json_encode([
-                'santri_id' => $santri->id
-            ])
-        ]);
-
-        return back()->with('success', 'Santri berhasil diverifikasi.');
-    }
+        return redirect()->back()->with('success', 'Santri berhasil diterima!');
+    }   
 
     public function rejectSantri(Request $request, $id)
     {
@@ -199,26 +197,32 @@ class AdminController extends Controller
 
         $santri->update([
             'status' => 'ditolak',
-            'alasan_penolakan' => $request->alasan_penolakan ?? 'Pendaftaran ditolak oleh admin'
+            'alasan_penolakan' => $request->alasan_penolakan ?? 'Pendaftaran ditolak oleh admin',
+            'tanggal_verifikasi' => now(),
+
         ]);
+        // return redirect()
+        //     ->route('admin.santri.index')
+        //     ->with('success', 'Santri berhasil ditolak.');
 
-        if ($santri->user_id) {
-            Notification::create([
-                'user_id' => $santri->user_id,
-                'type' => 'santri',
-                'title' => 'Pendaftaran Ditolak',
-                'message' => 'Pendaftaran santri Anda ditolak. Alasan: ' . ($request->alasan_penolakan ?? 'Tidak ada alasan'),
-                'data' => json_encode([
-                    'santri_id' => $santri->id
-                ])
-            ]);
-        }
-
-        return redirect()
-            ->route('admin.santri.index')
-            ->with('success', 'Santri berhasil ditolak.');
+        return redirect()->back()->with('success', 'Santri berhasil ditolak.');
     }
 
+
+    // GALERI
+
+    public function store(Request $request)
+    {
+        $data = $request->all();
+
+        if ($request->hasFile('foto')) {
+            $data['foto'] = $request->file('foto')->store('galeri', 'public');
+        }
+
+        Gallery::create($data);
+
+        return back();
+    }
 
 
     // ==================== PEGAWAI ====================

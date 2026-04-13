@@ -13,8 +13,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="{{ asset('css/navbar.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/footer.css') }}">
+    <link rel="stylesheet" href="<?php echo e(asset('css/navbar.css')); ?>">
+    <link rel="stylesheet" href="<?php echo e(asset('css/footer.css')); ?>">
 </head>
 <style>
     .hero-pendaftaran {
@@ -371,7 +371,7 @@
 </style>
 
 <body>
-    @include('components.navbar')
+    <?php echo $__env->make('components.navbar', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
     <section class="form-section">
         <div class="container-form">
             <h2 class="form-title">
@@ -381,7 +381,7 @@
             <p class="form-sub">Lengkapilah data berikut dengan benar!</p>
 
             <form action="/daftar" method="POST" enctype="multipart/form-data">
-                @csrf <div class="form-group-section">
+                <?php echo csrf_field(); ?> <div class="form-group-section">
                     <h3 class="section-title">
                         <i class="bi bi-person-lines-fill"></i>
                         Data Santri
@@ -495,7 +495,8 @@
             </form>
         </div>
     </section>
-    @include('components.footer')
+    <?php echo $__env->make('components.footer', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
 </body>
 
 </html>
+<?php /**PATH C:\laragon\www\ponpes-main\resources\views/public/form.blade.php ENDPATH**/ ?>

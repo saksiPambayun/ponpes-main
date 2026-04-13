@@ -301,7 +301,7 @@
                 </div>
 
                 <div class="col-lg-5">
-                    <p class="text-tentang">
+                    {{-- <p class="text-tentang">
                         Pondok Pesantren Al-Ifadah didirikan sebagai wujud komitmen dalam menghadirkan pendidikan Islam
                         yang
                         berkualitas serta berorientasi pada pembentukan karakter dan akhlak mulia. Sejak awal
@@ -322,6 +322,10 @@
                         pendidikan dan pelayanan, demi melahirkan generasi yang berilmu, berakhlak, dan siap
                         berkontribusi
                         bagi masyarakat, bangsa, dan agama.
+                    </p> --}}
+
+                    <p>
+                        {!! nl2br(e($profil->deskripsi)) !!}
                     </p>
                 </div>
             </div>
@@ -330,20 +334,34 @@
                 <div class="col-lg-7">
                     <div class="card-visi mb-4">
                         <h3>Visi</h3>
-                        <p>
+                        {{-- <p>
                             Menjadi lembaga pendidikan Islam yang unggul dalam membentuk generasi berilmu,
                             berakhlak mulia, dan berwawasan luas berdasarkan Al-Qur’an dan Sunnah.
+                        </p> --}}
+
+                        <p>
+                            {{ $profil->visi ?? 'Visi belum tersedia' }}
                         </p>
                     </div>
 
                     <div class="card-misi">
                         <h3>Misi</h3>
-                        <ul>
+                        {{-- <ul>
                             <li>Menyelenggarakan pendidikan Islam terpadu.</li>
                             <li>Membina santri agar berakhlak mulia dan disiplin.</li>
                             <li>Menciptakan lingkungan belajar yang kondusif.</li>
                             <li>Menanamkan nilai kepemimpinan dan kemandirian.</li>
                             <li>Mengembangkan potensi akademik dan keagamaan.</li>
+                        </ul> --}}
+
+                        @php
+                            $misiList = explode("\n", $profil->misi ?? '');
+                        @endphp
+
+                        <ul>
+                            @foreach ($misiList as $m)
+                                <li>{{ $m }}</li>
+                            @endforeach
                         </ul>
                     </div>
                 </div>
@@ -379,7 +397,7 @@
                         dan peraturan yang berlaku guna menjaga profesionalitas,
                         transparansi, dan keberlangsungan lembaga.
                     </p>
-                    <a href="{{ route('tentang') }}" class="btn-adart">
+                    <a href="{{ asset('file/AD dan ART Ponpes Al - Ifadah.docx') }}" download class="btn-adart">
                         Unduh Dokumen AD / ART
                     </a>
                 </div>
