@@ -470,31 +470,69 @@
                             <i class="bi bi-upload"></i>
                             <span>Upload Kartu Keluarga</span>
                             <small>Format JPG, JPEG, PNG, PDF (Maks 2MB)</small>
-                            <input type="file" name="kk" hidden>
+
+                            <input type="file" name="kk" hidden onchange="showPreview(this)">
+                            <p class="file-name text-sm text-gray-600 mt-2"></p>
+                            <img class="preview-img mt-2 rounded" style="max-height:100px; display:none;">
                         </label>
 
                         <label class="upload-box">
                             <i class="bi bi-upload"></i>
                             <span>Upload Pas Foto</span>
                             <small>Format JPG, JPEG, PNG, PDF (Maks 2MB)</small>
-                            <input type="file" name="foto" hidden>
+
+                            <input type="file" name="foto" hidden onchange="showPreview(this)">
+                            <p class="file-name text-sm text-gray-600 mt-2"></p>
+                            <img class="preview-img mt-2 rounded" style="max-height:100px; display:none;">
                         </label>
                     </div>
-                </div>
 
-                <div class="checkbox-form">
-                    <input type="checkbox">
-                    <span>Saya menyatakan data yang diisi sudah benar.</span>
-                </div>
+                    <div class="checkbox-form">
+                        <input type="checkbox">
+                        <span>Saya menyatakan data yang diisi sudah benar.</span>
+                    </div>
 
-                <div class="submit-form">
-                    <button type="submit" class="btn-kirim">
-                        Kirim Formulir
-                    </button>
-                </div>
+                    <div class="submit-form">
+                        <button type="submit" class="btn-kirim">
+                            Kirim Formulir
+                        </button>
+                    </div>
             </form>
         </div>
     </section>
+
+    <script>
+            function showFileName(input) {
+        const file = input.files[0];
+        const fileNameEl = input.parentElement.querySelector('.file-name');
+
+        if (file) {
+            fileNameEl.textContent = file.name;
+        }
+    }
+
+    function showPreview(input) {
+        const file = input.files[0];
+        const fileNameEl = input.parentElement.querySelector('.file-name');
+        const preview = input.parentElement.querySelector('.preview-img');
+
+        if (file) {
+            fileNameEl.textContent = file.name;
+
+            // cek kalau gambar
+            if (file.type.startsWith('image/')) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    preview.src = e.target.result;
+                    preview.style.display = 'block';
+                }
+                reader.readAsDataURL(file);
+            } else {
+                preview.style.display = 'none';
+            }
+        }
+    }
+    </script>
     @include('components.footer')
 </body>
 

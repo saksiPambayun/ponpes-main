@@ -399,9 +399,7 @@ Route::get('/form', function () {
 })->name('form');
 
 // HUBUNGI
-Route::get('/hubungi', function () {
-    return view('public.hubungi');
-})->name('hubungi');
+Route::get('/hubungi', [UserController::class, 'hubungi'])->name('hubungi');
 
 Route::post('/daftar', [AdminController::class, 'santriStore']);
 Route::post('/daftar', [AdminController::class, 'santriStore'])->name('daftar');

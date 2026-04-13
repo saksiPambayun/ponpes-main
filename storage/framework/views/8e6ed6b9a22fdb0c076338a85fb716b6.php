@@ -13,8 +13,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="{{ asset('css/navbar.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/footer.css') }}">
+    <link rel="stylesheet" href="<?php echo e(asset('css/navbar.css')); ?>">
+    <link rel="stylesheet" href="<?php echo e(asset('css/footer.css')); ?>">
 </head>
 <style>
     .hubungi-section {
@@ -120,7 +120,7 @@
 </style>
 
 <body>
-    @include('components.navbar')
+    <?php echo $__env->make('components.navbar', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
 
     <section class="hubungi-section">
         <h1 class="hubungi-title">Hubungi</h1>
@@ -131,7 +131,7 @@
                     <i class="bi bi-telephone-fill"></i>
                     <div>
                         <h3>Nomor Telepon</h3>
-                        <p>{{ $profil->telepon ?? 'Belum diisi' }}</p>
+                        <p><?php echo e($profil->telepon ?? 'Belum diisi'); ?></p>
                     </div>
                 </div>
 
@@ -139,7 +139,7 @@
                     <i class="bi bi-envelope-fill"></i>
                     <div>
                         <h3>Email</h3>
-                        <p>{{ $profil->email ?? 'Belum diisi' }}</p>
+                        <p><?php echo e($profil->email ?? 'Belum diisi'); ?></p>
                     </div>
                 </div>
 
@@ -148,8 +148,9 @@
                     <div>
                         <h3>Whatsapp</h3>
                         <p>
-                            <a href="https://wa.me/{{ $profil->telepon }}">
-                                {{ $profil->telepon }}
+                            <a href="https://wa.me/<?php echo e($profil->telepon); ?>">
+                                <?php echo e($profil->telepon); ?>
+
                             </a>
                         </p>
                     </div>
@@ -159,7 +160,7 @@
                     <i class="bi bi-geo-alt-fill"></i>
                     <div>
                         <h3>Lokasi</h3>
-                        <p>{{ $profil->alamat ?? 'Belum diisi' }}</p>
+                        <p><?php echo e($profil->alamat ?? 'Belum diisi'); ?></p>
                     </div>
                 </div>
             </div>
@@ -177,7 +178,8 @@
             </div>
         </div>
     </section>
-    @include('components.footer')
+    <?php echo $__env->make('components.footer', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
 </body>
 
 </html>
+<?php /**PATH C:\laragon\www\ponpes-main\resources\views/public/hubungi.blade.php ENDPATH**/ ?>

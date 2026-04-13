@@ -164,4 +164,20 @@ class UserController extends Controller
 
         return view('public.tentang', compact('profil', 'aktaYayasan', 'aktaWakaf', 'sk'));
     }
+    // Hubungi
+
+    public function hubungi()
+    {
+        $profil = ProfilYayasan::first(); // ambil 1 data
+
+        return view('public.hubungi', compact('profil'));
+    }
+
+    //Struktur 
+
+    public function strukturIndex()
+    {
+        $struktur = StrukturOrganisasi::all();
+        return view('public.struktur', compact('struktur'));
+    }
 }

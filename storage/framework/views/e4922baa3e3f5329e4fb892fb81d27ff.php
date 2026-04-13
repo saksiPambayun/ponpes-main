@@ -14,13 +14,13 @@
             <div class="footer-line"></div>
             <p>Senin–Jumat, 08.00–16.00 WIB</p>
             <div class="footer-social">
-                <a href="#" target="_blank">
+                <a href="<?php echo e($profil->youtube); ?>" target="_blank">
                     <i class="fab fa-youtube"></i>
                 </a>
-                <a href="#" target="_blank">
+                <a href="<?php echo e($profil->facebook); ?>" target="_blank">
                     <i class="fab fa-facebook-f"></i>
                 </a>
-                <a href="#" target="_blank">
+                <a href="<?php echo e($profil->instagram); ?>" target="_blank">
                     <i class="fab fa-instagram"></i>
                 </a>
             </div>
@@ -29,24 +29,26 @@
         <div class="footer-col">
             <h4>Kontak</h4>
             <div class="footer-line"></div>
-            <p>No. Telepon : +6289-1234-0987</p>
-            <p>Whatsapp : +6289-1234-0987</p>
-            <p>Email : pp.ifadah@gmail.com</p>
+            <p>No. Telepon : <?php echo e($profil->telepon ?? '-'); ?></p>
+            <p>Whatsapp :
+                <a style="color: #ffffff; text-decoration: none;" href="https://wa.me/<?php echo e($profil->telepon); ?>">
+                    <?php echo e($profil->telepon); ?>
+
+                </a>
+            </p>
+            <p>Email : <?php echo e($profil->email ?? '-'); ?></p>
             <h4 style="margin-top:40px;">Alamat Lengkap</h4>
             <div class="footer-line"></div>
-            <p>
-                Dusun Sumberjo, Desa Glundengan,<br>
-                Kecamatan Wuluhan, Kabupaten Jember,<br>
-                Jawa Timur 68162
-            </p>
+            <p><?php echo e($profil->alamat ?? '-'); ?></p>
         </div>
 
         <div class="footer-col">
             <h4>Lokasi Kami</h4>
             <div class="footer-line"></div>
             <div class="footer-map">
-                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3948.544444444444!2d113.6901234!3d-8.177777777777778!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x2664d3b3c5d8ed00!2sPondok%20Pesantren%20Al-Ifadah!5e0!3m2!1sid!2sid!4v1655555555555!5m2!1sid!2sid" width="100%"
-                    height="100%" style="border:0;" allowfullscreen="" loading="lazy">
+                <iframe
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3948.544444444444!2d113.6901234!3d-8.177777777777778!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x2664d3b3c5d8ed00!2sPondok%20Pesantren%20Al-Ifadah!5e0!3m2!1sid!2sid!4v1655555555555!5m2!1sid!2sid"
+                    width="100%" height="300" style="border:0;" allowfullscreen="" loading="lazy">>
                 </iframe>
             </div>
         </div>
