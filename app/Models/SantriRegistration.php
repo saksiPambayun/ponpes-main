@@ -21,7 +21,7 @@ class SantriRegistration extends Model
         'email',
         'no_wali',
         'nama_wali',
-        'pekerjaan_wali',
+        'pekerjaan_wali',  // ← PASTIKAN INI ADA
         'foto',
         'kk',
         'status',

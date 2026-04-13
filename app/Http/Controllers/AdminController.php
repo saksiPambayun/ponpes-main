@@ -89,41 +89,46 @@ class AdminController extends Controller
         return view('admin.santri.create');
     }
 
-    public function santriStore(Request $request)
-    {
-        $validated = $request->validate([
-            'nama_lengkap'  => 'required|string|max:255',
-            'nisn'          => 'nullable|string|max:50',
-            'asal_sekolah'  => 'required|string|max:255',
-            'tanggal_lahir' => 'nullable|date',
-            'alamat'        => 'nullable|string',
-            'email'         => 'nullable|email|max:255',
-            'no_wali'       => 'required|string|max:20',
-            'nama_wali'     => 'required|string|max:255',
-            'pekerjaan_wali'     => 'nullable|string|max:100',
-            'foto'          => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:20480',
-            'kk'            => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:20480',
-        ]);
+   public function santriStore(Request $request)
+{
+    $validated = $request->validate([
+        'nama_lengkap'  => 'required|string|max:255',
+        'nisn'          => 'nullable|string|max:50',
+        'asal_sekolah'  => 'required|string|max:255',
+        'tanggal_lahir' => 'nullable|date',
+        'alamat'        => 'nullable|string',
+        'email'         => 'nullable|email|max:255',
+        'no_wali'       => 'required|string|max:20',
+        'nama_wali'     => 'required|string|max:255',
+        'pekerjaan_wali' => 'nullable|string|max:100',  // ← PERHATIKAN INI
+        'foto'          => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:20480',
+        'kk'            => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:20480',
+    ]);
 
-        $data = $validated;
+    $data = $validated;
 
-        // Hapus file dari array data karena akan diproses terpisah
-        unset($data['foto'], $data['kk']);
+    // Hapus file dari array data karena akan diproses terpisah
+    unset($data['foto'], $data['kk']);
 
-        if ($request->hasFile('kk')) {
-            $data['kk'] = $request->file('kk')->store('santri/kk', 'public');
-        }
-
-        if ($request->hasFile('foto')) {
-            $data['foto'] = $request->file('foto')->store('santri/foto', 'public');
-        }
-
-        $data['status'] = 'pending';
-
-        SantriRegistration::create($data);
-
-        return redirect()->route('admin.santri.index')->with('success', 'Data santri berhasil ditambahkan');
+    if ($request->hasFile('kk')) {
+        $data['kk'] = $request->file('kk')->store('santri/kk', 'public');
     }
+
+    if ($request->hasFile('foto')) {
+        $data['foto'] = $request->file('foto')->store('santri/foto', 'public');
+    }
+
+    $data['status'] = 'pending';
+
+    SantriRegistration::create($data);
+
+    // Redirect ke halaman sukses atau kembali
+    if ($request->ajax() || $request->expectsJson()) {
+        return response()->json(['success' => true, 'message' => 'Pendaftaran berhasil!']);
+    }
+
+    return redirect()->route('pendaftaran')->with('success', 'Pendaftaran berhasil! Data akan segera diverifikasi.');
+}
 
     public function santriShow($id)
     {

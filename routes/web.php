@@ -56,7 +56,7 @@ Route::prefix('admin')
         Route::post('/santri/{id}/verify', [AdminController::class, 'verifySantri'])->name('santri.verify');
         Route::post('/santri/{id}/reject', [AdminController::class, 'rejectSantri'])->name('santri.reject');
 
-        
+
 
         // Pegawai
         Route::get('/pegawai', [AdminController::class, 'pegawaiIndex'])->name('pegawai.index');
@@ -308,7 +308,7 @@ Route::middleware(['auth', 'user'])->prefix('user')->name('user.')->group(functi
     Route::delete('/santri/{id}', [UserController::class, 'santriDestroy'])->name('santri.destroy');
 
 
-    
+
     // ===================== GALLERY =====================
     Route::get('/gallery', [UserController::class, 'galleryIndex'])->name('gallery.index');
     Route::get('/gallery/{id}', [UserController::class, 'galleryShow'])->name('gallery.show');
@@ -404,3 +404,6 @@ Route::get('/hubungi', function () {
 })->name('hubungi');
 
 Route::post('/daftar', [AdminController::class, 'santriStore']);
+Route::post('/daftar', [AdminController::class, 'santriStore'])->name('daftar');
+
+Route::post('/daftar', [App\Http\Controllers\User\SantriRegistrationController::class, 'store'])->name('daftar');
