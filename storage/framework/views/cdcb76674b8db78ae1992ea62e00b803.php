@@ -82,21 +82,21 @@
                 
                 <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
                     <p class="text-sm text-gray-500 mb-3 font-medium">Kartu Keluarga (KK)</p>
-                    <?php if($santri->dok_kk): ?>
-                        <?php $extKk = strtolower(pathinfo($santri->dok_kk, PATHINFO_EXTENSION)); ?>
+                    <?php if($santri->kk): ?>
+                        <?php $extKk = strtolower(pathinfo($santri->kk, PATHINFO_EXTENSION)); ?>
                         <?php if(in_array($extKk, ['jpg', 'jpeg', 'png'])): ?>
-                            <a href="<?php echo e(asset('storage/' . $santri->dok_kk)); ?>" target="_blank">
-                                <img src="<?php echo e(asset('storage/' . $santri->dok_kk)); ?>"
+                            <a href="<?php echo e(asset('storage/' . $santri->kk)); ?>" target="_blank">
+                                <img src="<?php echo e(asset('storage/' . $santri->kk)); ?>"
                                     alt="Kartu Keluarga"
                                     class="w-full h-40 object-cover rounded-lg mb-3 border border-gray-200 hover:opacity-90 transition">
                             </a>
                         <?php else: ?>
                             <div class="flex items-center gap-3 p-3 bg-white border border-gray-200 rounded-lg mb-3">
                                 <i class="fas fa-file-pdf text-red-500 text-2xl"></i>
-                                <span class="text-sm text-gray-600 truncate"><?php echo e(basename($santri->dok_kk)); ?></span>
+                                <span class="text-sm text-gray-600 truncate"><?php echo e(basename($santri->kk)); ?></span>
                             </div>
                         <?php endif; ?>
-                        <a href="<?php echo e(asset('storage/' . $santri->dok_kk)); ?>" target="_blank"
+                        <a href="<?php echo e(asset('storage/' . $santri->kk)); ?>" target="_blank"
                             class="inline-flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded-lg hover:bg-indigo-700 transition">
                             <i class="fas fa-eye text-xs"></i> Lihat
                         </a>
@@ -111,21 +111,21 @@
                 
                 <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
                     <p class="text-sm text-gray-500 mb-3 font-medium">Akta Kelahiran</p>
-                    <?php if($santri->dok_akta): ?>
-                        <?php $extAkta = strtolower(pathinfo($santri->dok_akta, PATHINFO_EXTENSION)); ?>
+                    <?php if($santri->foto): ?>
+                        <?php $extAkta = strtolower(pathinfo($santri->foto, PATHINFO_EXTENSION)); ?>
                         <?php if(in_array($extAkta, ['jpg', 'jpeg', 'png'])): ?>
-                            <a href="<?php echo e(asset('storage/' . $santri->dok_akta)); ?>" target="_blank">
-                                <img src="<?php echo e(asset('storage/' . $santri->dok_akta)); ?>"
+                            <a href="<?php echo e(asset('storage/' . $santri->foto)); ?>" target="_blank">
+                                <img src="<?php echo e(asset('storage/' . $santri->foto)); ?>"
                                     alt="Akta Kelahiran"
                                     class="w-full h-40 object-cover rounded-lg mb-3 border border-gray-200 hover:opacity-90 transition">
                             </a>
                         <?php else: ?>
                             <div class="flex items-center gap-3 p-3 bg-white border border-gray-200 rounded-lg mb-3">
                                 <i class="fas fa-file-pdf text-red-500 text-2xl"></i>
-                                <span class="text-sm text-gray-600 truncate"><?php echo e(basename($santri->dok_akta)); ?></span>
+                                <span class="text-sm text-gray-600 truncate"><?php echo e(basename($santri->foto)); ?></span>
                             </div>
                         <?php endif; ?>
-                        <a href="<?php echo e(asset('storage/' . $santri->dok_akta)); ?>" target="_blank"
+                        <a href="<?php echo e(asset('storage/' . $santri->foto)); ?>" target="_blank"
                             class="inline-flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded-lg hover:bg-indigo-700 transition">
                             <i class="fas fa-eye text-xs"></i> Lihat
                         </a>
@@ -171,4 +171,4 @@
         </div>
     </div>
 <?php $__env->stopSection(); ?>
-<?php echo $__env->make('admin.layout', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\laragon\www\ponpes-main\resources\views/admin/santri/show.blade.php ENDPATH**/ ?>
+<?php echo $__env->make('admin.layout', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH D:\ponpes-main\resources\views/admin/santri/show.blade.php ENDPATH**/ ?>

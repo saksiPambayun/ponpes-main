@@ -4,10 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class SantriRegistration extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     protected $table = 'santri_registrations';
 
@@ -20,36 +21,31 @@ class SantriRegistration extends Model
         'email',
         'no_wali',
         'nama_wali',
-        'pekerjaan_wali',
-        'kk',
+        'pekerjaan',
         'foto',
+        'kk',
         'status',
         'alasan_penolakan',
         'tanggal_verifikasi',
-        'verified_by',
+        'verified_by'
     ];
 
     protected $casts = [
-        'tanggal_lahir'      => 'date',
+        'tanggal_lahir' => 'date',
         'tanggal_verifikasi' => 'datetime',
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
     ];
 
-    public function getStatusBadgeAttribute()
+    // Accessor untuk foto
+    public function getFotoUrlAttribute()
     {
-        return match($this->status) {
-            'pending'  => '<span class="px-3 py-1 bg-yellow-100 text-yellow-800 rounded-full text-xs">⏳ Pending</span>',
-            'diterima' => '<span class="px-3 py-1 bg-green-100 text-green-800 rounded-full text-xs">✅ Diterima</span>',
-            'ditolak'  => '<span class="px-3 py-1 bg-red-100 text-red-800 rounded-full text-xs">❌ Ditolak</span>',
-            default    => '<span class="px-3 py-1 bg-gray-100 text-gray-800 rounded-full text-xs">-</span>',
-        };
-    }
-     public function user()
-    {
-        return $this->belongsTo(User::class);
+        return $this->foto ? Storage::url($this->foto) : null;
     }
 
-    public function verifikator()
+    // Accessor untuk KK
+    public function getKkUrlAttribute()
     {
-        return $this->belongsTo(User::class, 'verified_by');
+        return $this->kk ? Storage::url($this->kk) : null;
     }
 }

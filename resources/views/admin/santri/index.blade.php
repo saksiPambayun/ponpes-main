@@ -131,8 +131,7 @@
                     @forelse($santri as $item)
                         <tr class="hover:bg-gray-50 transition-colors">
                             <td class="px-4 py-4">
-                                <input type="checkbox"
-                                    class="rounded border-gray-300 text-indigo-600 focus:ring-indigo-500">
+                                <input type="checkbox" class="rounded border-gray-300 text-indigo-600 focus:ring-indigo-500">
                             </td>
 
                             {{-- Nama --}}
@@ -144,7 +143,8 @@
                                     </div>
                                     <div>
                                         <p class="text-sm font-semibold text-gray-900 leading-tight">
-                                            {{ $item->nama_lengkap }}</p>
+                                            {{ $item->nama_lengkap }}
+                                        </p>
                                         <p class="text-xs text-gray-400 mt-0.5">{{ $item->email ?? '-' }}</p>
                                     </div>
                                 </div>
@@ -177,15 +177,14 @@
 
                                     {{-- Akta --}}
                                     @if ($item->foto)
-                                        <a href="{{ asset('storage/' . $item->foto) }}" target="_blank"
-                                            title="Akta Kelahiran"
+                                        <a href="{{ asset('storage/' . $item->foto) }}" target="_blank" title="Foto/ Akta Kelahiran"
                                             class="inline-flex items-center gap-1 px-2 py-1 rounded-md bg-green-50 text-green-700 text-xs font-medium border border-green-200 hover:bg-green-100 transition">
-                                            <i class="fas fa-file-alt text-xs"></i> Akta
+                                            <i class="fas fa-file-alt text-xs"></i> Foto
                                         </a>
                                     @else
-                                        <span title="Akta belum diupload"
+                                        <span title="Foto belum diupload"
                                             class="inline-flex items-center gap-1 px-2 py-1 rounded-md bg-gray-100 text-gray-400 text-xs font-medium border border-gray-200">
-                                            <i class="fas fa-file-alt text-xs"></i> Akta
+                                            <i class="fas fa-file-alt text-xs"></i> Foto
                                         </span>
                                     @endif
                                 </div>
@@ -236,8 +235,7 @@
                                     {{-- Terima --}}
                                     @if ($item->status != 'diterima')
                                         <button type="button" onclick="openAcceptModal({{ $item->id }})"
-                                            class="p-1.5 rounded-lg text-green-600 hover:bg-green-50 transition"
-                                            title="Terima">
+                                            class="p-1.5 rounded-lg text-green-600 hover:bg-green-50 transition" title="Terima">
                                             <i class="fas fa-check text-sm"></i>
                                         </button>
                                     @endif
@@ -245,20 +243,17 @@
                                     {{-- Tolak --}}
                                     @if ($item->status != 'ditolak')
                                         <button type="button" onclick="openRejectModal({{ $item->id }})"
-                                            class="p-1.5 rounded-lg text-orange-500 hover:bg-orange-50 transition"
-                                            title="Tolak">
+                                            class="p-1.5 rounded-lg text-orange-500 hover:bg-orange-50 transition" title="Tolak">
                                             <i class="fas fa-times text-sm"></i>
                                         </button>
                                     @endif
 
                                     {{-- Hapus --}}
-                                    <form action="{{ route('admin.santri.destroy', $item->id) }}" method="POST"
-                                        class="inline"
+                                    <form action="{{ route('admin.santri.destroy', $item->id) }}" method="POST" class="inline"
                                         onsubmit="return confirm('Hapus data santri ini? Tindakan ini tidak bisa dibatalkan.')">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit"
-                                            class="p-1.5 rounded-lg text-red-600 hover:bg-red-50 transition"
+                                        <button type="submit" class="p-1.5 rounded-lg text-red-600 hover:bg-red-50 transition"
                                             title="Hapus">
                                             <i class="fas fa-trash text-sm"></i>
                                         </button>
@@ -287,14 +282,14 @@
 
 @push('scripts')
     <script>
-        document.getElementById('searchInput').addEventListener('keyup', function() {
+        document.getElementById('searchInput').addEventListener('keyup', function () {
             const term = this.value.toLowerCase();
             document.querySelectorAll('#santriTable tr').forEach(row => {
                 row.style.display = row.textContent.toLowerCase().includes(term) ? '' : 'none';
             });
         });
 
-        document.getElementById('statusFilter').addEventListener('change', function() {
+        document.getElementById('statusFilter').addEventListener('change', function () {
             const status = this.value.toLowerCase();
             document.querySelectorAll('#santriTable tr').forEach(row => {
                 if (!status) {
@@ -321,7 +316,7 @@
             document.getElementById('acceptModal').classList.remove('flex');
         }
 
-        document.getElementById('acceptModal').addEventListener('click', function(e) {
+        document.getElementById('acceptModal').addEventListener('click', function (e) {
             if (e.target === this) closeAcceptModal();
         });
 
@@ -337,7 +332,7 @@
             document.getElementById('rejectModal').classList.remove('flex');
         }
 
-        document.getElementById('rejectModal').addEventListener('click', function(e) {
+        document.getElementById('rejectModal').addEventListener('click', function (e) {
             if (e.target === this) closeRejectModal();
         });
     </script>

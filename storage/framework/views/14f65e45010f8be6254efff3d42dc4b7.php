@@ -101,7 +101,7 @@ unset($__errorArgs, $__bag); ?>
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-2">Pekerjaan Wali</label>
-                        <input type="text" name="pekerjaan" value="<?php echo e(old('pekerjaan')); ?>"
+                        <input type="text" name="pekerjaan_wali" value="<?php echo e(old('pekerjaan')); ?>"
                             placeholder="Contoh: Petani, Wiraswasta, PNS..."
                             class="input-field w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none">
                     </div>
@@ -133,19 +133,19 @@ unset($__errorArgs, $__bag); ?>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-2">Kartu Keluarga (KK)</label>
-                            <label for="dok_kk" class="flex flex-col items-center justify-center w-full h-32 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100 transition">
+                            <label for="kk" class="flex flex-col items-center justify-center w-full h-32 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100 transition">
                                 <div class="flex flex-col items-center justify-center pt-5 pb-6">
                                     <i class="fas fa-cloud-upload-alt text-2xl text-gray-400 mb-2"></i>
                                     <p class="text-xs text-gray-500">PDF, JPG, PNG (maks. 20MB)</p>
                                 </div>
-                                <input id="dok_kk" type="file" name="dok_kk" class="hidden"
+                                <input id="kk" type="file" name="kk" class="hidden"
                                     accept=".pdf,.jpg,.jpeg,.png" onchange="showFileName(this, 'label-kk', 'preview-kk')">
                             </label>
                             <p id="label-kk" class="text-xs text-indigo-600 mt-1 hidden font-medium"></p>
                             <div id="preview-kk" class="mt-2 hidden">
                                 <img class="h-24 rounded border object-cover" alt="preview KK">
                             </div>
-                            <?php $__errorArgs = ['dok_kk'];
+                            <?php $__errorArgs = ['kk'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -156,19 +156,19 @@ unset($__errorArgs, $__bag); ?>
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-2">Pas Foto</label>
-                            <label for="dok_akta" class="flex flex-col items-center justify-center w-full h-32 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100 transition">
+                            <label for="foto" class="flex flex-col items-center justify-center w-full h-32 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100 transition">
                                 <div class="flex flex-col items-center justify-center pt-5 pb-6">
                                     <i class="fas fa-cloud-upload-alt text-2xl text-gray-400 mb-2"></i>
                                     <p class="text-xs text-gray-500">PDF, JPG, PNG (maks. 20MB)</p>
                                 </div>
-                                <input id="dok_akta" type="file" name="dok_akta" class="hidden"
+                                <input id="foto" type="file" name="foto" class="hidden"
                                     accept=".pdf,.jpg,.jpeg,.png" onchange="showFileName(this, 'label-akta', 'preview-akta')">
                             </label>
                             <p id="label-akta" class="text-xs text-indigo-600 mt-1 hidden font-medium"></p>
                             <div id="preview-akta" class="mt-2 hidden">
                                 <img class="h-24 rounded border object-cover" alt="preview Akta">
                             </div>
-                            <?php $__errorArgs = ['dok_akta'];
+                            <?php $__errorArgs = ['foto'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -220,4 +220,4 @@ unset($__errorArgs, $__bag); ?>
         }
     </script>
 <?php $__env->stopSection(); ?>
-<?php echo $__env->make('admin.layout', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\laragon\www\ponpes-main\resources\views/admin/santri/create.blade.php ENDPATH**/ ?>
+<?php echo $__env->make('admin.layout', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH D:\ponpes-main\resources\views/admin/santri/create.blade.php ENDPATH**/ ?>
