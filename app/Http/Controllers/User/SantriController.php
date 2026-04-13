@@ -22,6 +22,7 @@ class SantriController extends Controller
             'alamat' => $request->alamat,
             'email' => $request->email,
             'nama_wali' => $request->nama_wali,
+            'pekerjaan_wali' => $request->pekerjaan_wali,
             'no_wali' => $request->no_wali,
             'kk' => $kk,
             'foto' => $foto,

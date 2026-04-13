@@ -100,7 +100,7 @@ class AdminController extends Controller
             'email'         => 'nullable|email|max:255',
             'no_wali'       => 'required|string|max:20',
             'nama_wali'     => 'required|string|max:255',
-            'pekerjaan'     => 'nullable|string|max:100',
+            'pekerjaan_wali'     => 'nullable|string|max:100',
             'foto'          => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:20480',
             'kk'            => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:20480',
         ]);
@@ -150,7 +150,7 @@ class AdminController extends Controller
             'email'         => 'nullable|email|max:255',
             'no_wali'       => 'required|string|max:20',
             'nama_wali'     => 'required|string|max:255',
-            'pekerjaan'     => 'nullable|string|max:100',
+            'pekerjaan_wali'     => 'nullable|string|max:100',
             'kk'            => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:20480',
             'foto'          => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:20480',
         ]);
@@ -201,7 +201,6 @@ class AdminController extends Controller
         $santri->update([
             'status' => 'diterima',
             'tanggal_verifikasi' => now(),
-            'verified_by' => auth()->id()
         ]);
 
         return redirect()->route('admin.santri.index')->with('success', 'Santri berhasil diterima!');
@@ -219,7 +218,6 @@ class AdminController extends Controller
             'status' => 'ditolak',
             'alasan_penolakan' => $request->alasan_penolakan,
             'tanggal_verifikasi' => now(),
-            'verified_by' => auth()->id()
         ]);
 
         return redirect()->route('admin.santri.index')->with('success', 'Pendaftaran santri ditolak.');

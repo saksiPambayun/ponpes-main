@@ -403,4 +403,4 @@ Route::get('/hubungi', function () {
     return view('public.hubungi');
 })->name('hubungi');
 
-Route::post('/daftar', [SantriController::class, 'store']);
+Route::post('/daftar', [AdminController::class, 'santriStore']);

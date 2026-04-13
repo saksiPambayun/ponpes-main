@@ -21,7 +21,7 @@ class SantriRegistration extends Model
         'email',
         'no_wali',
         'nama_wali',
-        'pekerjaan',
+        'pekerjaan_wali',
         'foto',
         'kk',
         'status',
@@ -36,16 +36,4 @@ class SantriRegistration extends Model
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
     ];
-
-    // Accessor untuk foto
-    public function getFotoUrlAttribute()
-    {
-        return $this->foto ? Storage::url($this->foto) : null;
-    }
-
-    // Accessor untuk KK
-    public function getKkUrlAttribute()
-    {
-        return $this->kk ? Storage::url($this->kk) : null;
-    }
 }
