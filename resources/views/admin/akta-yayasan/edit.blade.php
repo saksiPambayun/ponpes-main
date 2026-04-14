@@ -4,72 +4,111 @@
 @section('page-title', 'Edit Akta Yayasan')
 
 @section('content')
-    <div class="max-w-4xl mx-auto">
-        <div class="card p-8">
+    <div style="max-width: 80rem; margin: 0 auto;">
+        <div
+            style="background: #fff; border-radius: 20px; padding: 2rem; box-shadow: 0 2px 20px rgba(0,0,0,0.06); border: 1px solid #dfe8d8;">
             <form action="{{ route('admin.akta-yayasan.update', $aktaYayasan->id) }}" method="POST"
                 enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem;">
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Nomor Akta</label>
+                        <label
+                            style="display: block; font-size: 0.8rem; font-weight: 600; color: #2d2d2d; margin-bottom: 0.5rem;">Nomor
+                            Akta</label>
                         <input type="text" name="nomor_akta" value="{{ old('nomor_akta', $aktaYayasan->nomor_akta) }}"
-                            class="input-field w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none">
+                            style="width: 100%; padding: 0.75rem 1rem; border: 1.5px solid #dfe8d8; border-radius: 10px; background: #f4f4f4; transition: all 0.2s ease;"
+                            onfocus="this.style.borderColor='#005F02'; this.style.background='#ffffff'; this.style.boxShadow='0 0 0 3px rgba(0,95,2,0.12)'"
+                            onblur="this.style.borderColor='#dfe8d8'; this.style.background='#f4f4f4'; this.style.boxShadow='none'">
                     </div>
 
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Tanggal Akta</label>
-                        <input type="date" name="tanggal_akta"
-                            value="{{ old('tanggal_akta', $aktaYayasan->tanggal_akta) }}"
-                            class="input-field w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none">
+                        <label
+                            style="display: block; font-size: 0.8rem; font-weight: 600; color: #2d2d2d; margin-bottom: 0.5rem;">Tanggal
+                            Akta</label>
+                        <input type="date" name="tanggal_akta" value="{{ old('tanggal_akta', $aktaYayasan->tanggal_akta) }}"
+                            style="width: 100%; padding: 0.75rem 1rem; border: 1.5px solid #dfe8d8; border-radius: 10px; background: #f4f4f4; transition: all 0.2s ease;"
+                            onfocus="this.style.borderColor='#005F02'; this.style.background='#ffffff'; this.style.boxShadow='0 0 0 3px rgba(0,95,2,0.12)'"
+                            onblur="this.style.borderColor='#dfe8d8'; this.style.background='#f4f4f4'; this.style.boxShadow='none'">
                     </div>
 
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Notaris</label>
+                        <label
+                            style="display: block; font-size: 0.8rem; font-weight: 600; color: #2d2d2d; margin-bottom: 0.5rem;">Notaris</label>
                         <input type="text" name="notaris" value="{{ old('notaris', $aktaYayasan->notaris) }}"
-                            class="input-field w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none">
+                            style="width: 100%; padding: 0.75rem 1rem; border: 1.5px solid #dfe8d8; border-radius: 10px; background: #f4f4f4; transition: all 0.2s ease;"
+                            onfocus="this.style.borderColor='#005F02'; this.style.background='#ffffff'; this.style.boxShadow='0 0 0 3px rgba(0,95,2,0.12)'"
+                            onblur="this.style.borderColor='#dfe8d8'; this.style.background='#f4f4f4'; this.style.boxShadow='none'">
                     </div>
 
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Judul</label>
+                        <label
+                            style="display: block; font-size: 0.8rem; font-weight: 600; color: #2d2d2d; margin-bottom: 0.5rem;">Judul</label>
                         <input type="text" name="judul" value="{{ old('judul', $aktaYayasan->judul) }}"
-                            class="input-field w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none"
-                            placeholder="Contoh: Akta Yayasan">
+                            style="width: 100%; padding: 0.75rem 1rem; border: 1.5px solid #dfe8d8; border-radius: 10px; background: #f4f4f4; transition: all 0.2s ease;"
+                            placeholder="Contoh: Akta Yayasan"
+                            onfocus="this.style.borderColor='#005F02'; this.style.background='#ffffff'; this.style.boxShadow='0 0 0 3px rgba(0,95,2,0.12)'"
+                            onblur="this.style.borderColor='#dfe8d8'; this.style.background='#f4f4f4'; this.style.boxShadow='none'">
                     </div>
 
-                    <div class="col-span-2">
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Deskripsi</label>
+                    <div style="grid-column: 1 / -1;">
+                        <label
+                            style="display: block; font-size: 0.8rem; font-weight: 600; color: #2d2d2d; margin-bottom: 0.5rem;">Deskripsi</label>
                         <textarea name="deskripsi" rows="4"
-                            class="input-field w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none resize-none"
-                            placeholder="Masukkan deskripsi...">{{ old('deskripsi', $aktaYayasan->deskripsi) }}</textarea>
+                            style="width: 100%; padding: 0.75rem 1rem; border: 1.5px solid #dfe8d8; border-radius: 10px; background: #f4f4f4; resize: vertical; transition: all 0.2s ease;"
+                            placeholder="Masukkan deskripsi..."
+                            onfocus="this.style.borderColor='#005F02'; this.style.background='#ffffff'; this.style.boxShadow='0 0 0 3px rgba(0,95,2,0.12)'"
+                            onblur="this.style.borderColor='#dfe8d8'; this.style.background='#f4f4f4'; this.style.boxShadow='none'">{{ old('deskripsi', $aktaYayasan->deskripsi) }}</textarea>
                     </div>
 
-                    <div class="col-span-2">
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Upload File Akta (Kosongkan jika tidak
-                            diubah)</label>
+                    <div style="grid-column: 1 / -1;">
+                        <label
+                            style="display: block; font-size: 0.8rem; font-weight: 600; color: #2d2d2d; margin-bottom: 0.5rem;">Upload
+                            File Akta (Kosongkan jika tidak diubah)</label>
                         <input type="file" name="file_akta" accept=".jpg,.png,.jpeg,.pdf,.doc,.docx"
-                            class="input-field w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none">
+                            style="width: 100%; padding: 0.75rem 1rem; border: 1.5px solid #dfe8d8; border-radius: 10px; background: #f4f4f4; transition: all 0.2s ease;">
                         @if ($aktaYayasan->file_akta)
-                            <p class="text-xs text-gray-500 mt-1">File saat ini: {{ basename($aktaYayasan->file_akta) }}</p>
+                            <p style="font-size: 0.7rem; color: #8cbf73; margin-top: 0.5rem;">File saat ini:
+                                {{ basename($aktaYayasan->file_akta) }}</p>
                             <a href="{{ asset('storage/' . $aktaYayasan->file_akta) }}" target="_blank"
-                                class="text-indigo-600 text-xs hover:underline">
+                                style="color: #005F02; font-size: 0.7rem; text-decoration: none; transition: all 0.2s ease;">
                                 <i class="fas fa-download mr-1"></i>Download File
                             </a>
                         @endif
-                        <p class="text-xs text-gray-500 mt-1">Format: JPG, PNG, JPEG, PDF, DOC, DOCX (Max: 5MB)</p>
+                        <p style="font-size: 0.7rem; color: #8cbf73; margin-top: 0.5rem;">Format: JPG, PNG, JPEG, PDF, DOC,
+                            DOCX (Max: 5MB)</p>
                         @error('file_akta')
-                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                            <p style="color: #dc2626; font-size: 0.7rem; margin-top: 0.5rem;">{{ $message }}</p>
                         @enderror
                     </div>
                 </div>
 
-                <div class="mt-8 flex justify-end space-x-4">
+                <div style="margin-top: 2rem; display: flex; justify-content: flex-end; gap: 1rem;">
                     <a href="{{ route('admin.akta-yayasan.index') }}"
-                        class="px-6 py-3 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50">Batal</a>
-                    <button type="submit" class="btn-primary px-6 py-3 rounded-lg text-white font-medium">Update
+                        style="padding: 0.7rem 1.5rem; border: 1.5px solid #dfe8d8; border-radius: 10px; color: #2d2d2d; text-decoration: none; font-weight: 600; transition: all 0.2s ease;">Batal</a>
+                    <button type="submit"
+                        style="padding: 0.7rem 1.5rem; background: linear-gradient(135deg, #005F02, #0f4d1c); border: none; border-radius: 10px; color: #fff; font-weight: 600; cursor: pointer; transition: all 0.2s ease; box-shadow: 0 4px 14px rgba(0, 95, 2, 0.3);">Update
                         Data</button>
                 </div>
             </form>
         </div>
     </div>
+
+    <style>
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 95, 2, 0.4);
+        }
+
+        a[href*="index"]:hover {
+            background: #eef3ec;
+            border-color: #8cbf73;
+            color: #005F02;
+        }
+
+        a[href*="download"]:hover {
+            color: #0d4f14 !important;
+            text-decoration: underline !important;
+        }
+    </style>
 @endsection

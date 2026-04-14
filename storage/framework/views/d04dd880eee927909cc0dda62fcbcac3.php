@@ -1,9 +1,7 @@
-@extends('admin.layout')
+<?php $__env->startSection('title', 'Akta Wakaf'); ?>
+<?php $__env->startSection('page-title', 'Dokumen Akta Wakaf'); ?>
 
-@section('title', 'Akta Wakaf')
-@section('page-title', 'Dokumen Akta Wakaf')
-
-@section('content')
+<?php $__env->startSection('content'); ?>
     <div class="page-wrapper" style="background: #f4f4f4; min-height: 100vh; padding: 2rem;">
         <div class="page-header"
             style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem;">
@@ -17,7 +15,7 @@
                     <p style="font-size: 0.8rem; color: #2d2d2d; margin: 0;">Manajemen dokumen wakaf tanah/bangunan</p>
                 </div>
             </div>
-            <a href="{{ route('admin.akta-wakaf.create') }}" class="btn-primary-action"
+            <a href="<?php echo e(route('admin.akta-wakaf.create')); ?>" class="btn-primary-action"
                 style="display: inline-flex; align-items: center; gap: 0.5rem; background: linear-gradient(135deg, #005F02, #0f4d1c); color: #fff; padding: 0.6rem 1.2rem; border-radius: 10px; text-decoration: none; transition: all 0.2s ease;">
                 <i class="fas fa-plus"></i> Tambah Data
             </a>
@@ -47,29 +45,31 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @forelse($aktaWakaf as $item)
+                        <?php $__empty_1 = true; $__currentLoopData = $aktaWakaf; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
                             <tr style="border-bottom: 1px solid #dfe8d8;">
-                                <td style="padding: 1rem; font-size: 0.85rem; color: #333;">{{ $item->nomor_sertifikat ?? '-' }}
+                                <td style="padding: 1rem; font-size: 0.85rem; color: #333;"><?php echo e($item->nomor_sertifikat ?? '-'); ?>
+
                                 </td>
-                                <td style="padding: 1rem; font-size: 0.85rem; color: #333;">{{ $item->lokasi_tanah ?? '-' }}
+                                <td style="padding: 1rem; font-size: 0.85rem; color: #333;"><?php echo e($item->lokasi_tanah ?? '-'); ?>
+
                                 </td>
-                                <td style="padding: 1rem; font-size: 0.85rem; color: #333;">{{ $item->luas_tanah ?? '-' }} m²
+                                <td style="padding: 1rem; font-size: 0.85rem; color: #333;"><?php echo e($item->luas_tanah ?? '-'); ?> m²
                                 </td>
-                                <td style="padding: 1rem; font-size: 0.85rem; color: #333;">{{ $item->nazhir ?? '-' }}</td>
+                                <td style="padding: 1rem; font-size: 0.85rem; color: #333;"><?php echo e($item->nazhir ?? '-'); ?></td>
                                 <td style="padding: 1rem; text-align: center;">
                                     <div style="display: flex; gap: 0.5rem; justify-content: center;">
-                                        <a href="{{ route('admin.akta-wakaf.show', $item->id) }}" class="btn-view"
+                                        <a href="<?php echo e(route('admin.akta-wakaf.show', $item->id)); ?>" class="btn-view"
                                             style="background: #eef3ec; color: #005F02; padding: 0.4rem 0.7rem; border-radius: 8px; transition: all 0.2s ease;">
                                             <i class="fas fa-eye"></i>
                                         </a>
-                                        <a href="{{ route('admin.akta-wakaf.edit', $item->id) }}" class="btn-edit"
+                                        <a href="<?php echo e(route('admin.akta-wakaf.edit', $item->id)); ?>" class="btn-edit"
                                             style="background: #dfe8d8; color: #0d4f14; padding: 0.4rem 0.7rem; border-radius: 8px; transition: all 0.2s ease;">
                                             <i class="fas fa-edit"></i>
                                         </a>
-                                        <form action="{{ route('admin.akta-wakaf.destroy', $item->id) }}" method="POST"
+                                        <form action="<?php echo e(route('admin.akta-wakaf.destroy', $item->id)); ?>" method="POST"
                                             style="display: inline;" onsubmit="return confirm('Hapus data ini?')">
-                                            @csrf
-                                            @method('DELETE')
+                                            <?php echo csrf_field(); ?>
+                                            <?php echo method_field('DELETE'); ?>
                                             <button type="submit" class="btn-delete"
                                                 style="background: #fef2f2; color: #dc2626; padding: 0.4rem 0.7rem; border-radius: 8px; border: none; cursor: pointer; transition: all 0.2s ease;">
                                                 <i class="fas fa-trash"></i>
@@ -78,7 +78,7 @@
                                     </div>
                                 </td>
                             </tr>
-                        @empty
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
                             <tr>
                                 <td colspan="5" style="padding: 3rem; text-align: center; color: #8cbf73;">
                                     <i class="fas fa-landmark"
@@ -86,15 +86,16 @@
                                     <p style="color: #2d2d2d;">Belum ada data wakaf</p>
                                 </td>
                             </tr>
-                        @endforelse
+                        <?php endif; ?>
                     </tbody>
                 </table>
             </div>
-            @if($aktaWakaf->hasPages())
+            <?php if($aktaWakaf->hasPages()): ?>
                 <div style="padding: 1rem; border-top: 1px solid #dfe8d8; background: #eef3ec;">
-                    {{ $aktaWakaf->links() }}
+                    <?php echo e($aktaWakaf->links()); ?>
+
                 </div>
-            @endif
+            <?php endif; ?>
         </div>
 
         <style>
@@ -156,4 +157,5 @@
             }
         </style>
     </div>
-@endsection
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('admin.layout', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH D:\ponpes-main\resources\views/admin/akta-wakaf/index.blade.php ENDPATH**/ ?>

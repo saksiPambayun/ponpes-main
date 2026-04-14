@@ -48,11 +48,20 @@
             </li>
         </ul>
 
-        <!-- Tempat tombol login dengan lebar tetap -->
-        <div class="w-[150px] flex justify-end">
+        <div class="w-37.5 flex justify-end ml-auto">
+
             <?php if(auth()->guard()->guest()): ?>
-                <a href="<?php echo e(route('login')); ?>" class="btn-contact">Login / Register</a>
+                <a href="<?php echo e(route('login')); ?>" class="btn-contact">
+                    Login / Register
+                </a>
             <?php endif; ?>
+
+            <?php if(auth()->guard()->check()): ?>
+                <button type="button" onclick="openLogoutModal()" class="btn-contact">
+                    Logout
+                </button>
+            <?php endif; ?>
+
         </div>
 
     </div>

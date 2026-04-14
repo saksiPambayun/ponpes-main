@@ -15,7 +15,7 @@
         }
 
         .detail-card-header {
-            background: linear-gradient(135deg, #4361ee, #7209b7);
+            background: linear-gradient(135deg, #005F02, #0f4d1c);
             padding: 1.2rem 1.8rem;
             display: flex;
             align-items: center;
@@ -43,7 +43,7 @@
         }
 
         .info-table tr {
-            border-bottom: 1px solid #f0f4f8;
+            border-bottom: 1px solid #dfe8d8;
         }
 
         .info-table tr:last-child {
@@ -55,7 +55,7 @@
             padding: 1rem 0;
             font-size: 0.82rem;
             font-weight: 600;
-            color: #64748b;
+            color: #2d2d2d;
             text-align: left;
             letter-spacing: -0.1px;
         }
@@ -63,7 +63,7 @@
         .info-table td {
             padding: 1rem 0;
             font-size: 0.87rem;
-            color: #1a1f36;
+            color: #333;
             font-weight: 500;
         }
 
@@ -76,18 +76,18 @@
         }
 
         .kondisi-badge.baik {
-            background: #c6f6d5;
-            color: #276749;
+            background: #eef3ec;
+            color: #005F02;
         }
 
         .kondisi-badge.ringan {
-            background: #fef3c7;
-            color: #92400e;
+            background: #dfe8d8;
+            color: #0d4f14;
         }
 
         .kondisi-badge.berat {
-            background: #fed7d7;
-            color: #9b2c2c;
+            background: #fef2f2;
+            color: #dc2626;
         }
 
         .foto-card {
@@ -99,7 +99,7 @@
         }
 
         .foto-card-header {
-            background: linear-gradient(135deg, #4361ee, #7209b7);
+            background: linear-gradient(135deg, #005F02, #0f4d1c);
             padding: 1.2rem 1.8rem;
             display: flex;
             align-items: center;
@@ -127,6 +127,7 @@
             max-height: 300px;
             border-radius: 12px;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            border: 1px solid #dfe8d8;
         }
 
         .no-foto {
@@ -136,12 +137,12 @@
 
         .no-foto i {
             font-size: 3rem;
-            color: #cbd5e0;
+            color: #8cbf73;
             margin-bottom: 0.75rem;
         }
 
         .no-foto p {
-            color: #a0aec0;
+            color: #2d2d2d;
             font-size: 0.85rem;
         }
 
@@ -173,39 +174,39 @@
         }
 
         .btn-back {
-            background: #f7fafc;
-            border: 1.5px solid #e2e8f0;
-            color: #4a5568;
+            background: #f4f4f4;
+            border: 1.5px solid #dfe8d8;
+            color: #2d2d2d;
         }
 
         .btn-back:hover {
-            background: #edf2f7;
-            border-color: #cbd5e0;
-            color: #2d3748;
+            background: #eef3ec;
+            border-color: #8cbf73;
+            color: #005F02;
         }
 
         .btn-edit {
-            background: linear-gradient(135deg, #f59e0b, #d97706);
+            background: linear-gradient(135deg, #005F02, #0f4d1c);
             color: #fff;
-            box-shadow: 0 2px 8px rgba(245, 158, 11, 0.3);
+            box-shadow: 0 2px 8px rgba(0, 95, 2, 0.3);
         }
 
         .btn-edit:hover {
-            background: linear-gradient(135deg, #d97706, #b45309);
+            background: linear-gradient(135deg, #0d4f14, #0f4d1c);
             color: #fff;
-            box-shadow: 0 4px 12px rgba(245, 158, 11, 0.4);
+            box-shadow: 0 4px 12px rgba(0, 95, 2, 0.4);
         }
 
         .btn-print {
-            background: linear-gradient(135deg, #10b981, #059669);
+            background: linear-gradient(135deg, #4ca94d, #2e6b37);
             color: #fff;
-            box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
+            box-shadow: 0 2px 8px rgba(76, 169, 77, 0.3);
         }
 
         .btn-print:hover {
-            background: linear-gradient(135deg, #059669, #047857);
+            background: linear-gradient(135deg, #2e6b37, #0d4f14);
             color: #fff;
-            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
+            box-shadow: 0 4px 12px rgba(76, 169, 77, 0.4);
         }
 
         @media (max-width: 768px) {
@@ -236,25 +237,25 @@
             .detail-card,
             .foto-card {
                 box-shadow: none;
-                border: 1px solid #e2e8f0;
+                border: 1px solid #dfe8d8;
             }
         }
     </style>
 @endpush
 
 @section('content')
-    <div class="page-wrapper" style="background: #f0f4f8; min-height: 100vh; padding: 2rem;">
+    <div class="page-wrapper" style="background: #f4f4f4; min-height: 100vh; padding: 2rem;">
         {{-- Page Header --}}
         <div class="page-header"
             style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem;">
             <div class="page-header-left" style="display: flex; align-items: center; gap: 1rem;">
                 <div class="page-icon"
-                    style="width: 48px; height: 48px; background: linear-gradient(135deg, #4361ee, #7209b7); border-radius: 14px; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 14px rgba(67, 97, 238, 0.35);">
+                    style="width: 48px; height: 48px; background: linear-gradient(135deg, #005F02, #0f4d1c); border-radius: 14px; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 14px rgba(0, 95, 2, 0.35);">
                     <i class="fas fa-info-circle" style="color: #fff; font-size: 1.1rem;"></i>
                 </div>
                 <div class="page-title">
-                    <h1 style="font-size: 1.35rem; font-weight: 700; color: #1a1f36; margin: 0;">Detail Fasilitas</h1>
-                    <p style="font-size: 0.8rem; color: #8898aa; margin: 0;"><i
+                    <h1 style="font-size: 1.35rem; font-weight: 700; color: #222; margin: 0;">Detail Fasilitas</h1>
+                    <p style="font-size: 0.8rem; color: #2d2d2d; margin: 0;"><i
                             class="fas fa-calendar-alt mr-1"></i>{{ now()->format('d F Y') }}</p>
                 </div>
             </div>

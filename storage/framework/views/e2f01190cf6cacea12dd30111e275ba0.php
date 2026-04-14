@@ -1,10 +1,8 @@
-@extends('admin.layout')
+<?php $__env->startSection('title', 'Tambah Program'); ?>
 
-@section('title', 'Tambah Program')
-
-@section('content')
+<?php $__env->startSection('content'); ?>
     <div class="page-wrapper" style="background: #f4f4f4; min-height: 100vh; padding: 2rem;">
-        {{-- Page Header --}}
+        
         <div class="page-header"
             style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem;">
             <div class="page-header-left" style="display: flex; align-items: center; gap: 1rem;">
@@ -18,13 +16,13 @@
                         baru</p>
                 </div>
             </div>
-            <a href="{{ route('admin.program.index') }}" class="btn-back"
+            <a href="<?php echo e(route('admin.program.index')); ?>" class="btn-back"
                 style="display: inline-flex; align-items: center; gap: 0.45rem; padding: 0.55rem 1.1rem; background: #fff; border: 1.5px solid #dfe8d8; border-radius: 10px; color: #2d2d2d; font-size: 0.82rem; font-weight: 600; text-decoration: none; transition: all 0.2s ease;">
                 <i class="fas fa-arrow-left"></i> Kembali
             </a>
         </div>
 
-        {{-- Form Card --}}
+        
         <div class="form-card"
             style="background: #fff; border-radius: 20px; border: 1px solid #dfe8d8; box-shadow: 0 2px 20px rgba(0,0,0,0.06); overflow: hidden;">
             <div class="form-card-header"
@@ -34,8 +32,8 @@
             </div>
 
             <div class="form-card-body" style="padding: 1.8rem;">
-                <form action="{{ route('admin.program.store') }}" method="POST">
-                    @csrf
+                <form action="<?php echo e(route('admin.program.store')); ?>" method="POST">
+                    <?php echo csrf_field(); ?>
 
                     <div class="row" style="display: flex; flex-wrap: wrap; gap: 1.5rem;">
                         <div class="col-md-6" style="flex: 1; min-width: 250px;">
@@ -45,10 +43,17 @@
                                     Program <span style="color: #dc2626;">*</span></label>
                                 <input type="text" name="nama_program" class="form-control"
                                     style="width: 100%; padding: 0.65rem 0.9rem; border: 1.5px solid #dfe8d8; border-radius: 10px; background: #f4f4f4; transition: all 0.2s ease;"
-                                    value="{{ old('nama_program') }}" placeholder="Masukkan nama program" required>
-                                @error('nama_program') <p class="text-red-500 text-sm mt-1"
-                                    style="color: #dc2626; font-size: 0.78rem; margin-top: 0.35rem;">{{ $message }}</p>
-                                @enderror
+                                    value="<?php echo e(old('nama_program')); ?>" placeholder="Masukkan nama program" required>
+                                <?php $__errorArgs = ['nama_program'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> <p class="text-red-500 text-sm mt-1"
+                                    style="color: #dc2626; font-size: 0.78rem; margin-top: 0.35rem;"><?php echo e($message); ?></p>
+                                <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                             </div>
 
                             <div class="form-group" style="margin-bottom: 1.3rem;">
@@ -59,18 +64,25 @@
                                     style="width: 100%; padding: 0.65rem 0.9rem; border: 1.5px solid #dfe8d8; border-radius: 10px; background: #f4f4f4; transition: all 0.2s ease;"
                                     required>
                                     <option value="">-- Pilih Kategori --</option>
-                                    <option value="pendidikan" {{ old('kategori') == 'pendidikan' ? 'selected' : '' }}>📚
+                                    <option value="pendidikan" <?php echo e(old('kategori') == 'pendidikan' ? 'selected' : ''); ?>>📚
                                         Pendidikan</option>
-                                    <option value="sosial" {{ old('kategori') == 'sosial' ? 'selected' : '' }}>❤️ Sosial
+                                    <option value="sosial" <?php echo e(old('kategori') == 'sosial' ? 'selected' : ''); ?>>❤️ Sosial
                                     </option>
-                                    <option value="keagamaan" {{ old('kategori') == 'keagamaan' ? 'selected' : '' }}>🕌
+                                    <option value="keagamaan" <?php echo e(old('kategori') == 'keagamaan' ? 'selected' : ''); ?>>🕌
                                         Keagamaan</option>
-                                    <option value="kesehatan" {{ old('kategori') == 'kesehatan' ? 'selected' : '' }}>🏥
+                                    <option value="kesehatan" <?php echo e(old('kategori') == 'kesehatan' ? 'selected' : ''); ?>>🏥
                                         Kesehatan</option>
                                 </select>
-                                @error('kategori') <p class="text-red-500 text-sm mt-1"
-                                    style="color: #dc2626; font-size: 0.78rem; margin-top: 0.35rem;">{{ $message }}</p>
-                                @enderror
+                                <?php $__errorArgs = ['kategori'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> <p class="text-red-500 text-sm mt-1"
+                                    style="color: #dc2626; font-size: 0.78rem; margin-top: 0.35rem;"><?php echo e($message); ?></p>
+                                <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                             </div>
                         </div>
 
@@ -81,7 +93,7 @@
                                     Mulai</label>
                                 <input type="date" name="tanggal_mulai" class="form-control"
                                     style="width: 100%; padding: 0.65rem 0.9rem; border: 1.5px solid #dfe8d8; border-radius: 10px; background: #f4f4f4; transition: all 0.2s ease;"
-                                    value="{{ old('tanggal_mulai') }}">
+                                    value="<?php echo e(old('tanggal_mulai')); ?>">
                             </div>
 
                             <div class="form-group" style="margin-bottom: 1.3rem;">
@@ -90,7 +102,7 @@
                                     Selesai</label>
                                 <input type="date" name="tanggal_selesai" class="form-control"
                                     style="width: 100%; padding: 0.65rem 0.9rem; border: 1.5px solid #dfe8d8; border-radius: 10px; background: #f4f4f4; transition: all 0.2s ease;"
-                                    value="{{ old('tanggal_selesai') }}">
+                                    value="<?php echo e(old('tanggal_selesai')); ?>">
                             </div>
                         </div>
                     </div>
@@ -101,9 +113,16 @@
                             <span style="color: #dc2626;">*</span></label>
                         <textarea name="deskripsi" rows="5" class="form-control"
                             style="width: 100%; padding: 0.65rem 0.9rem; border: 1.5px solid #dfe8d8; border-radius: 10px; background: #f4f4f4; resize: vertical; transition: all 0.2s ease;"
-                            placeholder="Jelaskan deskripsi program secara detail...">{{ old('deskripsi') }}</textarea>
-                        @error('deskripsi') <p class="text-red-500 text-sm mt-1"
-                        style="color: #dc2626; font-size: 0.78rem; margin-top: 0.35rem;">{{ $message }}</p> @enderror
+                            placeholder="Jelaskan deskripsi program secara detail..."><?php echo e(old('deskripsi')); ?></textarea>
+                        <?php $__errorArgs = ['deskripsi'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> <p class="text-red-500 text-sm mt-1"
+                        style="color: #dc2626; font-size: 0.78rem; margin-top: 0.35rem;"><?php echo e($message); ?></p> <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                     </div>
 
                     <div class="form-actions"
@@ -112,7 +131,7 @@
                             style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.7rem 1.5rem; background: linear-gradient(135deg, #005F02, #0f4d1c); color: #fff; border: none; border-radius: 10px; font-size: 0.87rem; font-weight: 600; cursor: pointer; transition: all 0.2s ease; box-shadow: 0 4px 14px rgba(0, 95, 2, 0.3);">
                             <i class="fas fa-save"></i> Simpan Program
                         </button>
-                        <a href="{{ route('admin.program.index') }}" class="btn-cancel"
+                        <a href="<?php echo e(route('admin.program.index')); ?>" class="btn-cancel"
                             style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.7rem 1.2rem; background: #fef2f2; border: 1.5px solid #fecaca; border-radius: 10px; color: #dc2626; font-size: 0.87rem; font-weight: 600; text-decoration: none; transition: all 0.2s ease;">
                             <i class="fas fa-times"></i> Batal
                         </a>
@@ -147,4 +166,5 @@
             color: #005F02;
         }
     </style>
-@endsection
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('admin.layout', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH D:\ponpes-main\resources\views/admin/data-master/program/create.blade.php ENDPATH**/ ?>

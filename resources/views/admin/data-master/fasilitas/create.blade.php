@@ -6,6 +6,24 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
         rel="stylesheet">
     <style>
+        :root {
+            --green-main: #005F02;
+            --green-dark: #0d4f14;
+            --green-darker: #0f4d1c;
+            --green-medium: #2e6b37;
+            --green-light: #4ca94d;
+            --green-soft: #8cbf73;
+            --bg-light: #f4f4f4;
+            --bg-soft: #eef3ec;
+            --bg-section: #dfe8d8;
+            --text-main: #333;
+            --text-dark: #222;
+            --text-muted: #2d2d2d;
+            --white: #ffffff;
+            --shadow-soft: rgba(0, 0, 0, 0.1);
+            --shadow-medium: rgba(0, 0, 0, 0.15);
+        }
+
         body,
         .sidebar,
         .topbar {
@@ -13,7 +31,7 @@
         }
 
         .page-wrapper {
-            background: #f0f4f8;
+            background: var(--bg-light);
             min-height: 100vh;
             padding: 2rem;
         }
@@ -24,6 +42,8 @@
             align-items: center;
             justify-content: space-between;
             margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
         }
 
         .page-header-left {
@@ -35,30 +55,30 @@
         .page-icon {
             width: 48px;
             height: 48px;
-            background: linear-gradient(135deg, #4361ee, #7209b7);
+            background: linear-gradient(135deg, var(--green-main), var(--green-dark));
             border-radius: 14px;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 4px 14px rgba(67, 97, 238, 0.35);
+            box-shadow: 0 4px 14px rgba(0, 95, 2, 0.35);
         }
 
         .page-icon i {
-            color: #fff;
+            color: var(--white);
             font-size: 1.1rem;
         }
 
         .page-title h1 {
             font-size: 1.35rem;
             font-weight: 700;
-            color: #1a1f36;
+            color: var(--text-dark);
             margin: 0;
             letter-spacing: -0.3px;
         }
 
         .page-title p {
             font-size: 0.8rem;
-            color: #8898aa;
+            color: var(--text-muted);
             margin: 0;
         }
 
@@ -67,10 +87,10 @@
             align-items: center;
             gap: 0.45rem;
             padding: 0.55rem 1.1rem;
-            background: #fff;
-            border: 1.5px solid #e2e8f0;
+            background: var(--white);
+            border: 1.5px solid var(--bg-section);
             border-radius: 10px;
-            color: #4a5568;
+            color: var(--text-muted);
             font-size: 0.82rem;
             font-weight: 600;
             text-decoration: none;
@@ -79,25 +99,25 @@
         }
 
         .btn-back:hover {
-            background: #f7fafc;
-            border-color: #cbd5e0;
-            color: #2d3748;
+            background: var(--bg-soft);
+            border-color: var(--green-soft);
+            color: var(--green-main);
             text-decoration: none;
             transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            box-shadow: 0 4px 12px var(--shadow-soft);
         }
 
         /* Card */
         .form-card {
-            background: #fff;
+            background: var(--white);
             border-radius: 20px;
             border: none;
-            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.06);
+            box-shadow: 0 2px 20px var(--shadow-soft);
             overflow: hidden;
         }
 
         .form-card-header {
-            background: linear-gradient(135deg, #4361ee 0%, #7209b7 100%);
+            background: linear-gradient(135deg, var(--green-main), var(--green-dark));
             padding: 1.4rem 2rem;
             display: flex;
             align-items: center;
@@ -110,7 +130,7 @@
         }
 
         .form-card-header span {
-            color: #fff;
+            color: var(--white);
             font-size: 0.95rem;
             font-weight: 600;
             letter-spacing: -0.1px;
@@ -126,7 +146,7 @@
             font-weight: 700;
             letter-spacing: 1px;
             text-transform: uppercase;
-            color: #a0aec0;
+            color: var(--text-muted);
             margin-bottom: 1.25rem;
             display: flex;
             align-items: center;
@@ -137,7 +157,7 @@
             content: '';
             flex: 1;
             height: 1px;
-            background: #edf2f7;
+            background: var(--bg-section);
         }
 
         /* Form Fields */
@@ -148,19 +168,19 @@
         .form-group label {
             font-size: 0.82rem;
             font-weight: 600;
-            color: #2d3748;
+            color: var(--text-muted);
             margin-bottom: 0.45rem;
             display: block;
             letter-spacing: -0.1px;
         }
 
         .form-group label .req {
-            color: #e53e3e;
+            color: #dc2626;
             margin-left: 2px;
         }
 
         .form-group label .opt {
-            color: #a0aec0;
+            color: var(--green-soft);
             font-weight: 400;
             font-size: 0.75rem;
             margin-left: 4px;
@@ -170,35 +190,35 @@
         .form-control-file {
             font-family: 'Plus Jakarta Sans', sans-serif;
             font-size: 0.87rem;
-            color: #2d3748;
-            border: 1.5px solid #e2e8f0;
+            color: var(--text-main);
+            border: 1.5px solid var(--bg-section);
             border-radius: 10px;
             padding: 0.65rem 0.9rem;
-            background: #f8fafc;
+            background: var(--bg-light);
             transition: all 0.2s ease;
             width: 100%;
         }
 
         .form-control:focus {
-            border-color: #4361ee;
-            background: #fff;
-            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.12);
+            border-color: var(--green-main);
+            background: var(--white);
+            box-shadow: 0 0 0 3px rgba(0, 95, 2, 0.12);
             outline: none;
-            color: #1a1f36;
+            color: var(--text-dark);
         }
 
         .form-control.is-invalid {
-            border-color: #e53e3e;
-            background: #fff5f5;
+            border-color: #dc2626;
+            background: #fef2f2;
         }
 
         .form-control.is-invalid:focus {
-            box-shadow: 0 0 0 3px rgba(229, 62, 62, 0.12);
+            box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.12);
         }
 
         .invalid-feedback {
             font-size: 0.78rem;
-            color: #e53e3e;
+            color: #dc2626;
             margin-top: 0.35rem;
             display: flex;
             align-items: center;
@@ -214,7 +234,7 @@
         /* Select styling */
         select.form-control {
             appearance: none;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23a0aec0' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%238cbf73' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
             background-repeat: no-repeat;
             background-position: right 0.9rem center;
             padding-right: 2.5rem;
@@ -237,18 +257,18 @@
         }
 
         .kondisi-badge.baik {
-            background: #c6f6d5;
-            color: #276749;
+            background: var(--bg-soft);
+            color: var(--green-main);
         }
 
         .kondisi-badge.ringan {
-            background: #fef3c7;
-            color: #92400e;
+            background: var(--bg-section);
+            color: var(--green-dark);
         }
 
         .kondisi-badge.berat {
-            background: #fed7d7;
-            color: #9b2c2c;
+            background: #fef2f2;
+            color: #dc2626;
         }
 
         /* File Upload */
@@ -260,23 +280,23 @@
             display: flex;
             align-items: center;
             gap: 0.75rem;
-            border: 1.5px dashed #cbd5e0;
+            border: 1.5px dashed var(--green-soft);
             border-radius: 10px;
             padding: 1.2rem 1rem;
-            background: #f8fafc;
+            background: var(--bg-light);
             cursor: pointer;
             transition: all 0.2s ease;
         }
 
         .file-upload-label:hover {
-            border-color: #4361ee;
-            background: #eef2ff;
+            border-color: var(--green-main);
+            background: var(--bg-soft);
         }
 
         .file-upload-icon {
             width: 38px;
             height: 38px;
-            background: #eef2ff;
+            background: var(--bg-soft);
             border-radius: 8px;
             display: flex;
             align-items: center;
@@ -285,7 +305,7 @@
         }
 
         .file-upload-icon i {
-            color: #4361ee;
+            color: var(--green-main);
             font-size: 0.9rem;
         }
 
@@ -293,12 +313,12 @@
             display: block;
             font-size: 0.83rem;
             font-weight: 600;
-            color: #2d3748;
+            color: var(--text-muted);
         }
 
         .file-upload-text span {
             font-size: 0.75rem;
-            color: #a0aec0;
+            color: var(--green-soft);
         }
 
         input[type="file"] {
@@ -319,7 +339,7 @@
         /* Divider */
         .form-divider {
             border: none;
-            border-top: 1.5px solid #f0f4f8;
+            border-top: 1.5px solid var(--bg-section);
             margin: 1.75rem 0;
         }
 
@@ -337,8 +357,8 @@
             align-items: center;
             gap: 0.5rem;
             padding: 0.7rem 1.5rem;
-            background: linear-gradient(135deg, #4361ee, #7209b7);
-            color: #fff;
+            background: linear-gradient(135deg, var(--green-main), var(--green-dark));
+            color: var(--white);
             border: none;
             border-radius: 10px;
             font-size: 0.87rem;
@@ -346,13 +366,13 @@
             cursor: pointer;
             transition: all 0.2s ease;
             font-family: 'Plus Jakarta Sans', sans-serif;
-            box-shadow: 0 4px 14px rgba(67, 97, 238, 0.3);
+            box-shadow: 0 4px 14px rgba(0, 95, 2, 0.3);
             letter-spacing: -0.1px;
         }
 
         .btn-save:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(67, 97, 238, 0.4);
+            box-shadow: 0 6px 20px rgba(0, 95, 2, 0.4);
         }
 
         .btn-save:active {
@@ -364,10 +384,10 @@
             align-items: center;
             gap: 0.5rem;
             padding: 0.7rem 1.2rem;
-            background: #f7fafc;
-            border: 1.5px solid #e2e8f0;
+            background: var(--bg-light);
+            border: 1.5px solid var(--bg-section);
             border-radius: 10px;
-            color: #718096;
+            color: var(--text-muted);
             font-size: 0.87rem;
             font-weight: 600;
             cursor: pointer;
@@ -376,9 +396,9 @@
         }
 
         .btn-reset:hover {
-            background: #edf2f7;
-            border-color: #cbd5e0;
-            color: #4a5568;
+            background: var(--bg-soft);
+            border-color: var(--green-soft);
+            color: var(--green-main);
         }
 
         .btn-cancel {
@@ -386,10 +406,10 @@
             align-items: center;
             gap: 0.5rem;
             padding: 0.7rem 1.2rem;
-            background: #fff5f5;
-            border: 1.5px solid #fed7d7;
+            background: #fef2f2;
+            border: 1.5px solid #fecaca;
             border-radius: 10px;
-            color: #e53e3e;
+            color: #dc2626;
             font-size: 0.87rem;
             font-weight: 600;
             text-decoration: none;
@@ -398,16 +418,16 @@
         }
 
         .btn-cancel:hover {
-            background: #fed7d7;
-            border-color: #fc8181;
-            color: #c53030;
+            background: #fee2e2;
+            border-color: #f87171;
+            color: #b91c1c;
             text-decoration: none;
         }
 
         /* Required note */
         .required-note {
             font-size: 0.75rem;
-            color: #a0aec0;
+            color: var(--green-soft);
             margin-left: auto;
             display: flex;
             align-items: center;
@@ -415,8 +435,36 @@
         }
 
         .required-note span {
-            color: #e53e3e;
+            color: #dc2626;
             font-weight: 700;
+        }
+
+        .row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+        }
+
+        .col-md-4,
+        .col-md-6 {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        @media (max-width: 768px) {
+            .page-wrapper {
+                padding: 1rem;
+            }
+
+            .page-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .col-md-4,
+            .col-md-6 {
+                min-width: 100%;
+            }
         }
     </style>
 @endpush
@@ -546,7 +594,7 @@
 
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label>Foto Fasilitas</label>
+                                <label>Foto Fasilitas <span class="req">*</span></label>
                                 <div class="file-upload-wrapper">
                                     <label class="file-upload-label @error('foto') border-danger @enderror" id="fileLabel">
                                         <div class="file-upload-icon">
@@ -556,7 +604,8 @@
                                             <strong id="fileName">Klik untuk upload foto</strong>
                                             <span>JPEG, PNG, JPG, GIF &bull; Maks 2MB</span>
                                         </div>
-                                        <input type="file" name="foto" accept="image/*" onchange="updateFileName(this)" required>
+                                        <input type="file" name="foto" accept="image/*" onchange="updateFileName(this)"
+                                            required>
                                     </label>
                                 </div>
                                 @error('foto')

@@ -5,17 +5,35 @@
 
 @push('styles')
     <style>
+        :root {
+            --green-main: #005F02;
+            --green-dark: #0d4f14;
+            --green-darker: #0f4d1c;
+            --green-medium: #2e6b37;
+            --green-light: #4ca94d;
+            --green-soft: #8cbf73;
+            --bg-light: #f4f4f4;
+            --bg-soft: #eef3ec;
+            --bg-section: #dfe8d8;
+            --text-main: #333;
+            --text-dark: #222;
+            --text-muted: #2d2d2d;
+            --white: #ffffff;
+            --shadow-soft: rgba(0,0,0,0.1);
+            --shadow-medium: rgba(0,0,0,0.15);
+        }
+
         .form-card {
-            background: #fff;
+            background: var(--white);
             border-radius: 20px;
             border: none;
-            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.06);
+            box-shadow: 0 2px 20px var(--shadow-soft);
             overflow: hidden;
             margin-bottom: 1.5rem;
         }
 
         .form-card-header {
-            background: linear-gradient(135deg, #0ea5e9, #6366f1);
+            background: linear-gradient(135deg, var(--green-main), var(--green-dark));
             padding: 1.2rem 1.8rem;
             display: flex;
             align-items: center;
@@ -28,7 +46,7 @@
         }
 
         .form-card-header span {
-            color: #fff;
+            color: var(--white);
             font-size: 0.9rem;
             font-weight: 600;
         }
@@ -44,39 +62,46 @@
         .form-group label {
             font-size: 0.82rem;
             font-weight: 600;
-            color: #2d3748;
+            color: var(--text-muted);
             margin-bottom: 0.4rem;
             display: block;
         }
 
         .form-group label .req {
-            color: #e53e3e;
+            color: #dc2626;
             margin-left: 2px;
+        }
+
+        .form-group label .opt {
+            color: var(--green-soft);
+            font-weight: 400;
+            font-size: 0.73rem;
+            margin-left: 4px;
         }
 
         .form-control,
         .custom-file-label {
             font-family: 'Inter', sans-serif;
             font-size: 0.87rem;
-            color: #2d3748;
-            border: 1.5px solid #e2e8f0;
+            color: var(--text-main);
+            border: 1.5px solid var(--bg-section);
             border-radius: 10px;
             padding: 0.65rem 0.9rem;
-            background: #f8fafc;
+            background: var(--bg-light);
             transition: all 0.2s ease;
             width: 100%;
         }
 
         .form-control:focus {
-            border-color: #6366f1;
-            background: #fff;
-            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.12);
+            border-color: var(--green-main);
+            background: var(--white);
+            box-shadow: 0 0 0 3px rgba(0, 95, 2, 0.12);
             outline: none;
         }
 
         select.form-control {
             appearance: none;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23a0aec0' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%238cbf73' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
             background-repeat: no-repeat;
             background-position: right 0.9rem center;
             padding-right: 2.5rem;
@@ -90,7 +115,7 @@
 
         .invalid-feedback {
             font-size: 0.78rem;
-            color: #e53e3e;
+            color: #dc2626;
             margin-top: 0.35rem;
             display: flex;
             align-items: center;
@@ -104,12 +129,12 @@
         .current-photo img {
             max-height: 120px;
             border-radius: 10px;
-            border: 1px solid #e2e8f0;
+            border: 1px solid var(--bg-section);
         }
 
         .text-muted {
             font-size: 0.72rem;
-            color: #a0aec0;
+            color: var(--green-soft);
             margin-top: 0.25rem;
             display: block;
         }
@@ -119,7 +144,7 @@
             font-weight: 700;
             letter-spacing: 1px;
             text-transform: uppercase;
-            color: #a0aec0;
+            color: var(--text-muted);
             margin-bottom: 1.2rem;
             display: flex;
             align-items: center;
@@ -130,14 +155,14 @@
             content: '';
             flex: 1;
             height: 1px;
-            background: #edf2f7;
+            background: var(--bg-section);
         }
 
         .preview-box {
             border-radius: 12px;
             overflow: hidden;
-            background: #f0f4f8;
-            border: 1.5px solid #e2e8f0;
+            background: var(--bg-light);
+            border: 1.5px solid var(--bg-section);
             display: none;
             position: relative;
             margin-top: 0.75rem;
@@ -155,20 +180,20 @@
             align-items: center;
             gap: 0.5rem;
             padding: 0.7rem 1.5rem;
-            background: linear-gradient(135deg, #0ea5e9, #6366f1);
-            color: #fff;
+            background: linear-gradient(135deg, var(--green-main), var(--green-dark));
+            color: var(--white);
             border: none;
             border-radius: 10px;
             font-size: 0.87rem;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.2s ease;
-            box-shadow: 0 4px 14px rgba(99, 102, 241, 0.3);
+            box-shadow: 0 4px 14px rgba(0, 95, 2, 0.3);
         }
 
         .btn-save:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(99, 102, 241, 0.4);
+            box-shadow: 0 6px 20px rgba(0, 95, 2, 0.4);
         }
 
         .btn-cancel {
@@ -176,10 +201,10 @@
             align-items: center;
             gap: 0.5rem;
             padding: 0.7rem 1.2rem;
-            background: #fff5f5;
-            border: 1.5px solid #fed7d7;
+            background: #fef2f2;
+            border: 1.5px solid #fecaca;
             border-radius: 10px;
-            color: #e53e3e;
+            color: #dc2626;
             font-size: 0.87rem;
             font-weight: 600;
             text-decoration: none;
@@ -187,9 +212,9 @@
         }
 
         .btn-cancel:hover {
-            background: #fed7d7;
-            border-color: #fc8181;
-            color: #c53030;
+            background: #fee2e2;
+            border-color: #f87171;
+            color: #b91c1c;
             text-decoration: none;
         }
 
@@ -227,9 +252,9 @@
             padding: 0.65rem 0.9rem;
             font-weight: 400;
             line-height: 1.5;
-            color: #2d3748;
-            background-color: #f8fafc;
-            border: 1.5px solid #e2e8f0;
+            color: var(--text-muted);
+            background-color: var(--bg-light);
+            border: 1.5px solid var(--bg-section);
             border-radius: 10px;
             cursor: pointer;
         }
@@ -243,60 +268,117 @@
             display: block;
             padding: 0.65rem 0.9rem;
             line-height: 1.5;
-            color: #fff;
+            color: var(--white);
             content: "Browse";
-            background: linear-gradient(135deg, #0ea5e9, #6366f1);
+            background: linear-gradient(135deg, var(--green-main), var(--green-dark));
             border-radius: 0 10px 10px 0;
         }
 
         .custom-file-input:focus~.custom-file-label {
-            border-color: #6366f1;
-            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.12);
+            border-color: var(--green-main);
+            box-shadow: 0 0 0 3px rgba(0, 95, 2, 0.12);
         }
 
-        /* Checkbox */
-        .custom-checkbox {
+        /* Page Header */
+        .page-wrapper {
+            background: var(--bg-light);
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        .page-header {
             display: flex;
             align-items: center;
-            gap: 0.5rem;
-            cursor: pointer;
+            justify-content: space-between;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
         }
 
-        .custom-checkbox input {
-            width: 18px;
-            height: 18px;
-            cursor: pointer;
-            accent-color: #6366f1;
+        .page-header-left {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
         }
 
-        .custom-checkbox label {
+        .page-icon {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, var(--green-main), var(--green-dark));
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 14px rgba(0, 95, 2, 0.35);
+        }
+
+        .page-icon i {
+            color: var(--white);
+            font-size: 1.1rem;
+        }
+
+        .page-title h1 {
+            font-size: 1.35rem;
+            font-weight: 700;
+            color: var(--text-dark);
             margin: 0;
-            cursor: pointer;
-            font-weight: 500;
-            color: #2d3748;
+        }
+
+        .page-title p {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin: 0;
+        }
+
+        .btn-back {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.45rem;
+            padding: 0.55rem 1.1rem;
+            background: var(--white);
+            border: 1.5px solid var(--bg-section);
+            border-radius: 10px;
+            color: var(--text-muted);
+            font-size: 0.82rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+
+        .btn-back:hover {
+            background: var(--bg-soft);
+            border-color: var(--green-soft);
+            color: var(--green-main);
+        }
+
+        .row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+        }
+
+        .col-md-6 {
+            flex: 1;
+            min-width: 250px;
         }
     </style>
 @endpush
 
 @section('content')
-    <div class="page-wrapper" style="background: #f0f4f8; min-height: 100vh; padding: 2rem;">
+    <div class="page-wrapper">
         {{-- Page Header --}}
-        <div class="page-header"
-            style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem;">
-            <div class="page-header-left" style="display: flex; align-items: center; gap: 1rem;">
-                <div class="page-icon"
-                    style="width: 48px; height: 48px; background: linear-gradient(135deg, #0ea5e9, #6366f1); border-radius: 14px; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 14px rgba(99, 102, 241, 0.35);">
-                    <i class="fas fa-edit" style="color: #fff; font-size: 1.1rem;"></i>
+        <div class="page-header">
+            <div class="page-header-left">
+                <div class="page-icon">
+                    <i class="fas fa-edit"></i>
                 </div>
                 <div class="page-title">
-                    <h1 style="font-size: 1.35rem; font-weight: 700; color: #1a1f36; margin: 0;">Edit Gallery</h1>
-                    <p style="font-size: 0.8rem; color: #8898aa; margin: 0;"><i
-                            class="fas fa-calendar-alt mr-1"></i>{{ now()->format('d F Y') }}</p>
+                    <h1>Edit Gallery</h1>
+                    <p><i class="fas fa-calendar-alt mr-1"></i>{{ now()->format('d F Y') }}</p>
                 </div>
             </div>
 
-            <a href="{{ route('admin.data-master.gallery.index') }}" class="btn-back"
-                style="display: inline-flex; align-items: center; gap: 0.45rem; padding: 0.55rem 1.1rem; background: #fff; border: 1.5px solid #e2e8f0; border-radius: 10px; color: #4a5568; font-size: 0.82rem; font-weight: 600; text-decoration: none;">
+            <a href="{{ route('admin.data-master.gallery.index') }}" class="btn-back">
                 <i class="fas fa-arrow-left"></i> Kembali
             </a>
         </div>
@@ -316,8 +398,8 @@
 
                     <div class="section-label">Informasi Gallery</div>
 
-                    <div class="row" style="display: flex; flex-wrap: wrap; gap: 1.5rem;">
-                        <div class="col-md-6" style="flex: 1; min-width: 250px;">
+                    <div class="row">
+                        <div class="col-md-6">
                             <div class="form-group">
                                 <label>Judul <span class="req">*</span></label>
                                 <input type="text" name="judul"
@@ -363,9 +445,7 @@
 
                     <div class="form-group">
                         <label>Deskripsi <span class="req">*</span></label>
-                        <textarea name="deskripsi" class="form-control" placeholder="Tuliskan deskripsi gallery..." rows="4" required>{{ old('deskripsi', $gallery->deskripsi) }}
-                        </textarea>
-
+                        <textarea name="deskripsi" class="form-control" placeholder="Tuliskan deskripsi gallery..." rows="4" required>{{ old('deskripsi', $gallery->deskripsi) }}</textarea>
                         @error('deskripsi')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror

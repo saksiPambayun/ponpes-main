@@ -1,10 +1,8 @@
-@extends('admin.layout')
+<?php $__env->startSection('title', 'Data Program'); ?>
 
-@section('title', 'Data Program')
-
-@section('content')
+<?php $__env->startSection('content'); ?>
     <div class="page-wrapper" style="background: #f4f4f4; min-height: 100vh; padding: 2rem;">
-        {{-- Page Header --}}
+        
         <div class="page-header"
             style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem;">
             <div class="page-header-left" style="display: flex; align-items: center; gap: 1rem;">
@@ -17,46 +15,46 @@
                     <p style="font-size: 0.8rem; color: #2d2d2d; margin: 0;">Kelola program kegiatan pesantren</p>
                 </div>
             </div>
-            <a href="{{ route('admin.program.create') }}" class="btn-primary-action"
+            <a href="<?php echo e(route('admin.program.create')); ?>" class="btn-primary-action"
                 style="display: inline-flex; align-items: center; gap: 0.5rem; background: linear-gradient(135deg, #005F02, #0f4d1c); color: #fff; padding: 0.6rem 1.2rem; border-radius: 10px; text-decoration: none;">
                 <i class="fas fa-plus"></i> Tambah Program
             </a>
         </div>
 
-        {{-- Stats --}}
+        
         <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-bottom: 1.5rem;">
             <div class="stats-card"
                 style="background: #fff; padding: 1rem; border-radius: 16px; border-left: 4px solid #005F02; box-shadow: 0 2px 20px rgba(0,0,0,0.06);">
                 <p style="font-size: 0.75rem; color: #2d2d2d; margin-bottom: 0.25rem;">Total Program</p>
-                <p style="font-size: 1.5rem; font-weight: 700; margin: 0; color: #222;">{{ $stats['total'] ?? 0 }}</p>
+                <p style="font-size: 1.5rem; font-weight: 700; margin: 0; color: #222;"><?php echo e($stats['total'] ?? 0); ?></p>
             </div>
             <div class="stats-card"
                 style="background: #fff; padding: 1rem; border-radius: 16px; border-left: 4px solid #005F02; box-shadow: 0 2px 20px rgba(0,0,0,0.06);">
                 <p style="font-size: 0.75rem; color: #2d2d2d; margin-bottom: 0.25rem;">Aktif</p>
-                <p style="font-size: 1.5rem; font-weight: 700; color: #4ca94d; margin: 0;">{{ $stats['aktif'] ?? 0 }}</p>
+                <p style="font-size: 1.5rem; font-weight: 700; color: #4ca94d; margin: 0;"><?php echo e($stats['aktif'] ?? 0); ?></p>
             </div>
             <div class="stats-card"
                 style="background: #fff; padding: 1rem; border-radius: 16px; border-left: 4px solid #005F02; box-shadow: 0 2px 20px rgba(0,0,0,0.06);">
                 <p style="font-size: 0.75rem; color: #2d2d2d; margin-bottom: 0.25rem;">Selesai</p>
-                <p style="font-size: 1.5rem; font-weight: 700; color: #2e6b37; margin: 0;">{{ $stats['selesai'] ?? 0 }}</p>
+                <p style="font-size: 1.5rem; font-weight: 700; color: #2e6b37; margin: 0;"><?php echo e($stats['selesai'] ?? 0); ?></p>
             </div>
             <div class="stats-card"
                 style="background: #fff; padding: 1rem; border-radius: 16px; border-left: 4px solid #005F02; box-shadow: 0 2px 20px rgba(0,0,0,0.06);">
                 <p style="font-size: 0.75rem; color: #2d2d2d; margin-bottom: 0.25rem;">Ditunda</p>
-                <p style="font-size: 1.5rem; font-weight: 700; color: #0d4f14; margin: 0;">{{ $stats['dinunda'] ?? 0 }}</p>
+                <p style="font-size: 1.5rem; font-weight: 700; color: #0d4f14; margin: 0;"><?php echo e($stats['dinunda'] ?? 0); ?></p>
             </div>
         </div>
 
-        {{-- Alert Success --}}
-        @if(session('success'))
+        
+        <?php if(session('success')): ?>
             <div class="alert-success-box"
                 style="display: flex; align-items: center; gap: 0.75rem; background: #eef3ec; border-left: 4px solid #005F02; padding: 0.75rem 1rem; border-radius: 10px; margin-bottom: 1rem;">
                 <i class="fas fa-check-circle" style="color: #005F02;"></i>
-                <span style="color: #0d4f14;">{{ session('success') }}</span>
+                <span style="color: #0d4f14;"><?php echo e(session('success')); ?></span>
             </div>
-        @endif
+        <?php endif; ?>
 
-        {{-- Table --}}
+        
         <div
             style="background: #fff; border-radius: 20px; overflow: hidden; box-shadow: 0 2px 20px rgba(0,0,0,0.06); border: 1px solid #dfe8d8;">
             <div class="p-4 border-b border-gray-200"
@@ -92,43 +90,47 @@
                         </tr>
                     </thead>
                     <tbody class="bg-white divide-y divide-gray-200" id="programTable" style="border-color: #dfe8d8;">
-                        @forelse($programs as $item)
+                        <?php $__empty_1 = true; $__currentLoopData = $programs; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
                             <tr class="hover:bg-gray-50" style="border-bottom: 1px solid #dfe8d8;"
                                 onmouseover="this.style.background='#eef3ec'" onmouseout="this.style.background='transparent'">
                                 <td class="px-4 py-4" style="padding: 14px 16px;">
                                     <div class="flex items-center gap-3">
                                         <div class="w-9 h-9 rounded-full flex items-center justify-center font-bold text-sm"
                                             style="background: #eef3ec; color: #005F02;">
-                                            {{ strtoupper(substr($item->nama_program, 0, 2)) }}
+                                            <?php echo e(strtoupper(substr($item->nama_program, 0, 2))); ?>
+
                                         </div>
-                                        <p class="text-sm font-semibold" style="color: #222;">{{ $item->nama_program }}</p>
+                                        <p class="text-sm font-semibold" style="color: #222;"><?php echo e($item->nama_program); ?></p>
                                     </div>
                                 </td>
                                 <td class="px-4 py-4 text-sm" style="color: #333; padding: 14px 16px;">
-                                    {{ $item->kategori ?? '-' }}
+                                    <?php echo e($item->kategori ?? '-'); ?>
+
                                 </td>
                                 <td class="px-4 py-4 text-sm whitespace-nowrap" style="color: #333; padding: 14px 16px;">
-                                    {{ $item->tanggal_mulai ? \Carbon\Carbon::parse($item->tanggal_mulai)->format('d M Y') : '-' }}
+                                    <?php echo e($item->tanggal_mulai ? \Carbon\Carbon::parse($item->tanggal_mulai)->format('d M Y') : '-'); ?>
+
                                 </td>
                                 <td class="px-4 py-4 text-sm whitespace-nowrap" style="color: #333; padding: 14px 16px;">
-                                    {{ $item->tanggal_selesai ? \Carbon\Carbon::parse($item->tanggal_selesai)->format('d M Y') : '-' }}
+                                    <?php echo e($item->tanggal_selesai ? \Carbon\Carbon::parse($item->tanggal_selesai)->format('d M Y') : '-'); ?>
+
                                 </td>
                                 <td class="px-4 py-4 text-center" style="padding: 14px 16px;">
                                     <div class="flex items-center justify-center gap-1">
-                                        <a href="{{ route('admin.program.show', $item->id) }}" class="p-1.5 rounded-lg"
+                                        <a href="<?php echo e(route('admin.program.show', $item->id)); ?>" class="p-1.5 rounded-lg"
                                             style="color: #005F02;" title="Detail" onmouseover="this.style.background='#eef3ec'"
                                             onmouseout="this.style.background='transparent'">
                                             <i class="fas fa-eye text-sm"></i>
                                         </a>
-                                        <a href="{{ route('admin.program.edit', $item->id) }}" class="p-1.5 rounded-lg"
+                                        <a href="<?php echo e(route('admin.program.edit', $item->id)); ?>" class="p-1.5 rounded-lg"
                                             style="color: #2e6b37;" title="Edit" onmouseover="this.style.background='#eef3ec'"
                                             onmouseout="this.style.background='transparent'">
                                             <i class="fas fa-edit text-sm"></i>
                                         </a>
-                                        <form action="{{ route('admin.program.destroy', $item->id) }}" method="POST"
+                                        <form action="<?php echo e(route('admin.program.destroy', $item->id)); ?>" method="POST"
                                             class="inline" onsubmit="return confirm('Yakin ingin menghapus program ini?')">
-                                            @csrf
-                                            @method('DELETE')
+                                            <?php echo csrf_field(); ?>
+                                            <?php echo method_field('DELETE'); ?>
                                             <button type="submit" class="p-1.5 rounded-lg" style="color: #dc2626;" title="Hapus"
                                                 onmouseover="this.style.background='#fef2f2'"
                                                 onmouseout="this.style.background='transparent'">
@@ -138,7 +140,7 @@
                                     </div>
                                 </td>
                             </tr>
-                        @empty
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
                             <tr>
                                 <td colspan="5" class="px-6 py-12 text-center">
                                     <i class="fas fa-inbox text-4xl mb-3 block" style="color: #8cbf73;"></i>
@@ -146,16 +148,17 @@
                                     <p class="text-sm mt-1" style="color: #2d2d2d;">Tambahkan program baru untuk memulai</p>
                                 </td>
                             </tr>
-                        @endforelse
+                        <?php endif; ?>
                     </tbody>
                 </table>
             </div>
 
-            @if($programs->hasPages())
+            <?php if($programs->hasPages()): ?>
                 <div class="p-4 border-t" style="padding: 16px 24px; border-top: 1px solid #dfe8d8; background: #eef3ec;">
-                    {{ $programs->links() }}
+                    <?php echo e($programs->links()); ?>
+
                 </div>
-            @endif
+            <?php endif; ?>
         </div>
     </div>
 
@@ -400,9 +403,9 @@
             }
         }
     </style>
-@endsection
+<?php $__env->stopSection(); ?>
 
-@push('scripts')
+<?php $__env->startPush('scripts'); ?>
     <script>
         document.getElementById('searchInput').addEventListener('keyup', function () {
             const term = this.value.toLowerCase();
@@ -411,4 +414,5 @@
             });
         });
     </script>
-@endpush
+<?php $__env->stopPush(); ?>
+<?php echo $__env->make('admin.layout', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH D:\ponpes-main\resources\views/admin/data-master/program/index.blade.php ENDPATH**/ ?>

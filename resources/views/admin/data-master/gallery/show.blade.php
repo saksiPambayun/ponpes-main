@@ -5,17 +5,35 @@
 
 @push('styles')
     <style>
+        :root {
+            --green-main: #005F02;
+            --green-dark: #0d4f14;
+            --green-darker: #0f4d1c;
+            --green-medium: #2e6b37;
+            --green-light: #4ca94d;
+            --green-soft: #8cbf73;
+            --bg-light: #f4f4f4;
+            --bg-soft: #eef3ec;
+            --bg-section: #dfe8d8;
+            --text-main: #333;
+            --text-dark: #222;
+            --text-muted: #2d2d2d;
+            --white: #ffffff;
+            --shadow-soft: rgba(0, 0, 0, 0.1);
+            --shadow-medium: rgba(0, 0, 0, 0.15);
+        }
+
         .detail-card {
-            background: #fff;
+            background: var(--white);
             border-radius: 20px;
             border: none;
-            box-shadow: 0 2px 20px rgba(0,0,0,0.06);
+            box-shadow: 0 2px 20px var(--shadow-soft);
             overflow: hidden;
             margin-bottom: 1.5rem;
         }
 
         .detail-card-header {
-            background: linear-gradient(135deg, #0ea5e9, #6366f1);
+            background: linear-gradient(135deg, var(--green-main), var(--green-dark));
             padding: 1.2rem 1.8rem;
             display: flex;
             align-items: center;
@@ -23,12 +41,12 @@
         }
 
         .detail-card-header i {
-            color: rgba(255,255,255,0.85);
+            color: rgba(255, 255, 255, 0.85);
             font-size: 1rem;
         }
 
         .detail-card-header span {
-            color: #fff;
+            color: var(--white);
             font-size: 0.9rem;
             font-weight: 600;
         }
@@ -43,7 +61,7 @@
         }
 
         .info-table tr {
-            border-bottom: 1px solid #f0f4f8;
+            border-bottom: 1px solid var(--bg-section);
         }
 
         .info-table tr:last-child {
@@ -55,7 +73,7 @@
             padding: 1rem 0;
             font-size: 0.82rem;
             font-weight: 600;
-            color: #64748b;
+            color: var(--text-muted);
             text-align: left;
             letter-spacing: -0.1px;
         }
@@ -63,20 +81,20 @@
         .info-table td {
             padding: 1rem 0;
             font-size: 0.87rem;
-            color: #1a1f36;
+            color: var(--text-main);
             font-weight: 500;
         }
 
         .foto-card {
-            background: #fff;
+            background: var(--white);
             border-radius: 20px;
             border: none;
-            box-shadow: 0 2px 20px rgba(0,0,0,0.06);
+            box-shadow: 0 2px 20px var(--shadow-soft);
             overflow: hidden;
         }
 
         .foto-card-header {
-            background: linear-gradient(135deg, #0ea5e9, #6366f1);
+            background: linear-gradient(135deg, var(--green-main), var(--green-dark));
             padding: 1.2rem 1.8rem;
             display: flex;
             align-items: center;
@@ -84,12 +102,12 @@
         }
 
         .foto-card-header i {
-            color: rgba(255,255,255,0.85);
+            color: rgba(255, 255, 255, 0.85);
             font-size: 1rem;
         }
 
         .foto-card-header span {
-            color: #fff;
+            color: var(--white);
             font-size: 0.9rem;
             font-weight: 600;
         }
@@ -103,7 +121,8 @@
             max-width: 100%;
             max-height: 300px;
             border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 15px var(--shadow-soft);
+            border: 1px solid var(--bg-section);
         }
 
         .no-foto {
@@ -113,12 +132,12 @@
 
         .no-foto i {
             font-size: 3rem;
-            color: #cbd5e0;
+            color: var(--green-soft);
             margin-bottom: 0.75rem;
         }
 
         .no-foto p {
-            color: #a0aec0;
+            color: var(--text-muted);
             font-size: 0.85rem;
         }
 
@@ -150,39 +169,39 @@
         }
 
         .btn-back {
-            background: #f7fafc;
-            border: 1.5px solid #e2e8f0;
-            color: #4a5568;
+            background: var(--bg-light);
+            border: 1.5px solid var(--bg-section);
+            color: var(--text-muted);
         }
 
         .btn-back:hover {
-            background: #edf2f7;
-            border-color: #cbd5e0;
-            color: #2d3748;
+            background: var(--bg-soft);
+            border-color: var(--green-soft);
+            color: var(--green-main);
         }
 
         .btn-edit {
-            background: linear-gradient(135deg, #f59e0b, #d97706);
-            color: #fff;
-            box-shadow: 0 2px 8px rgba(245, 158, 11, 0.3);
+            background: linear-gradient(135deg, var(--green-main), var(--green-dark));
+            color: var(--white);
+            box-shadow: 0 2px 8px rgba(0, 95, 2, 0.3);
         }
 
         .btn-edit:hover {
-            background: linear-gradient(135deg, #d97706, #b45309);
-            color: #fff;
-            box-shadow: 0 4px 12px rgba(245, 158, 11, 0.4);
+            background: linear-gradient(135deg, var(--green-dark), var(--green-darker));
+            color: var(--white);
+            box-shadow: 0 4px 12px rgba(0, 95, 2, 0.4);
         }
 
         .btn-print {
-            background: linear-gradient(135deg, #10b981, #059669);
-            color: #fff;
-            box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
+            background: linear-gradient(135deg, var(--green-light), var(--green-medium));
+            color: var(--white);
+            box-shadow: 0 2px 8px rgba(76, 169, 77, 0.3);
         }
 
         .btn-print:hover {
-            background: linear-gradient(135deg, #059669, #047857);
-            color: #fff;
-            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
+            background: linear-gradient(135deg, var(--green-medium), var(--green-dark));
+            color: var(--white);
+            box-shadow: 0 4px 12px rgba(76, 169, 77, 0.4);
         }
 
         .kategori-badge {
@@ -194,55 +213,126 @@
         }
 
         .kategori-badge.kegiatan {
-            background: #dbeafe;
-            color: #1e40af;
+            background: var(--bg-soft);
+            color: var(--green-main);
         }
 
         .kategori-badge.prestasi {
-            background: #fef3c7;
-            color: #92400e;
+            background: var(--bg-section);
+            color: var(--green-dark);
         }
 
         .kategori-badge.umum {
-            background: #dcfce7;
-            color: #166534;
+            background: var(--green-soft);
+            color: var(--white);
+        }
+
+        /* Page Header */
+        .page-wrapper {
+            background: var(--bg-light);
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        .page-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .page-header-left {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .page-icon {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, var(--green-main), var(--green-dark));
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 14px rgba(0, 95, 2, 0.35);
+        }
+
+        .page-icon i {
+            color: var(--white);
+            font-size: 1.1rem;
+        }
+
+        .page-title h1 {
+            font-size: 1.35rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin: 0;
+        }
+
+        .page-title p {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin: 0;
+        }
+
+        .text-muted {
+            font-size: 0.75rem;
+            color: var(--green-soft) !important;
+            margin-top: 0.75rem;
         }
 
         @media (max-width: 768px) {
             .info-table th {
                 width: 40%;
             }
+
             .action-buttons {
                 flex-direction: column;
             }
+
             .btn-action {
                 justify-content: center;
+            }
+
+            .page-wrapper {
+                padding: 1rem;
             }
         }
 
         @media print {
-            .sidebar, .btn-back, .btn-edit, .btn-print, .action-buttons, header {
+
+            .sidebar,
+            .btn-back,
+            .btn-edit,
+            .btn-print,
+            .action-buttons,
+            header {
                 display: none !important;
             }
-            .detail-card, .foto-card {
+
+            .detail-card,
+            .foto-card {
                 box-shadow: none;
-                border: 1px solid #e2e8f0;
+                border: 1px solid var(--bg-section);
             }
         }
     </style>
 @endpush
 
 @section('content')
-    <div class="page-wrapper" style="background: #f0f4f8; min-height: 100vh; padding: 2rem;">
+    <div class="page-wrapper">
         {{-- Page Header --}}
-        <div class="page-header" style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem;">
-            <div class="page-header-left" style="display: flex; align-items: center; gap: 1rem;">
-                <div class="page-icon" style="width: 48px; height: 48px; background: linear-gradient(135deg, #0ea5e9, #6366f1); border-radius: 14px; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 14px rgba(99, 102, 241, 0.35);">
-                    <i class="fas fa-image" style="color: #fff; font-size: 1.1rem;"></i>
+        <div class="page-header">
+            <div class="page-header-left">
+                <div class="page-icon">
+                    <i class="fas fa-image"></i>
                 </div>
                 <div class="page-title">
-                    <h1 style="font-size: 1.35rem; font-weight: 700; color: #1a1f36; margin: 0;">Detail Gallery</h1>
-                    <p style="font-size: 0.8rem; color: #8898aa; margin: 0;"><i class="fas fa-calendar-alt mr-1"></i>{{ now()->format('d F Y') }}</p>
+                    <h1>Detail Gallery</h1>
+                    <p><i class="fas fa-calendar-alt mr-1"></i>{{ now()->format('d F Y') }}</p>
                 </div>
             </div>
 
@@ -295,11 +385,8 @@
                             </tr>
                             <tr>
                                 <th>Tanggal Kegiatan</th>
-                                <td>{{ $gallery->tanggal_kegiatan ? $gallery->tanggal_kegiatan->format('d F Y') : '-' }}</td>
-                            </tr>
-                            <tr>
-                                <th>Urutan</th>
-                                <td>{{ $gallery->urut ?? '-' }}</td>
+                                <td>{{ $gallery->tanggal_kegiatan ? $gallery->tanggal_kegiatan->format('d F Y') : '-' }}
+                                </td>
                             </tr>
                             <tr>
                                 <th>Deskripsi</th>
@@ -327,8 +414,9 @@
                     </div>
                     <div class="foto-card-body">
                         @if($gallery->gambar)
-                            <img src="{{ asset('storage/' . $gallery->gambar) }}" alt="{{ $gallery->judul }}" class="foto-preview">
-                            <p class="text-muted" style="font-size: 0.75rem; color: #a0aec0; margin-top: 0.75rem;">
+                            <img src="{{ asset('storage/' . $gallery->gambar) }}" alt="{{ $gallery->judul }}"
+                                class="foto-preview">
+                            <p class="text-muted">
                                 Ukuran: {{ round(Storage::disk('public')->size($gallery->gambar) / 1024, 2) }} KB
                             </p>
                         @else

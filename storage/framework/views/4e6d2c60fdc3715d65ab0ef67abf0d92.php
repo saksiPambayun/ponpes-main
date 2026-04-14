@@ -1,12 +1,10 @@
-@extends('admin.layout')
+<?php $__env->startSection('title', 'Data Fasilitas'); ?>
+<?php $__env->startSection('page-title', 'Data Fasilitas'); ?>
 
-@section('title', 'Data Fasilitas')
-@section('page-title', 'Data Fasilitas')
-
-@section('content')
+<?php $__env->startSection('content'); ?>
     <div class="page-wrapper">
 
-        {{-- PAGE HEADER --}}
+        
         <div class="page-header">
             <div class="header-left">
                 <div class="header-icon">
@@ -15,7 +13,7 @@
                 <div>
                     <h1 class="page-title">Data Fasilitas</h1>
                     <nav class="breadcrumb-nav">
-                        <a href="{{ url('/admin/dashboard') }}" class="breadcrumb-link">
+                        <a href="<?php echo e(url('/admin/dashboard')); ?>" class="breadcrumb-link">
                             <i class="fas fa-home"></i> Dashboard
                         </a>
                         <i class="fas fa-chevron-right breadcrumb-sep"></i>
@@ -23,28 +21,29 @@
                     </nav>
                 </div>
             </div>
-            <a href="{{ route('admin.data-master.fasilitas.create') }}" class="btn-primary-action">
+            <a href="<?php echo e(route('admin.data-master.fasilitas.create')); ?>" class="btn-primary-action">
                 <i class="fas fa-plus"></i>
                 Tambah Fasilitas
             </a>
         </div>
 
-        {{-- ALERT --}}
-        @if(session('success'))
+        
+        <?php if(session('success')): ?>
             <div class="alert-success-box" role="alert">
                 <i class="fas fa-check-circle"></i>
-                {{ session('success') }}
-            </div>
-        @endif
+                <?php echo e(session('success')); ?>
 
-        {{-- TABLE CARD --}}
+            </div>
+        <?php endif; ?>
+
+        
         <div class="section-card">
             <div class="section-card-header">
                 <div class="section-card-title">
                     <i class="fas fa-list"></i>
                     Daftar Fasilitas
                 </div>
-                <span class="total-badge">{{ $fasilitas->count() }} fasilitas</span>
+                <span class="total-badge"><?php echo e($fasilitas->count()); ?> fasilitas</span>
             </div>
 
             <div class="table-responsive">
@@ -62,60 +61,61 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @forelse($fasilitas as $index => $item)
+                        <?php $__empty_1 = true; $__currentLoopData = $fasilitas; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
                             <tr>
                                 <td class="td-no">
-                                    <span class="row-number">{{ $fasilitas->firstItem() + $index }}</span>
+                                    <span class="row-number"><?php echo e($fasilitas->firstItem() + $index); ?></span>
                                 </td>
                                 <td>
-                                    @if($item->foto)
-                                        <img src="{{ asset('storage/' . $item->foto) }}" class="foto-thumb"
-                                            alt="{{ $item->nama_fasilitas }}">
-                                    @else
+                                    <?php if($item->foto): ?>
+                                        <img src="<?php echo e(asset('storage/' . $item->foto)); ?>" class="foto-thumb"
+                                            alt="<?php echo e($item->nama_fasilitas); ?>">
+                                    <?php else: ?>
                                         <div class="foto-empty">
                                             <i class="fas fa-image"></i>
                                         </div>
-                                    @endif
+                                    <?php endif; ?>
                                 </td>
                                 <td>
-                                    <span class="nama-fasilitas">{{ $item->nama_fasilitas }}</span>
+                                    <span class="nama-fasilitas"><?php echo e($item->nama_fasilitas); ?></span>
                                 </td>
                                 <td>
-                                    @if($item->kategori)
-                                        <span class="kategori-badge">{{ $item->kategori }}</span>
-                                    @else
+                                    <?php if($item->kategori): ?>
+                                        <span class="kategori-badge"><?php echo e($item->kategori); ?></span>
+                                    <?php else: ?>
                                         <span class="text-empty">-</span>
-                                    @endif
+                                    <?php endif; ?>
                                 </td>
                                 <td class="text-center">
-                                    <span class="jumlah-badge">{{ $item->jumlah }}</span>
+                                    <span class="jumlah-badge"><?php echo e($item->jumlah); ?></span>
                                 </td>
-                                <td>{!! $item->kondisi_badge !!}</td>
+                                <td><?php echo $item->kondisi_badge; ?></td>
                                 <td>
-                                    @if($item->lokasi)
+                                    <?php if($item->lokasi): ?>
                                         <span class="lokasi-text">
                                             <i class="fas fa-map-marker-alt"></i>
-                                            {{ $item->lokasi }}
+                                            <?php echo e($item->lokasi); ?>
+
                                         </span>
-                                    @else
+                                    <?php else: ?>
                                         <span class="text-empty">-</span>
-                                    @endif
+                                    <?php endif; ?>
                                 </td>
                                 <td>
                                     <div class="action-group">
-                                        <a href="{{ route('admin.data-master.fasilitas.show', $item->id) }}"
+                                        <a href="<?php echo e(route('admin.data-master.fasilitas.show', $item->id)); ?>"
                                             class="action-btn view" title="Lihat Detail">
                                             <i class="fas fa-eye"></i>
                                         </a>
-                                        <a href="{{ route('admin.data-master.fasilitas.edit', $item->id) }}"
+                                        <a href="<?php echo e(route('admin.data-master.fasilitas.edit', $item->id)); ?>"
                                             class="action-btn edit" title="Edit">
                                             <i class="fas fa-pencil-alt"></i>
                                         </a>
-                                        <form action="{{ route('admin.data-master.fasilitas.destroy', $item->id) }}"
+                                        <form action="<?php echo e(route('admin.data-master.fasilitas.destroy', $item->id)); ?>"
                                             method="POST" class="d-inline"
                                             onsubmit="return confirm('Yakin ingin menghapus data ini?')">
-                                            @csrf
-                                            @method('DELETE')
+                                            <?php echo csrf_field(); ?>
+                                            <?php echo method_field('DELETE'); ?>
                                             <button type="submit" class="action-btn delete" title="Hapus">
                                                 <i class="fas fa-trash-alt"></i>
                                             </button>
@@ -123,7 +123,7 @@
                                     </div>
                                 </td>
                             </tr>
-                        @empty
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
                             <tr>
                                 <td colspan="8">
                                     <div class="empty-state">
@@ -132,29 +132,30 @@
                                         </div>
                                         <h3 class="empty-title">Belum ada data fasilitas</h3>
                                         <p class="empty-desc">Mulai dengan menambahkan fasilitas pertama.</p>
-                                        <a href="{{ route('admin.data-master.fasilitas.create') }}" class="btn-primary-action">
+                                        <a href="<?php echo e(route('admin.data-master.fasilitas.create')); ?>" class="btn-primary-action">
                                             <i class="fas fa-plus"></i> Tambah Fasilitas
                                         </a>
                                     </div>
                                 </td>
                             </tr>
-                        @endforelse
+                        <?php endif; ?>
                     </tbody>
                 </table>
             </div>
 
-            @if($fasilitas->hasPages())
+            <?php if($fasilitas->hasPages()): ?>
                 <div class="pagination-footer">
                     <p class="pagination-info">
                         Menampilkan
-                        <strong>{{ $fasilitas->firstItem() }}</strong>–<strong>{{ $fasilitas->lastItem() }}</strong>
-                        dari <strong>{{ $fasilitas->total() }}</strong> fasilitas
+                        <strong><?php echo e($fasilitas->firstItem()); ?></strong>–<strong><?php echo e($fasilitas->lastItem()); ?></strong>
+                        dari <strong><?php echo e($fasilitas->total()); ?></strong> fasilitas
                     </p>
                     <div class="pagination-links">
-                        {{ $fasilitas->links() }}
+                        <?php echo e($fasilitas->links()); ?>
+
                     </div>
                 </div>
-            @endif
+            <?php endif; ?>
         </div>
 
     </div>
@@ -614,4 +615,5 @@
             }
         }
     </style>
-@endsection
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('admin.layout', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH D:\ponpes-main\resources\views/admin/data-master/fasilitas/index.blade.php ENDPATH**/ ?>

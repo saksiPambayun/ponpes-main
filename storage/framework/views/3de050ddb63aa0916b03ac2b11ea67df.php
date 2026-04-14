@@ -1,11 +1,9 @@
-@extends('admin.layout')
+<?php $__env->startSection('title', 'Gallery'); ?>
 
-@section('title', 'Gallery')
-
-@section('content')
+<?php $__env->startSection('content'); ?>
         <div class="page-wrapper">
 
-            {{-- PAGE HEADER --}}
+            
             <div class="page-header">
                 <div class="header-left">
                     <div class="header-icon">
@@ -14,7 +12,7 @@
                     <div>
                         <h1 class="page-title">Gallery</h1>
                         <nav class="breadcrumb-nav">
-                            <a href="{{ url('/admin/dashboard') }}" class="breadcrumb-link">
+                            <a href="<?php echo e(url('/admin/dashboard')); ?>" class="breadcrumb-link">
                                 <i class="fas fa-home"></i> Dashboard
                             </a>
                             <i class="fas fa-chevron-right breadcrumb-sep"></i>
@@ -26,45 +24,46 @@
                     <button onclick="window.print()" class="btn-secondary-action">
                         <i class="fas fa-print"></i> Print
                     </button>
-                    <a href="{{ route('admin.data-master.gallery.create') }}" class="btn-primary-action">
+                    <a href="<?php echo e(route('admin.data-master.gallery.create')); ?>" class="btn-primary-action">
                         <i class="fas fa-plus"></i> Tambah Gallery
                     </a>
                 </div>
             </div>
 
-            {{-- STATS --}}
+            
             <div class="stats-grid">
-                @php
+                <?php
     $stats = [
         ['label' => 'Total Gallery', 'val' => App\Models\Gallery::count(), 'icon' => 'fa-images', 'accent' => '#005F02', 'bg' => '#eef3ec'],
         ['label' => 'Kegiatan', 'val' => App\Models\Gallery::where('kategori', 'kegiatan')->count(), 'icon' => 'fa-calendar-check', 'accent' => '#4ca94d', 'bg' => '#eef3ec'],
         ['label' => 'Prestasi', 'val' => App\Models\Gallery::where('kategori', 'prestasi')->count(), 'icon' => 'fa-trophy', 'accent' => '#8cbf73', 'bg' => '#eef3ec'],
         ['label' => 'Umum', 'val' => App\Models\Gallery::where('kategori', 'umum')->count(), 'icon' => 'fa-folder', 'accent' => '#2e6b37', 'bg' => '#eef3ec'],
     ];
-                @endphp
-                @foreach($stats as $s)
+                ?>
+                <?php $__currentLoopData = $stats; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $s): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                     <div class="stat-card">
-                        <div class="stat-bar" style="background: {{ $s['accent'] }};"></div>
-                        <div class="stat-icon" style="background: {{ $s['bg'] }}; color: {{ $s['accent'] }};">
-                            <i class="fas {{ $s['icon'] }}"></i>
+                        <div class="stat-bar" style="background: <?php echo e($s['accent']); ?>;"></div>
+                        <div class="stat-icon" style="background: <?php echo e($s['bg']); ?>; color: <?php echo e($s['accent']); ?>;">
+                            <i class="fas <?php echo e($s['icon']); ?>"></i>
                         </div>
                         <div class="stat-content">
-                            <span class="stat-label">{{ $s['label'] }}</span>
-                            <span class="stat-value">{{ $s['val'] }}</span>
+                            <span class="stat-label"><?php echo e($s['label']); ?></span>
+                            <span class="stat-value"><?php echo e($s['val']); ?></span>
                         </div>
                     </div>
-                @endforeach
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
             </div>
 
-            {{-- ALERT --}}
-            @if(session('success'))
+            
+            <?php if(session('success')): ?>
                 <div class="alert-success-box">
                     <i class="fas fa-check-circle"></i>
-                    {{ session('success') }}
-                </div>
-            @endif
+                    <?php echo e(session('success')); ?>
 
-            {{-- FILTER --}}
+                </div>
+            <?php endif; ?>
+
+            
             <div class="section-card">
                 <div class="section-card-header">
                     <div class="section-card-title">
@@ -73,24 +72,24 @@
                     </div>
                 </div>
                 <div class="section-card-body">
-                    <form action="{{ route('admin.data-master.gallery.index') }}" method="GET" class="filter-form">
+                    <form action="<?php echo e(route('admin.data-master.gallery.index')); ?>" method="GET" class="filter-form">
                         <div class="filter-group">
                             <label class="filter-label">Cari</label>
                             <div class="input-icon-wrap">
                                 <i class="fas fa-search input-icon"></i>
                                 <input type="text" name="search" class="form-input with-icon"
-                                    placeholder="Judul atau deskripsi..." value="{{ request('search') }}">
+                                    placeholder="Judul atau deskripsi..." value="<?php echo e(request('search')); ?>">
                             </div>
                         </div>
                         <div class="filter-group">
                             <label class="filter-label">Kategori</label>
                             <select name="kategori" class="form-select">
                                 <option value="">Semua Kategori</option>
-                                <option value="kegiatan" {{ request('kategori') == 'kegiatan' ? 'selected' : '' }}>Kegiatan
+                                <option value="kegiatan" <?php echo e(request('kategori') == 'kegiatan' ? 'selected' : ''); ?>>Kegiatan
                                 </option>
-                                <option value="prestasi" {{ request('kategori') == 'prestasi' ? 'selected' : '' }}>Prestasi
+                                <option value="prestasi" <?php echo e(request('kategori') == 'prestasi' ? 'selected' : ''); ?>>Prestasi
                                 </option>
-                                <option value="umum" {{ request('kategori') == 'umum' ? 'selected' : '' }}>Umum</option>
+                                <option value="umum" <?php echo e(request('kategori') == 'umum' ? 'selected' : ''); ?>>Umum</option>
                             </select>
                         </div>
 
@@ -100,7 +99,7 @@
                                 <button type="submit" class="btn-filter">
                                     <i class="fas fa-search"></i> Cari
                                 </button>
-                                <a href="{{ route('admin.data-master.gallery.index') }}" class="btn-reset">
+                                <a href="<?php echo e(route('admin.data-master.gallery.index')); ?>" class="btn-reset">
                                     <i class="fas fa-undo"></i> Reset
                                 </a>
                             </div>
@@ -109,14 +108,14 @@
                 </div>
             </div>
 
-            {{-- TABLE --}}
+            
             <div class="section-card">
                 <div class="section-card-header">
                     <div class="section-card-title">
                         <i class="fas fa-list"></i>
                         Daftar Gallery
                     </div>
-                    <span class="total-badge">{{ $galleries->total() }} item</span>
+                    <span class="total-badge"><?php echo e($galleries->total()); ?> item</span>
                 </div>
 
                 <div class="table-responsive">
@@ -132,44 +131,45 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @forelse($galleries as $index => $item)
+                            <?php $__empty_1 = true; $__currentLoopData = $galleries; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
                                 <tr>
                                     <td class="td-no">
-                                        <span class="row-number">{{ $galleries->firstItem() + $index }}</span>
+                                        <span class="row-number"><?php echo e($galleries->firstItem() + $index); ?></span>
                                     </td>
                                     <td>
-                                        @if($item->gambar)
-                                            <img src="{{ asset('storage/' . $item->gambar) }}" alt="{{ $item->judul }}"
+                                        <?php if($item->gambar): ?>
+                                            <img src="<?php echo e(asset('storage/' . $item->gambar)); ?>" alt="<?php echo e($item->judul); ?>"
                                                 class="foto-thumb">
-                                        @else
+                                        <?php else: ?>
                                             <div class="foto-empty">
                                                 <i class="fas fa-image"></i>
                                             </div>
-                                        @endif
+                                        <?php endif; ?>
                                     </td>
                                     <td>
-                                        <span class="item-title">{{ $item->judul }}</span>
+                                        <span class="item-title"><?php echo e($item->judul); ?></span>
                                     </td>
-                                    <td>{!! $item->kategori_badge !!}</td>
+                                    <td><?php echo $item->kategori_badge; ?></td>
                                     <td>
                                         <span class="date-text">
-                                            {{ $item->tanggal_kegiatan ? $item->tanggal_kegiatan->format('d/m/Y') : '-' }}
+                                            <?php echo e($item->tanggal_kegiatan ? $item->tanggal_kegiatan->format('d/m/Y') : '-'); ?>
+
                                         </span>
                                     </td>
 
                                     <td>
                                         <div class="action-group">
-                                            <a href="{{ route('admin.data-master.gallery.show', $item->id) }}"
+                                            <a href="<?php echo e(route('admin.data-master.gallery.show', $item->id)); ?>"
                                                 class="action-btn view" title="Lihat Detail">
                                                 <i class="fas fa-eye"></i>
                                             </a>
-                                            <a href="{{ route('admin.data-master.gallery.edit', $item->id) }}"
+                                            <a href="<?php echo e(route('admin.data-master.gallery.edit', $item->id)); ?>"
                                                 class="action-btn edit" title="Edit">
                                                 <i class="fas fa-pencil-alt"></i>
                                             </a>
-                                            <form action="{{ route('admin.data-master.gallery.destroy', $item->id) }}" method="POST"
+                                            <form action="<?php echo e(route('admin.data-master.gallery.destroy', $item->id)); ?>" method="POST"
                                                 class="d-inline" onsubmit="return confirm('Yakin ingin menghapus gallery ini?')">
-                                                @csrf @method('DELETE')
+                                                <?php echo csrf_field(); ?> <?php echo method_field('DELETE'); ?>
                                                 <button type="submit" class="action-btn delete" title="Hapus">
                                                     <i class="fas fa-trash-alt"></i>
                                                 </button>
@@ -178,7 +178,7 @@
                                         </div>
                                     </td>
                                 </tr>
-                            @empty
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
                                 <tr>
                                     <td colspan="7">
                                         <div class="empty-state">
@@ -187,29 +187,30 @@
                                             </div>
                                             <h3 class="empty-title">Belum ada data gallery</h3>
                                             <p class="empty-desc">Mulai dengan menambahkan foto pertama ke gallery.</p>
-                                            <a href="{{ route('admin.data-master.gallery.create') }}" class="btn-primary-action">
+                                            <a href="<?php echo e(route('admin.data-master.gallery.create')); ?>" class="btn-primary-action">
                                                 <i class="fas fa-plus"></i> Tambah Gallery
                                             </a>
                                         </div>
                                     </td>
                                 </tr>
-                            @endforelse
+                            <?php endif; ?>
                         </tbody>
                     </table>
                 </div>
 
-                @if($galleries->hasPages())
+                <?php if($galleries->hasPages()): ?>
                     <div class="pagination-footer">
                         <p class="pagination-info">
                             Menampilkan
-                            <strong>{{ $galleries->firstItem() }}</strong>–<strong>{{ $galleries->lastItem() }}</strong>
-                            dari <strong>{{ $galleries->total() }}</strong> item
+                            <strong><?php echo e($galleries->firstItem()); ?></strong>–<strong><?php echo e($galleries->lastItem()); ?></strong>
+                            dari <strong><?php echo e($galleries->total()); ?></strong> item
                         </p>
                         <div class="pagination-links">
-                            {{ $galleries->links() }}
+                            <?php echo e($galleries->links()); ?>
+
                         </div>
                     </div>
-                @endif
+                <?php endif; ?>
             </div>
 
         </div>
@@ -953,4 +954,6 @@
                 }
             }
         </style>
-@endsection
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('admin.layout', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH D:\ponpes-main\resources\views/admin/data-master/gallery/index.blade.php ENDPATH**/ ?>

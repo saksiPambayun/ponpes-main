@@ -8,15 +8,30 @@
     <title><?php echo $__env->yieldContent('title', 'Admin Dashboard'); ?> - Yayasan Management</title>
 
     <script src="https://cdn.tailwindcss.com"></script>
-
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+        :root {
+            --green-main: #005F02;
+            --green-dark: #0d4f14;
+            --green-darker: #0f4d1c;
+            --green-medium: #2e6b37;
+            --green-light: #4ca94d;
+            --green-soft: #8cbf73;
+            --bg-light: #f4f4f4;
+            --bg-soft: #eef3ec;
+            --bg-section: #dfe8d8;
+            --text-main: #333;
+            --text-dark: #222;
+            --text-muted: #2d2d2d;
+            --white: #ffffff;
+            --shadow-soft: rgba(0, 0, 0, 0.1);
+            --shadow-medium: rgba(0, 0, 0, 0.15);
+        }
 
         * {
             margin: 0;
@@ -26,11 +41,12 @@
 
         body {
             font-family: 'Inter', sans-serif;
-            background: #f3f4f6;
+            background: var(--bg-soft);
         }
 
+        /* ===== SIDEBAR ===== */
         .sidebar {
-            background: linear-gradient(180deg, #4f46e5 0%, #3730a3 100%);
+            background: linear-gradient(180deg, var(--green-main) 0%, var(--green-dark) 100%);
             transition: all 0.3s ease;
         }
 
@@ -42,14 +58,14 @@
 
         .sidebar-item:hover {
             background: rgba(255, 255, 255, 0.15);
-            border-left-color: #fff;
+            border-left-color: var(--white);
             transform: translateX(8px);
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
         }
 
         .sidebar-item.active {
             background: rgba(255, 255, 255, 0.2);
-            border-left-color: #fff;
+            border-left-color: var(--white);
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
         }
 
@@ -61,78 +77,46 @@
             transform: scale(1.1);
         }
 
+        /* ===== MAIN CONTENT ===== */
         .main-content {
             transition: all 0.3s ease;
         }
 
+        /* ===== CARDS ===== */
         .card {
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            background: var(--white);
+            border-radius: 16px;
+            box-shadow: 0 2px 8px var(--shadow-soft);
             transition: all 0.3s ease;
         }
 
         .card:hover {
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+            box-shadow: 0 8px 25px var(--shadow-medium);
             transform: translateY(-4px);
         }
 
-        .stat-card {
-            position: relative;
-            overflow: hidden;
-        }
-
-        .stat-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 4px;
-            height: 100%;
-            transition: all 0.3s ease;
-        }
-
-        .stat-card:hover::before {
-            width: 6px;
-        }
-
+        /* ===== BUTTONS ===== */
         .btn-primary {
-            background: linear-gradient(135deg, #4f46e5 0%, #6366f1 100%);
+            background: linear-gradient(135deg, var(--green-main) 0%, var(--green-light) 100%);
             transition: all 0.3s ease;
         }
 
         .btn-primary:hover {
             transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.4);
+            box-shadow: 0 4px 12px rgba(0, 95, 2, 0.4);
         }
 
+        /* ===== TABLES ===== */
         .table-row {
             transition: all 0.2s ease;
         }
 
         .table-row:hover {
-            background: #f9fafb;
+            background: var(--bg-soft);
             transform: scale(1.01);
         }
 
-        .modal {
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s ease;
-        }
-
-        .modal.active {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        .badge {
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 500;
-        }
-
+        /* ===== BADGES ===== */
         .badge-pending {
             background: #fef3c7;
             color: #92400e;
@@ -148,6 +132,29 @@
             color: #991b1b;
         }
 
+        /* ===== OVERLAY ===== */
+        .overlay {
+            background: rgba(0, 0, 0, 0.5);
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 999;
+        }
+
+        .overlay.active {
+            display: block;
+        }
+
+        /* ===== INPUT FIELDS ===== */
+        .input-field:focus {
+            border-color: var(--green-light);
+            box-shadow: 0 0 0 3px rgba(76, 169, 77, 0.2);
+        }
+
+        /* ===== MOBILE RESPONSIVE ===== */
         .mobile-menu-btn {
             display: none;
         }
@@ -172,30 +179,11 @@
             .main-content {
                 margin-left: 0 !important;
             }
-
-            .overlay {
-                display: none;
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                background: rgba(0, 0, 0, 0.5);
-                z-index: 999;
-            }
-
-            .overlay.active {
-                display: block;
-            }
         }
 
-        .input-field {
-            transition: all 0.2s ease;
-        }
-
-        .input-field:focus {
-            border-color: #4f46e5;
-            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+        /* ===== ALERT ANIMATION ===== */
+        [role="alert"] {
+            transition: opacity 0.5s ease;
         }
     </style>
 
@@ -206,23 +194,25 @@
     <div class="flex h-screen overflow-hidden">
         <div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
 
+        <!-- SIDEBAR -->
         <aside class="sidebar w-72 flex flex-col shadow-2xl" id="sidebar">
-            <div class="h-20 flex items-center justify-center border-b border-indigo-400/30 px-6">
+            <div class="h-20 flex items-center justify-center border-b border-green-300/30 px-6">
                 <div class="flex items-center space-x-3">
-                    <div class="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center overflow-hidden">
-                        <img src="<?php echo e(asset('gallery/logoo.jpeg')); ?>" class="w-9 h-9 object-contain">
+                    <div class="w-10 h-10 bg-white rounded-lg flex items-center justify-center overflow-hidden">
+                        <img src="<?php echo e(asset('images/logoo.png')); ?>" class="w-9 h-9 object-contain" alt="Logo">
                     </div>
                     <div>
                         <h1 class="text-xl font-bold text-white">Pondok Pesantren</h1>
-                        <h1 class="text-xl font-bold text-white">Al ifadah</h1>
-
+                        <h1 class="text-xl font-bold text-white">Al Ifadah</h1>
                     </div>
                 </div>
             </div>
 
             <nav class="flex-1 overflow-y-auto py-6 px-4">
+
+                <!-- MAIN MENU -->
                 <div class="mb-6">
-                    <p class="text-xs font-semibold text-indigo-200 uppercase tracking-wider mb-3 px-3">Main Menu</p>
+                    <p class="text-xs font-semibold text-green-200 uppercase tracking-wider mb-3 px-3">Main Menu</p>
                     <a href="<?php echo e(route('admin.dashboard')); ?>"
                         class="sidebar-item flex items-center px-4 py-3 text-white rounded-lg mb-1 <?php echo e(request()->routeIs('admin.dashboard') ? 'active' : ''); ?>">
                         <div
@@ -233,17 +223,17 @@
                     </a>
                 </div>
 
+                <!-- PENDAFTARAN -->
                 <div class="mb-6">
-                    <p class="text-xs font-semibold text-indigo-200 uppercase tracking-wider mb-3 px-3">Pendaftaran</p>
+                    <p class="text-xs font-semibold text-green-200 uppercase tracking-wider mb-3 px-3">Pendaftaran</p>
                     <a href="<?php echo e(route('admin.santri.index')); ?>"
-                        class="sidebar-item flex items-center px-4 py-3 text-indigo-100 rounded-lg mb-1 <?php echo e(request()->routeIs('admin.santri.*') ? 'active' : ''); ?>">
+                        class="sidebar-item flex items-center px-4 py-3 text-green-100 rounded-lg mb-1 <?php echo e(request()->routeIs('admin.santri.*') ? 'active' : ''); ?>">
                         <div
                             class="icon-wrapper w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center mr-3">
                             <i class="fas fa-user-graduate"></i>
                         </div>
                         <span class="font-medium">Data Santri</span>
                         <?php
-                            // Menggunakan try-catch agar jika tabel belum ada tidak bikin error se-aplikasi
                             try {
                                 $pendingCount = \App\Models\SantriRegistration::where('status', 'pending')->count();
                             } catch (\Exception $e) {
@@ -252,15 +242,16 @@
                         ?>
                         <?php if($pendingCount > 0): ?>
                             <span
-                                class="ml-auto bg-red-500 text-white text-xs px-2 py-0.5 rounded-full"><?php echo e($pendingCount); ?></span>
+                                class="ml-auto bg-green-500 text-white text-xs px-2 py-0.5 rounded-full"><?php echo e($pendingCount); ?></span>
                         <?php endif; ?>
                     </a>
                 </div>
 
+                <!-- KEPEGAWAIAN -->
                 <div class="mb-6">
-                    <p class="text-xs font-semibold text-indigo-200 uppercase tracking-wider mb-3 px-3">Kepegawaian</p>
+                    <p class="text-xs font-semibold text-green-200 uppercase tracking-wider mb-3 px-3">Kepegawaian</p>
                     <a href="<?php echo e(route('admin.pegawai.index')); ?>"
-                        class="sidebar-item flex items-center px-4 py-3 text-indigo-100 rounded-lg mb-1 <?php echo e(request()->routeIs('admin.pegawai.*') ? 'active' : ''); ?>">
+                        class="sidebar-item flex items-center px-4 py-3 text-green-100 rounded-lg mb-1 <?php echo e(request()->routeIs('admin.pegawai.*') ? 'active' : ''); ?>">
                         <div
                             class="icon-wrapper w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center mr-3">
                             <i class="fas fa-users"></i>
@@ -269,108 +260,97 @@
                     </a>
                 </div>
 
-                <ul class="navbar-nav">
+                <!-- DATA MASTER -->
+                <div class="mb-6">
+                    <p class="text-xs font-semibold text-green-200 uppercase tracking-wider mb-3 px-3">Data Master</p>
 
-                    <!-- DATA MASTER -->
-                    <div class="mb-6">
-                        <p class="text-xs font-semibold text-indigo-200 uppercase tracking-wider mb-3 px-3">
-                            Data Master
-                        </p>
+                    <a href="<?php echo e(route('admin.data-master.profil-yayasan')); ?>"
+                        class="sidebar-item flex items-center px-4 py-3 text-green-100 rounded-lg mb-1">
+                        <div
+                            class="icon-wrapper w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center mr-3">
+                            <i class="fas fa-building"></i>
+                        </div>
+                        <span class="font-medium">Profil Yayasan</span>
+                    </a>
 
-                        <!-- Profil Yayasan -->
-                        <a href="<?php echo e(route('admin.data-master.profil-yayasan')); ?>"
-                            class="sidebar-item flex items-center px-4 py-3 text-indigo-100 rounded-lg mb-1 hover:bg-indigo-700">
-                            <div
-                                class="icon-wrapper w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center mr-3">
-                                <i class="fas fa-building"></i>
-                            </div>
-                            <span class="font-medium">Profil Yayasan</span>
-                        </a>
+                    <a href="<?php echo e(route('admin.data-master.struktur-organisasi.index')); ?>"
+                        class="sidebar-item flex items-center px-4 py-3 text-green-100 rounded-lg mb-1">
+                        <div
+                            class="icon-wrapper w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center mr-3">
+                            <i class="fas fa-sitemap"></i>
+                        </div>
+                        <span class="font-medium">Struktur Organisasi</span>
+                    </a>
 
-                        <!-- Struktur Organisasi -->
-                        <a href="<?php echo e(route('admin.data-master.struktur-organisasi.index')); ?>"
-                            class="sidebar-item flex items-center px-4 py-3 text-indigo-100 rounded-lg mb-1 hover:bg-indigo-700">
-                            <div
-                                class="icon-wrapper w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center mr-3">
-                                <i class="fas fa-sitemap"></i>
-                            </div>
-                            <span class="font-medium">Struktur Organisasi</span>
-                        </a>
+                    <a href="<?php echo e(route('admin.data-master.fasilitas.index')); ?>"
+                        class="sidebar-item flex items-center px-4 py-3 text-green-100 rounded-lg mb-1">
+                        <div
+                            class="icon-wrapper w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center mr-3">
+                            <i class="fas fa-school"></i>
+                        </div>
+                        <span class="font-medium">Fasilitas</span>
+                    </a>
 
-                        <!-- Fasilitas -->
-                        <a href="<?php echo e(route('admin.data-master.fasilitas.index')); ?>"
-                            class="sidebar-item flex items-center px-4 py-3 text-indigo-100 rounded-lg mb-1 hover:bg-indigo-700">
-                            <div
-                                class="icon-wrapper w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center mr-3">
-                                <i class="fas fa-school"></i>
-                            </div>
-                            <span class="font-medium">Fasilitas</span>
-                        </a>
+                    <a href="<?php echo e(route('admin.data-master.gallery.index')); ?>"
+                        class="sidebar-item flex items-center px-4 py-3 text-green-100 rounded-lg mb-1">
+                        <div
+                            class="icon-wrapper w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center mr-3">
+                            <i class="fas fa-images"></i>
+                        </div>
+                        <span class="font-medium">Gallery</span>
+                    </a>
 
-                        <!-- Gallery -->
-                        <a href="<?php echo e(route('admin.data-master.gallery.index')); ?>"
-                            class="sidebar-item flex items-center px-4 py-3 text-indigo-100 rounded-lg mb-1 hover:bg-indigo-700">
-                            <div
-                                class="icon-wrapper w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center mr-3">
-                                <i class="fas fa-images"></i>
-                            </div>
-                            <span class="font-medium">Gallery</span>
-                        </a>
+                    <a href="<?php echo e(route('admin.program.index')); ?>"
+                        class="sidebar-item flex items-center px-4 py-3 text-green-100 rounded-lg mb-1">
+                        <div
+                            class="icon-wrapper w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center mr-3">
+                            <i class="fas fa-calendar-alt"></i>
+                        </div>
+                        <span class="font-medium">Program</span>
+                    </a>
+                </div>
 
-                        <!-- Program -->
-                        <a href="<?php echo e(route('admin.program.index')); ?>"
-                            class="sidebar-item flex items-center px-4 py-3 text-indigo-100 rounded-lg mb-1 hover:bg-indigo-700">
-                            <div
-                                class="icon-wrapper w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center mr-3">
-                                <i class="fas fa-calendar-alt"></i>
-                            </div>
-                            <span class="font-medium">Program</span>
-                        </a>
-                    </div>
+                <!-- DOKUMEN LEGAL -->
+                <div class="mb-6">
+                    <p class="text-xs font-semibold text-green-200 uppercase tracking-wider mb-3 px-3">Dokumen Legal</p>
 
-                    <!-- DOKUMEN LEGAL -->
-                    <div class="mb-6">
-                        <p class="text-xs font-semibold text-indigo-200 uppercase tracking-wider mb-3 px-3">Dokumen
-                            Legal</p>
+                    <a href="<?php echo e(route('admin.sk.index')); ?>"
+                        class="sidebar-item flex items-center px-4 py-3 text-green-100 rounded-lg mb-1 <?php echo e(request()->routeIs('admin.sk.*') ? 'active' : ''); ?>">
+                        <div
+                            class="icon-wrapper w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center mr-3">
+                            <i class="fas fa-file-signature"></i>
+                        </div>
+                        <span class="font-medium">Data SK</span>
+                    </a>
 
-                        <!-- SK -->
-                        <a href="<?php echo e(route('admin.sk.index')); ?>"
-                            class="sidebar-item flex items-center px-4 py-3 text-indigo-100 rounded-lg mb-1 <?php echo e(request()->routeIs('admin.sk.*') ? 'active' : ''); ?>">
-                            <div
-                                class="icon-wrapper w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center mr-3">
-                                <i class="fas fa-file-signature"></i>
-                            </div>
-                            <span class="font-medium">Data SK</span>
-                        </a>
+                    <a href="<?php echo e(route('admin.akta-yayasan.index')); ?>"
+                        class="sidebar-item flex items-center px-4 py-3 text-green-100 rounded-lg mb-1 <?php echo e(request()->routeIs('admin.akta-yayasan.*') ? 'active' : ''); ?>">
+                        <div
+                            class="icon-wrapper w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center mr-3">
+                            <i class="fas fa-scroll"></i>
+                        </div>
+                        <span class="font-medium">Akta Yayasan</span>
+                    </a>
 
-                        <!-- Akta Yayasan -->
-                        <a href="<?php echo e(route('admin.akta-yayasan.index')); ?>"
-                            class="sidebar-item flex items-center px-4 py-3 text-indigo-100 rounded-lg mb-1 <?php echo e(request()->routeIs('admin.akta-yayasan.*') ? 'active' : ''); ?>">
-                            <div
-                                class="icon-wrapper w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center mr-3">
-                                <i class="fas fa-scroll"></i>
-                            </div>
-                            <span class="font-medium">Akta Yayasan</span>
-                        </a>
+                    <a href="<?php echo e(route('admin.akta-wakaf.index')); ?>"
+                        class="sidebar-item flex items-center px-4 py-3 text-green-100 rounded-lg mb-1 <?php echo e(request()->routeIs('admin.akta-wakaf.*') ? 'active' : ''); ?>">
+                        <div
+                            class="icon-wrapper w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center mr-3">
+                            <i class="fas fa-landmark"></i>
+                        </div>
+                        <span class="font-medium">Akta Wakaf</span>
+                    </a>
+                </div>
 
-                        <!-- Akta Wakaf -->
-                        <a href="<?php echo e(route('admin.akta-wakaf.index')); ?>"
-                            class="sidebar-item flex items-center px-4 py-3 text-indigo-100 rounded-lg mb-1 <?php echo e(request()->routeIs('admin.akta-wakaf.*') ? 'active' : ''); ?>">
-                            <div
-                                class="icon-wrapper w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center mr-3">
-                                <i class="fas fa-landmark"></i>
-                            </div>
-                            <span class="font-medium">Akta Wakaf</span>
-                        </a>
-                    </div>
             </nav>
 
-            <div class="p-4 border-t border-indigo-400/30">
+            <!-- LOGOUT BUTTON -->
+            <div class="p-4 border-t border-green-300/30">
                 <form action="<?php echo e(route('logout')); ?>" method="POST">
                     <?php echo csrf_field(); ?>
                     <button type="submit"
-                        class="flex items-center w-full px-4 py-3 text-red-200 hover:text-white transition rounded-lg hover:bg-white/10">
-                        <div class="w-10 h-10 rounded-lg bg-red-500/20 flex items-center justify-center mr-3">
+                        class="flex items-center w-full px-4 py-3 text-green-200 hover:text-white transition rounded-lg hover:bg-white/10">
+                        <div class="w-10 h-10 rounded-lg bg-green-500/20 flex items-center justify-center mr-3">
                             <i class="fas fa-sign-out-alt"></i>
                         </div>
                         <span class="font-medium">Logout</span>
@@ -379,34 +359,29 @@
             </div>
         </aside>
 
-        <main class="main-content flex-1 overflow-x-hidden overflow-y-auto bg-gray-100">
+        <!-- MAIN CONTENT -->
+        <main class="main-content flex-1 overflow-x-hidden overflow-y-auto" style="background: var(--bg-soft);">
             <header class="bg-white shadow-sm h-20 flex items-center justify-between px-8 sticky top-0 z-50">
                 <div class="flex items-center space-x-4">
                     <button class="mobile-menu-btn p-2 rounded-lg hover:bg-gray-100" onclick="toggleSidebar()">
                         <i class="fas fa-bars text-gray-600 text-xl"></i>
                     </button>
-                    <h2 class="text-2xl font-bold text-gray-800"><?php echo $__env->yieldContent('page-title', 'Dashboard'); ?></h2>
+                    <h2 class="text-2xl font-bold" style="color: var(--text-dark);"><?php echo $__env->yieldContent('page-title', 'Dashboard'); ?>
+                    </h2>
                 </div>
-                <div class="flex items-center space-x-6">
-                    <!--<div class="relative">
-                        <button class="p-2 rounded-lg hover:bg-gray-100 relative">
-                            <i class="fas fa-bell text-gray-600 text-xl"></i>
-                            <span class="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
-                        </button>
-                </div>-->
-                    <div class="flex items-center space-x-3">
-                        <div class="text-right">
-                            <p class="text-sm font-semibold text-gray-900">
-                                <?php echo e(auth()->user()?->name ?? 'Administrator'); ?>
+                <div class="flex items-center space-x-3">
+                    <div class="text-right">
+                        <p class="text-sm font-semibold" style="color: var(--text-dark);">
+                            <?php echo e(auth()->user()?->name ?? 'Administrator'); ?>
 
-                            </p>
-                            <p class="text-xs text-gray-500"><?php echo e(ucfirst(auth()->user()?->role ?? 'Admin')); ?></p>
-                        </div>
-                        <div
-                            class="h-12 w-12 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white font-bold shadow-lg">
-                            <?php echo e(substr(auth()->user()?->name ?? 'AD', 0, 2)); ?>
+                        </p>
+                        <p class="text-xs" style="color: var(--text-muted);">
+                            <?php echo e(ucfirst(auth()->user()?->role ?? 'Admin')); ?></p>
+                    </div>
+                    <div class="h-12 w-12 rounded-full bg-gradient-to-br flex items-center justify-center text-white font-bold shadow-lg"
+                        style="background: linear-gradient(135deg, var(--green-main), var(--green-dark));">
+                        <?php echo e(substr(auth()->user()?->name ?? 'AD', 0, 2)); ?>
 
-                        </div>
                     </div>
                 </div>
             </header>
@@ -416,8 +391,9 @@
                     <div class="bg-green-100 border border-green-400 text-green-700 px-6 py-4 rounded-lg relative mb-6"
                         role="alert">
                         <span class="block sm:inline"><?php echo e(session('success')); ?></span>
-                        <span class="absolute top-0 bottom-0 right-0 px-4 py-3" onclick="this.parentElement.remove()">
-                            <i class="fas fa-times cursor-pointer"></i>
+                        <span class="absolute top-0 bottom-0 right-0 px-4 py-3 cursor-pointer"
+                            onclick="this.parentElement.remove()">
+                            <i class="fas fa-times"></i>
                         </span>
                     </div>
                 <?php endif; ?>
@@ -426,8 +402,9 @@
                     <div class="bg-red-100 border border-red-400 text-red-700 px-6 py-4 rounded-lg relative mb-6"
                         role="alert">
                         <span class="block sm:inline"><?php echo e(session('error')); ?></span>
-                        <span class="absolute top-0 bottom-0 right-0 px-4 py-3" onclick="this.parentElement.remove()">
-                            <i class="fas fa-times cursor-pointer"></i>
+                        <span class="absolute top-0 bottom-0 right-0 px-4 py-3 cursor-pointer"
+                            onclick="this.parentElement.remove()">
+                            <i class="fas fa-times"></i>
                         </span>
                     </div>
                 <?php endif; ?>
@@ -452,7 +429,6 @@
             const alerts = document.querySelectorAll('[role="alert"]');
             alerts.forEach(alert => {
                 alert.style.opacity = '0';
-                alert.style.transition = 'opacity 0.5s';
                 setTimeout(() => alert.remove(), 500);
             });
         }, 5000);
@@ -462,5 +438,4 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
-</html>
-<?php /**PATH D:\ponpes-main\resources\views/admin/layout.blade.php ENDPATH**/ ?>
+</html><?php /**PATH D:\ponpes-main\resources\views/admin/layout.blade.php ENDPATH**/ ?>

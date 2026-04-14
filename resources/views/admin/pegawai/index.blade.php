@@ -15,34 +15,53 @@
             </div>
         @endif
 
-        {{-- Statistik --}}
+        {{-- Statistik Card - Style seperti gambar --}}
         <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-            <div class="bg-white rounded-xl shadow-sm p-5 border-l-4 border-[#005F02]">
-                <p class="text-xs text-gray-500 mb-1">Total Pegawai</p>
-                <h3 class="text-2xl font-bold text-gray-800">{{ $totalPegawai }}</h3>
-                <div class="mt-2 w-8 h-8 bg-[#eef3ec] rounded-lg flex items-center justify-center">
-                    <i class="fas fa-users text-[#005F02] text-sm"></i>
+            <!-- Total Pegawai -->
+            <div
+                class="bg-white rounded-xl shadow-sm p-4 flex items-center justify-between border border-[#dfe8d8] hover:shadow-md transition">
+                <div>
+                    <p class="text-xs text-gray-500 uppercase font-semibold tracking-wide">TOTAL PEGAWAI</p>
+                    <h3 class="text-2xl font-bold text-gray-800 mt-1">{{ $totalPegawai }}</h3>
+                </div>
+                <div class="w-10 h-10 bg-[#eef3ec] rounded-lg flex items-center justify-center">
+                    <i class="fas fa-users text-[#005F02] text-lg"></i>
                 </div>
             </div>
-            <div class="bg-white rounded-xl shadow-sm p-5 border-l-4 border-[#4ca94d]">
-                <p class="text-xs text-gray-500 mb-1">Aktif</p>
-                <h3 class="text-2xl font-bold text-gray-800">{{ $pegawaiAktif }}</h3>
-                <div class="mt-2 w-8 h-8 bg-[#dbe6d4] rounded-lg flex items-center justify-center">
-                    <i class="fas fa-user-check text-[#4ca94d] text-sm"></i>
+
+            <!-- Aktif -->
+            <div
+                class="bg-white rounded-xl shadow-sm p-4 flex items-center justify-between border border-[#dfe8d8] hover:shadow-md transition">
+                <div>
+                    <p class="text-xs text-gray-500 uppercase font-semibold tracking-wide">AKTIF</p>
+                    <h3 class="text-2xl font-bold text-gray-800 mt-1">{{ $pegawaiAktif }}</h3>
+                </div>
+                <div class="w-10 h-10 bg-[#eef3ec] rounded-lg flex items-center justify-center">
+                    <i class="fas fa-user-check text-[#4ca94d] text-lg"></i>
                 </div>
             </div>
-            <div class="bg-white rounded-xl shadow-sm p-5 border-l-4 border-[#8cbf73]">
-                <p class="text-xs text-gray-500 mb-1">Cuti</p>
-                <h3 class="text-2xl font-bold text-gray-800">{{ $pegawaiCuti }}</h3>
-                <div class="mt-2 w-8 h-8 bg-[#f2f4ef] rounded-lg flex items-center justify-center">
-                    <i class="fas fa-clock text-[#8cbf73] text-sm"></i>
+
+            <!-- Cuti -->
+            <div
+                class="bg-white rounded-xl shadow-sm p-4 flex items-center justify-between border border-[#dfe8d8] hover:shadow-md transition">
+                <div>
+                    <p class="text-xs text-gray-500 uppercase font-semibold tracking-wide">CUTI</p>
+                    <h3 class="text-2xl font-bold text-gray-800 mt-1">{{ $pegawaiCuti }}</h3>
+                </div>
+                <div class="w-10 h-10 bg-[#eef3ec] rounded-lg flex items-center justify-center">
+                    <i class="fas fa-clock text-[#8cbf73] text-lg"></i>
                 </div>
             </div>
-            <div class="bg-white rounded-xl shadow-sm p-5 border-l-4 border-[#0d4f14]">
-                <p class="text-xs text-gray-500 mb-1">Non-Aktif</p>
-                <h3 class="text-2xl font-bold text-gray-800">{{ $pegawaiNonaktif }}</h3>
-                <div class="mt-2 w-8 h-8 bg-[#eef3ec] rounded-lg flex items-center justify-center">
-                    <i class="fas fa-user-minus text-[#0d4f14] text-sm"></i>
+
+            <!-- Non-Aktif -->
+            <div
+                class="bg-white rounded-xl shadow-sm p-4 flex items-center justify-between border border-[#dfe8d8] hover:shadow-md transition">
+                <div>
+                    <p class="text-xs text-gray-500 uppercase font-semibold tracking-wide">NON-AKTIF</p>
+                    <h3 class="text-2xl font-bold text-gray-800 mt-1">{{ $pegawaiNonaktif }}</h3>
+                </div>
+                <div class="w-10 h-10 bg-[#eef3ec] rounded-lg flex items-center justify-center">
+                    <i class="fas fa-user-minus text-[#0d4f14] text-lg"></i>
                 </div>
             </div>
         </div>
@@ -183,7 +202,11 @@
                         @empty
                             <tr>
                                 <td colspan="7" class="px-6 py-20 text-center">
-                                    <h3 class="text-base font-medium text-gray-600 mb-1">Tidak ada data pegawai</h3>
+                                    <div class="flex flex-col items-center">
+                                        <i class="fas fa-users text-4xl text-gray-300 mb-3"></i>
+                                        <h3 class="text-base font-medium text-gray-600 mb-1">Tidak ada data pegawai</h3>
+                                        <p class="text-sm text-gray-400">Silakan tambah pegawai baru</p>
+                                    </div>
                                 </td>
                             </tr>
                         @endforelse
