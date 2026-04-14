@@ -48,10 +48,20 @@
             </li>
         </ul>
 
-        <div class="w-[150px] flex justify-end">
+        <div class="w-37.5 flex justify-end ml-auto">
+
             @guest
-                <a href="{{ route('login') }}" class="btn-contact">Login / Register</a>
+                <a href="{{ route('login') }}" class="btn-contact">
+                    Login / Register
+                </a>
             @endguest
+
+            @auth
+                <button type="button" onclick="openLogoutModal()" class="btn-contact">
+                    Logout
+                </button>
+            @endauth
+
         </div>
 
     </div>

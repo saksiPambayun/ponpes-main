@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+{{-- <!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -15,7 +15,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('css/navbar.css') }}">
     <link rel="stylesheet" href="{{ asset('css/footer.css') }}">
-</head>
+</head> --}}
 <style>
     .fasilitas {
         background-color: #fafafa;
@@ -75,8 +75,11 @@
     }
 </style>
 
-<body>
-    @include('components.navbar')
+@extends('layouts.app')
+
+@section('title', 'Fasilitas')
+
+@section('content')
     <section class="fasilitas">
         <section class="fasilitas-sectionn">
 
@@ -141,7 +144,7 @@
 
         </section>
     </section>
-    @include('components.footer')
+  @endsection
 </body>
 
 </html>
