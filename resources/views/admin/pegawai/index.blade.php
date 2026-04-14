@@ -15,7 +15,7 @@
             </div>
         @endif
 
-        {{-- Statistik Card - Style seperti gambar --}}
+        {{-- Statistik Card --}}
         <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
             <!-- Total Pegawai -->
             <div
@@ -93,7 +93,8 @@
                             class="w-full pl-9 pr-4 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-[#8cbf73] focus:border-[#4ca94d] transition">
                     </div>
                     <select name="status"
-                        class="px-4 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-[#8cbf73] focus:border-[#4ca94d] bg-white">
+                        class="px-3 py-1.5 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-[#8cbf73] focus:border-[#4ca94d] bg-white"
+                        onchange="this.form.submit()">
                         <option value="">Semua Status</option>
                         <option value="aktif" {{ request('status') == 'aktif' ? 'selected' : '' }}>Aktif</option>
                         <option value="cuti" {{ request('status') == 'cuti' ? 'selected' : '' }}>Cuti</option>
@@ -180,11 +181,13 @@
                                 <td class="px-6 py-4">
                                     <div class="flex items-center gap-1">
                                         <a href="{{ route('admin.pegawai.show', $p->id) }}"
-                                            class="p-2 text-[#005F02] hover:bg-[#eef3ec] rounded-lg transition">
+                                            class="p-2 text-[#005F02] hover:bg-[#eef3ec] rounded-lg transition hover:scale-110"
+                                            title="Detail">
                                             <i class="fas fa-eye text-sm"></i>
                                         </a>
                                         <a href="{{ route('admin.pegawai.edit', $p->id) }}"
-                                            class="p-2 text-[#4ca94d] hover:bg-[#dbe6d4] rounded-lg transition">
+                                            class="p-2 text-[#005F02] hover:bg-[#eef3ec] rounded-lg transition hover:scale-110"
+                                            title="Edit">
                                             <i class="fas fa-edit text-sm"></i>
                                         </a>
                                         <form action="{{ route('admin.pegawai.destroy', $p->id) }}" method="POST"
@@ -192,7 +195,9 @@
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit"
-                                                class="p-2 text-[#0d4f14] hover:bg-[#eef3ec] rounded-lg transition">
+                                                class="p-2 text-[#005F02] hover:bg-[#fee2e2] rounded-lg transition hover:scale-110"
+                                                title="Hapus"
+                                                onclick="return confirm('Yakin ingin menghapus pegawai {{ addslashes($p->nama) }}?')">
                                                 <i class="fas fa-trash text-sm"></i>
                                             </button>
                                         </form>
@@ -230,3 +235,78 @@
         </div>
     </div>
 @endsection
+
+<style>
+    /* === GLOBAL SMOOTH === */
+    * {
+        transition: all 0.25s ease;
+    }
+
+    /* === CARD STATISTIK === */
+    .grid>div:hover {
+        transform: translateY(-6px) scale(1.02);
+        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.1);
+    }
+
+    /* ICON DI CARD */
+    .grid>div:hover i {
+        transform: rotate(10deg) scale(1.1);
+    }
+
+    /* === BUTTON TAMBAH === */
+    a[href*="create"]:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(0, 95, 2, 0.3);
+    }
+
+    /* === SEARCH INPUT === */
+    input:focus {
+        transform: scale(1.02);
+    }
+
+    /* === SELECT & BUTTON FILTER === */
+    select:hover,
+    button:hover {
+        transform: translateY(-1px);
+    }
+
+    /* === TABLE ROW === */
+    tbody tr {
+        transition: all 0.2s ease;
+    }
+
+    tbody tr:hover {
+        transform: scale(1.01);
+        background: #eef3ec !important;
+    }
+
+    /* === FOTO BULAT (INISIAL) === */
+    tbody tr:hover .rounded-full {
+        transform: scale(1.1);
+    }
+
+    /* === AKSI BUTTON === */
+    tbody a,
+    tbody button {
+        transition: all 0.2s ease;
+    }
+
+    tbody a:hover,
+    tbody button:hover {
+        transform: scale(1.25);
+    }
+
+    /* === BADGE STATUS === */
+    span[class*="inline-flex"]:hover {
+        transform: scale(1.05);
+    }
+
+    /* === TABLE HEADER === */
+    thead tr {
+        transition: all 0.2s ease;
+    }
+
+    thead tr:hover {
+        letter-spacing: 0.5px;
+    }
+</style>

@@ -1,21 +1,3 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Fasilitas</title>
-
-    <link href="https://fonts.googleapis.com/css2?family=Cabin:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Cabin:wght@400;500;600;700&display=swap"
-        rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="<?php echo e(asset('css/navbar.css')); ?>">
-    <link rel="stylesheet" href="<?php echo e(asset('css/footer.css')); ?>">
-</head>
 <style>
     .fasilitas {
         background-color: #fafafa;
@@ -75,8 +57,11 @@
     }
 </style>
 
-<body>
-    <?php echo $__env->make('components.navbar', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
+
+
+<?php $__env->startSection('title', 'Fasilitas'); ?>
+
+<?php $__env->startSection('content'); ?>
     <section class="fasilitas">
         <section class="fasilitas-sectionn">
 
@@ -100,8 +85,9 @@
 
         </section>
     </section>
-    <?php echo $__env->make('components.footer', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
+  <?php $__env->stopSection(); ?>
 </body>
 
 </html>
-<?php /**PATH D:\ponpes-main\resources\views/public/fasilitas.blade.php ENDPATH**/ ?>
+
+<?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH D:\ponpes-main\resources\views/public/fasilitas.blade.php ENDPATH**/ ?>

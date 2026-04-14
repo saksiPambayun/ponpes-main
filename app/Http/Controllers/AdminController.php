@@ -230,37 +230,43 @@ class AdminController extends Controller
 
     // ==================== PEGAWAI ====================
 
-    public function pegawaiIndex(Request $request)
-    {
-        $query = Pegawai::query();
+  public function pegawaiIndex(Request $request)
+{
+    // Debug: lihat nilai status dari request
+    \Log::info('Status filter:', ['status' => $request->status]);
 
-        if ($request->filled('search')) {
-            $search = $request->search;
-            $query->where(function ($q) use ($search) {
-                $q->where('nama', 'like', "%{$search}%")
-                    ->orWhere('nip', 'like', "%{$search}%")
-                    ->orWhere('jabatan', 'like', "%{$search}%");
-            });
-        }
+    $query = Pegawai::query();
 
-        if ($request->filled('status')) {
-            $query->where('status', $request->status);
-        }
-
-        $pegawai         = $query->latest()->paginate(10)->withQueryString();
-        $totalPegawai    = Pegawai::count();
-        $pegawaiAktif    = Pegawai::where('status', 'aktif')->count();
-        $pegawaiCuti     = Pegawai::where('status', 'cuti')->count();
-        $pegawaiNonaktif = Pegawai::where('status', 'nonaktif')->count();
-
-        return view('admin.pegawai.index', compact(
-            'pegawai',
-            'totalPegawai',
-            'pegawaiAktif',
-            'pegawaiCuti',
-            'pegawaiNonaktif'
-        ));
+    if ($request->filled('search')) {
+        $search = $request->search;
+        $query->where(function ($q) use ($search) {
+            $q->where('nama', 'like', "%{$search}%")
+                ->orWhere('nip', 'like', "%{$search}%")
+                ->orWhere('jabatan', 'like', "%{$search}%");
+        });
     }
+
+    if ($request->filled('status')) {
+        $query->where('status', $request->status);
+    }
+
+    // Debug: lihat query yang dijalankan
+    \Log::info('Query SQL:', ['sql' => $query->toSql(), 'bindings' => $query->getBindings()]);
+
+    $pegawai         = $query->latest()->paginate(10)->withQueryString();
+    $totalPegawai    = Pegawai::count();
+    $pegawaiAktif    = Pegawai::where('status', 'aktif')->count();
+    $pegawaiCuti     = Pegawai::where('status', 'cuti')->count();
+    $pegawaiNonaktif = Pegawai::where('status', 'nonaktif')->count();
+
+    return view('admin.pegawai.index', compact(
+        'pegawai',
+        'totalPegawai',
+        'pegawaiAktif',
+        'pegawaiCuti',
+        'pegawaiNonaktif'
+    ));
+}
 
     public function pegawaiCreate()
     {
