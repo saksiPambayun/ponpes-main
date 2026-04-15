@@ -30,7 +30,7 @@
         </div>
 
         {{-- ALERT --}}
-        @if(session('success'))
+        @if (session('success'))
             <div class="alert-success-box" role="alert">
                 <i class="fas fa-check-circle"></i>
                 {{ session('success') }}
@@ -68,7 +68,7 @@
                                     <span class="row-number">{{ $fasilitas->firstItem() + $index }}</span>
                                 </td>
                                 <td>
-                                    @if($item->foto)
+                                    @if ($item->foto)
                                         <img src="{{ asset('storage/' . $item->foto) }}" class="foto-thumb"
                                             alt="{{ $item->nama_fasilitas }}">
                                     @else
@@ -81,7 +81,7 @@
                                     <span class="nama-fasilitas">{{ $item->nama_fasilitas }}</span>
                                 </td>
                                 <td>
-                                    @if($item->kategori)
+                                    @if ($item->kategori)
                                         <span class="kategori-badge">{{ $item->kategori }}</span>
                                     @else
                                         <span class="text-empty">-</span>
@@ -92,7 +92,7 @@
                                 </td>
                                 <td>{!! $item->kondisi_badge !!}</td>
                                 <td>
-                                    @if($item->lokasi)
+                                    @if ($item->lokasi)
                                         <span class="lokasi-text">
                                             <i class="fas fa-map-marker-alt"></i>
                                             {{ $item->lokasi }}
@@ -111,12 +111,13 @@
                                             class="action-btn edit" title="Edit">
                                             <i class="fas fa-pencil-alt"></i>
                                         </a>
-                                        <form action="{{ route('admin.data-master.fasilitas.destroy', $item->id) }}"
-                                            method="POST" class="d-inline"
-                                            onsubmit="return confirm('Yakin ingin menghapus data ini?')">
+                                        <form id="deleteForm{{ $item->id }}"
+                                            action="{{ route('admin.data-master.fasilitas.destroy', $item->id) }}"
+                                            method="POST" class="d-inline">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="action-btn delete" title="Hapus">
+                                            <button type="button" class="action-btn delete"
+                                                onclick="openDeleteModal('{{ $item->id }}', '{{ addslashes($item->nama_fasilitas) }}')">
                                                 <i class="fas fa-trash-alt"></i>
                                             </button>
                                         </form>
@@ -132,7 +133,8 @@
                                         </div>
                                         <h3 class="empty-title">Belum ada data fasilitas</h3>
                                         <p class="empty-desc">Mulai dengan menambahkan fasilitas pertama.</p>
-                                        <a href="{{ route('admin.data-master.fasilitas.create') }}" class="btn-primary-action">
+                                        <a href="{{ route('admin.data-master.fasilitas.create') }}"
+                                            class="btn-primary-action">
                                             <i class="fas fa-plus"></i> Tambah Fasilitas
                                         </a>
                                     </div>
@@ -143,7 +145,7 @@
                 </table>
             </div>
 
-            @if($fasilitas->hasPages())
+            @if ($fasilitas->hasPages())
                 <div class="pagination-footer">
                     <p class="pagination-info">
                         Menampilkan
@@ -157,7 +159,53 @@
             @endif
         </div>
 
+        <!-- DELETE MODAL -->
+        <div id="deleteModal" class="modal-overlay">
+            <div class="modal-box">
+                <div class="modal-icon">
+                    <i class="fas fa-exclamation-triangle"></i>
+                </div>
+                <h3>Hapus Data</h3>
+                <p id="deleteText"></p>
+
+                <div class="modal-actions">
+                    <button class="btn-cancel" onclick="closeDeleteModal()">Batal</button>
+                    <button class="btn-delete" onclick="confirmDelete()">Hapus</button>
+                </div>
+            </div>
+        </div>
     </div>
+
+    <script>
+        let selectedForm = null;
+
+        function openDeleteModal(id, nama) {
+            selectedForm = document.getElementById('deleteForm' + id);
+            document.getElementById('deleteText').innerText =
+                `Yakin ingin menghapus "${nama}"?`;
+
+            document.getElementById('deleteModal').classList.add('show');
+        }
+
+        function closeDeleteModal() {
+            document.getElementById('deleteModal').classList.remove('show');
+            selectedForm = null;
+        }
+
+        function confirmDelete() {
+            if (selectedForm) {
+                selectedForm.submit();
+            }
+        }
+
+        // klik luar modal = close
+        window.onclick = function(e) {
+            const modal = document.getElementById('deleteModal');
+            if (e.target === modal) {
+                closeDeleteModal();
+            }
+        }
+    </script>
 
     <style>
         /* ===== BASE ===== */
@@ -612,6 +660,88 @@
             .page-wrapper {
                 padding: 20px 16px;
             }
+        }
+
+        /* ===== MODAL DELETE ===== */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.45);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 999;
+        }
+
+        .modal-overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-box {
+            background: #fff;
+            padding: 24px;
+            border-radius: 16px;
+            width: 320px;
+            text-align: center;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            transform: translateY(20px);
+            transition: all 0.3s ease;
+        }
+
+        .modal-overlay.show .modal-box {
+            transform: translateY(0);
+        }
+
+        .modal-icon {
+            font-size: 2rem;
+            color: #dc2626;
+            margin-bottom: 10px;
+        }
+
+        .modal-box h3 {
+            margin-bottom: 8px;
+            font-size: 1.2rem;
+            color: #222;
+        }
+
+        .modal-box p {
+            font-size: 0.9rem;
+            color: #555;
+            margin-bottom: 20px;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        .btn-cancel {
+            padding: 8px 16px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            background: #f4f4f4;
+            cursor: pointer;
+        }
+
+        .btn-delete {
+            padding: 8px 16px;
+            border-radius: 8px;
+            border: none;
+            background: #dc2626;
+            color: white;
+            cursor: pointer;
+        }
+
+        .btn-delete:hover {
+            background: #b91c1c;
         }
     </style>
 @endsection

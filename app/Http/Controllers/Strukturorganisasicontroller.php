@@ -23,15 +23,15 @@ class StrukturOrganisasiController extends Controller
         if ($request->filled('search')) {
             $query->where(function ($q) use ($request) {
                 $q->where('nama', 'like', '%' . $request->search . '%')
-                  ->orWhere('jabatan', 'like', '%' . $request->search . '%');
+                    ->orWhere('jabatan', 'like', '%' . $request->search . '%');
             });
         }
 
         $anggota = $query->orderBy('divisi')
-                         ->orderBy('urutan')
-                         ->orderBy('nama')
-                         ->paginate(10)
-                         ->withQueryString();
+            ->orderBy('urutan')
+            ->orderBy('nama')
+            ->paginate(10)
+            ->withQueryString();
 
         $stats = [
             'total'     => StrukturOrganisasi::count(),
@@ -59,39 +59,45 @@ class StrukturOrganisasiController extends Controller
         ]);
     }
 
-public function store(Request $request)
-{
-    $request->validate([
-        'nama'      => 'required|string|max:255',
-        'jabatan'   => 'required|string|max:255',
-        'divisi'    => 'required|in:pengurus,pengawas,pelaksana',
-        'urutan'    => 'nullable|integer|min:0',
-        'telepon'   => 'nullable|string|max:20',
-        'email'     => 'nullable|email|max:255',
-        'deskripsi' => 'nullable|string',
-        'status'    => 'nullable|in:aktif,nonaktif',
-        'foto'      => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
-    ]);
+    public function store(Request $request)
+    {
+        $request->validate([
+            'nama'      => 'required|string|max:255',
+            'jabatan'   => 'required|string|max:255',
+            'divisi'    => 'required|in:pengurus,pengawas,pelaksana',
+            'urutan'    => 'nullable|integer|min:0',
+            'telepon'   => 'nullable|string|max:20',
+            'email'     => 'nullable|email|max:255',
+            'deskripsi' => 'nullable|string',
+            'status'    => 'nullable|in:aktif,nonaktif',
+            'foto'      => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+        ]);
 
-    $data = $request->only([
-        'nama', 'jabatan', 'divisi', 'urutan',
-        'telepon', 'email', 'deskripsi', 'status',
-    ]);
+        $data = $request->only([
+            'nama',
+            'jabatan',
+            'divisi',
+            'urutan',
+            'telepon',
+            'email',
+            'deskripsi',
+            'status',
+        ]);
 
-    $data['urutan'] = $data['urutan'] ?? 0;
-    $data['status'] = $data['status'] ?? 'aktif';
+        $data['urutan'] = $data['urutan'] ?? 0;
+        $data['status'] = $data['status'] ?? 'aktif';
 
-    if ($request->hasFile('foto')) {
-        $data['foto'] = $request->file('foto')->store('struktur-organisasi', 'public');
+        if ($request->hasFile('foto')) {
+            $data['foto'] = $request->file('foto')->store('struktur-organisasi', 'public');
+        }
+
+        StrukturOrganisasi::create($data);
+
+        // PASTIKAN redirect ini menggunakan session flash
+        return redirect()
+            ->route('admin.data-master.struktur-organisasi.index')
+            ->with('success', 'Anggota organisasi berhasil ditambahkan!');
     }
-
-    StrukturOrganisasi::create($data);
-
-    // PASTIKAN redirect ini menggunakan session flash
-    return redirect()
-        ->route('admin.data-master.struktur-organisasi.index')
-        ->with('success', 'Anggota organisasi berhasil ditambahkan!');
-}
 
     public function show(StrukturOrganisasi $strukturOrganisasi)
     {
@@ -126,8 +132,14 @@ public function store(Request $request)
         ]);
 
         $data = $request->only([
-            'nama', 'jabatan', 'divisi', 'urutan',
-            'telepon', 'email', 'deskripsi', 'status',
+            'nama',
+            'jabatan',
+            'divisi',
+            'urutan',
+            'telepon',
+            'email',
+            'deskripsi',
+            'status',
         ]);
 
         $data['urutan'] = $data['urutan'] ?? 0;
@@ -163,6 +175,6 @@ public function store(Request $request)
 
         // PERBAIKI - redirect ke route yang benar
         return redirect()->route('admin.data-master.struktur-organisasi.index')
-            ->with('success', 'Anggota organisasi berhasil dihapus!');
+            ->with('success', 'Data struktur organisasi berhasil dihapus');
     }
 }

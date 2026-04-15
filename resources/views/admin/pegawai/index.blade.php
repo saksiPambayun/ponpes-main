@@ -190,14 +190,15 @@
                                             title="Edit">
                                             <i class="fas fa-edit text-sm"></i>
                                         </a>
-                                        <form action="{{ route('admin.pegawai.destroy', $p->id) }}" method="POST"
+                                        <form id="deleteForm-{{ $p->id }}"
+                                            action="{{ route('admin.pegawai.destroy', $p->id) }}" method="POST"
                                             class="inline">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit"
+                                            <button type="button"
+                                                onclick="openDeleteModal({{ $p->id }}, '{{ addslashes($p->nama) }}')"
                                                 class="p-2 text-[#005F02] hover:bg-[#fee2e2] rounded-lg transition hover:scale-110"
-                                                title="Hapus"
-                                                onclick="return confirm('Yakin ingin menghapus pegawai {{ addslashes($p->nama) }}?')">
+                                                title="Hapus">
                                                 <i class="fas fa-trash text-sm"></i>
                                             </button>
                                         </form>
@@ -233,14 +234,67 @@
             @endif
 
         </div>
+
+        <div id="deleteModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black bg-opacity-50">
+            <div class="bg-white rounded-xl shadow-xl w-full max-w-md mx-4">
+
+                <div class="p-6 border-b border-gray-200">
+                    <h3 class="text-lg font-bold text-gray-900">Hapus Pegawai</h3>
+                    <p class="text-sm text-gray-500 mt-1" id="deleteText">
+                        Yakin ingin menghapus data ini?
+                    </p>
+                </div>
+
+                <div class="p-6 border-t border-gray-200 flex justify-end gap-3">
+                    <button type="button" onclick="closeDeleteModal()"
+                        class="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg">
+                        Batal
+                    </button>
+
+                    <button type="button" onclick="submitDelete()"
+                        class="px-4 py-2 text-sm font-medium text-white bg-red-600 hover:bg-red-700 rounded-lg">
+                        <i class="fas fa-trash mr-1"></i> Hapus
+                    </button>
+                </div>
+
+            </div>
+        </div>
     </div>
 @endsection
 
-<style>
-    /* === GLOBAL SMOOTH === */
-    * {
-        transition: all 0.25s ease;
+<script>
+    let deleteId = null;
+
+    function openDeleteModal(id, nama) {
+        deleteId = id;
+
+        document.getElementById('deleteText').innerText =
+            `Yakin ingin menghapus pegawai "${nama}"? Tindakan ini tidak bisa dibatalkan.`;
+
+        const modal = document.getElementById('deleteModal');
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
     }
+
+    function closeDeleteModal() {
+        const modal = document.getElementById('deleteModal');
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+    }
+
+    function submitDelete() {
+        if (deleteId) {
+            document.getElementById('deleteForm-' + deleteId).submit();
+        }
+    }
+
+    // klik luar modal = close
+    document.getElementById('deleteModal').addEventListener('click', function (e) {
+        if (e.target === this) closeDeleteModal();
+    });
+</script>
+
+<style>
 
     /* === CARD STATISTIK === */
     .grid>div:hover {

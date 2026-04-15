@@ -34,10 +34,34 @@
         <div class="stats-grid">
             <?php
                 $stats = [
-                    ['label' => 'Total Gallery', 'val' => App\Models\Gallery::count(), 'icon' => 'fa-images', 'accent' => '#3b82f6', 'bg' => '#eff6ff'],
-                    ['label' => 'Kegiatan', 'val' => App\Models\Gallery::where('kategori', 'kegiatan')->count(), 'icon' => 'fa-calendar-check', 'accent' => '#10b981', 'bg' => '#f0fdf4'],
-                    ['label' => 'Prestasi', 'val' => App\Models\Gallery::where('kategori', 'prestasi')->count(), 'icon' => 'fa-trophy', 'accent' => '#f59e0b', 'bg' => '#fffbeb'],
-                    ['label' => 'Umum', 'val' => App\Models\Gallery::where('kategori', 'umum')->count(), 'icon' => 'fa-folder', 'accent' => '#8b5cf6', 'bg' => '#faf5ff'],
+                    [
+                        'label' => 'Total Gallery',
+                        'val' => App\Models\Gallery::count(),
+                        'icon' => 'fa-images',
+                        'accent' => '#005F02',
+                        'bg' => '#eef3ec',
+                    ],
+                    [
+                        'label' => 'Kegiatan',
+                        'val' => App\Models\Gallery::where('kategori', 'kegiatan')->count(),
+                        'icon' => 'fa-calendar-check',
+                        'accent' => '#4ca94d',
+                        'bg' => '#eef3ec',
+                    ],
+                    [
+                        'label' => 'Prestasi',
+                        'val' => App\Models\Gallery::where('kategori', 'prestasi')->count(),
+                        'icon' => 'fa-trophy',
+                        'accent' => '#8cbf73',
+                        'bg' => '#eef3ec',
+                    ],
+                    [
+                        'label' => 'Umum',
+                        'val' => App\Models\Gallery::where('kategori', 'umum')->count(),
+                        'icon' => 'fa-folder',
+                        'accent' => '#2e6b37',
+                        'bg' => '#eef3ec',
+                    ],
                 ];
             ?>
             <?php $__currentLoopData = $stats; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $s): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
@@ -127,7 +151,6 @@
                             <th>Judul</th>
                             <th>Kategori</th>
                             <th>Tanggal</th>
-                            <th class="text-center">Urutan</th>
                             <th class="text-center">Aksi</th>
                         </tr>
                     </thead>
@@ -168,10 +191,14 @@
                                             class="action-btn edit" title="Edit">
                                             <i class="fas fa-pencil-alt"></i>
                                         </a>
-                                        <form action="<?php echo e(route('admin.data-master.gallery.destroy', $item->id)); ?>" method="POST"
-                                            class="d-inline" onsubmit="return confirm('Yakin ingin menghapus gallery ini?')">
-                                            <?php echo csrf_field(); ?> <?php echo method_field('DELETE'); ?>
-                                            <button type="submit" class="action-btn delete" title="Hapus">
+                                        <form id="deleteForm<?php echo e($item->id); ?>"
+                                            action="<?php echo e(route('admin.data-master.gallery.destroy', $item->id)); ?>"
+                                            method="POST" class="d-inline">
+                                            <?php echo csrf_field(); ?>
+                                            <?php echo method_field('DELETE'); ?>
+
+                                            <button type="button" class="action-btn delete"
+                                                onclick="openDeleteModal('<?php echo e($item->id); ?>', '<?php echo e(addslashes($item->judul)); ?>')">
                                                 <i class="fas fa-trash-alt"></i>
                                             </button>
                                         </form>
@@ -181,14 +208,15 @@
                             </tr>
                         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
                             <tr>
-                                <td colspan="8">
+                                <td colspan="7">
                                     <div class="empty-state">
                                         <div class="empty-icon">
                                             <i class="fas fa-images"></i>
                                         </div>
                                         <h3 class="empty-title">Belum ada data gallery</h3>
                                         <p class="empty-desc">Mulai dengan menambahkan foto pertama ke gallery.</p>
-                                        <a href="<?php echo e(route('admin.data-master.gallery.create')); ?>" class="btn-primary-action">
+                                        <a href="<?php echo e(route('admin.data-master.gallery.create')); ?>"
+                                            class="btn-primary-action">
                                             <i class="fas fa-plus"></i> Tambah Gallery
                                         </a>
                                     </div>
@@ -213,20 +241,58 @@
                 </div>
             <?php endif; ?>
         </div>
+        <!-- DELETE MODAL -->
+        <div id="deleteModal" class="modal-overlay">
+            <div class="modal-box">
+                <div class="modal-icon">
+                    <i class="fas fa-exclamation-triangle"></i>
+                </div>
+                <h3>Hapus Data</h3>
+                <p id="deleteText"></p>
 
+                <div class="modal-actions">
+                    <button class="btn-cancel" onclick="closeDeleteModal()">Batal</button>
+                    <button class="btn-delete" onclick="confirmDelete()">Hapus</button>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <style>
-        /* ===== BASE ===== */
-        *,
-        *::before,
-        *::after {
-            box-sizing: border-box;
+    <script>
+        let selectedForm = null;
+
+        function openDeleteModal(id, nama) {
+            selectedForm = document.getElementById('deleteForm' + id);
+            document.getElementById('deleteText').innerText =
+                `Yakin ingin menghapus "${nama}"?`;
+
+            document.getElementById('deleteModal').classList.add('show');
         }
+
+        function closeDeleteModal() {
+            document.getElementById('deleteModal').classList.remove('show');
+            selectedForm = null;
+        }
+
+        function confirmDelete() {
+            if (selectedForm) {
+                selectedForm.submit();
+            }
+        }
+
+        window.onclick = function(e) {
+            const modal = document.getElementById('deleteModal');
+            if (e.target === modal) {
+                closeDeleteModal();
+            }
+        }
+    </script>
+
+    <style>
 
         .page-wrapper {
             padding: 28px 32px;
-            background: #f8fafc;
+            background: #f4f4f4;
             min-height: 100vh;
             font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
         }
@@ -250,7 +316,7 @@
         .header-icon {
             width: 48px;
             height: 48px;
-            background: #1e3a5f;
+            background: linear-gradient(135deg, #005F02, #0f4d1c);
             border-radius: 12px;
             display: flex;
             align-items: center;
@@ -263,7 +329,7 @@
         .page-title {
             font-size: 1.5rem;
             font-weight: 700;
-            color: #0f172a;
+            color: #222;
             margin: 0 0 4px;
             line-height: 1.2;
         }
@@ -273,25 +339,25 @@
             align-items: center;
             gap: 6px;
             font-size: 0.8rem;
-            color: #64748b;
+            color: #2d2d2d;
         }
 
         .breadcrumb-link {
-            color: #64748b;
+            color: #2d2d2d;
             text-decoration: none;
         }
 
         .breadcrumb-link:hover {
-            color: #3b82f6;
+            color: #005F02;
         }
 
         .breadcrumb-sep {
             font-size: 0.6rem;
-            color: #cbd5e1;
+            color: #8cbf73;
         }
 
         .breadcrumb-current {
-            color: #1e3a5f;
+            color: #005F02;
             font-weight: 600;
         }
 
@@ -306,7 +372,7 @@
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            background: #1e3a5f;
+            background: linear-gradient(135deg, #005F02, #0f4d1c);
             color: #fff;
             border: none;
             border-radius: 10px;
@@ -315,11 +381,11 @@
             font-weight: 600;
             text-decoration: none;
             cursor: pointer;
-            transition: background 0.2s, transform 0.1s;
+            transition: all 0.2s;
         }
 
         .btn-primary-action:hover {
-            background: #1a3252;
+            background: linear-gradient(135deg, #0d4f14, #0f4d1c);
             color: #fff;
             transform: translateY(-1px);
         }
@@ -329,19 +395,20 @@
             align-items: center;
             gap: 8px;
             background: #fff;
-            color: #475569;
-            border: 1px solid #e2e8f0;
+            color: #2d2d2d;
+            border: 1px solid #dfe8d8;
             border-radius: 10px;
             padding: 10px 18px;
             font-size: 0.875rem;
             font-weight: 600;
             text-decoration: none;
             cursor: pointer;
-            transition: background 0.2s;
+            transition: all 0.2s;
         }
 
         .btn-secondary-action:hover {
-            background: #f1f5f9;
+            background: #eef3ec;
+            border-color: #8cbf73;
         }
 
         /* ===== STATS ===== */
@@ -366,20 +433,20 @@
 
         .stat-card {
             background: #fff;
-            border-radius: 14px;
+            border-radius: 20px;
             padding: 20px;
             display: flex;
             align-items: center;
             gap: 16px;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
-            border: 1px solid #f1f5f9;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.06);
+            border: 1px solid #dfe8d8;
             position: relative;
             overflow: hidden;
             transition: box-shadow 0.2s;
         }
 
         .stat-card:hover {
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
         }
 
         .stat-bar {
@@ -388,7 +455,7 @@
             top: 0;
             bottom: 0;
             width: 4px;
-            border-radius: 14px 0 0 14px;
+            border-radius: 20px 0 0 20px;
         }
 
         .stat-icon {
@@ -411,7 +478,7 @@
         .stat-label {
             font-size: 0.72rem;
             font-weight: 700;
-            color: #64748b;
+            color: #2d2d2d;
             text-transform: uppercase;
             letter-spacing: 0.05em;
         }
@@ -419,7 +486,7 @@
         .stat-value {
             font-size: 1.75rem;
             font-weight: 800;
-            color: #0f172a;
+            color: #222;
             line-height: 1;
         }
 
@@ -428,23 +495,23 @@
             display: flex;
             align-items: center;
             gap: 10px;
-            background: #f0fdf4;
-            border: 1px solid #bbf7d0;
-            border-left: 4px solid #10b981;
+            background: #eef3ec;
+            border: 1px solid #8cbf73;
+            border-left: 4px solid #005F02;
             border-radius: 10px;
             padding: 12px 16px;
             margin-bottom: 20px;
             font-size: 0.875rem;
-            color: #15803d;
+            color: #0d4f14;
             font-weight: 500;
         }
 
         /* ===== SECTION CARD ===== */
         .section-card {
             background: #fff;
-            border-radius: 14px;
-            border: 1px solid #f1f5f9;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+            border-radius: 20px;
+            border: 1px solid #dfe8d8;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.06);
             overflow: hidden;
             margin-bottom: 24px;
         }
@@ -454,7 +521,8 @@
             align-items: center;
             justify-content: space-between;
             padding: 18px 24px;
-            border-bottom: 1px solid #f1f5f9;
+            border-bottom: 1px solid #dfe8d8;
+            background: #eef3ec;
         }
 
         .section-card-title {
@@ -463,11 +531,11 @@
             gap: 8px;
             font-size: 0.9rem;
             font-weight: 700;
-            color: #0f172a;
+            color: #222;
         }
 
         .section-card-title i {
-            color: #64748b;
+            color: #005F02;
         }
 
         .section-card-body {
@@ -477,10 +545,11 @@
         .total-badge {
             font-size: 0.78rem;
             font-weight: 600;
-            background: #f1f5f9;
-            color: #475569;
+            background: #fff;
+            color: #005F02;
             border-radius: 20px;
             padding: 4px 12px;
+            border: 1px solid #dfe8d8;
         }
 
         /* ===== FILTER ===== */
@@ -502,7 +571,7 @@
         .filter-label {
             font-size: 0.72rem;
             font-weight: 700;
-            color: #64748b;
+            color: #2d2d2d;
             text-transform: uppercase;
             letter-spacing: 0.04em;
         }
@@ -516,7 +585,7 @@
             left: 12px;
             top: 50%;
             transform: translateY(-50%);
-            color: #94a3b8;
+            color: #8cbf73;
             font-size: 0.8rem;
             pointer-events: none;
         }
@@ -525,10 +594,10 @@
         .form-select {
             width: 100%;
             padding: 9px 12px;
-            border: 1px solid #e2e8f0;
-            border-radius: 8px;
+            border: 1px solid #dfe8d8;
+            border-radius: 10px;
             font-size: 0.875rem;
-            color: #0f172a;
+            color: #333;
             background: #fff;
             outline: none;
             transition: border-color 0.2s, box-shadow 0.2s;
@@ -541,49 +610,50 @@
 
         .form-input:focus,
         .form-select:focus {
-            border-color: #3b82f6;
-            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+            border-color: #005F02;
+            box-shadow: 0 0 0 3px rgba(0, 95, 2, 0.12);
         }
 
         .btn-filter {
             display: inline-flex;
             align-items: center;
             gap: 6px;
-            background: #1e3a5f;
+            background: linear-gradient(135deg, #005F02, #0f4d1c);
             color: #fff;
             border: none;
-            border-radius: 8px;
+            border-radius: 10px;
             padding: 9px 18px;
             font-size: 0.875rem;
             font-weight: 600;
             cursor: pointer;
-            transition: background 0.2s;
+            transition: all 0.2s;
             white-space: nowrap;
         }
 
         .btn-filter:hover {
-            background: #1a3252;
+            background: linear-gradient(135deg, #0d4f14, #0f4d1c);
         }
 
         .btn-reset {
             display: inline-flex;
             align-items: center;
             gap: 6px;
-            background: #f1f5f9;
-            color: #475569;
-            border: 1px solid #e2e8f0;
-            border-radius: 8px;
+            background: #f4f4f4;
+            color: #2d2d2d;
+            border: 1px solid #dfe8d8;
+            border-radius: 10px;
             padding: 9px 14px;
             font-size: 0.875rem;
             font-weight: 600;
             text-decoration: none;
-            transition: background 0.2s;
+            transition: all 0.2s;
             white-space: nowrap;
         }
 
         .btn-reset:hover {
-            background: #e2e8f0;
-            color: #334155;
+            background: #eef3ec;
+            border-color: #8cbf73;
+            color: #005F02;
         }
 
         /* ===== TABLE ===== */
@@ -598,15 +668,15 @@
         }
 
         .data-table thead tr {
-            background: #f8fafc;
-            border-bottom: 1px solid #e2e8f0;
+            background: #f4f4f4;
+            border-bottom: 1px solid #dfe8d8;
         }
 
         .data-table th {
             padding: 12px 16px;
             font-size: 0.72rem;
             font-weight: 700;
-            color: #64748b;
+            color: #2d2d2d;
             text-transform: uppercase;
             letter-spacing: 0.05em;
             white-space: nowrap;
@@ -614,8 +684,8 @@
 
         .data-table td {
             padding: 14px 16px;
-            border-bottom: 1px solid #f1f5f9;
-            color: #334155;
+            border-bottom: 1px solid #dfe8d8;
+            color: #333;
             vertical-align: middle;
         }
 
@@ -624,7 +694,7 @@
         }
 
         .data-table tbody tr:hover td {
-            background: #f8fafc;
+            background: #eef3ec;
         }
 
         .th-no {
@@ -650,8 +720,8 @@
             justify-content: center;
             width: 32px;
             height: 32px;
-            background: #f1f5f9;
-            color: #475569;
+            background: #eef3ec;
+            color: #005F02;
             border-radius: 8px;
             font-size: 0.8rem;
             font-weight: 700;
@@ -663,41 +733,31 @@
             height: 52px;
             object-fit: cover;
             border-radius: 10px;
-            border: 1px solid #e2e8f0;
+            border: 1px solid #dfe8d8;
             display: block;
         }
 
         .foto-empty {
             width: 52px;
             height: 52px;
-            background: #f1f5f9;
+            background: #eef3ec;
             border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: #cbd5e1;
+            color: #8cbf73;
             font-size: 1.1rem;
         }
 
         /* ===== CELLS ===== */
         .item-title {
             font-weight: 600;
-            color: #0f172a;
+            color: #222;
         }
 
         .date-text {
             font-size: 0.82rem;
-            color: #64748b;
-        }
-
-        .urutan-badge {
-            display: inline-block;
-            background: #f1f5f9;
-            color: #475569;
-            border-radius: 8px;
-            padding: 4px 12px;
-            font-size: 0.82rem;
-            font-weight: 700;
+            color: #2d2d2d;
         }
 
         /* ===== ACTION BUTTONS ===== */
@@ -719,7 +779,7 @@
             cursor: pointer;
             font-size: 0.8rem;
             text-decoration: none;
-            transition: background 0.15s, transform 0.1s;
+            transition: all 0.15s;
             background: transparent;
         }
 
@@ -728,48 +788,31 @@
         }
 
         .action-btn.view {
-            background: #dbeafe;
-            color: #1d4ed8;
+            background: #eef3ec;
+            color: #005F02;
         }
 
         .action-btn.edit {
-            background: #fef9c3;
-            color: #92400e;
+            background: #dfe8d8;
+            color: #0d4f14;
         }
 
         .action-btn.delete {
-            background: #fee2e2;
-            color: #b91c1c;
-        }
-
-        .action-btn.toggle-on {
-            background: #dcfce7;
-            color: #15803d;
-        }
-
-        .action-btn.toggle-off {
-            background: #f1f5f9;
-            color: #64748b;
+            background: #fef2f2;
+            color: #dc2626;
         }
 
         .action-btn.view:hover {
-            background: #bfdbfe;
+            background: #dfe8d8;
         }
 
         .action-btn.edit:hover {
-            background: #fef08a;
+            background: #8cbf73;
+            color: #fff;
         }
 
         .action-btn.delete:hover {
             background: #fecaca;
-        }
-
-        .action-btn.toggle-on:hover {
-            background: #bbf7d0;
-        }
-
-        .action-btn.toggle-off:hover {
-            background: #e2e8f0;
         }
 
         /* ===== EMPTY STATE ===== */
@@ -781,26 +824,26 @@
         .empty-icon {
             width: 72px;
             height: 72px;
-            background: #f1f5f9;
+            background: #eef3ec;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             margin: 0 auto 16px;
             font-size: 1.8rem;
-            color: #94a3b8;
+            color: #8cbf73;
         }
 
         .empty-title {
             font-size: 1.05rem;
             font-weight: 700;
-            color: #334155;
+            color: #222;
             margin: 0 0 8px;
         }
 
         .empty-desc {
             font-size: 0.875rem;
-            color: #94a3b8;
+            color: #2d2d2d;
             margin: 0 0 20px;
         }
 
@@ -812,17 +855,18 @@
             flex-wrap: wrap;
             gap: 12px;
             padding: 16px 24px;
-            border-top: 1px solid #f1f5f9;
+            border-top: 1px solid #dfe8d8;
+            background: #eef3ec;
         }
 
         .pagination-info {
             font-size: 0.82rem;
-            color: #64748b;
+            color: #2d2d2d;
             margin: 0;
         }
 
         .pagination-info strong {
-            color: #0f172a;
+            color: #005F02;
         }
 
         .pagination {
@@ -830,8 +874,8 @@
         }
 
         .pagination .page-link {
-            border: 1px solid #e2e8f0;
-            color: #334155;
+            border: 1px solid #dfe8d8;
+            color: #2d2d2d;
             padding: 6px 12px;
             border-radius: 8px;
             font-size: 0.82rem;
@@ -842,13 +886,14 @@
         }
 
         .pagination .page-link:hover {
-            background: #f1f5f9;
-            border-color: #cbd5e1;
+            background: #eef3ec;
+            border-color: #8cbf73;
+            color: #005F02;
         }
 
         .pagination .page-item.active .page-link {
-            background: #1e3a5f;
-            border-color: #1e3a5f;
+            background: linear-gradient(135deg, #005F02, #0f4d1c);
+            border-color: #005F02;
             color: #fff;
         }
 
@@ -862,10 +907,195 @@
             display: inline;
         }
 
+        /* ===== HEADER ICON ===== */
+        .header-icon {
+            transition: all 0.3s ease;
+        }
+
+        .header-icon:hover {
+            transform: scale(1.08) rotate(3deg);
+        }
+
+        /* ===== BUTTON IMPROVE ===== */
+        .btn-primary-action:hover,
+        .btn-secondary-action:hover,
+        .btn-filter:hover,
+        .btn-reset:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+        }
+
+        /* ===== STAT CARD (LEBIH HIDUP) ===== */
+        .stat-card {
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.12);
+        }
+
+        .stat-icon {
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover .stat-icon {
+            transform: scale(1.1);
+        }
+
+        /* ===== SECTION CARD ===== */
+        .section-card {
+            transition: all 0.3s ease;
+        }
+
+        .section-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        /* ===== TABLE ROW ===== */
+        .data-table tbody tr {
+            transition: all 0.2s ease;
+        }
+
+        .data-table tbody tr:hover td {
+            background: #eef3ec;
+            transform: scale(1.002);
+        }
+
+        /* ===== FOTO HOVER ===== */
+        .foto-thumb {
+            transition: all 0.3s ease;
+        }
+
+        .foto-thumb:hover {
+            transform: scale(1.1);
+        }
+
+        /* ===== ACTION BUTTON ===== */
+        .action-btn {
+            transition: all 0.2s ease;
+        }
+
+        .action-btn:hover {
+            transform: translateY(-2px) scale(1.05);
+        }
+
+        /* ===== EMPTY ICON ===== */
+        .empty-icon {
+            transition: all 0.3s ease;
+        }
+
+        .empty-icon:hover {
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        /* ===== INPUT FOCUS LEBIH HALUS ===== */
+        .form-input:focus,
+        .form-select:focus {
+            transform: scale(1.02);
+        }
+
+        /* ===== PAGINATION ===== */
+        .pagination .page-link {
+            transition: all 0.2s ease;
+        }
+
+        .pagination .page-link:hover {
+            transform: translateY(-1px);
+        }
+
+        /* ===== SMOOTH SCROLL (BONUS) ===== */
+        html {
+            scroll-behavior: smooth;
+        }
+
         @media (max-width: 640px) {
             .page-wrapper {
                 padding: 20px 16px;
             }
+        }
+
+        /* ===== MODAL DELETE ===== */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.45);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 999;
+        }
+
+        .modal-overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-box {
+            background: #fff;
+            padding: 24px;
+            border-radius: 16px;
+            width: 320px;
+            text-align: center;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            transform: translateY(20px);
+            transition: all 0.3s ease;
+        }
+
+        .modal-overlay.show .modal-box {
+            transform: translateY(0);
+        }
+
+        .modal-icon {
+            font-size: 2rem;
+            color: #dc2626;
+            margin-bottom: 10px;
+        }
+
+        .modal-box h3 {
+            margin-bottom: 8px;
+            font-size: 1.2rem;
+            color: #222;
+        }
+
+        .modal-box p {
+            font-size: 0.9rem;
+            color: #555;
+            margin-bottom: 20px;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        .btn-cancel {
+            padding: 8px 16px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            background: #f4f4f4;
+            cursor: pointer;
+        }
+
+        .btn-delete {
+            padding: 8px 16px;
+            border-radius: 8px;
+            border: none;
+            background: #dc2626;
+            color: white;
+            cursor: pointer;
+        }
+
+        .btn-delete:hover {
+            background: #b91c1c;
         }
     </style>
 <?php $__env->stopSection(); ?>

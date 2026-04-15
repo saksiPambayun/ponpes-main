@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 <html lang="id">
 
@@ -10,15 +8,30 @@
     <title><?php echo $__env->yieldContent('title', 'Admin Dashboard'); ?> - Yayasan Management</title>
 
     <script src="https://cdn.tailwindcss.com"></script>
-
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+        :root {
+            --green-main: #005F02;
+            --green-dark: #0d4f14;
+            --green-darker: #0f4d1c;
+            --green-medium: #2e6b37;
+            --green-light: #4ca94d;
+            --green-soft: #8cbf73;
+            --bg-light: #f4f4f4;
+            --bg-soft: #eef3ec;
+            --bg-section: #dfe8d8;
+            --text-main: #333;
+            --text-dark: #222;
+            --text-muted: #2d2d2d;
+            --white: #ffffff;
+            --shadow-soft: rgba(0, 0, 0, 0.1);
+            --shadow-medium: rgba(0, 0, 0, 0.15);
+        }
 
         * {
             margin: 0;
@@ -28,11 +41,12 @@
 
         body {
             font-family: 'Inter', sans-serif;
-            background: #f2f4ef;
+            background: var(--bg-soft);
         }
 
+        /* ===== SIDEBAR ===== */
         .sidebar {
-            background: linear-gradient(180deg, #188c1a 0%, #0d4f14 100%);
+            background: linear-gradient(180deg, var(--green-main) 0%, var(--green-dark) 100%);
             transition: all 0.3s ease;
         }
 
@@ -44,14 +58,14 @@
 
         .sidebar-item:hover {
             background: rgba(255, 255, 255, 0.15);
-            border-left-color: #ffffff;
+            border-left-color: var(--white);
             transform: translateX(8px);
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
         }
 
         .sidebar-item.active {
             background: rgba(255, 255, 255, 0.2);
-            border-left-color: #ffffff;
+            border-left-color: var(--white);
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
         }
 
@@ -63,28 +77,27 @@
             transform: scale(1.1);
         }
 
+        /* ===== MAIN CONTENT ===== */
         .main-content {
             transition: all 0.3s ease;
         }
 
+        /* ===== CARDS ===== */
         .card {
-            background: #ffffff;
-            border-radius: 12px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            background: var(--white);
+            border-radius: 16px;
+            box-shadow: 0 2px 8px var(--shadow-soft);
             transition: all 0.3s ease;
         }
 
         .card:hover {
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+            box-shadow: 0 8px 25px var(--shadow-medium);
             transform: translateY(-4px);
         }
 
-        .stat-card::before {
-            background: #4ca94d;
-        }
-
+        /* ===== BUTTONS ===== */
         .btn-primary {
-            background: linear-gradient(135deg, #005F02 0%, #4ca94d 100%);
+            background: linear-gradient(135deg, var(--green-main) 0%, var(--green-light) 100%);
             transition: all 0.3s ease;
         }
 
@@ -93,11 +106,17 @@
             box-shadow: 0 4px 12px rgba(0, 95, 2, 0.4);
         }
 
+        /* ===== TABLES ===== */
+        .table-row {
+            transition: all 0.2s ease;
+        }
+
         .table-row:hover {
-            background: #eef3ec;
+            background: var(--bg-soft);
             transform: scale(1.01);
         }
 
+        /* ===== BADGES ===== */
         .badge-pending {
             background: #fef3c7;
             color: #92400e;
@@ -113,13 +132,58 @@
             color: #991b1b;
         }
 
+        /* ===== OVERLAY ===== */
         .overlay {
             background: rgba(0, 0, 0, 0.5);
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 999;
         }
 
+        .overlay.active {
+            display: block;
+        }
+
+        /* ===== INPUT FIELDS ===== */
         .input-field:focus {
-            border-color: #4ca94d;
+            border-color: var(--green-light);
             box-shadow: 0 0 0 3px rgba(76, 169, 77, 0.2);
+        }
+
+        /* ===== MOBILE RESPONSIVE ===== */
+        .mobile-menu-btn {
+            display: none;
+        }
+
+        @media (max-width: 1024px) {
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .sidebar {
+                position: fixed;
+                left: -280px;
+                top: 0;
+                height: 100vh;
+                z-index: 1000;
+            }
+
+            .sidebar.open {
+                left: 0;
+            }
+
+            .main-content {
+                margin-left: 0 !important;
+            }
+        }
+
+        /* ===== ALERT ANIMATION ===== */
+        [role="alert"] {
+            transition: opacity 0.5s ease;
         }
     </style>
 
@@ -130,21 +194,23 @@
     <div class="flex h-screen overflow-hidden">
         <div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
 
+        <!-- SIDEBAR -->
         <aside class="sidebar w-72 flex flex-col shadow-2xl" id="sidebar">
             <div class="h-20 flex items-center justify-center border-b border-green-300/30 px-6">
                 <div class="flex items-center space-x-3">
-                    <div class="w-10 h-10 bg-white/100 rounded-lg flex items-center justify-center overflow-hidden">
-                        <img src="<?php echo e(asset('images/logoo.png')); ?>" class="w-9 h-9 object-contain">
+                    <div class="w-10 h-10 bg-white rounded-lg flex items-center justify-center overflow-hidden">
+                        <img src="<?php echo e(asset('images/logoo.png')); ?>" class="w-9 h-9 object-contain" alt="Logo">
                     </div>
                     <div>
                         <h1 class="text-xl font-bold text-white">Pondok Pesantren</h1>
-                        <h1 class="text-xl font-bold text-white">Al ifadah</h1>
+                        <h1 class="text-xl font-bold text-white">Al Ifadah</h1>
                     </div>
                 </div>
             </div>
 
             <nav class="flex-1 overflow-y-auto py-6 px-4">
 
+                <!-- MAIN MENU -->
                 <div class="mb-6">
                     <p class="text-xs font-semibold text-green-200 uppercase tracking-wider mb-3 px-3">Main Menu</p>
                     <a href="<?php echo e(route('admin.dashboard')); ?>"
@@ -157,6 +223,7 @@
                     </a>
                 </div>
 
+                <!-- PENDAFTARAN -->
                 <div class="mb-6">
                     <p class="text-xs font-semibold text-green-200 uppercase tracking-wider mb-3 px-3">Pendaftaran</p>
                     <a href="<?php echo e(route('admin.santri.index')); ?>"
@@ -175,11 +242,12 @@
                         ?>
                         <?php if($pendingCount > 0): ?>
                             <span
-                                class="ml-auto bg-[#4ca94d] text-white text-xs px-2 py-0.5 rounded-full"><?php echo e($pendingCount); ?></span>
+                                class="ml-auto bg-green-500 text-white text-xs px-2 py-0.5 rounded-full"><?php echo e($pendingCount); ?></span>
                         <?php endif; ?>
                     </a>
                 </div>
 
+                <!-- KEPEGAWAIAN -->
                 <div class="mb-6">
                     <p class="text-xs font-semibold text-green-200 uppercase tracking-wider mb-3 px-3">Kepegawaian</p>
                     <a href="<?php echo e(route('admin.pegawai.index')); ?>"
@@ -192,12 +260,10 @@
                     </a>
                 </div>
 
+                <!-- DATA MASTER -->
                 <div class="mb-6">
-                    <p class="text-xs font-semibold text-green-200 uppercase tracking-wider mb-3 px-3">
-                        Data Master
-                    </p>
+                    <p class="text-xs font-semibold text-green-200 uppercase tracking-wider mb-3 px-3">Data Master</p>
 
-                    <!-- Profil Yayasan -->
                     <a href="<?php echo e(route('admin.data-master.profil-yayasan')); ?>"
                         class="sidebar-item flex items-center px-4 py-3 text-green-100 rounded-lg mb-1">
                         <div
@@ -207,7 +273,6 @@
                         <span class="font-medium">Profil Yayasan</span>
                     </a>
 
-                    <!-- Struktur Organisasi -->
                     <a href="<?php echo e(route('admin.data-master.struktur-organisasi.index')); ?>"
                         class="sidebar-item flex items-center px-4 py-3 text-green-100 rounded-lg mb-1">
                         <div
@@ -217,7 +282,6 @@
                         <span class="font-medium">Struktur Organisasi</span>
                     </a>
 
-                    <!-- Fasilitas -->
                     <a href="<?php echo e(route('admin.data-master.fasilitas.index')); ?>"
                         class="sidebar-item flex items-center px-4 py-3 text-green-100 rounded-lg mb-1">
                         <div
@@ -227,7 +291,6 @@
                         <span class="font-medium">Fasilitas</span>
                     </a>
 
-                    <!-- Gallery -->
                     <a href="<?php echo e(route('admin.data-master.gallery.index')); ?>"
                         class="sidebar-item flex items-center px-4 py-3 text-green-100 rounded-lg mb-1">
                         <div
@@ -237,7 +300,6 @@
                         <span class="font-medium">Gallery</span>
                     </a>
 
-                    <!-- Program -->
                     <a href="<?php echo e(route('admin.program.index')); ?>"
                         class="sidebar-item flex items-center px-4 py-3 text-green-100 rounded-lg mb-1">
                         <div
@@ -248,12 +310,10 @@
                     </a>
                 </div>
 
+                <!-- DOKUMEN LEGAL -->
                 <div class="mb-6">
-                    <p class="text-xs font-semibold text-green-200 uppercase tracking-wider mb-3 px-3">
-                        Dokumen Legal
-                    </p>
+                    <p class="text-xs font-semibold text-green-200 uppercase tracking-wider mb-3 px-3">Dokumen Legal</p>
 
-                    <!-- SK -->
                     <a href="<?php echo e(route('admin.sk.index')); ?>"
                         class="sidebar-item flex items-center px-4 py-3 text-green-100 rounded-lg mb-1 <?php echo e(request()->routeIs('admin.sk.*') ? 'active' : ''); ?>">
                         <div
@@ -263,7 +323,6 @@
                         <span class="font-medium">Data SK</span>
                     </a>
 
-                    <!-- Akta Yayasan -->
                     <a href="<?php echo e(route('admin.akta-yayasan.index')); ?>"
                         class="sidebar-item flex items-center px-4 py-3 text-green-100 rounded-lg mb-1 <?php echo e(request()->routeIs('admin.akta-yayasan.*') ? 'active' : ''); ?>">
                         <div
@@ -273,7 +332,6 @@
                         <span class="font-medium">Akta Yayasan</span>
                     </a>
 
-                    <!-- Akta Wakaf -->
                     <a href="<?php echo e(route('admin.akta-wakaf.index')); ?>"
                         class="sidebar-item flex items-center px-4 py-3 text-green-100 rounded-lg mb-1 <?php echo e(request()->routeIs('admin.akta-wakaf.*') ? 'active' : ''); ?>">
                         <div
@@ -286,12 +344,13 @@
 
             </nav>
 
+            <!-- LOGOUT BUTTON -->
             <div class="p-4 border-t border-green-300/30">
                 <form action="<?php echo e(route('logout')); ?>" method="POST">
                     <?php echo csrf_field(); ?>
                     <button type="submit"
                         class="flex items-center w-full px-4 py-3 text-green-200 hover:text-white transition rounded-lg hover:bg-white/10">
-                        <div class="w-10 h-10 rounded-lg bg-[#4ca94d]/20 flex items-center justify-center mr-3">
+                        <div class="w-10 h-10 rounded-lg bg-green-500/20 flex items-center justify-center mr-3">
                             <i class="fas fa-sign-out-alt"></i>
                         </div>
                         <span class="font-medium">Logout</span>
@@ -300,17 +359,60 @@
             </div>
         </aside>
 
-        <main class="main-content flex-1 overflow-x-hidden overflow-y-auto bg-[#eef3ec]">
+        <!-- MAIN CONTENT -->
+        <main class="main-content flex-1 overflow-x-hidden overflow-y-auto" style="background: var(--bg-soft);">
             <header class="bg-white shadow-sm h-20 flex items-center justify-between px-8 sticky top-0 z-50">
-                <h2 class="text-2xl font-bold text-[#2d2d2d]"><?php echo $__env->yieldContent('page-title', 'Dashboard'); ?></h2>
+                <div class="flex items-center space-x-4">
+                    <button class="mobile-menu-btn p-2 rounded-lg hover:bg-gray-100" onclick="toggleSidebar()">
+                        <i class="fas fa-bars text-gray-600 text-xl"></i>
+                    </button>
+                    <h2 class="text-2xl font-bold" style="color: var(--text-dark);"><?php echo $__env->yieldContent('page-title', 'Dashboard'); ?>
+                    </h2>
+                </div>
+                <div class="flex items-center space-x-3">
+                    <div class="text-right">
+                        <p class="text-sm font-semibold" style="color: var(--text-dark);">
+                            <?php echo e(auth()->user()?->name ?? 'Administrator'); ?>
+
+                        </p>
+                        <p class="text-xs" style="color: var(--text-muted);">
+                            <?php echo e(ucfirst(auth()->user()?->role ?? 'Admin')); ?></p>
+                    </div>
+                    <div class="h-12 w-12 rounded-full bg-gradient-to-br flex items-center justify-center text-white font-bold shadow-lg"
+                        style="background: linear-gradient(135deg, var(--green-main), var(--green-dark));">
+                        <?php echo e(substr(auth()->user()?->name ?? 'AD', 0, 2)); ?>
+
+                    </div>
+                </div>
             </header>
 
             <div class="container mx-auto px-8 py-8">
+                <?php if(session('success')): ?>
+                    <div class="bg-green-100 border border-green-400 text-green-700 px-6 py-4 rounded-lg relative mb-6"
+                        role="alert">
+                        <span class="block sm:inline"><?php echo e(session('success')); ?></span>
+                        <span class="absolute top-0 bottom-0 right-0 px-4 py-3 cursor-pointer"
+                            onclick="this.parentElement.remove()">
+                            <i class="fas fa-times"></i>
+                        </span>
+                    </div>
+                <?php endif; ?>
+
+                <?php if(session('error')): ?>
+                    <div class="bg-red-100 border border-red-400 text-red-700 px-6 py-4 rounded-lg relative mb-6"
+                        role="alert">
+                        <span class="block sm:inline"><?php echo e(session('error')); ?></span>
+                        <span class="absolute top-0 bottom-0 right-0 px-4 py-3 cursor-pointer"
+                            onclick="this.parentElement.remove()">
+                            <i class="fas fa-times"></i>
+                        </span>
+                    </div>
+                <?php endif; ?>
+
                 <?php echo $__env->yieldContent('content'); ?>
             </div>
         </main>
     </div>
-
 
     <script>
         function toggleSidebar() {
@@ -323,11 +425,10 @@
         }
 
         // Auto-hide alerts after 5 seconds
-        setTimeout(function() {
+        setTimeout(function () {
             const alerts = document.querySelectorAll('[role="alert"]');
             alerts.forEach(alert => {
                 alert.style.opacity = '0';
-                alert.style.transition = 'opacity 0.5s';
                 setTimeout(() => alert.remove(), 500);
             });
         }, 5000);
@@ -337,5 +438,4 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
-</html>
-<?php /**PATH C:\laragon\www\ponpes-main\resources\views/admin/layout.blade.php ENDPATH**/ ?>
+</html><?php /**PATH C:\laragon\www\ponpes-main\resources\views/admin/layout.blade.php ENDPATH**/ ?>

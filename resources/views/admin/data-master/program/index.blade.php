@@ -48,7 +48,7 @@
         </div>
 
         {{-- Alert Success --}}
-        @if(session('success'))
+        @if (session('success'))
             <div class="alert-success-box"
                 style="display: flex; align-items: center; gap: 0.75rem; background: #eef3ec; border-left: 4px solid #005F02; padding: 0.75rem 1rem; border-radius: 10px; margin-bottom: 1rem;">
                 <i class="fas fa-check-circle" style="color: #005F02;"></i>
@@ -94,7 +94,8 @@
                     <tbody class="bg-white divide-y divide-gray-200" id="programTable" style="border-color: #dfe8d8;">
                         @forelse($programs as $item)
                             <tr class="hover:bg-gray-50" style="border-bottom: 1px solid #dfe8d8;"
-                                onmouseover="this.style.background='#eef3ec'" onmouseout="this.style.background='transparent'">
+                                onmouseover="this.style.background='#eef3ec'"
+                                onmouseout="this.style.background='transparent'">
                                 <td class="px-4 py-4" style="padding: 14px 16px;">
                                     <div class="flex items-center gap-3">
                                         <div class="w-9 h-9 rounded-full flex items-center justify-center font-bold text-sm"
@@ -116,22 +117,26 @@
                                 <td class="px-4 py-4 text-center" style="padding: 14px 16px;">
                                     <div class="flex items-center justify-center gap-1">
                                         <a href="{{ route('admin.program.show', $item->id) }}" class="p-1.5 rounded-lg"
-                                            style="color: #005F02;" title="Detail" onmouseover="this.style.background='#eef3ec'"
+                                            style="color: #005F02;" title="Detail"
+                                            onmouseover="this.style.background='#eef3ec'"
                                             onmouseout="this.style.background='transparent'">
                                             <i class="fas fa-eye text-sm"></i>
                                         </a>
                                         <a href="{{ route('admin.program.edit', $item->id) }}" class="p-1.5 rounded-lg"
-                                            style="color: #2e6b37;" title="Edit" onmouseover="this.style.background='#eef3ec'"
+                                            style="color: #2e6b37;" title="Edit"
+                                            onmouseover="this.style.background='#eef3ec'"
                                             onmouseout="this.style.background='transparent'">
                                             <i class="fas fa-edit text-sm"></i>
                                         </a>
-                                        <form action="{{ route('admin.program.destroy', $item->id) }}" method="POST"
-                                            class="inline" onsubmit="return confirm('Yakin ingin menghapus program ini?')">
+                                        <form id="deleteForm{{ $item->id }}"
+                                            action="{{ route('admin.program.destroy', $item->id) }}" method="POST"
+                                            class="inline">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="p-1.5 rounded-lg" style="color: #dc2626;" title="Hapus"
-                                                onmouseover="this.style.background='#fef2f2'"
-                                                onmouseout="this.style.background='transparent'">
+
+                                            <button type="button" class="p-1.5 rounded-lg" style="color: #dc2626;"
+                                                title="Hapus"
+                                                onclick="openDeleteModal('{{ $item->id }}', '{{ addslashes($item->nama_program) }}')">
                                                 <i class="fas fa-trash text-sm"></i>
                                             </button>
                                         </form>
@@ -143,7 +148,8 @@
                                 <td colspan="5" class="px-6 py-12 text-center">
                                     <i class="fas fa-inbox text-4xl mb-3 block" style="color: #8cbf73;"></i>
                                     <p class="font-medium" style="color: #222;">Belum ada data program</p>
-                                    <p class="text-sm mt-1" style="color: #2d2d2d;">Tambahkan program baru untuk memulai</p>
+                                    <p class="text-sm mt-1" style="color: #2d2d2d;">Tambahkan program baru untuk memulai
+                                    </p>
                                 </td>
                             </tr>
                         @endforelse
@@ -151,13 +157,59 @@
                 </table>
             </div>
 
-            @if($programs->hasPages())
+            {{-- @if ($programs->hasPages())
                 <div class="p-4 border-t" style="padding: 16px 24px; border-top: 1px solid #dfe8d8; background: #eef3ec;">
                     {{ $programs->links() }}
                 </div>
-            @endif
+            @endif --}}
+        </div>
+
+        <!-- DELETE MODAL -->
+        <div id="deleteModal" class="modal-overlay">
+            <div class="modal-box">
+                <div class="modal-icon">
+                    <i class="fas fa-exclamation-triangle"></i>
+                </div>
+                <h3>Hapus Data</h3>
+                <p id="deleteText"></p>
+
+                <div class="modal-actions">
+                    <button class="btn-cancel" onclick="closeDeleteModal()">Batal</button>
+                    <button class="btn-delete" onclick="confirmDelete()">Hapus</button>
+                </div>
+            </div>
         </div>
     </div>
+
+    <script>
+        let selectedForm = null;
+
+        function openDeleteModal(id, nama) {
+            selectedForm = document.getElementById('deleteForm' + id);
+            document.getElementById('deleteText').innerText =
+                `Yakin ingin menghapus "${nama}"?`;
+
+            document.getElementById('deleteModal').classList.add('show');
+        }
+
+        function closeDeleteModal() {
+            document.getElementById('deleteModal').classList.remove('show');
+            selectedForm = null;
+        }
+
+        function confirmDelete() {
+            if (selectedForm) {
+                selectedForm.submit();
+            }
+        }
+
+        window.onclick = function(e) {
+            const modal = document.getElementById('deleteModal');
+            if (e.target === modal) {
+                closeDeleteModal();
+            }
+        }
+    </script>
 
     <style>
         /* Pagination Styling */
@@ -343,11 +395,6 @@
             border-bottom-width: 0;
         }
 
-        /* === ANIMATION GLOBAL === */
-        * {
-            transition: all 0.25s ease;
-        }
-
         /* === CARD STATS === */
         .stats-card:hover {
             transform: translateY(-5px) scale(1.02);
@@ -399,12 +446,78 @@
                 flex-direction: row;
             }
         }
+
+        /* ===== MODAL DELETE ===== */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.45);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 999;
+        }
+
+        .modal-overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-box {
+            background: #fff;
+            padding: 24px;
+            border-radius: 16px;
+            width: 320px;
+            text-align: center;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            transform: translateY(20px);
+            transition: all 0.3s ease;
+        }
+
+        .modal-overlay.show .modal-box {
+            transform: translateY(0);
+        }
+
+        .modal-icon {
+            font-size: 2rem;
+            color: #dc2626;
+            margin-bottom: 10px;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        .btn-cancel {
+            padding: 8px 16px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            background: #f4f4f4;
+            cursor: pointer;
+        }
+
+        .btn-delete {
+            padding: 8px 16px;
+            border-radius: 8px;
+            border: none;
+            background: #dc2626;
+            color: white;
+            cursor: pointer;
+        }
     </style>
 @endsection
 
 @push('scripts')
     <script>
-        document.getElementById('searchInput').addEventListener('keyup', function () {
+        document.getElementById('searchInput').addEventListener('keyup', function() {
             const term = this.value.toLowerCase();
             document.querySelectorAll('#programTable tr').forEach(row => {
                 row.style.display = row.textContent.toLowerCase().includes(term) ? '' : 'none';

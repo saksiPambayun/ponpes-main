@@ -4,7 +4,7 @@
 <?php $__env->startPush('styles'); ?>
     <style>
         .page-wrapper {
-            background: #f0f4f8;
+            background: #f4f4f4;
             min-height: 100vh;
             padding: 2rem;
         }
@@ -28,12 +28,12 @@
         .page-icon {
             width: 48px;
             height: 48px;
-            background: linear-gradient(135deg, #4361ee, #7209b7);
+            background: linear-gradient(135deg, #005F02, #0f4d1c);
             border-radius: 14px;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 4px 14px rgba(67, 97, 238, 0.35);
+            box-shadow: 0 4px 14px rgba(0, 95, 2, 0.35);
         }
 
         .page-icon i {
@@ -44,13 +44,13 @@
         .page-title h1 {
             font-size: 1.35rem;
             font-weight: 700;
-            color: #1a1f36;
+            color: #222;
             margin: 0;
         }
 
         .page-title p {
             font-size: 0.8rem;
-            color: #8898aa;
+            color: #2d2d2d;
             margin: 0;
         }
 
@@ -60,9 +60,9 @@
             gap: 0.45rem;
             padding: 0.55rem 1.1rem;
             background: #fff;
-            border: 1.5px solid #e2e8f0;
+            border: 1.5px solid #dfe8d8;
             border-radius: 10px;
-            color: #4a5568;
+            color: #2d2d2d;
             font-size: 0.82rem;
             font-weight: 600;
             text-decoration: none;
@@ -70,9 +70,9 @@
         }
 
         .btn-back:hover {
-            background: #f7fafc;
-            border-color: #cbd5e0;
-            color: #2d3748;
+            background: #eef3ec;
+            border-color: #8cbf73;
+            color: #005F02;
             transform: translateY(-1px);
         }
 
@@ -86,7 +86,7 @@
         }
 
         .form-card-header {
-            background: linear-gradient(135deg, #4361ee, #7209b7);
+            background: linear-gradient(135deg, #005F02, #0f4d1c);
             padding: 1.2rem 1.8rem;
             display: flex;
             align-items: center;
@@ -114,7 +114,7 @@
             font-weight: 700;
             letter-spacing: 1px;
             text-transform: uppercase;
-            color: #a0aec0;
+            color: #2d2d2d;
             margin-bottom: 1.25rem;
             display: flex;
             align-items: center;
@@ -125,7 +125,7 @@
             content: '';
             flex: 1;
             height: 1px;
-            background: #edf2f7;
+            background: #dfe8d8;
         }
 
         /* Form Fields */
@@ -136,18 +136,18 @@
         .form-group label {
             font-size: 0.82rem;
             font-weight: 600;
-            color: #2d3748;
+            color: #2d2d2d;
             margin-bottom: 0.45rem;
             display: block;
         }
 
         .form-group label .req {
-            color: #e53e3e;
+            color: #dc2626;
             margin-left: 2px;
         }
 
         .form-group label .opt {
-            color: #a0aec0;
+            color: #8cbf73;
             font-weight: 400;
             font-size: 0.75rem;
             margin-left: 4px;
@@ -156,30 +156,30 @@
         .form-control {
             font-family: 'Inter', sans-serif;
             font-size: 0.87rem;
-            color: #2d3748;
-            border: 1.5px solid #e2e8f0;
+            color: #333;
+            border: 1.5px solid #dfe8d8;
             border-radius: 10px;
             padding: 0.65rem 0.9rem;
-            background: #f8fafc;
+            background: #f4f4f4;
             transition: all 0.2s ease;
             width: 100%;
         }
 
         .form-control:focus {
-            border-color: #4361ee;
+            border-color: #005F02;
             background: #fff;
-            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.12);
+            box-shadow: 0 0 0 3px rgba(0, 95, 2, 0.12);
             outline: none;
         }
 
         .form-control.is-invalid {
-            border-color: #e53e3e;
-            background: #fff5f5;
+            border-color: #dc2626;
+            background: #fef2f2;
         }
 
         select.form-control {
             appearance: none;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23a0aec0' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%238cbf73' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
             background-repeat: no-repeat;
             background-position: right 0.9rem center;
             padding-right: 2.5rem;
@@ -193,7 +193,7 @@
 
         .invalid-feedback {
             font-size: 0.78rem;
-            color: #e53e3e;
+            color: #dc2626;
             margin-top: 0.35rem;
             display: flex;
             align-items: center;
@@ -209,23 +209,23 @@
             display: flex;
             align-items: center;
             gap: 0.75rem;
-            border: 1.5px dashed #cbd5e0;
+            border: 1.5px dashed #8cbf73;
             border-radius: 10px;
             padding: 1rem;
-            background: #f8fafc;
+            background: #f4f4f4;
             cursor: pointer;
             transition: all 0.2s ease;
         }
 
         .file-upload-label:hover {
-            border-color: #4361ee;
-            background: #eef2ff;
+            border-color: #005F02;
+            background: #eef3ec;
         }
 
         .file-upload-icon {
             width: 38px;
             height: 38px;
-            background: #eef2ff;
+            background: #eef3ec;
             border-radius: 8px;
             display: flex;
             align-items: center;
@@ -234,7 +234,7 @@
         }
 
         .file-upload-icon i {
-            color: #4361ee;
+            color: #005F02;
             font-size: 0.9rem;
         }
 
@@ -242,12 +242,12 @@
             display: block;
             font-size: 0.83rem;
             font-weight: 600;
-            color: #2d3748;
+            color: #2d2d2d;
         }
 
         .file-upload-text span {
             font-size: 0.75rem;
-            color: #a0aec0;
+            color: #8cbf73;
         }
 
         input[type="file"] {
@@ -273,7 +273,7 @@
             align-items: center;
             gap: 0.5rem;
             padding: 0.7rem 1.5rem;
-            background: linear-gradient(135deg, #4361ee, #7209b7);
+            background: linear-gradient(135deg, #005F02, #0f4d1c);
             color: #fff;
             border: none;
             border-radius: 10px;
@@ -281,12 +281,12 @@
             font-weight: 600;
             cursor: pointer;
             transition: all 0.2s ease;
-            box-shadow: 0 4px 14px rgba(67, 97, 238, 0.3);
+            box-shadow: 0 4px 14px rgba(0, 95, 2, 0.3);
         }
 
         .btn-save:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(67, 97, 238, 0.4);
+            box-shadow: 0 6px 20px rgba(0, 95, 2, 0.4);
         }
 
         .btn-reset {
@@ -294,10 +294,10 @@
             align-items: center;
             gap: 0.5rem;
             padding: 0.7rem 1.2rem;
-            background: #f7fafc;
-            border: 1.5px solid #e2e8f0;
+            background: #f4f4f4;
+            border: 1.5px solid #dfe8d8;
             border-radius: 10px;
-            color: #718096;
+            color: #2d2d2d;
             font-size: 0.87rem;
             font-weight: 600;
             cursor: pointer;
@@ -305,9 +305,9 @@
         }
 
         .btn-reset:hover {
-            background: #edf2f7;
-            border-color: #cbd5e0;
-            color: #4a5568;
+            background: #eef3ec;
+            border-color: #8cbf73;
+            color: #005F02;
         }
 
         .btn-cancel {
@@ -315,10 +315,10 @@
             align-items: center;
             gap: 0.5rem;
             padding: 0.7rem 1.2rem;
-            background: #fff5f5;
-            border: 1.5px solid #fed7d7;
+            background: #fef2f2;
+            border: 1.5px solid #fecaca;
             border-radius: 10px;
-            color: #e53e3e;
+            color: #dc2626;
             font-size: 0.87rem;
             font-weight: 600;
             text-decoration: none;
@@ -326,14 +326,14 @@
         }
 
         .btn-cancel:hover {
-            background: #fed7d7;
-            border-color: #fc8181;
-            color: #c53030;
+            background: #fee2e2;
+            border-color: #f87171;
+            color: #b91c1c;
         }
 
         .required-note {
             font-size: 0.75rem;
-            color: #a0aec0;
+            color: #8cbf73;
             margin-left: auto;
             display: flex;
             align-items: center;
@@ -341,7 +341,7 @@
         }
 
         .required-note span {
-            color: #e53e3e;
+            color: #dc2626;
             font-weight: 700;
         }
 
@@ -377,8 +377,8 @@
         
         <?php if($errors->any()): ?>
             <div class="alert-error-box"
-                style="display: flex; gap: 12px; background: #fff5f5; border-left: 4px solid #ef4444; border-radius: 10px; padding: 12px 16px; margin-bottom: 20px;">
-                <i class="fas fa-exclamation-circle" style="color: #ef4444;"></i>
+                style="display: flex; gap: 12px; background: #fef2f2; border-left: 4px solid #dc2626; border-radius: 10px; padding: 12px 16px; margin-bottom: 20px;">
+                <i class="fas fa-exclamation-circle" style="color: #dc2626;"></i>
                 <div>
                     <p style="font-weight: 700; color: #991b1b; margin: 0 0 4px;">Terdapat beberapa kesalahan:</p>
                     <ul style="margin: 0; padding-left: 18px; color: #b91c1c; font-size: 0.8rem;">
@@ -657,5 +657,4 @@ unset($__errorArgs, $__bag); ?>
         }
     </script>
 <?php $__env->stopSection(); ?>
-
 <?php echo $__env->make('admin.layout', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\laragon\www\ponpes-main\resources\views/admin/data-master/struktur-organisasi/create.blade.php ENDPATH**/ ?>

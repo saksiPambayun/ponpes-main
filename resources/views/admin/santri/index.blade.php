@@ -80,6 +80,32 @@
         </div>
     </div>
 
+    {{-- MODAL HAPUS --}}
+
+    <div id="deleteModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black bg-opacity-50">
+        <div class="bg-white rounded-xl shadow-xl w-full max-w-md mx-4">
+
+            <div class="p-6 border-b border-gray-200">
+                <h3 class="text-lg font-bold text-gray-900">Hapus Data</h3>
+                <p class="text-sm text-gray-500 mt-1">
+                    Yakin ingin menghapus data ini? Tindakan ini tidak bisa dibatalkan.
+                </p>
+            </div>
+
+            <div class="p-6 border-t border-gray-200 flex justify-end gap-3">
+                <button type="button" onclick="closeDeleteModal()"
+                    class="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg transition">
+                    Batal
+                </button>
+
+                <button type="button" onclick="submitDelete()"
+                    class="px-4 py-2 text-sm font-medium text-white bg-red-600 hover:bg-red-700 rounded-lg transition">
+                    <i class="fas fa-trash mr-1"></i> Hapus
+                </button>
+            </div>
+        </div>
+    </div>
+
     <div class="card overflow-hidden">
         <div class="p-6 border-b border-gray-200">
             <div class="flex flex-col md:flex-row gap-4">
@@ -131,7 +157,8 @@
                     @forelse($santri as $item)
                         <tr class="hover:bg-gray-50 transition-colors">
                             <td class="px-4 py-4">
-                                <input type="checkbox" class="rounded border-gray-300 text-indigo-600 focus:ring-indigo-500">
+                                <input type="checkbox"
+                                    class="rounded border-gray-300 text-indigo-600 focus:ring-indigo-500">
                             </td>
 
                             {{-- Nama --}}
@@ -164,7 +191,8 @@
                                 <div class="flex items-center justify-center gap-1.5">
                                     {{-- KK --}}
                                     @if ($item->kk)
-                                        <a href="{{ asset('storage/' . $item->kk) }}" target="_blank" title="Kartu Keluarga"
+                                        <a href="{{ asset('storage/' . $item->kk) }}" target="_blank"
+                                            title="Kartu Keluarga"
                                             class="inline-flex items-center gap-1 px-2 py-1 rounded-md bg-green-50 text-green-700 text-xs font-medium border border-green-200 hover:bg-green-100 transition">
                                             <i class="fas fa-file-alt text-xs"></i> KK
                                         </a>
@@ -177,7 +205,8 @@
 
                                     {{-- Akta --}}
                                     @if ($item->foto)
-                                        <a href="{{ asset('storage/' . $item->foto) }}" target="_blank" title="Foto/ Akta Kelahiran"
+                                        <a href="{{ asset('storage/' . $item->foto) }}" target="_blank"
+                                            title="Foto/ Akta Kelahiran"
                                             class="inline-flex items-center gap-1 px-2 py-1 rounded-md bg-green-50 text-green-700 text-xs font-medium border border-green-200 hover:bg-green-100 transition">
                                             <i class="fas fa-file-alt text-xs"></i> Foto
                                         </a>
@@ -235,7 +264,8 @@
                                     {{-- Terima --}}
                                     @if ($item->status != 'diterima')
                                         <button type="button" onclick="openAcceptModal({{ $item->id }})"
-                                            class="p-1.5 rounded-lg text-green-600 hover:bg-green-50 transition" title="Terima">
+                                            class="p-1.5 rounded-lg text-green-600 hover:bg-green-50 transition"
+                                            title="Terima">
                                             <i class="fas fa-check text-sm"></i>
                                         </button>
                                     @endif
@@ -243,17 +273,20 @@
                                     {{-- Tolak --}}
                                     @if ($item->status != 'ditolak')
                                         <button type="button" onclick="openRejectModal({{ $item->id }})"
-                                            class="p-1.5 rounded-lg text-orange-500 hover:bg-orange-50 transition" title="Tolak">
+                                            class="p-1.5 rounded-lg text-orange-500 hover:bg-orange-50 transition"
+                                            title="Tolak">
                                             <i class="fas fa-times text-sm"></i>
                                         </button>
                                     @endif
 
                                     {{-- Hapus --}}
-                                    <form action="{{ route('admin.santri.destroy', $item->id) }}" method="POST" class="inline"
-                                        onsubmit="return confirm('Hapus data santri ini? Tindakan ini tidak bisa dibatalkan.')">
+                                    <form id="deleteForm-{{ $item->id }}"
+                                        action="{{ route('admin.santri.destroy', $item->id) }}" method="POST"
+                                        class="inline">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="p-1.5 rounded-lg text-red-600 hover:bg-red-50 transition"
+                                        <button type="button" onclick="openDeleteModal({{ $item->id }})"
+                                            class="p-1.5 rounded-lg text-red-600 hover:bg-red-50 transition"
                                             title="Hapus">
                                             <i class="fas fa-trash text-sm"></i>
                                         </button>
@@ -282,14 +315,14 @@
 
 @push('scripts')
     <script>
-        document.getElementById('searchInput').addEventListener('keyup', function () {
+        document.getElementById('searchInput').addEventListener('keyup', function() {
             const term = this.value.toLowerCase();
             document.querySelectorAll('#santriTable tr').forEach(row => {
                 row.style.display = row.textContent.toLowerCase().includes(term) ? '' : 'none';
             });
         });
 
-        document.getElementById('statusFilter').addEventListener('change', function () {
+        document.getElementById('statusFilter').addEventListener('change', function() {
             const status = this.value.toLowerCase();
             document.querySelectorAll('#santriTable tr').forEach(row => {
                 if (!status) {
@@ -316,7 +349,7 @@
             document.getElementById('acceptModal').classList.remove('flex');
         }
 
-        document.getElementById('acceptModal').addEventListener('click', function (e) {
+        document.getElementById('acceptModal').addEventListener('click', function(e) {
             if (e.target === this) closeAcceptModal();
         });
 
@@ -332,8 +365,35 @@
             document.getElementById('rejectModal').classList.remove('flex');
         }
 
-        document.getElementById('rejectModal').addEventListener('click', function (e) {
+        document.getElementById('rejectModal').addEventListener('click', function(e) {
             if (e.target === this) closeRejectModal();
+        });
+
+        let deleteId = null;
+
+        function openDeleteModal(id) {
+            deleteId = id;
+
+            const modal = document.getElementById('deleteModal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function closeDeleteModal() {
+            const modal = document.getElementById('deleteModal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        function submitDelete() {
+            if (deleteId) {
+                document.getElementById('deleteForm-' + deleteId).submit();
+            }
+        }
+
+        // klik luar modal = close
+        document.getElementById('deleteModal').addEventListener('click', function(e) {
+            if (e.target === this) closeDeleteModal();
         });
     </script>
 @endpush
