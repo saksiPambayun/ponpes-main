@@ -15,32 +15,51 @@
 
         
         <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-            <div class="bg-white rounded-xl shadow-sm p-5 border-l-4 border-[#005F02]">
-                <p class="text-xs text-gray-500 mb-1">Total Pegawai</p>
-                <h3 class="text-2xl font-bold text-gray-800"><?php echo e($totalPegawai); ?></h3>
-                <div class="mt-2 w-8 h-8 bg-[#eef3ec] rounded-lg flex items-center justify-center">
-                    <i class="fas fa-users text-[#005F02] text-sm"></i>
+            <!-- Total Pegawai -->
+            <div
+                class="bg-white rounded-xl shadow-sm p-4 flex items-center justify-between border border-[#dfe8d8] hover:shadow-md transition">
+                <div>
+                    <p class="text-xs text-gray-500 uppercase font-semibold tracking-wide">TOTAL PEGAWAI</p>
+                    <h3 class="text-2xl font-bold text-gray-800 mt-1"><?php echo e($totalPegawai); ?></h3>
+                </div>
+                <div class="w-10 h-10 bg-[#eef3ec] rounded-lg flex items-center justify-center">
+                    <i class="fas fa-users text-[#005F02] text-lg"></i>
                 </div>
             </div>
-            <div class="bg-white rounded-xl shadow-sm p-5 border-l-4 border-[#4ca94d]">
-                <p class="text-xs text-gray-500 mb-1">Aktif</p>
-                <h3 class="text-2xl font-bold text-gray-800"><?php echo e($pegawaiAktif); ?></h3>
-                <div class="mt-2 w-8 h-8 bg-[#dbe6d4] rounded-lg flex items-center justify-center">
-                    <i class="fas fa-user-check text-[#4ca94d] text-sm"></i>
+
+            <!-- Aktif -->
+            <div
+                class="bg-white rounded-xl shadow-sm p-4 flex items-center justify-between border border-[#dfe8d8] hover:shadow-md transition">
+                <div>
+                    <p class="text-xs text-gray-500 uppercase font-semibold tracking-wide">AKTIF</p>
+                    <h3 class="text-2xl font-bold text-gray-800 mt-1"><?php echo e($pegawaiAktif); ?></h3>
+                </div>
+                <div class="w-10 h-10 bg-[#eef3ec] rounded-lg flex items-center justify-center">
+                    <i class="fas fa-user-check text-[#4ca94d] text-lg"></i>
                 </div>
             </div>
-            <div class="bg-white rounded-xl shadow-sm p-5 border-l-4 border-[#8cbf73]">
-                <p class="text-xs text-gray-500 mb-1">Cuti</p>
-                <h3 class="text-2xl font-bold text-gray-800"><?php echo e($pegawaiCuti); ?></h3>
-                <div class="mt-2 w-8 h-8 bg-[#f2f4ef] rounded-lg flex items-center justify-center">
-                    <i class="fas fa-clock text-[#8cbf73] text-sm"></i>
+
+            <!-- Cuti -->
+            <div
+                class="bg-white rounded-xl shadow-sm p-4 flex items-center justify-between border border-[#dfe8d8] hover:shadow-md transition">
+                <div>
+                    <p class="text-xs text-gray-500 uppercase font-semibold tracking-wide">CUTI</p>
+                    <h3 class="text-2xl font-bold text-gray-800 mt-1"><?php echo e($pegawaiCuti); ?></h3>
+                </div>
+                <div class="w-10 h-10 bg-[#eef3ec] rounded-lg flex items-center justify-center">
+                    <i class="fas fa-clock text-[#8cbf73] text-lg"></i>
                 </div>
             </div>
-            <div class="bg-white rounded-xl shadow-sm p-5 border-l-4 border-[#0d4f14]">
-                <p class="text-xs text-gray-500 mb-1">Non-Aktif</p>
-                <h3 class="text-2xl font-bold text-gray-800"><?php echo e($pegawaiNonaktif); ?></h3>
-                <div class="mt-2 w-8 h-8 bg-[#eef3ec] rounded-lg flex items-center justify-center">
-                    <i class="fas fa-user-minus text-[#0d4f14] text-sm"></i>
+
+            <!-- Non-Aktif -->
+            <div
+                class="bg-white rounded-xl shadow-sm p-4 flex items-center justify-between border border-[#dfe8d8] hover:shadow-md transition">
+                <div>
+                    <p class="text-xs text-gray-500 uppercase font-semibold tracking-wide">NON-AKTIF</p>
+                    <h3 class="text-2xl font-bold text-gray-800 mt-1"><?php echo e($pegawaiNonaktif); ?></h3>
+                </div>
+                <div class="w-10 h-10 bg-[#eef3ec] rounded-lg flex items-center justify-center">
+                    <i class="fas fa-user-minus text-[#0d4f14] text-lg"></i>
                 </div>
             </div>
         </div>
@@ -72,7 +91,8 @@
                             class="w-full pl-9 pr-4 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-[#8cbf73] focus:border-[#4ca94d] transition">
                     </div>
                     <select name="status"
-                        class="px-4 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-[#8cbf73] focus:border-[#4ca94d] bg-white">
+                        class="px-3 py-1.5 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-[#8cbf73] focus:border-[#4ca94d] bg-white"
+                        onchange="this.form.submit()">
                         <option value="">Semua Status</option>
                         <option value="aktif" <?php echo e(request('status') == 'aktif' ? 'selected' : ''); ?>>Aktif</option>
                         <option value="cuti" <?php echo e(request('status') == 'cuti' ? 'selected' : ''); ?>>Cuti</option>
@@ -163,19 +183,24 @@
                                 <td class="px-6 py-4">
                                     <div class="flex items-center gap-1">
                                         <a href="<?php echo e(route('admin.pegawai.show', $p->id)); ?>"
-                                            class="p-2 text-[#005F02] hover:bg-[#eef3ec] rounded-lg transition">
+                                            class="p-2 text-[#005F02] hover:bg-[#eef3ec] rounded-lg transition hover:scale-110"
+                                            title="Detail">
                                             <i class="fas fa-eye text-sm"></i>
                                         </a>
                                         <a href="<?php echo e(route('admin.pegawai.edit', $p->id)); ?>"
-                                            class="p-2 text-[#4ca94d] hover:bg-[#dbe6d4] rounded-lg transition">
+                                            class="p-2 text-[#005F02] hover:bg-[#eef3ec] rounded-lg transition hover:scale-110"
+                                            title="Edit">
                                             <i class="fas fa-edit text-sm"></i>
                                         </a>
-                                        <form action="<?php echo e(route('admin.pegawai.destroy', $p->id)); ?>" method="POST"
+                                        <form id="deleteForm-<?php echo e($p->id); ?>"
+                                            action="<?php echo e(route('admin.pegawai.destroy', $p->id)); ?>" method="POST"
                                             class="inline">
                                             <?php echo csrf_field(); ?>
                                             <?php echo method_field('DELETE'); ?>
-                                            <button type="submit"
-                                                class="p-2 text-[#0d4f14] hover:bg-[#eef3ec] rounded-lg transition">
+                                            <button type="button"
+                                                onclick="openDeleteModal(<?php echo e($p->id); ?>, '<?php echo e(addslashes($p->nama)); ?>')"
+                                                class="p-2 text-[#005F02] hover:bg-[#fee2e2] rounded-lg transition hover:scale-110"
+                                                title="Hapus">
                                                 <i class="fas fa-trash text-sm"></i>
                                             </button>
                                         </form>
@@ -185,7 +210,11 @@
                         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
                             <tr>
                                 <td colspan="7" class="px-6 py-20 text-center">
-                                    <h3 class="text-base font-medium text-gray-600 mb-1">Tidak ada data pegawai</h3>
+                                    <div class="flex flex-col items-center">
+                                        <i class="fas fa-users text-4xl text-gray-300 mb-3"></i>
+                                        <h3 class="text-base font-medium text-gray-600 mb-1">Tidak ada data pegawai</h3>
+                                        <p class="text-sm text-gray-400">Silakan tambah pegawai baru</p>
+                                    </div>
                                 </td>
                             </tr>
                         <?php endif; ?>
@@ -208,7 +237,135 @@
             <?php endif; ?>
 
         </div>
+
+        <div id="deleteModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black bg-opacity-50">
+            <div class="bg-white rounded-xl shadow-xl w-full max-w-md mx-4">
+
+                <div class="p-6 border-b border-gray-200">
+                    <h3 class="text-lg font-bold text-gray-900">Hapus Pegawai</h3>
+                    <p class="text-sm text-gray-500 mt-1" id="deleteText">
+                        Yakin ingin menghapus data ini?
+                    </p>
+                </div>
+
+                <div class="p-6 border-t border-gray-200 flex justify-end gap-3">
+                    <button type="button" onclick="closeDeleteModal()"
+                        class="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg">
+                        Batal
+                    </button>
+
+                    <button type="button" onclick="submitDelete()"
+                        class="px-4 py-2 text-sm font-medium text-white bg-red-600 hover:bg-red-700 rounded-lg">
+                        <i class="fas fa-trash mr-1"></i> Hapus
+                    </button>
+                </div>
+
+            </div>
+        </div>
     </div>
 <?php $__env->stopSection(); ?>
+
+<script>
+    let deleteId = null;
+
+    function openDeleteModal(id, nama) {
+        deleteId = id;
+
+        document.getElementById('deleteText').innerText =
+            `Yakin ingin menghapus pegawai "${nama}"? Tindakan ini tidak bisa dibatalkan.`;
+
+        const modal = document.getElementById('deleteModal');
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+    }
+
+    function closeDeleteModal() {
+        const modal = document.getElementById('deleteModal');
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+    }
+
+    function submitDelete() {
+        if (deleteId) {
+            document.getElementById('deleteForm-' + deleteId).submit();
+        }
+    }
+
+    // klik luar modal = close
+    document.getElementById('deleteModal').addEventListener('click', function (e) {
+        if (e.target === this) closeDeleteModal();
+    });
+</script>
+
+<style>
+
+    /* === CARD STATISTIK === */
+    .grid>div:hover {
+        transform: translateY(-6px) scale(1.02);
+        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.1);
+    }
+
+    /* ICON DI CARD */
+    .grid>div:hover i {
+        transform: rotate(10deg) scale(1.1);
+    }
+
+    /* === BUTTON TAMBAH === */
+    a[href*="create"]:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(0, 95, 2, 0.3);
+    }
+
+    /* === SEARCH INPUT === */
+    input:focus {
+        transform: scale(1.02);
+    }
+
+    /* === SELECT & BUTTON FILTER === */
+    select:hover,
+    button:hover {
+        transform: translateY(-1px);
+    }
+
+    /* === TABLE ROW === */
+    tbody tr {
+        transition: all 0.2s ease;
+    }
+
+    tbody tr:hover {
+        transform: scale(1.01);
+        background: #eef3ec !important;
+    }
+
+    /* === FOTO BULAT (INISIAL) === */
+    tbody tr:hover .rounded-full {
+        transform: scale(1.1);
+    }
+
+    /* === AKSI BUTTON === */
+    tbody a,
+    tbody button {
+        transition: all 0.2s ease;
+    }
+
+    tbody a:hover,
+    tbody button:hover {
+        transform: scale(1.25);
+    }
+
+    /* === BADGE STATUS === */
+    span[class*="inline-flex"]:hover {
+        transform: scale(1.05);
+    }
+
+    /* === TABLE HEADER === */
+    thead tr {
+        transition: all 0.2s ease;
+    }
+
+    thead tr:hover {
+        letter-spacing: 0.5px;
+    }
+</style>
 
 <?php echo $__env->make('admin.layout', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\laragon\www\ponpes-main\resources\views/admin/pegawai/index.blade.php ENDPATH**/ ?>

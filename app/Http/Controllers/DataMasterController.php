@@ -87,7 +87,7 @@ public function strukturOrganisasi()
         'bendahara' => 'Bendahara'
     ];
 
-    return view('data-master.struktur-organisasi.index', [
+    return view('admin.data-master.struktur-organisasi.index', [
         'anggota' => $anggota,
         'stats' => $stats,
         'divisiOptions' => $divisiOptions
@@ -103,7 +103,7 @@ public function strukturOrganisasi()
 
         StrukturOrganisasi::create($request->all());
 
-        return redirect()->route('data-master.struktur-organisasi')
+        return redirect()->route('admin.data-master.struktur-organisasi')
             ->with('success', 'Data struktur organisasi berhasil ditambahkan');
     }
 
@@ -125,7 +125,7 @@ public function strukturOrganisasi()
     public function strukturOrganisasiDestroy($id)
     {
         StrukturOrganisasi::findOrFail($id)->delete();
-        return redirect()->route('data-master.struktur-organisasi')
+        return redirect()->route('admin.data-master.struktur-organisasi')
             ->with('success', 'Data struktur organisasi berhasil dihapus');
     }
 
@@ -156,7 +156,7 @@ public function strukturOrganisasi()
 
         Fasilitas::create($request->all());
 
-        return redirect()->route('data-master.fasilitas')
+        return redirect()->route('admin.data-master.fasilitas')
             ->with('success', 'Data fasilitas berhasil ditambahkan');
     }
 
@@ -172,14 +172,14 @@ public function strukturOrganisasi()
         $fasilitas = Fasilitas::findOrFail($id);
         $fasilitas->update($request->all());
 
-        return redirect()->route('data-master.fasilitas')
+        return redirect()->route('admin.data-master.fasilitas')
             ->with('success', 'Data fasilitas berhasil diperbarui');
     }
 
     public function fasilitasDestroy($id)
     {
         Fasilitas::findOrFail($id)->delete();
-        return redirect()->route('data-master.fasilitas')
+        return redirect()->route('admin.data-master.fasilitas')
             ->with('success', 'Data fasilitas berhasil dihapus');
     }
 
@@ -194,7 +194,7 @@ public function strukturOrganisasi()
             'active' => 'data-master',
             'galleries' => $galleries
         ];
-return view('data-master.gallery.index', $data);
+return view('admin.data-master.gallery.index', $data);
     }
 
     public function galleryStore(Request $request)
@@ -221,7 +221,7 @@ if ($request->hasFile('gambar')) {
 
         Gallery::create($data);
 
-        return redirect()->route('data-master.gallery.index')
+        return redirect()->route('admin.data-master.gallery.index')
             ->with('success', 'Galeri berhasil ditambahkan');
     }
 
@@ -236,7 +236,7 @@ if ($request->hasFile('gambar')) {
         
         $gallery->delete();
 
-        return redirect()->route('data-master.gallery')
+        return redirect()->route('admin.data-master.gallery')
             ->with('success', 'Galeri berhasil dihapus');
     }
 
@@ -251,7 +251,7 @@ if ($request->hasFile('gambar')) {
             'active' => 'data-master',
             'programs' => $programs
         ];
-        return view('data-master.program', $data);
+        return view('admin.data-master.program', $data);
     }
 
     public function programStore(Request $request)
@@ -267,7 +267,7 @@ if ($request->hasFile('gambar')) {
 
         Program::create($request->all());
 
-        return redirect()->route('data-master.program')
+        return redirect()->route('admin.data-master.program')
             ->with('success', 'Program berhasil ditambahkan');
     }
 
@@ -285,14 +285,14 @@ if ($request->hasFile('gambar')) {
         $program = Program::findOrFail($id);
         $program->update($request->all());
 
-        return redirect()->route('data-master.program')
+        return redirect()->route('admin.data-master.program')
             ->with('success', 'Program berhasil diperbarui');
     }
 
     public function programDestroy($id)
     {
         Program::findOrFail($id)->delete();
-        return redirect()->route('data-master.program')
+        return redirect()->route('admin.data-master.program')
             ->with('success', 'Program berhasil dihapus');
     }
 }

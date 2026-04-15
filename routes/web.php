@@ -108,14 +108,6 @@ Route::prefix('admin')
             Route::post('/profil-yayasan/update', [ProfilYayasanController::class, 'update'])->name('profil-yayasan.update');
             Route::put('/profil-yayasan/update', [ProfilYayasanController::class, 'update'])->name('profil-yayasan.update.put'); // tambahkan ini untuk method PUT
 
-            // Struktur Organisasi
-            Route::get('/struktur-organisasi', [DataMasterController::class, 'strukturOrganisasi'])->name('struktur-organisasi');
-            Route::post('/struktur-organisasi', [DataMasterController::class, 'strukturOrganisasiStore'])->name('struktur-organisasi.store');
-            Route::put('/struktur-organisasi/{id}', [DataMasterController::class, 'strukturOrganisasiUpdate'])->name('struktur-organisasi.update');
-            Route::delete('/struktur-organisasi/{id}', [DataMasterController::class, 'strukturOrganisasiDestroy'])->name('struktur-organisasi.destroy');
-
-            // Fasilitas - sudah menggunakan route manual di bawah
-            // Gallery - sudah menggunakan route resource di bawah
             // Program - sudah menggunakan route resource di bawah
         });
 
@@ -126,43 +118,6 @@ Route::prefix('admin')
         Route::post('/profile/change-email', [AdminController::class, 'changeEmail'])->name('profile.change-email');
     });
 
-
-// Route untuk admin dengan role check
-
-// Route untuk Data Master Fasilitas
-/*Route::prefix('admin')->name('admin.')->group(function ()  {
-    Route::prefix('data-master')->name('data-master.')->group(function () {
-     Route::resource('fasilitas', FasilitasController::class)->parameters([
-    'fasilitas' => 'fasilitas'
-]);
-    });
-});
-
-Route::prefix('admin')->middleware('auth')->group(function () {
-    Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
-    Route::get('/fasilitas', [FasilitasController::class, 'index'])->name('admin.data-master.fasilitas');
-}); */
-
-/*Route::prefix('admin/data-master')->middleware('auth')->group(function () {
-
-    Route::get('/gallery', [DataMasterController::class, 'gallery'])
-        ->name('data-master.gallery');
-
-    Route::get('/gallery/create', [DataMasterController::class, 'galleryCreate'])
-        ->name('data-master.gallery.create');
-
-    Route::post('/gallery/store', [DataMasterController::class, 'galleryStore'])
-        ->name('data-master.gallery.store');
-//-----
-    Route::get('/gallery/{id}/edit', [GalleryController::class, 'edit'])
-    ->name('data-master.gallery.edit');
-//-----
-    Route::put('/gallery/{id}', [DataMasterController::class, 'galleryUpdate'])
-        ->name('data-master.gallery.update');
-
-    Route::delete('/gallery/{id}', [DataMasterController::class, 'galleryDelete'])
-        ->name('data-master.gallery.delete');
-});*/
 
 // program
 Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () {
@@ -175,103 +130,6 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
     // PROGRAM
     Route::resource('program', ProgramController::class);
 });
-
-/*Route::prefix('admin')->middleware('auth')->group(function () {
-
-    Route::get(
-        '/data-master/profil-yayasan',
-        [ProfilYayasanController::class, 'index']
-    )->name('admin.profil-yayasan.index');
-
-    Route::get(
-        '/data-master/profil-yayasan/create',
-        [ProfilYayasanController::class, 'create']
-    )->name('admin.profil-yayasan.create');
-
-    Route::get(
-        '/data-master/profil-yayasan/edit',
-        [ProfilYayasanController::class, 'edit']
-    )->name('admin.profil-yayasan.edit');
-
-    Route::post(
-        '/data-master/profil-yayasan/store',
-        [ProfilYayasanController::class, 'store']
-    )->name('admin.profil-yayasan.store');
-
-    Route::post(
-        '/data-master/profil-yayasan/update',
-        [ProfilYayasanController::class, 'update']
-    )->name('admin.profil-yayasan.update');
-
-    Route::put(
-        '/data-master/profil-yayasan/update',
-        [ProfilYayasanController::class, 'update']
-    )->name('profil-yayasan.update');
-});
-
-Route::prefix('admin')->middleware('auth')->group(function () {
-
-    Route::get(
-        '/data-master/profil-yayasan',
-        [ProfilYayasanController::class, 'index']
-    )->name('admin.profil-yayasan.index');
-});*/
-
-/*Route::prefix('admin/data-master')->middleware('auth')->name('data-master.')->group(function () {
-
-    // Struktur Organisasi
-    Route::get('/struktur-organisasi', [DataMasterController::class, 'strukturOrganisasi'])
-        ->name('data-master.struktur-organisasi.index');
-
-    Route::get('/struktur-organisasi/create', [DataMasterController::class, 'strukturOrganisasiCreate'])
-        ->name('data-master.struktur-organisasi.create');
-
-    Route::post('/struktur-organisasi', [DataMasterController::class, 'strukturOrganisasiStore'])
-        ->name('struktur-organisasi.store');
-
-    Route::get('/struktur-organisasi/{id}/edit', [DataMasterController::class, 'strukturOrganisasiEdit'])
-        ->name('struktur-organisasi.edit');
-
-    Route::put('/struktur-organisasi/{id}', [DataMasterController::class, 'strukturOrganisasiUpdate'])
-        ->name('struktur-organisasi.update');
-
-    Route::delete('/struktur-organisasi/{id}', [DataMasterController::class, 'strukturOrganisasiDestroy'])
-        ->name('struktur-organisasi.destroy');
-});*/
-
-Route::prefix('admin')->middleware(['auth'])->group(function () {
-    Route::resource(
-        'data-master/struktur-organisasi',
-        StrukturOrganisasiController::class
-    )->names('admin.data-master.struktur-organisasi');
-});
-
-Route::prefix('admin')->name('admin.')->group(function () {
-    Route::prefix('data-master')->name('data-master.')->group(function () {
-        /* Route::resource('fasilitas', FasilitasController::class);*/
-        Route::resource('gallery', GalleryController::class);
-        Route::resource('program', ProgramController::class);
-    });
-});
-
-Route::prefix('admin')->name('admin.')->group(function () {
-    Route::prefix('data-master')->name('data-master.')->group(function () {
-        // Route MANUAL untuk fasilitas
-        Route::get('/fasilitas', [FasilitasController::class, 'index'])->name('fasilitas.index');
-        Route::get('/fasilitas/create', [FasilitasController::class, 'create'])->name('fasilitas.create');
-        Route::post('/fasilitas', [FasilitasController::class, 'store'])->name('fasilitas.store');
-        Route::get('/fasilitas/{id}', [FasilitasController::class, 'show'])->name('fasilitas.show');
-        Route::get('/fasilitas/{id}/edit', [FasilitasController::class, 'edit'])->name('fasilitas.edit');
-        Route::put('/fasilitas/{id}', [FasilitasController::class, 'update'])->name('fasilitas.update');
-        Route::delete('/fasilitas/{id}', [FasilitasController::class, 'destroy'])->name('fasilitas.destroy');
-    });
-});
-
-/*Route::prefix('admin')->name('admin.')->group(function () {
-    Route::prefix('data-master')->name('data-master.')->group(function () {
-        Route::resource('gallery', GalleryController::class);
-    });
-});*/
 
 //notification
 Route::get('/notifications', [UserController::class, 'notifications'])->name('notifications');
@@ -349,26 +207,6 @@ Route::middleware(['auth', 'user'])->prefix('user')->name('user.')->group(functi
     Route::get('/user-test', [App\Http\Controllers\User\UserController::class, 'dashboard'])->middleware('auth');
 });
 
-// Route::get('/home', [UserController::class, 'home'])->name('home');
-
-// Route::get('/tentang', [UserController::class, 'tentang'])->name('tentang');
-
-// // Route::get('/tentang', fn() => view('public.tentang'))->name('tentang');
-
-// Route::get('/struktur', fn() => view('public.struktur'))->name('struktur');
-
-// Route::get('/legalitas', [UserController::class, 'legalitas'])->name('legalitas');
-
-// /*Route::get('/fasilitas', fn() => view('public.fasilitas'))->name('fasilitas');*/
-
-// Route::get('/galeri', fn() => view('public.galeri'))->name('galeri');
-
-// Route::get('/pendaftaran', fn() => view('public.pendaftaran_user'))->name('pendaftaran');
-
-// Route::get('/form', fn() => view('public.form'))->name('form');
-
-// Route::get('/hubungi', fn() => view('public.hubungi'))->name('hubungi');
-
 
 // HOME
 Route::get('/home', [UserController::class, 'home'])->name('home');
@@ -412,3 +250,19 @@ Route::post('/daftar', [App\Http\Controllers\User\SantriRegistrationController::
 
 //EMAIL
 Route::post('/send-feedback', [FeedbackController::class, 'sendFeedback'])->name('send.feedback');
+
+Route::prefix('admin/data-master')
+    ->name('admin.data-master.')
+    ->middleware('auth')
+    ->group(function () {
+
+        Route::resource('struktur-organisasi', StrukturOrganisasiController::class);
+        Route::resource('fasilitas', FasilitasController::class); // 🔥 TAMBAHKAN INI
+        Route::resource('gallery', GalleryController::class);
+        Route::resource('profil', profilyayasanController::class); // 🔥 TAMBAHKAN INI
+        Route::resource('program', ProgramController::class); // 🔥 TAMBAHKAN INI
+
+    });
+
+
+Route::resource('data-master/fasilitas', FasilitasController::class);

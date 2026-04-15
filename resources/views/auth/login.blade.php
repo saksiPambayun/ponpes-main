@@ -11,12 +11,6 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
-        /* :root {
-            --primary-gradient: linear-gradient(135deg, #4f46e5 0%, #313294 100%);
-            --bg-gradient: linear-gradient(135deg, #1e1b4b 0%, #581c87 50%, #1e1b4b 100%);
-            --shadow-primary: 0 4px 12px rgba(79, 70, 229, 0.4);
-        } */
-
         :root {
             --primary-gradient: linear-gradient(135deg, #005F02 0%, #0a8f0a 100%);
             --register-gradient: linear-gradient(135deg, #004401 0%, #00a86b 100%);
@@ -370,26 +364,6 @@
                     <i class="fas fa-arrow-right"></i>
                 </a>
             </div>
-
-            <div class="demo-credentials">
-                <div class="demo-header">
-                    <div class="demo-icon">
-                        <i class="fas fa-key"></i>
-                    </div>
-                    <p class="demo-title">Akun Demo</p>
-                </div>
-                <div class="demo-item">
-                    <i class="fas fa-envelope"></i>
-                    <span class="demo-label">Email:</span>
-                    <code class="demo-code">admin@tes.com</code>
-                </div>
-                <div class="demo-item">
-                    <i class="fas fa-lock"></i>
-                    <span class="demo-label">Password:</span>
-                    <code class="demo-code">password</code>
-                </div>
-            </div>
-        </div>
 
         <p class="footer">
             <i class="far fa-copyright"></i>

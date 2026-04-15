@@ -355,13 +355,6 @@ document.querySelectorAll('button, a').forEach(el => {
 
 <style>
 /* =====================
-   GLOBAL SMOOTH
-===================== */
-* {
-    transition: all 0.25s ease;
-}
-
-/* =====================
    CARD MASUK
 ===================== */
 .bg-white {

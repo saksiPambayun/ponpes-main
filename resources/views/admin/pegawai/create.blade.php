@@ -347,12 +347,6 @@ document.querySelector('form').addEventListener('submit', function() {
 @endpush
 
 <style>
-/* =====================
-   GLOBAL SMOOTH
-===================== */
-* {
-    transition: all 0.25s ease;
-}
 
 /* =====================
    CARD ANIMATION

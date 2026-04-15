@@ -8,11 +8,17 @@
             <h1 class="struktur-title">
                 Struktur Organisasi
             </h1>
-            <div class="struktur-frame">
-                <div class="struktur-inner">
-                    <img src="{{ asset('images/struktur1.png') }}" alt="Struktur Organisasi" class="struktur-img">
-                </div>
+
+            <div class="card-wrapper">
+                @foreach ($struktur as $item)
+                    <div class="struktur-cards">
+                        <img src="{{ $item->foto ? asset('storage/' . $item->foto) : asset('images/default.png') }}"
+                            alt="foto">
+                        <h3>{{ $item->nama }}</h3>
+                        <p>{{ $item->jabatan }}</p>
+                    </div>
+                @endforeach
             </div>
         </div>
     </section>
-    @endsection
+@endsection
