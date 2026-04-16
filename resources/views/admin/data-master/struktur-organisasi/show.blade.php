@@ -33,20 +33,19 @@
             <div class="col-lg-4" style="flex: 1; min-width: 280px;">
                 <div
                     style="background: white; border-radius: 20px; border: 1px solid #dfe8d8; overflow: hidden; text-align: center; padding: 1.5rem; box-shadow: 0 2px 20px rgba(0,0,0,0.06);">
-                    <!-- Foto Profil -->
-                    @if($anggota->foto)
-                        <div style="margin-bottom: 1rem;">
+
+                    <!-- Foto Profil - HANYA TAMBAHKAN text-align: center -->
+                    <div style="margin-bottom: 1rem; text-align: center;">
+                        @if($anggota->foto)
                             <img src="{{ asset('storage/' . $anggota->foto) }}" alt="{{ $anggota->nama }}"
-                                style="width: 120px; height: 120px; object-fit: cover; border-radius: 50%; border: 3px solid #dfe8d8; box-shadow: 0 4px 12px rgba(0,0,0,0.08);">
-                        </div>
-                    @else
-                        <div style="margin-bottom: 1rem;">
+                                style="width: 120px; height: 120px; object-fit: cover; border-radius: 50%; border: 3px solid #dfe8d8; box-shadow: 0 4px 12px rgba(0,0,0,0.08); display: inline-block;">
+                        @else
                             <div
-                                style="width: 120px; height: 120px; background: linear-gradient(135deg, #dfe8d8, #8cbf73); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto; border: 3px solid #dfe8d8;">
+                                style="width: 120px; height: 120px; background: linear-gradient(135deg, #dfe8d8, #8cbf73); border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; border: 3px solid #dfe8d8;">
                                 <i class="fas fa-user" style="color: #005F02; font-size: 2.5rem;"></i>
                             </div>
-                        </div>
-                    @endif
+                        @endif
+                    </div>
 
                     <h3 style="font-size: 1.25rem; font-weight: 600; color: #222; margin: 0 0 0.25rem 0;">
                         {{ $anggota->nama }}</h3>
