@@ -2,7 +2,7 @@
     <div class="footer-container">
         <div class="footer-col">
             <div class="footer-brand">
-                <img src="{{ asset('images/logo.png') }}" alt="">
+                <img src="<?php echo e(asset('images/logo.png')); ?>" alt="">
                 <h3>Pondok Pesantren<br>Al-Ifadah</h3>
             </div>
             <hr>
@@ -14,13 +14,13 @@
             <div class="footer-line"></div>
             <p>Senin–Jumat, 08.00–16.00 WIB</p>
             <div class="footer-social">
-                <a href="{{ $profil->youtube ?? '#' }}" target="_blank">
+                <a href="<?php echo e($profil->youtube ?? '#'); ?>" target="_blank">
                     <i class="fab fa-youtube"></i>
                 </a>
-                <a href="{{ $profil->facebook ?? '#' }}" target="_blank">
+                <a href="<?php echo e($profil->facebook ?? '#'); ?>" target="_blank">
                     <i class="fab fa-facebook-f"></i>
                 </a>
-                <a href="{{ $profil->instagram ?? '#' }}" target="_blank">
+                <a href="<?php echo e($profil->instagram ?? '#'); ?>" target="_blank">
                     <i class="fab fa-instagram"></i>
                 </a>
             </div>
@@ -29,16 +29,17 @@
         <div class="footer-col">
             <h4>Kontak</h4>
             <div class="footer-line"></div>
-            <p>No. Telepon : {{ $profil->telepon ?? '-' }}</p>
+            <p>No. Telepon : <?php echo e($profil->telepon ?? '-'); ?></p>
             <p>Whatsapp :
-                <a style="color: #ffffff; text-decoration: none;" href="https://wa.me/{{ $profil->telepon ?? '' }}">
-                    {{ $profil->telepon ?? '-' }}
+                <a style="color: #ffffff; text-decoration: none;" href="https://wa.me/<?php echo e($profil->telepon ?? ''); ?>">
+                    <?php echo e($profil->telepon ?? '-'); ?>
+
                 </a>
             </p>
-            <p>Email : {{ $profil->email ?? '-' }}</p>
+            <p>Email : <?php echo e($profil->email ?? '-'); ?></p>
             <h4 style="margin-top:40px;">Alamat Lengkap</h4>
             <div class="footer-line"></div>
-            <p>{{ $profil->alamat ?? '-' }}</p>
+            <p><?php echo e($profil->alamat ?? '-'); ?></p>
         </div>
 
         <div class="footer-col">
@@ -56,4 +57,4 @@
     <div class="footer-bottom">
         © 2026 Pondok Pesantren Al-Ifadah. All Rights Reserved.
     </div>
-</footer>
+</footer><?php /**PATH D:\ponpes-main\resources\views/components/footer.blade.php ENDPATH**/ ?>

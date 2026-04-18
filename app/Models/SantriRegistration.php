@@ -4,11 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 class SantriRegistration extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory;
 
     protected $table = 'santri_registrations';
 
@@ -21,19 +20,23 @@ class SantriRegistration extends Model
         'email',
         'no_wali',
         'nama_wali',
-        'pekerjaan_wali',  // ← PASTIKAN INI ADA
-        'foto',
+        'pekerjaan_wali',
         'kk',
+        'foto',
         'status',
-        'alasan_penolakan',
-        'tanggal_verifikasi',
-        'verified_by'
+        'wave_id',
+        'acceptance_status',
+        'acceptance_note',
+        'announcement_date'
     ];
 
-    protected $casts = [
-        'tanggal_lahir' => 'date',
-        'tanggal_verifikasi' => 'datetime',
-        'created_at' => 'datetime',
-        'updated_at' => 'datetime',
-    ];
+    // ==================== RELATIONSHIPS ====================
+
+    /**
+     * Relasi ke tabel registration_waves
+     */
+    public function wave()
+    {
+        return $this->belongsTo(RegistrationWave::class, 'wave_id');
+    }
 }

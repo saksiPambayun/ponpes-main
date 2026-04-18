@@ -15,9 +15,11 @@
                         <h4 class="text-lg font-medium text-gray-900 mb-4 border-b pb-2">Informasi Pribadi</h4>
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Nama Lengkap <span class="text-red-500">*</span></label>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Nama Lengkap <span
+                                class="text-red-500">*</span></label>
                         <input type="text" name="nama_lengkap" value="{{ old('nama_lengkap') }}"
-                            class="input-field w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none @error('nama_lengkap') border-red-500 @enderror" required>
+                            class="input-field w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none @error('nama_lengkap') border-red-500 @enderror"
+                            required>
                         @error('nama_lengkap') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
                     </div>
                     <div>
@@ -26,9 +28,11 @@
                             class="input-field w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none">
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Asal Sekolah <span class="text-red-500">*</span></label>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Asal Sekolah <span
+                                class="text-red-500">*</span></label>
                         <input type="text" name="asal_sekolah" value="{{ old('asal_sekolah') }}"
-                            class="input-field w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none @error('asal_sekolah') border-red-500 @enderror" required>
+                            class="input-field w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none @error('asal_sekolah') border-red-500 @enderror"
+                            required>
                         @error('asal_sekolah') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
                     </div>
                     <div>
@@ -54,21 +58,25 @@
                         <h4 class="text-lg font-medium text-gray-900 mb-4 border-b pb-2">Informasi Wali</h4>
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Nama Wali <span class="text-red-500">*</span></label>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Nama Wali <span
+                                class="text-red-500">*</span></label>
                         <input type="text" name="nama_wali" value="{{ old('nama_wali') }}"
-                            class="input-field w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none @error('nama_wali') border-red-500 @enderror" required>
+                            class="input-field w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none @error('nama_wali') border-red-500 @enderror"
+                            required>
                         @error('nama_wali') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-2">Pekerjaan Wali</label>
-                        <input type="text" name="pekerjaan_wali" value="{{ old('pekerjaan') }}"
+                        <input type="text" name="pekerjaan_wali" value="{{ old('pekerjaan_wali') }}"
                             placeholder="Contoh: Petani, Wiraswasta, PNS..."
                             class="input-field w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none">
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">No. Wali <span class="text-red-500">*</span></label>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">No. Wali <span
+                                class="text-red-500">*</span></label>
                         <input type="text" name="no_wali" value="{{ old('no_wali') }}"
-                            class="input-field w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none @error('no_wali') border-red-500 @enderror" required>
+                            class="input-field w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none @error('no_wali') border-red-500 @enderror"
+                            required>
                         @error('no_wali') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
                     </div>
                 </div> {{-- Tutup grid informasi wali --}}
@@ -79,35 +87,37 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-2">Kartu Keluarga (KK)</label>
-                            <label for="dok_kk" class="flex flex-col items-center justify-center w-full h-32 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100 transition">
+                            <label for="kk"
+                                class="flex flex-col items-center justify-center w-full h-32 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100 transition">
                                 <div class="flex flex-col items-center justify-center pt-5 pb-6">
                                     <i class="fas fa-cloud-upload-alt text-2xl text-gray-400 mb-2"></i>
                                     <p class="text-xs text-gray-500">PDF, JPG, PNG (maks. 20MB)</p>
                                 </div>
-                                <input id="dok_kk" type="file" name="dok_kk" class="hidden"
-                                    accept=".pdf,.jpg,.jpeg,.png" onchange="showFileName(this, 'label-kk', 'preview-kk')">
+                                <input id="kk" type="file" name="kk" class="hidden" accept=".pdf,.jpg,.jpeg,.png"
+                                    onchange="showFileName(this, 'label-kk', 'preview-kk')">
                             </label>
                             <p id="label-kk" class="text-xs text-indigo-600 mt-1 hidden font-medium"></p>
                             <div id="preview-kk" class="mt-2 hidden">
                                 <img class="h-24 rounded border object-cover" alt="preview KK">
                             </div>
-                            @error('dok_kk') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
+                            @error('kk') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-2">Pas Foto</label>
-                            <label for="dok_akta" class="flex flex-col items-center justify-center w-full h-32 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100 transition">
+                            <label for="foto"
+                                class="flex flex-col items-center justify-center w-full h-32 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100 transition">
                                 <div class="flex flex-col items-center justify-center pt-5 pb-6">
                                     <i class="fas fa-cloud-upload-alt text-2xl text-gray-400 mb-2"></i>
-                                    <p class="text-xs text-gray-500">PDF, JPG, PNG (maks. 20MB)</p>
+                                    <p class="text-xs text-gray-500">JPG, PNG (maks. 2MB)</p>
                                 </div>
-                                <input id="dok_akta" type="file" name="dok_akta" class="hidden"
-                                    accept=".pdf,.jpg,.jpeg,.png" onchange="showFileName(this, 'label-akta', 'preview-akta')">
+                                <input id="foto" type="file" name="foto" class="hidden" accept=".jpg,.jpeg,.png"
+                                    onchange="showFileName(this, 'label-foto', 'preview-foto')">
                             </label>
-                            <p id="label-akta" class="text-xs text-indigo-600 mt-1 hidden font-medium"></p>
-                            <div id="preview-akta" class="mt-2 hidden">
-                                <img class="h-24 rounded border object-cover" alt="preview Akta">
+                            <p id="label-foto" class="text-xs text-indigo-600 mt-1 hidden font-medium"></p>
+                            <div id="preview-foto" class="mt-2 hidden">
+                                <img class="h-24 rounded border object-cover" alt="preview Foto">
                             </div>
-                            @error('dok_akta') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
+                            @error('foto') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
                         </div>
                     </div>
                 </div>
@@ -115,7 +125,8 @@
                 <div class="mt-8 flex justify-end space-x-4">
                     <a href="{{ route('admin.santri.index') }}"
                         class="px-6 py-3 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50">Batal</a>
-                    <button type="submit" class="btn-primary px-6 py-3 rounded-lg text-white font-medium">Simpan Data</button>
+                    <button type="submit" class="btn-primary px-6 py-3 rounded-lg text-white font-medium">Simpan
+                        Data</button>
                 </div>
             </form>
         </div>
@@ -123,7 +134,7 @@
 
     <script>
         function showFileName(input, labelId, previewId) {
-            const label   = document.getElementById(labelId);
+            const label = document.getElementById(labelId);
             const preview = document.getElementById(previewId);
             if (!input.files || !input.files[0]) return;
 

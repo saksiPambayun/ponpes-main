@@ -78,10 +78,10 @@
                         ['icon'=>'fa-envelope','label'=>'Email','value'=>$pegawai->email],
                         ['icon'=>'fa-phone','label'=>'No. Telepon','value'=>$pegawai->no_telepon],
                         ['icon'=>'fa-map-marker-alt','label'=>'Tempat Lahir','value'=>$pegawai->tempat_lahir],
-                        ['icon'=>'fa-birthday-cake','label'=>'Tanggal Lahir','value'=>$pegawai->tanggal_lahir?->format('d M Y')],
+                        ['icon'=>'fa-birthday-cake','label'=>'Tanggal Lahir','value'=>$pegawai->tanggal_lahir ? \Carbon\Carbon::parse($pegawai->tanggal_lahir)->format('d M Y') : '-'],
                         ['icon'=>'fa-venus-mars','label'=>'Jenis Kelamin','value'=>$pegawai->jenis_kelamin == 'L' ? 'Laki-laki' : ($pegawai->jenis_kelamin == 'P' ? 'Perempuan' : '-')],
                         ['icon'=>'fa-pray','label'=>'Agama','value'=>$pegawai->agama],
-                        ['icon'=>'fa-calendar-check','label'=>'Tanggal Bergabung','value'=>$pegawai->tanggal_bergabung?->format('d M Y')],
+                        ['icon'=>'fa-calendar-check','label'=>'Tanggal Bergabung','value'=>$pegawai->tanggal_bergabung ? \Carbon\Carbon::parse($pegawai->tanggal_bergabung)->format('d M Y') : '-'],
                     ];
                 @endphp
 
@@ -139,24 +139,33 @@
 
                                 @php
                                     $ext = strtolower(pathinfo($doc['file'], PATHINFO_EXTENSION));
+                                    $fullPath = asset('storage/' . $doc['file']);
                                 @endphp
 
                                 @if($ext === 'pdf')
                                     <div class="h-44 bg-red-50 rounded-lg flex flex-col items-center justify-center gap-2">
                                         <i class="fas fa-file-pdf text-red-400 text-3xl"></i>
-                                        <a href="{{ asset('storage/'.$doc['file']) }}" target="_blank"
+                                        <a href="{{ $fullPath }}" target="_blank"
                                            class="text-xs text-red-600 hover:underline">
                                             Buka PDF
                                         </a>
                                     </div>
-                                @else
-                                    <a href="{{ asset('storage/'.$doc['file']) }}" target="_blank" class="block group">
-                                        <img src="{{ asset('storage/'.$doc['file']) }}"
-                                             class="w-full h-44 object-cover rounded-lg group-hover:opacity-90 transition">
+                                @elseif(in_array($ext, ['jpg', 'jpeg', 'png', 'webp']))
+                                    <a href="{{ $fullPath }}" target="_blank" class="block group">
+                                        <img src="{{ $fullPath }}"
+                                             class="w-full h-44 object-cover rounded-lg group-hover:opacity-90 transition"
+                                             onerror="this.onerror=null; this.src='{{ asset('images/no-image.png') }}';">
                                         <p class="text-xs text-center text-[#005F02] mt-2 group-hover:underline">
                                             Buka full size
                                         </p>
                                     </a>
+                                @else
+                                    <div class="h-44 bg-gray-100 rounded-lg flex flex-col items-center justify-center gap-2">
+                                        <i class="fas fa-file-alt text-gray-300 text-3xl"></i>
+                                        <a href="{{ $fullPath }}" target="_blank" class="text-xs text-blue-500 hover:underline">
+                                            Lihat File
+                                        </a>
+                                    </div>
                                 @endif
 
                             @else
@@ -171,24 +180,18 @@
                     @endforeach
 
                 </div>
-
-                <p class="text-xs text-gray-400 mt-3 flex items-center gap-1">
-                    <i class="fas fa-info-circle"></i>
-                    Jalankan <code class="bg-gray-100 px-1 py-0.5 rounded">php artisan storage:link</code> jika gambar tidak tampil
-                </p>
             </div>
 
             {{-- ACTION --}}
             <div class="flex justify-between items-center pt-6 mt-6 border-t border-gray-100">
                 <div class="text-xs text-gray-400">
-                    Dibuat: {{ $pegawai->created_at->format('d M Y H:i') }}
-                    @if($pegawai->updated_at != $pegawai->created_at)
+                    Dibuat: {{ $pegawai->created_at ? $pegawai->created_at->format('d M Y H:i') : '-' }}
+                    @if($pegawai->updated_at && $pegawai->updated_at != $pegawai->created_at)
                         • Update: {{ $pegawai->updated_at->format('d M Y H:i') }}
                     @endif
                 </div>
 
                 <div class="flex gap-3">
-
                     <a href="{{ route('admin.pegawai.edit', $pegawai->id) }}"
                        class="px-5 py-2.5 bg-gradient-to-r from-[#a79c03] to-[#dbe556] text-white rounded-lg hover:scale-105 transition text-sm">
                         <i class="fas fa-edit"></i> Edit
@@ -203,7 +206,6 @@
                             <i class="fas fa-trash"></i> Hapus
                         </button>
                     </form>
-
                 </div>
             </div>
 

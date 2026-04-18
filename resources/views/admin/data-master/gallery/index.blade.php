@@ -192,8 +192,8 @@
                                             <i class="fas fa-pencil-alt"></i>
                                         </a>
                                         <form id="deleteForm{{ $item->id }}"
-                                            action="{{ route('admin.data-master.gallery.destroy', $item->id) }}"
-                                            method="POST" class="d-inline">
+                                            action="{{ route('admin.data-master.gallery.destroy', $item->id) }}" method="POST"
+                                            class="d-inline">
                                             @csrf
                                             @method('DELETE')
 
@@ -215,8 +215,7 @@
                                         </div>
                                         <h3 class="empty-title">Belum ada data gallery</h3>
                                         <p class="empty-desc">Mulai dengan menambahkan foto pertama ke gallery.</p>
-                                        <a href="{{ route('admin.data-master.gallery.create') }}"
-                                            class="btn-primary-action">
+                                        <a href="{{ route('admin.data-master.gallery.create') }}" class="btn-primary-action">
                                             <i class="fas fa-plus"></i> Tambah Gallery
                                         </a>
                                     </div>
@@ -256,6 +255,13 @@
             </div>
         </div>
     </div>
+    {{-- MODAL PREVIEW GAMBAR --}}
+    <div id="imageModal" class="modal-overlay">
+        <div class="modal-image-box">
+            <img id="modalImage" src="" alt="Preview" style="max-width: 100%; max-height: 80vh;">
+            <button onclick="closeImageModal()" class="btn-close-modal">&times;</button>
+        </div>
+    </div>
 
     <script>
         let selectedForm = null;
@@ -278,8 +284,15 @@
                 selectedForm.submit();
             }
         }
+        function showImageModal(src) {
+            document.getElementById('modalImage').src = src;
+            document.getElementById('imageModal').classList.add('show');
+        }
+        function closeImageModal() {
+            document.getElementById('imageModal').classList.remove('show');
+        }
 
-        window.onclick = function(e) {
+        window.onclick = function (e) {
             const modal = document.getElementById('deleteModal');
             if (e.target === modal) {
                 closeDeleteModal();
@@ -288,6 +301,27 @@
     </script>
 
     <style>
+        .modal-image-box {
+            position: relative;
+            background: #fff;
+            padding: 10px;
+            border-radius: 12px;
+            max-width: 90vw;
+            max-height: 90vh;
+        }
+
+        .btn-close-modal {
+            position: absolute;
+            top: -15px;
+            right: -15px;
+            background: red;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            cursor: pointer;
+        }
 
         .page-wrapper {
             padding: 28px 32px;

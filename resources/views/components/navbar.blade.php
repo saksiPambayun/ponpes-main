@@ -37,7 +37,8 @@
                 </a>
             </li>
             <li>
-                <a href="{{ route('pendaftaran') }}" class="{{ request()->routeIs('pendaftaran') ? 'active' : '' }}">
+                <a href="{{ route('user.pendaftaran.index') }}"
+                    class="{{ request()->routeIs('user.pendaftaran.*') ? 'active' : '' }}">
                     Pendaftaran
                 </a>
             </li>

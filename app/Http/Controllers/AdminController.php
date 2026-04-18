@@ -71,15 +71,8 @@ class AdminController extends Controller
 
     // ==================== SANTRI ====================
 
-    // public function santriIndex()
-    // {
-    //     $santri = SantriRegistration::latest()->paginate(10);
-    //     return view('admin.santri.index', compact('santri'));
-    // }
-
-       public function santriIndex()
+    public function santriIndex()
     {
-        // Gunakan SantriRegistration, BUKAN Santri
         $santri = SantriRegistration::latest()->paginate(10);
         return view('admin.santri.index', compact('santri'));
     }
@@ -89,25 +82,26 @@ class AdminController extends Controller
         return view('admin.santri.create');
     }
 
-   public function santriStore(Request $request)
+    // ==================== METHOD SANTRI STORE YANG BENAR (HANYA SATU) ====================
+        public function santriStore(Request $request)
 {
     $validated = $request->validate([
-        'nama_lengkap'  => 'required|string|max:255',
-        'nisn'          => 'nullable|string|max:50',
-        'asal_sekolah'  => 'required|string|max:255',
-        'tanggal_lahir' => 'nullable|date',
-        'alamat'        => 'nullable|string',
-        'email'         => 'nullable|email|max:255',
-        'no_wali'       => 'required|string|max:20',
-        'nama_wali'     => 'required|string|max:255',
-        'pekerjaan_wali' => 'nullable|string|max:100',  // ← PERHATIKAN INI
-        'foto'          => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:20480',
-        'kk'            => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:20480',
+        'nama_lengkap'    => 'required|string|max:255',
+        'nisn'            => 'nullable|string|max:50',
+        'asal_sekolah'    => 'required|string|max:255',
+        'tanggal_lahir'   => 'nullable|date',
+        'alamat'          => 'nullable|string',
+        'email'           => 'nullable|email|max:255',
+        'no_wali'         => 'required|string|max:20',
+        'nama_wali'       => 'required|string|max:255',
+        'pekerjaan_wali'  => 'nullable|string|max:100',
+        'wave_id'         => 'nullable|exists:registration_waves,id',
+        'foto'            => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:20480',
+        'kk'              => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:20480',
     ]);
 
     $data = $validated;
 
-    // Hapus file dari array data karena akan diproses terpisah
     unset($data['foto'], $data['kk']);
 
     if ($request->hasFile('kk')) {
@@ -119,15 +113,23 @@ class AdminController extends Controller
     }
 
     $data['status'] = 'pending';
+    $data['acceptance_status'] = 'pending';
+
+    if (isset($data['wave_id'])) {
+        $wave = \App\Models\RegistrationWave::find($data['wave_id']);
+        if ($wave) {
+            $wave->increment('registered_count');
+        }
+    }
 
     SantriRegistration::create($data);
 
-    // Redirect ke halaman sukses atau kembali
     if ($request->ajax() || $request->expectsJson()) {
         return response()->json(['success' => true, 'message' => 'Pendaftaran berhasil!']);
     }
 
-    return redirect()->route('pendaftaran')->with('success', 'Pendaftaran berhasil! Data akan segera diverifikasi.');
+    // PERBAIKAN: Redirect ke halaman admin, bukan ke pendaftaran user
+    return redirect()->route('admin.santri.index')->with('success', 'Data santri berhasil ditambahkan!');
 }
 
     public function santriShow($id)
@@ -142,51 +144,73 @@ class AdminController extends Controller
         return view('admin.santri.edit', compact('santri'));
     }
 
-    public function santriUpdate(Request $request, $id)
-    {
-        $santri = SantriRegistration::findOrFail($id);
+   public function santriUpdate(Request $request, $id)
+{
+    // Debug: lihat apa saja yang dikirim
+    \Log::info('Files received:', ['kk' => $request->hasFile('kk'), 'foto' => $request->hasFile('foto')]);
 
-        $validated = $request->validate([
-            'nama_lengkap'  => 'required|string|max:255',
-            'nisn'          => 'nullable|string|max:50',
-            'asal_sekolah'  => 'required|string|max:255',
-            'tanggal_lahir' => 'nullable|date',
-            'alamat'        => 'nullable|string',
-            'email'         => 'nullable|email|max:255',
-            'no_wali'       => 'required|string|max:20',
-            'nama_wali'     => 'required|string|max:255',
-            'pekerjaan_wali'     => 'nullable|string|max:100',
-            'kk'            => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:20480',
-            'foto'          => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:20480',
-        ]);
+    $santri = SantriRegistration::findOrFail($id);
 
-        $data = $validated;
-        unset($data['foto'], $data['kk']);
+    $validated = $request->validate([
+        'nama_lengkap'      => 'required|string|max:255',
+        'nisn'              => 'nullable|string|max:50',
+        'asal_sekolah'      => 'required|string|max:255',
+        'tanggal_lahir'     => 'nullable|date',
+        'alamat'            => 'nullable|string',
+        'email'             => 'nullable|email|max:255',
+        'no_wali'           => 'required|string|max:20',
+        'nama_wali'         => 'required|string|max:255',
+        'pekerjaan_wali'    => 'nullable|string|max:100',
+        'kk'                => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:20480',
+        'foto'              => 'nullable|file|mimes:jpg,jpeg,png|max:2048',
+    ]);
 
-        if ($request->hasFile('kk')) {
-            if ($santri->kk) {
+    $data = $validated;
+
+    // Hapus file dari array data karena akan diproses terpisah
+    unset($data['foto'], $data['kk']);
+
+    // Proses upload KK
+    if ($request->hasFile('kk')) {
+        try {
+            // Hapus file lama
+            if ($santri->kk && Storage::disk('public')->exists($santri->kk)) {
                 Storage::disk('public')->delete($santri->kk);
             }
+            // Upload file baru
             $data['kk'] = $request->file('kk')->store('santri/kk', 'public');
+            \Log::info('KK uploaded: ' . $data['kk']);
+        } catch (\Exception $e) {
+            \Log::error('KK upload error: ' . $e->getMessage());
+            return back()->withErrors(['kk' => 'Gagal upload KK: ' . $e->getMessage()]);
         }
+    }
 
-        if ($request->hasFile('foto')) {
-            if ($santri->foto) {
+    // Proses upload Foto
+    if ($request->hasFile('foto')) {
+        try {
+            // Hapus file lama
+            if ($santri->foto && Storage::disk('public')->exists($santri->foto)) {
                 Storage::disk('public')->delete($santri->foto);
             }
+            // Upload file baru
             $data['foto'] = $request->file('foto')->store('santri/foto', 'public');
+            \Log::info('Foto uploaded: ' . $data['foto']);
+        } catch (\Exception $e) {
+            \Log::error('Foto upload error: ' . $e->getMessage());
+            return back()->withErrors(['foto' => 'Gagal upload foto: ' . $e->getMessage()]);
         }
-
-        $santri->update($data);
-
-        return redirect()->route('admin.santri.index')->with('success', 'Data santri berhasil diupdate');
     }
+
+    $santri->update($data);
+
+    return redirect()->route('admin.santri.index')->with('success', 'Data santri berhasil diupdate');
+}
 
     public function santriDestroy($id)
     {
         $santri = SantriRegistration::findOrFail($id);
 
-        // Hapus file-file terkait
         if ($santri->kk) {
             Storage::disk('public')->delete($santri->kk);
         }
@@ -199,74 +223,70 @@ class AdminController extends Controller
         return redirect()->route('admin.santri.index')->with('success', 'Data santri berhasil dihapus');
     }
 
-    public function verifySantri($id)
-    {
-        $santri = SantriRegistration::findOrFail($id);
+   public function verifySantri($id)
+{
+    $santri = SantriRegistration::findOrFail($id);
 
-        $santri->update([
-            'status' => 'diterima',
-            'tanggal_verifikasi' => now(),
-        ]);
+    $santri->update([
+        'status' => 'diterima',
+        'acceptance_status' => 'accepted',  // TAMBAHKAN INI
+        'tanggal_verifikasi' => now(),
+    ]);
 
-        return redirect()->route('admin.santri.index')->with('success', 'Santri berhasil diterima!');
-    }
+    return redirect()->route('admin.santri.index')->with('success', 'Santri berhasil diterima!');
+}
 
     public function rejectSantri(Request $request, $id)
-    {
-        $request->validate([
-            'alasan_penolakan' => 'required|string|min:10'
-        ]);
+{
+    $request->validate([
+        'alasan_penolakan' => 'required|string|min:10'
+    ]);
 
-        $santri = SantriRegistration::findOrFail($id);
+    $santri = SantriRegistration::findOrFail($id);
 
-        $santri->update([
-            'status' => 'ditolak',
-            'alasan_penolakan' => $request->alasan_penolakan,
-            'tanggal_verifikasi' => now(),
-        ]);
+    $santri->update([
+        'status' => 'ditolak',
+        'acceptance_status' => 'rejected',  // TAMBAHKAN INI
+        'alasan_penolakan' => $request->alasan_penolakan,
+        'tanggal_verifikasi' => now(),
+    ]);
 
-        return redirect()->route('admin.santri.index')->with('success', 'Pendaftaran santri ditolak.');
-    }
+    return redirect()->route('admin.santri.index')->with('success', 'Pendaftaran santri ditolak.');
+}
 
     // ==================== PEGAWAI ====================
 
-  public function pegawaiIndex(Request $request)
-{
-    // Debug: lihat nilai status dari request
-    \Log::info('Status filter:', ['status' => $request->status]);
+    public function pegawaiIndex(Request $request)
+    {
+        $query = Pegawai::query();
 
-    $query = Pegawai::query();
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function ($q) use ($search) {
+                $q->where('nama', 'like', "%{$search}%")
+                    ->orWhere('nip', 'like', "%{$search}%")
+                    ->orWhere('jabatan', 'like', "%{$search}%");
+            });
+        }
 
-    if ($request->filled('search')) {
-        $search = $request->search;
-        $query->where(function ($q) use ($search) {
-            $q->where('nama', 'like', "%{$search}%")
-                ->orWhere('nip', 'like', "%{$search}%")
-                ->orWhere('jabatan', 'like', "%{$search}%");
-        });
+        if ($request->filled('status')) {
+            $query->where('status', $request->status);
+        }
+
+        $pegawai         = $query->latest()->paginate(10)->withQueryString();
+        $totalPegawai    = Pegawai::count();
+        $pegawaiAktif    = Pegawai::where('status', 'aktif')->count();
+        $pegawaiCuti     = Pegawai::where('status', 'cuti')->count();
+        $pegawaiNonaktif = Pegawai::where('status', 'nonaktif')->count();
+
+        return view('admin.pegawai.index', compact(
+            'pegawai',
+            'totalPegawai',
+            'pegawaiAktif',
+            'pegawaiCuti',
+            'pegawaiNonaktif'
+        ));
     }
-
-    if ($request->filled('status')) {
-        $query->where('status', $request->status);
-    }
-
-    // Debug: lihat query yang dijalankan
-    \Log::info('Query SQL:', ['sql' => $query->toSql(), 'bindings' => $query->getBindings()]);
-
-    $pegawai         = $query->latest()->paginate(10)->withQueryString();
-    $totalPegawai    = Pegawai::count();
-    $pegawaiAktif    = Pegawai::where('status', 'aktif')->count();
-    $pegawaiCuti     = Pegawai::where('status', 'cuti')->count();
-    $pegawaiNonaktif = Pegawai::where('status', 'nonaktif')->count();
-
-    return view('admin.pegawai.index', compact(
-        'pegawai',
-        'totalPegawai',
-        'pegawaiAktif',
-        'pegawaiCuti',
-        'pegawaiNonaktif'
-    ));
-}
 
     public function pegawaiCreate()
     {
@@ -290,7 +310,6 @@ class AdminController extends Controller
             'jenis_kelamin'     => 'nullable|in:L,P',
             'agama'             => 'nullable|string|max:50',
             'alamat'            => 'nullable|string',
-            // Maks 40MB = 40960 KB
             'foto_ktp'          => 'nullable|image|mimes:jpg,jpeg,png|max:40960',
             'foto_npwp'         => 'nullable|image|mimes:jpg,jpeg,png|max:40960',
             'foto_ijazah'       => 'nullable|mimes:jpg,jpeg,png,pdf|max:40960',
@@ -325,7 +344,6 @@ class AdminController extends Controller
         $pegawai = Pegawai::findOrFail($id);
 
         $validated = $request->validate([
-            // Unique rule dikecualikan untuk record yang sedang di-edit
             'nip'               => "required|string|max:50|unique:pegawai,nip,{$id}",
             'nama'              => 'required|string|max:255',
             'email'             => "nullable|email|max:255|unique:pegawai,email,{$id}",
@@ -347,18 +365,15 @@ class AdminController extends Controller
 
         foreach (['foto_ktp', 'foto_npwp', 'foto_ijazah'] as $field) {
             if ($request->hasFile($field)) {
-                // Hapus file lama jika ada
                 if ($pegawai->$field) {
                     Storage::disk('public')->delete($pegawai->$field);
                 }
-                // Simpan file baru
                 $validated[$field] = $request->file($field)->store("pegawai/{$field}", 'public');
             }
         }
 
         $pegawai->update($validated);
 
-        // Redirect ke halaman detail pegawai setelah update
         return redirect()->route('admin.pegawai.show', $pegawai->id)
             ->with('success', 'Data pegawai berhasil diperbarui.');
     }
@@ -367,7 +382,6 @@ class AdminController extends Controller
     {
         $pegawai = Pegawai::findOrFail($id);
 
-        // Hapus semua file dokumen dari storage
         foreach (['foto_ktp', 'foto_npwp', 'foto_ijazah'] as $field) {
             if ($pegawai->$field) {
                 Storage::disk('public')->delete($pegawai->$field);
@@ -590,7 +604,6 @@ class AdminController extends Controller
 
     public function updateProfile(Request $request): RedirectResponse
     {
-        /** @var \App\Models\User $user */
         $user = Auth::user();
         $user->update($request->validate([
             'name'  => 'required|string|max:255',
@@ -606,7 +619,6 @@ class AdminController extends Controller
             'current_password' => 'required|current_password',
             'password'         => 'required|min:8|confirmed',
         ]);
-        /** @var \App\Models\User $user */
         $user = Auth::user();
         $user->update(['password' => Hash::make($request->password)]);
         return back()->with('success', 'Password berhasil diubah');
@@ -614,7 +626,6 @@ class AdminController extends Controller
 
     public function changeEmail(Request $request): RedirectResponse
     {
-        /** @var \App\Models\User $user */
         $user = Auth::user();
         $request->validate([
             'email'    => 'required|email|max:255|unique:users,email,' . $user->id,
