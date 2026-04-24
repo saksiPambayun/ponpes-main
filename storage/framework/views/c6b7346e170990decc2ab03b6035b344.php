@@ -13,8 +13,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="{{ asset('css/navbar.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/footer.css') }}">
+    <link rel="stylesheet" href="<?php echo e(asset('css/navbar.css')); ?>">
+    <link rel="stylesheet" href="<?php echo e(asset('css/footer.css')); ?>">
 </head>
 
 <style>
@@ -130,7 +130,7 @@
 </style>
 
 <body>
-    @include('components.navbar')
+    <?php echo $__env->make('components.navbar', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
 
     <section class="hero-tentang">
         <div class="hero-overlay">
@@ -146,12 +146,13 @@
 
             <div class="row align-items-start mb-4">
                 <div class="col-lg-7">
-                    <img src="{{ asset('images/g2.png') }}" class="foto-besar" alt="Pondok Pesantren Al-Ifadah">
+                    <img src="<?php echo e(asset('images/g2.png')); ?>" class="foto-besar" alt="Pondok Pesantren Al-Ifadah">
                 </div>
 
                 <div class="col-lg-5">
                     <p class="text-tentang">
-                        {!! nl2br(e($profil->deskripsi ?? 'Pondok Pesantren Al-Ifadah didirikan sebagai wujud komitmen dalam menghadirkan pendidikan Islam yang berkualitas serta berorientasi pada pembentukan karakter dan akhlak mulia. Sejak awal berdirinya, pesantren ini memiliki tujuan untuk mencetak generasi yang tidak hanya unggul dalam ilmu pengetahuan, tetapi juga kokoh dalam nilai-nilai keislaman.')) !!}
+                        <?php echo nl2br(e($profil->deskripsi ?? 'Pondok Pesantren Al-Ifadah didirikan sebagai wujud komitmen dalam menghadirkan pendidikan Islam yang berkualitas serta berorientasi pada pembentukan karakter dan akhlak mulia. Sejak awal berdirinya, pesantren ini memiliki tujuan untuk mencetak generasi yang tidak hanya unggul dalam ilmu pengetahuan, tetapi juga kokoh dalam nilai-nilai keislaman.')); ?>
+
                     </p>
                 </div>
             </div>
@@ -161,37 +162,39 @@
                     <div class="card-visi mb-4">
                         <h3>Visi</h3>
                         <p>
-                            {{ $profil->visi ?? 'Menjadi lembaga pendidikan Islam yang unggul dalam membentuk generasi berilmu, berakhlak mulia, dan berwawasan luas berdasarkan Al-Qur\'an dan Sunnah.' }}
+                            <?php echo e($profil->visi ?? 'Menjadi lembaga pendidikan Islam yang unggul dalam membentuk generasi berilmu, berakhlak mulia, dan berwawasan luas berdasarkan Al-Qur\'an dan Sunnah.'); ?>
+
                         </p>
                     </div>
 
                     <div class="card-misi">
                         <h3>Misi</h3>
-                        @php
+                        <?php
                             $misiText = $profil->misi ?? "Menyelenggarakan pendidikan Islam terpadu.\nMembina santri agar berakhlak mulia dan disiplin.\nMenciptakan lingkungan belajar yang kondusif.\nMenanamkan nilai kepemimpinan dan kemandirian.\nMengembangkan potensi akademik dan keagamaan.";
                             $misiList = explode("\n", $misiText);
-                        @endphp
+                        ?>
                         <ul>
-                            @foreach ($misiList as $misi)
-                                @if(trim($misi))
-                                    <li>{{ trim($misi) }}</li>
-                                @endif
-                            @endforeach
+                            <?php $__currentLoopData = $misiList; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $misi): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                <?php if(trim($misi)): ?>
+                                    <li><?php echo e(trim($misi)); ?></li>
+                                <?php endif; ?>
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                         </ul>
                     </div>
                 </div>
 
                 <div class="col-lg-5">
-                    <img src="{{ asset('images/g6.png') }}" class="foto-kanan" alt="Kegiatan Pondok Pesantren">
+                    <img src="<?php echo e(asset('images/g6.png')); ?>" class="foto-kanan" alt="Kegiatan Pondok Pesantren">
                 </div>
             </div>
         </div>
     </section>
 
-    {{-- HAPUS SECTION AD/ART (Anggaran Dasar) karena termasuk legalitas --}}
-    {{-- HAPUS SECTION STRUKTUR ORGANISASI karena terpisah di halaman /struktur --}}
+    
+    
 
-    @include('components.footer')
+    <?php echo $__env->make('components.footer', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
 </body>
 
 </html>
+<?php /**PATH D:\ponpes-main\resources\views/public/tentang.blade.php ENDPATH**/ ?>

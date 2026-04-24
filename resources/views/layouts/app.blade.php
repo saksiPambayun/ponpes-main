@@ -17,7 +17,6 @@
     <link rel="stylesheet" href="{{ asset('css/tentang.css') }}">
     <link rel="stylesheet" href="{{ asset('css/galeri.css') }}">
     <link rel="stylesheet" href="{{ asset('css/struktur.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/legalitas.css') }}">
     <link rel="stylesheet" href="{{ asset('css/hubungi.css') }}">
     <link rel="stylesheet" href="{{ asset('css/fasilitas.css') }}">
 
@@ -50,51 +49,54 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        const cards = document.querySelectorAll('.galeri-card');
-        const nextBtn = document.querySelector('.btn-next');
-        const prevBtn = document.querySelector('.btn-prev');
+        if (document.querySelectorAll('.galeri-card').length > 0) {
+            const cards = document.querySelectorAll('.galeri-card');
+            const nextBtn = document.querySelector('.btn-next');
+            const prevBtn = document.querySelector('.btn-prev');
 
-        let current = 0;
+            let current = 0;
 
-        function updateCarousel() {
-            if (cards.length === 0) return;
+            function updateCarousel() {
+                if (cards.length === 0) return;
 
-            cards.forEach(card => {
-                card.classList.remove('active', 'prev', 'next');
-            });
+                cards.forEach(card => {
+                    card.classList.remove('active', 'prev', 'next');
+                });
 
-            let prev = (current - 1 + cards.length) % cards.length;
-            let next = (current + 1) % cards.length;
+                let prev = (current - 1 + cards.length) % cards.length;
+                let next = (current + 1) % cards.length;
 
-            cards[current].classList.add('active');
-            cards[prev].classList.add('prev');
-            cards[next].classList.add('next');
-        }
+                cards[current].classList.add('active');
+                cards[prev].classList.add('prev');
+                cards[next].classList.add('next');
+            }
 
-        // ✅ CEK DULU ADA ATAU TIDAK
-        if (nextBtn && prevBtn) {
-            nextBtn.addEventListener('click', () => {
-                current = (current + 1) % cards.length;
+            if (nextBtn && prevBtn) {
+                nextBtn.addEventListener('click', () => {
+                    current = (current + 1) % cards.length;
+                    updateCarousel();
+                });
+
+                prevBtn.addEventListener('click', () => {
+                    current = (current - 1 + cards.length) % cards.length;
+                    updateCarousel();
+                });
+
                 updateCarousel();
-            });
-
-            prevBtn.addEventListener('click', () => {
-                current = (current - 1 + cards.length) % cards.length;
-                updateCarousel();
-            });
-
-            updateCarousel();
+            }
         }
 
         // =========================
         // LOGOUT MODAL
         // =========================
         function openLogoutModal() {
-            document.getElementById('logoutModal').classList.add('active');
+            const modal = document.getElementById('logoutModal');
+            if (modal) modal.classList.add('active');
         }
 
         function closeLogoutModal() {
-            document.getElementById('logoutModal').classList.remove('active');
+            const modal = document.getElementById('logoutModal');
+            if (modal) modal.classList.remove('active');
         }
 
         function submitLogout() {

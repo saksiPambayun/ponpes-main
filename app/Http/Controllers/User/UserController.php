@@ -107,72 +107,55 @@ class UserController extends Controller
         return back()->with('success', 'Avatar berhasil diupload!');
     }
 
-    // Home
-
+    // Home - dengan conditional tampilan (hanya tampil jika data cukup)
     public function home()
     {
-        $program = Program::latest()->take(3)->get(); 
-        $fasilitas = Fasilitas::latest()->take(6)->get();
-        $galeri = Gallery::latest()->take(3)->get();
+        $program = Program::latest()->take(3)->get();
+        $fasilitas = Fasilitas::latest()->get(); // ambil semua dulu, akan di-filter di view
+        $galeri = Gallery::latest()->get(); // ambil semua dulu, akan di-filter di view
 
         return view('public.home_user', compact('program', 'fasilitas', 'galeri'));
     }
 
-    // Legalitas
-    public function legalitas()
-    {
-        $aktaYayasan = AktaYayasan::latest()->first();
-        $aktaWakaf = AktaWakaf::latest()->first();
-        $sk = SkData::latest()->first();
+    // HAPUS METHOD legalitas() karena halaman legalitas dihapus dari user
+    // public function legalitas() - HAPUS
 
-        return view('public.legalitas', compact('aktaYayasan', 'aktaWakaf', 'sk'));
-    }
-
-    // Tentang
+    // Tentang - HAPUS bagian legalitas
     public function tentang()
     {
-        $aktaYayasan = AktaYayasan::latest()->first();
-        $aktaWakaf = AktaWakaf::latest()->first();
-        $sk = SkData::latest()->first();
-
-        return view('public.tentang', compact('aktaYayasan', 'aktaWakaf', 'sk'));
+        $profil = ProfilYayasan::first();
+        return view('public.tentang', compact('profil'));
     }
 
     // Galeri
-   public function galeri()
-{
-    $galeri = Gallery::all(); // atau Gallery::get()
-    return view('public.galeri', compact('galeri'));
-}
+    public function galeri()
+    {
+        $galeri = Gallery::all();
+        return view('public.galeri', compact('galeri'));
+    }
 
-// Fasilitas
-public function fasilitas()
-{
-    $fasilitas = Fasilitas::all(); 
-    return view('public.fasilitas', compact('fasilitas'));
-}
+    // Fasilitas
+    public function fasilitas()
+    {
+        $fasilitas = Fasilitas::all();
+        return view('public.fasilitas', compact('fasilitas'));
+    }
 
     // Profil Yayasan
     public function profilYayasanIndex()
     {
         $profil = ProfilYayasan::first();
-        $aktaYayasan = AktaYayasan::first();
-        $aktaWakaf = AktaWakaf::first();
-        $sk = SkData::latest()->first();
-
-        return view('public.tentang', compact('profil', 'aktaYayasan', 'aktaWakaf', 'sk'));
+        return view('public.tentang', compact('profil'));
     }
-    // Hubungi
 
+    // Hubungi
     public function hubungi()
     {
-        $profil = ProfilYayasan::first(); // ambil 1 data
-
+        $profil = ProfilYayasan::first();
         return view('public.hubungi', compact('profil'));
     }
 
-    //Struktur
-
+    // Struktur
     public function strukturIndex()
     {
         $struktur = StrukturOrganisasi::all();

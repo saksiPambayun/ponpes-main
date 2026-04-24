@@ -22,7 +22,6 @@
 
                 <ul class="dropdown-menu absolute hidden">
                     <li><a href="{{ route('struktur') }}">Struktur Organisasi</a></li>
-                    <li><a href="{{ route('legalitas') }}">Legalitas</a></li>
                 </ul>
             </li>
             <li>

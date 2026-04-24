@@ -22,7 +22,6 @@
 
                 <ul class="dropdown-menu absolute hidden">
                     <li><a href="<?php echo e(route('struktur')); ?>">Struktur Organisasi</a></li>
-                    <li><a href="<?php echo e(route('legalitas')); ?>">Legalitas</a></li>
                 </ul>
             </li>
             <li>
@@ -66,5 +65,4 @@
         </div>
 
     </div>
-</nav>
-<?php /**PATH D:\ponpes-main\resources\views/components/navbar.blade.php ENDPATH**/ ?>
+</nav><?php /**PATH D:\ponpes-main\resources\views/components/navbar.blade.php ENDPATH**/ ?>
