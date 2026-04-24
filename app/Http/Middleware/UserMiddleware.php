@@ -4,16 +4,29 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 class UserMiddleware
 {
     public function handle(Request $request, Closure $next)
     {
-        if (Auth::check() && Auth::user()->role === 'user') {
+        if (!auth()->check()) {
+            return redirect()->route('login');
+        }
+
+        $user = auth()->user();
+
+        // Jika admin/superadmin coba akses user area, redirect ke admin dashboard
+        if ($user->role === 'admin' || $user->role === 'superadmin') {
+            return redirect()->route('admin.dashboard')
+                ->with('error', 'Anda adalah admin, tidak bisa mengakses halaman user.');
+        }
+
+        // Jika role user, lanjutkan
+        if ($user->role === 'user') {
             return $next($request);
         }
 
-        return redirect('/login')->with('error', 'Akses ditolak. Anda bukan user.');
+        // Role tidak dikenal
+        abort(403, 'Akses ditolak.');
     }
 }

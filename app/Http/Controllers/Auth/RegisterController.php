@@ -6,15 +6,20 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
 
 class RegisterController extends Controller
 {
 
     public function showRegister()
     {
-        // Jika sudah login, redirect ke dashboard
+        // Jika sudah login, redirect ke home
         if (auth()->check()) {
-            return redirect()->route('login');
+            $user = Auth::user();
+            if ($user->role === 'admin' || $user->role === 'superadmin') {
+                return redirect()->route('admin.dashboard');
+            }
+            return redirect()->route('home');
         }
         return view('auth.register');
     }
@@ -40,21 +45,25 @@ class RegisterController extends Controller
             'password.confirmed' => 'Konfirmasi password tidak cocok.',
         ]);
 
+        // PASTIKAN role = 'user' BUKAN admin!
         $user = User::create([
             'name' => $validated['name'],
             'username' => $validated['username'],
             'email' => $validated['email'],
             'password' => Hash::make($validated['password']),
-            'role' => 'user', // Default role user
+            'role' => 'user', // HARUS user, BUKAN admin!
             'status' => 'active',
             'phone' => $request->phone,
             'address' => $request->address,
             'email_verified_at' => now(),
         ]);
 
-        // Optional: Auto login setelah register
-        // auth()->login($user);
-        // return redirect()->route('user.dashboard')->with('success', 'Selamat datang, ' . $user->name . '!');
+        // JANGAN auto login! Biarkan user login manual
+        // TAPI jika ingin auto login, pastikan redirect ke home BUKAN admin dashboard
+        /*
+        auth()->login($user);
+        return redirect()->route('home')->with('success', 'Selamat datang, ' . $user->name . '!');
+        */
 
         return redirect('/login')->with('success', 'Register berhasil! Silakan login.');
     }

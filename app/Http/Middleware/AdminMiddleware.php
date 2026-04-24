@@ -4,20 +4,23 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 class AdminMiddleware
 {
     public function handle(Request $request, Closure $next)
     {
-        if (!Auth::check()) {
-            return redirect('/login');
+        if (!auth()->check()) {
+            return redirect()->route('login');
         }
 
-        if (Auth::user()->role !== 'admin') {
-            abort(403,'Akses hanya untuk admin');
+        $user = auth()->user();
+
+        // Hanya admin dan superadmin yang bisa akses
+        if ($user->role === 'admin' || $user->role === 'superadmin') {
+            return $next($request);
         }
 
-        return $next($request);
+        // User biasa tidak bisa akses halaman admin
+        abort(403, 'Akses ditolak. Halaman ini hanya untuk administrator.');
     }
 }
