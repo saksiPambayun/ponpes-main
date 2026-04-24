@@ -1,6 +1,21 @@
 <?php
 
 
+//tessssssssssss
+//tes lagi
+//lah
+//oke
+
+//tess
+
+//bisa ga
+
+//bayun aneh
+
+//bayun gaje
+//kau yang aneh dasar kadal ijo
+
+
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\StrukturOrganisasiController;
