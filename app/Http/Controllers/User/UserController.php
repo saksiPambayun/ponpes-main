@@ -111,7 +111,7 @@ class UserController extends Controller
 
     public function home()
     {
-        $program = Program::latest()->take(3)->get(); // ✅ HARUS get()
+        $program = Program::latest()->take(3)->get(); 
         $fasilitas = Fasilitas::latest()->take(6)->get();
         $galeri = Gallery::latest()->take(3)->get();
 

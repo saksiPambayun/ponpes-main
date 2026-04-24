@@ -1,20 +1,6 @@
 <?php
 
 
-//tessssssssssss
-//tes lagi 
-//lah
-//oke
-
-//tess
-
-//bisa ga
-
-//bayun aneh
-
-//bayun gaje
-
-
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\StrukturOrganisasiController;
@@ -137,9 +123,9 @@ Route::prefix('admin')->name('admin.')->middleware(['auth'])->group(function () 
         Route::post('santri/bulk-acceptance', [\App\Http\Controllers\Admin\RegistrationWaveController::class, 'bulkAcceptance'])->name('santri.bulk-acceptance');
 
         // Pengumuman
-     //   Route::get('announcement', [\App\Http\Controllers\Admin\RegistrationWaveController::class, 'announcementIndex'])->name('announcement.index');
-     ///   Route::get('announcement/preview/{wave}', [\App\Http\Controllers\Admin\RegistrationWaveController::class, 'previewAnnouncement'])->name('announcement.preview');
-     //   Route::post('announcement/{wave}/publish', [\App\Http\Controllers\Admin\RegistrationWaveController::class, 'publishAnnouncement'])->name('announcement.publish');
+        //   Route::get('announcement', [\App\Http\Controllers\Admin\RegistrationWaveController::class, 'announcementIndex'])->name('announcement.index');
+        ///   Route::get('announcement/preview/{wave}', [\App\Http\Controllers\Admin\RegistrationWaveController::class, 'previewAnnouncement'])->name('announcement.preview');
+        //   Route::post('announcement/{wave}/publish', [\App\Http\Controllers\Admin\RegistrationWaveController::class, 'publishAnnouncement'])->name('announcement.publish');
     });
 });
 
@@ -248,12 +234,12 @@ Route::get('/galeri', [UserController::class, 'galeri'])->name('galeri');
 
 // PENDAFTARAN
 //Route::get('/pendaftaran', function () {
-  //  return view('public.pendaftaran');
+//  return view('public.pendaftaran');
 //})->name('pendaftaran');
 
 // FORM
 //Route::get('/form', function () {
-  //  return view('public.form');
+//  return view('public.form');
 //})->name('form');
 
 Route::prefix('pendaftaran')->name('user.pendaftaran.')->group(function () {
@@ -288,4 +274,3 @@ Route::prefix('admin/data-master')
     });
 
 Route::resource('data-master/fasilitas', FasilitasController::class);
-

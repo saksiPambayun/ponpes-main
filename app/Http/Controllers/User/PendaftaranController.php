@@ -7,7 +7,7 @@ use App\Models\RegistrationWave;
 use App\Models\SantriRegistration;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use PDF;
+use Barryvdh\DomPDF\Facade\Pdf;  // ✅ This is correct
 
 class PendaftaranController extends Controller
 {
@@ -146,13 +146,28 @@ class PendaftaranController extends Controller
 
         return view('user.pendaftaran.hasil-cek', compact('registrations'));
     }
-     public function downloadPDF($id)
-    {
+ public function downloadPDF($id)
+{
+    try {
+        // Ambil data pendaftaran
         $registration = SantriRegistration::with('wave')->findOrFail($id);
-
-        $pdf = PDF::loadView('user.pendaftaran.pdf', compact('registration'));
+        
+        // Load view PDF (path yang benar)
+        $pdf = Pdf::loadView('user.pendaftaran.pdf', compact('registration'));
+        
+        // Set ukuran kertas
         $pdf->setPaper('A4', 'portrait');
-
-        return $pdf->download('status_pendaftaran_' . $registration->nama_lengkap . '.pdf');
+        
+        // Download file
+        return $pdf->download('Status_Pendaftaran_' . $registration->nama_lengkap . '.pdf');
+        
+    } catch (\Exception $e) {
+        // Log error
+        \Log::error('PDF Error: ' . $e->getMessage());
+        
+        // Kembali dengan pesan error
+        return back()->with('error', 'Gagal membuat PDF. Error: ' . $e->getMessage());
     }
+}
+
 }

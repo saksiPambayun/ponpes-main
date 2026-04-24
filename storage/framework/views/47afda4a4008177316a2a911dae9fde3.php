@@ -1,8 +1,6 @@
-@extends('layouts.app')
+<?php $__env->startSection('title', 'Pendaftaran Santri Baru'); ?>
 
-@section('title', 'Pendaftaran Santri Baru')
-
-@section('content')
+<?php $__env->startSection('content'); ?>
     <section class="hero-pendaftaran">
         <div class="hero-overlay">
             <div class="hero-content">
@@ -58,34 +56,34 @@
                     </div>
 
                     <div class="gelombang-wrapper">
-                        @forelse($allWaves as $wave)
+                        <?php $__empty_1 = true; $__currentLoopData = $allWaves; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $wave): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
                             <div
-                                class="gelombang-box {{ $wave->is_active && $wave->start_date <= now() && $wave->end_date >= now() ? 'active-wave' : '' }}">
-                                <h4>{{ $wave->name }}</h4>
-                                <p>{{ \Carbon\Carbon::parse($wave->start_date)->translatedFormat('d F Y') }} -
-                                    {{ \Carbon\Carbon::parse($wave->end_date)->translatedFormat('d F Y') }}</p>
-                                @if($wave->description)
-                                    <small class="text-muted">{{ $wave->description }}</small>
-                                @endif
-                                @if($wave->quota)
+                                class="gelombang-box <?php echo e($wave->is_active && $wave->start_date <= now() && $wave->end_date >= now() ? 'active-wave' : ''); ?>">
+                                <h4><?php echo e($wave->name); ?></h4>
+                                <p><?php echo e(\Carbon\Carbon::parse($wave->start_date)->translatedFormat('d F Y')); ?> -
+                                    <?php echo e(\Carbon\Carbon::parse($wave->end_date)->translatedFormat('d F Y')); ?></p>
+                                <?php if($wave->description): ?>
+                                    <small class="text-muted"><?php echo e($wave->description); ?></small>
+                                <?php endif; ?>
+                                <?php if($wave->quota): ?>
                                     <div class="quota-info mt-2">
-                                        <small>Kuota: {{ $wave->registered_count }}/{{ $wave->quota }}</small>
+                                        <small>Kuota: <?php echo e($wave->registered_count); ?>/<?php echo e($wave->quota); ?></small>
                                         <div class="progress-bar">
                                             <div class="progress-fill"
-                                                style="width: {{ min(100, ($wave->registered_count / $wave->quota) * 100) }}%">
+                                                style="width: <?php echo e(min(100, ($wave->registered_count / $wave->quota) * 100)); ?>%">
                                             </div>
                                         </div>
                                     </div>
-                                @endif
-                                @if($wave->is_active && $wave->start_date <= now() && $wave->end_date >= now())
+                                <?php endif; ?>
+                                <?php if($wave->is_active && $wave->start_date <= now() && $wave->end_date >= now()): ?>
                                     <span class="badge-open">Pendaftaran Dibuka</span>
-                                @elseif($wave->start_date > now())
+                                <?php elseif($wave->start_date > now()): ?>
                                     <span class="badge-coming">Akan Datang</span>
-                                @elseif($wave->end_date < now())
+                                <?php elseif($wave->end_date < now()): ?>
                                     <span class="badge-closed">Ditutup</span>
-                                @endif
+                                <?php endif; ?>
                             </div>
-                        @empty
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
                             <div class="gelombang-box">
                                 <h4>Gelombang 1</h4>
                                 <p>10 Maret - 2 Mei 2026</p>
@@ -94,7 +92,7 @@
                                 <h4>Gelombang 2</h4>
                                 <p>10 Juni - 2 Juli 2026</p>
                             </div>
-                        @endforelse
+                        <?php endif; ?>
                     </div>
 
                     <div class="biaya-card">
@@ -116,19 +114,19 @@
             </div>
 
             <div class="cta-daftar">
-                @if($activeWave)
-                    <a href="{{ route('user.pendaftaran.form') }}" class="btn-daftar">
-                        Isi Formulir Pendaftaran ({{ $activeWave->name }})
+                <?php if($activeWave): ?>
+                    <a href="<?php echo e(route('user.pendaftaran.form')); ?>" class="btn-daftar">
+                        Isi Formulir Pendaftaran (<?php echo e($activeWave->name); ?>)
                     </a>
-                @else
+                <?php else: ?>
                     <button class="btn-daftar disabled" disabled style="opacity: 0.6; cursor: not-allowed;">
                         Belum Ada Gelombang Pendaftaran Aktif
                     </button>
-                @endif
+                <?php endif; ?>
             </div>
 
             <div class="cek-status-link">
-                <a href="{{ route('user.pendaftaran.cek-status') }}" class="btn-cek-status">
+                <a href="<?php echo e(route('user.pendaftaran.cek-status')); ?>" class="btn-cek-status">
                     <i class="bi bi-search"></i> Cek Status Pendaftaran
                 </a>
             </div>
@@ -241,4 +239,6 @@
             text-decoration: none;
         }
     </style>
-@endsection
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\laragon\www\ponpes-main\resources\views/user/pendaftaran/index.blade.php ENDPATH**/ ?>
