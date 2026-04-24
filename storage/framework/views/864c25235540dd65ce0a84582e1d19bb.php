@@ -16,7 +16,7 @@
             <div class="card p-6" style="background: #fff; border-radius: 16px;">
                 <div class="flex items-center">
                     <div class="p-3 rounded-full mr-4" style="background: #eef3ec; color: #005F02;">
-                        <i class="fas fa-waveform text-2xl"></i>
+                        <i class="fas fa-wave-square text-2xl"></i>
                     </div>
                     <div>
                         <p class="text-sm text-gray-500">Total Gelombang</p>

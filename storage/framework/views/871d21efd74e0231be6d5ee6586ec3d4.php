@@ -150,6 +150,24 @@
             display: none;
         }
 
+        @keyframes pulse {
+
+            0%,
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+
+            50% {
+                transform: scale(1.05);
+                opacity: 0.8;
+            }
+        }
+
+        .animate-pulse {
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+
         @media (max-width: 1024px) {
             .mobile-menu-btn {
                 display: block;
@@ -175,6 +193,102 @@
         [role="alert"] {
             transition: opacity 0.5s ease;
         }
+
+        /* Global Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .modal-overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-container {
+            background: white;
+            border-radius: 16px;
+            width: 90%;
+            max-width: 500px;
+            transform: translateY(30px);
+            transition: all 0.3s ease;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .modal-overlay.show .modal-container {
+            transform: translateY(0);
+        }
+
+        .modal-header {
+            padding: 20px 24px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .modal-body {
+            padding: 24px;
+        }
+
+        .modal-footer {
+            padding: 16px 24px;
+            border-top: 1px solid #e5e7eb;
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+        }
+
+        .btn-cancel {
+            padding: 8px 20px;
+            border-radius: 8px;
+            border: 1px solid #d1d5db;
+            background: white;
+            color: #374151;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-cancel:hover {
+            background: #f3f4f6;
+        }
+
+        .btn-danger {
+            padding: 8px 20px;
+            border-radius: 8px;
+            border: none;
+            background: #dc2626;
+            color: white;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-danger:hover {
+            background: #b91c1c;
+            transform: translateY(-1px);
+        }
+
+        .btn-success {
+            padding: 8px 20px;
+            border-radius: 8px;
+            border: none;
+            background: #059669;
+            color: white;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-success:hover {
+            background: #047857;
+        }
     </style>
 
     <?php echo $__env->yieldPushContent('styles'); ?>
@@ -188,7 +302,8 @@
             <div class="h-20 flex items-center justify-center border-b border-green-300/30 px-6">
                 <div class="flex items-center space-x-3">
                     <div class="w-10 h-10 bg-white rounded-lg flex items-center justify-center overflow-hidden">
-                        <img src="<?php echo e(asset('images/logoo.png')); ?>" class="w-9 h-9 object-contain" alt="Logo">
+                        <img src="<?php echo e(asset('images/logoo.png')); ?>" class="w-9 h-9 object-contain" alt="Logo"
+                            onerror="this.src='https://via.placeholder.com/36'">
                     </div>
                     <div>
                         <h1 class="text-xl font-bold text-white">Pondok Pesantren</h1>
@@ -233,7 +348,7 @@
                         ?>
                         <?php if($pendingCount > 0): ?>
                             <span
-                                class="ml-auto bg-green-500 text-white text-xs px-2 py-0.5 rounded-full"><?php echo e($pendingCount); ?></span>
+                                class="ml-auto bg-yellow-500 text-white text-xs px-2 py-0.5 rounded-full"><?php echo e($pendingCount); ?></span>
                         <?php endif; ?>
                     </a>
 
@@ -242,75 +357,100 @@
                         class="sidebar-item flex items-center px-4 py-3 text-green-100 rounded-lg mb-1 <?php echo e(request()->routeIs('admin.pendaftaran.waves.*') ? 'active' : ''); ?>">
                         <div
                             class="icon-wrapper w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center mr-3">
-                            <i class="fas fa-waveform"></i>
+                            <i class="fas fa-wave-square"></i>
                         </div>
                         <span class="font-medium">Kelola Gelombang</span>
                     </a>
+                </div>
 
-                    <!-- KEPEGAWAIAN -->
+                <!-- KEPEGAWAIAN -->
+                <div class="mb-6">
+                    <p class="text-xs font-semibold text-green-200 uppercase tracking-wider mb-3 px-3">Kepegawaian</p>
+                    <a href="<?php echo e(route('admin.pegawai.index')); ?>"
+                        class="sidebar-item flex items-center px-4 py-3 text-green-100 rounded-lg mb-1 <?php echo e(request()->routeIs('admin.pegawai.*') ? 'active' : ''); ?>">
+                        <div
+                            class="icon-wrapper w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center mr-3">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <span class="font-medium">Data Pegawai</span>
+                    </a>
+                </div>
+
+                <!-- DATA MASTER -->
+                <div class="mb-6">
+                    <p class="text-xs font-semibold text-green-200 uppercase tracking-wider mb-3 px-3">Data Master</p>
+
+                    <a href="<?php echo e(route('admin.data-master.profil-yayasan')); ?>"
+                        class="sidebar-item flex items-center px-4 py-3 text-green-100 rounded-lg mb-1">
+                        <div
+                            class="icon-wrapper w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center mr-3">
+                            <i class="fas fa-building"></i>
+                        </div>
+                        <span class="font-medium">Profil Yayasan</span>
+                    </a>
+
+                    <a href="<?php echo e(route('admin.data-master.struktur-organisasi.index')); ?>"
+                        class="sidebar-item flex items-center px-4 py-3 text-green-100 rounded-lg mb-1">
+                        <div
+                            class="icon-wrapper w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center mr-3">
+                            <i class="fas fa-sitemap"></i>
+                        </div>
+                        <span class="font-medium">Struktur Organisasi</span>
+                    </a>
+
+                    <a href="<?php echo e(route('admin.data-master.fasilitas.index')); ?>"
+                        class="sidebar-item flex items-center px-4 py-3 text-green-100 rounded-lg mb-1">
+                        <div
+                            class="icon-wrapper w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center mr-3">
+                            <i class="fas fa-school"></i>
+                        </div>
+                        <span class="font-medium">Fasilitas</span>
+                    </a>
+
+                    <a href="<?php echo e(route('admin.data-master.gallery.index')); ?>"
+                        class="sidebar-item flex items-center px-4 py-3 text-green-100 rounded-lg mb-1">
+                        <div
+                            class="icon-wrapper w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center mr-3">
+                            <i class="fas fa-images"></i>
+                        </div>
+                        <span class="font-medium">Gallery</span>
+                    </a>
+
+                    <a href="<?php echo e(route('admin.program.index')); ?>"
+                        class="sidebar-item flex items-center px-4 py-3 text-green-100 rounded-lg mb-1">
+                        <div
+                            class="icon-wrapper w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center mr-3">
+                            <i class="fas fa-calendar-alt"></i>
+                        </div>
+                        <span class="font-medium">Program</span>
+                    </a>
+
+                    <!-- FEEDBACK / KRITIK & SARAN -->
                     <div class="mb-6">
-                        <p class="text-xs font-semibold text-green-200 uppercase tracking-wider mb-3 px-3">Kepegawaian
-                        </p>
-                        <a href="<?php echo e(route('admin.pegawai.index')); ?>"
-                            class="sidebar-item flex items-center px-4 py-3 text-green-100 rounded-lg mb-1 <?php echo e(request()->routeIs('admin.pegawai.*') ? 'active' : ''); ?>">
+                        <p class="text-xs font-semibold text-green-200 uppercase tracking-wider mb-3 px-3">Feedback</p>
+                        <a href="<?php echo e(route('admin.feedback.index')); ?>"
+                            class="sidebar-item flex items-center px-4 py-3 text-green-100 rounded-lg mb-1 <?php echo e(request()->routeIs('admin.feedback.*') ? 'active' : ''); ?>">
                             <div
                                 class="icon-wrapper w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center mr-3">
-                                <i class="fas fa-users"></i>
+                                <i class="fas fa-comment-dots"></i>
                             </div>
-                            <span class="font-medium">Data Pegawai</span>
+                            <span class="font-medium">Kritik & Saran</span>
+                            <?php
+                                try {
+                                    $unreadFeedbackCount = \App\Models\Feedback::where('is_read', false)->count();
+                                } catch (\Exception $e) {
+                                    $unreadFeedbackCount = 0;
+                                }
+                            ?>
+                            <?php if($unreadFeedbackCount > 0): ?>
+                                <span class="ml-auto bg-red-500 text-white text-xs px-2 py-0.5 rounded-full animate-pulse">
+                                    <?php echo e($unreadFeedbackCount); ?>
+
+                                </span>
+                            <?php endif; ?>
                         </a>
                     </div>
 
-                    <!-- DATA MASTER -->
-                    <div class="mb-6">
-                        <p class="text-xs font-semibold text-green-200 uppercase tracking-wider mb-3 px-3">Data Master
-                        </p>
-
-                        <a href="<?php echo e(route('admin.data-master.profil-yayasan')); ?>"
-                            class="sidebar-item flex items-center px-4 py-3 text-green-100 rounded-lg mb-1">
-                            <div
-                                class="icon-wrapper w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center mr-3">
-                                <i class="fas fa-building"></i>
-                            </div>
-                            <span class="font-medium">Profil Yayasan</span>
-                        </a>
-
-                        <a href="<?php echo e(route('admin.data-master.struktur-organisasi.index')); ?>"
-                            class="sidebar-item flex items-center px-4 py-3 text-green-100 rounded-lg mb-1">
-                            <div
-                                class="icon-wrapper w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center mr-3">
-                                <i class="fas fa-sitemap"></i>
-                            </div>
-                            <span class="font-medium">Struktur Organisasi</span>
-                        </a>
-
-                        <a href="<?php echo e(route('admin.data-master.fasilitas.index')); ?>"
-                            class="sidebar-item flex items-center px-4 py-3 text-green-100 rounded-lg mb-1">
-                            <div
-                                class="icon-wrapper w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center mr-3">
-                                <i class="fas fa-school"></i>
-                            </div>
-                            <span class="font-medium">Fasilitas</span>
-                        </a>
-
-                        <a href="<?php echo e(route('admin.data-master.gallery.index')); ?>"
-                            class="sidebar-item flex items-center px-4 py-3 text-green-100 rounded-lg mb-1">
-                            <div
-                                class="icon-wrapper w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center mr-3">
-                                <i class="fas fa-images"></i>
-                            </div>
-                            <span class="font-medium">Gallery</span>
-                        </a>
-
-                        <a href="<?php echo e(route('admin.program.index')); ?>"
-                            class="sidebar-item flex items-center px-4 py-3 text-green-100 rounded-lg mb-1">
-                            <div
-                                class="icon-wrapper w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center mr-3">
-                                <i class="fas fa-calendar-alt"></i>
-                            </div>
-                            <span class="font-medium">Program</span>
-                        </a>
-                    </div>
 
                     <!-- DOKUMEN LEGAL -->
                     <div class="mb-6">
@@ -342,6 +482,19 @@
                                 <i class="fas fa-landmark"></i>
                             </div>
                             <span class="font-medium">Akta Wakaf</span>
+                        </a>
+                    </div>
+
+                    <!-- PROFILE MENU -->
+                    <div class="mb-6">
+                        <p class="text-xs font-semibold text-green-200 uppercase tracking-wider mb-3 px-3">Akun</p>
+                        <a href="<?php echo e(route('admin.profile')); ?>"
+                            class="sidebar-item flex items-center px-4 py-3 text-green-100 rounded-lg mb-1 <?php echo e(request()->routeIs('admin.profile') ? 'active' : ''); ?>">
+                            <div
+                                class="icon-wrapper w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center mr-3">
+                                <i class="fas fa-user-circle"></i>
+                            </div>
+                            <span class="font-medium">Profil Saya</span>
                         </a>
                     </div>
 
@@ -418,16 +571,91 @@
         </main>
     </div>
 
+    <!-- Global Delete Modal -->
+    <div id="globalDeleteModal" class="modal-overlay">
+        <div class="modal-container">
+            <div class="modal-header">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 bg-red-100 rounded-full flex items-center justify-center">
+                        <i class="fas fa-exclamation-triangle text-red-600 text-xl"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-gray-900">Hapus Data</h3>
+                </div>
+            </div>
+            <div class="modal-body">
+                <p id="deleteModalText" class="text-gray-600">Yakin ingin menghapus data ini?</p>
+                <p class="text-xs text-red-500 mt-2">⚠️ Tindakan ini tidak dapat dibatalkan!</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" onclick="closeGlobalDeleteModal()" class="btn-cancel">
+                    <i class="fas fa-times mr-1"></i> Batal
+                </button>
+                <button type="button" onclick="confirmGlobalDelete()" class="btn-danger">
+                    <i class="fas fa-trash mr-1"></i> Hapus
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Global Accept Modal -->
+    <div id="globalAcceptModal" class="modal-overlay">
+        <div class="modal-container">
+            <div class="modal-header">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
+                        <i class="fas fa-check-circle text-green-600 text-xl"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-gray-900">Konfirmasi Penerimaan</h3>
+                </div>
+            </div>
+            <div class="modal-body">
+                <p id="acceptModalText" class="text-gray-600">Apakah Anda yakin ingin menerima pendaftaran santri ini?
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" onclick="closeGlobalAcceptModal()" class="btn-cancel">Batal</button>
+                <button type="button" onclick="confirmGlobalAccept()" class="btn-success">
+                    <i class="fas fa-check mr-1"></i> Ya, Terima
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Global Reject Modal -->
+    <div id="globalRejectModal" class="modal-overlay">
+        <div class="modal-container">
+            <div class="modal-header">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 bg-orange-100 rounded-full flex items-center justify-center">
+                        <i class="fas fa-times-circle text-orange-600 text-xl"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-gray-900">Tolak Pendaftaran</h3>
+                </div>
+            </div>
+            <div class="modal-body">
+                <p class="text-gray-600 mb-3">Masukkan alasan penolakan:</p>
+                <textarea id="rejectReason" rows="4"
+                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-red-500"
+                    placeholder="Tuliskan alasan penolakan (minimal 10 karakter)..."></textarea>
+                <p class="text-xs text-gray-400 mt-1">Alasan ini akan diberitahukan kepada calon santri.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" onclick="closeGlobalRejectModal()" class="btn-cancel">Batal</button>
+                <button type="button" onclick="confirmGlobalReject()" class="btn-danger">
+                    <i class="fas fa-times mr-1"></i> Tolak
+                </button>
+            </div>
+        </div>
+    </div>
+
     <script>
+        // ==================== SIDEBAR ====================
         function toggleSidebar() {
             document.getElementById('sidebar').classList.toggle('open');
             document.getElementById('overlay').classList.toggle('active');
         }
 
-        function confirmDelete(message = 'Apakah Anda yakin ingin menghapus data ini?') {
-            return confirm(message);
-        }
-
+        // Auto close alert after 5 seconds
         setTimeout(function () {
             const alerts = document.querySelectorAll('[role="alert"]');
             alerts.forEach(alert => {
@@ -435,11 +663,134 @@
                 setTimeout(() => alert.remove(), 500);
             });
         }, 5000);
+
+        // ==================== DELETE MODAL ====================
+        let currentDeleteForm = null;
+
+        function openDeleteModal(id, nama) {
+            currentDeleteForm = document.getElementById('deleteForm' + id);
+            const deleteText = document.getElementById('deleteModalText');
+            if (deleteText) {
+                deleteText.innerHTML = `Yakin ingin menghapus data <strong class="text-gray-900">"${nama}"</strong>?`;
+            }
+            document.getElementById('globalDeleteModal').classList.add('show');
+        }
+
+        function closeGlobalDeleteModal() {
+            document.getElementById('globalDeleteModal').classList.remove('show');
+            currentDeleteForm = null;
+        }
+
+        function confirmGlobalDelete() {
+            if (currentDeleteForm) {
+                currentDeleteForm.submit();
+            }
+            closeGlobalDeleteModal();
+        }
+
+        // ==================== ACCEPT MODAL ====================
+        let currentAcceptId = null;
+
+        function openAcceptModal(id) {
+            currentAcceptId = id;
+            document.getElementById('globalAcceptModal').classList.add('show');
+        }
+
+        function closeGlobalAcceptModal() {
+            document.getElementById('globalAcceptModal').classList.remove('show');
+            currentAcceptId = null;
+        }
+
+        function confirmGlobalAccept() {
+            if (currentAcceptId) {
+                const form = document.createElement('form');
+                form.method = 'POST';
+                form.action = `/admin/santri/${currentAcceptId}/verify`;
+                const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+                const csrfInput = document.createElement('input');
+                csrfInput.type = 'hidden';
+                csrfInput.name = '_token';
+                csrfInput.value = csrfToken;
+                form.appendChild(csrfInput);
+                document.body.appendChild(form);
+                form.submit();
+            }
+            closeGlobalAcceptModal();
+        }
+
+        // ==================== REJECT MODAL ====================
+        let currentRejectId = null;
+
+        function openRejectModal(id) {
+            currentRejectId = id;
+            document.getElementById('rejectReason').value = '';
+            document.getElementById('globalRejectModal').classList.add('show');
+        }
+
+        function closeGlobalRejectModal() {
+            document.getElementById('globalRejectModal').classList.remove('show');
+            currentRejectId = null;
+        }
+
+        function confirmGlobalReject() {
+            const reason = document.getElementById('rejectReason').value.trim();
+            if (!reason) {
+                alert('Alasan penolakan harus diisi!');
+                return;
+            }
+            if (reason.length < 10) {
+                alert('Alasan penolakan minimal 10 karakter!');
+                return;
+            }
+            if (currentRejectId) {
+                const form = document.createElement('form');
+                form.method = 'POST';
+                form.action = `/admin/santri/${currentRejectId}/reject`;
+                const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+                const csrfInput = document.createElement('input');
+                csrfInput.type = 'hidden';
+                csrfInput.name = '_token';
+                csrfInput.value = csrfToken;
+                form.appendChild(csrfInput);
+
+                const reasonInput = document.createElement('input');
+                reasonInput.type = 'hidden';
+                reasonInput.name = 'alasan_penolakan';
+                reasonInput.value = reason;
+                form.appendChild(reasonInput);
+
+                document.body.appendChild(form);
+                form.submit();
+            }
+            closeGlobalRejectModal();
+        }
+
+        // Close modal when clicking outside
+        document.getElementById('globalDeleteModal')?.addEventListener('click', function (e) {
+            if (e.target === this) closeGlobalDeleteModal();
+        });
+        document.getElementById('globalAcceptModal')?.addEventListener('click', function (e) {
+            if (e.target === this) closeGlobalAcceptModal();
+        });
+        document.getElementById('globalRejectModal')?.addEventListener('click', function (e) {
+            if (e.target === this) closeGlobalRejectModal();
+        });
     </script>
+    
+    <?php echo $__env->make('admin.partials.toast', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
+    
+    <?php
+        try {
+            $unreadFeedbackCount = \App\Models\Feedback::where('is_read', false)->count();
+        } catch (\Exception $e) {
+            $unreadFeedbackCount = 0;
+        }
+    ?>
+    <?php echo $__env->make('admin.partials.notification-badge', ['unreadFeedbackCount' => $unreadFeedbackCount], array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
 
     <?php echo $__env->yieldPushContent('scripts'); ?>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
-</html>
-<?php /**PATH D:\ponpes-main\resources\views/admin/layout.blade.php ENDPATH**/ ?>
+</html><?php /**PATH D:\ponpes-main\resources\views/admin/layout.blade.php ENDPATH**/ ?>

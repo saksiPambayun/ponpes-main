@@ -16,6 +16,7 @@ use App\Models\AktaYayasan;
 use App\Models\AktaWakaf;
 use App\Models\Gallery;
 use App\Models\Notification;
+use App\Models\Feedback;
 use App\Traits\NotifiableTrait;
 
 class AdminController extends Controller
@@ -62,6 +63,7 @@ class AdminController extends Controller
             'sk_total'           => SkData::count(),
             'akta_yayasan_total' => AktaYayasan::count(),
             'akta_wakaf_total'   => AktaWakaf::count(),
+            'feedback_unread'    => Feedback::where('is_read', false)->count(),
         ];
 
         $santri = SantriRegistration::latest()->paginate(5);
@@ -73,8 +75,48 @@ class AdminController extends Controller
 
     public function santriIndex()
     {
-        $santri = SantriRegistration::latest()->paginate(10);
-        return view('admin.santri.index', compact('santri'));
+        // Data untuk tab Pendaftar (pending)
+        $santriPending = SantriRegistration::where('status', 'pending')
+            ->with('wave')
+            ->latest()
+            ->paginate(10);
+
+        // Data untuk tab Diterima
+        $santriDiterima = SantriRegistration::where('status', 'diterima')
+            ->with('wave')
+            ->latest()
+            ->paginate(10);
+
+        // Data untuk tab Ditolak
+        $santriDitolak = SantriRegistration::where('status', 'ditolak')
+            ->with('wave')
+            ->latest()
+            ->paginate(10);
+
+        // Statistik untuk badge
+        $stats = [
+            'pending' => SantriRegistration::where('status', 'pending')->count(),
+            'diterima' => SantriRegistration::where('status', 'diterima')->count(),
+            'ditolak' => SantriRegistration::where('status', 'ditolak')->count(),
+        ];
+
+        // Untuk filter gelombang
+        $waves = \App\Models\RegistrationWave::all();
+
+        // Untuk filter angkatan (tahun dari created_at)
+        $angkatanList = SantriRegistration::where('status', 'diterima')
+            ->selectRaw('YEAR(created_at) as tahun')
+            ->distinct()
+            ->pluck('tahun');
+
+        return view('admin.santri.index', compact(
+            'santriPending',
+            'santriDiterima',
+            'santriDitolak',
+            'stats',
+            'waves',
+            'angkatanList'
+        ));
     }
 
     public function santriCreate()
@@ -82,55 +124,53 @@ class AdminController extends Controller
         return view('admin.santri.create');
     }
 
-    // ==================== METHOD SANTRI STORE YANG BENAR (HANYA SATU) ====================
-        public function santriStore(Request $request)
-{
-    $validated = $request->validate([
-        'nama_lengkap'    => 'required|string|max:255',
-        'nisn'            => 'nullable|string|max:50',
-        'asal_sekolah'    => 'required|string|max:255',
-        'tanggal_lahir'   => 'nullable|date',
-        'alamat'          => 'nullable|string',
-        'email'           => 'nullable|email|max:255',
-        'no_wali'         => 'required|string|max:20',
-        'nama_wali'       => 'required|string|max:255',
-        'pekerjaan_wali'  => 'nullable|string|max:100',
-        'wave_id'         => 'nullable|exists:registration_waves,id',
-        'foto'            => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:20480',
-        'kk'              => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:20480',
-    ]);
+    public function santriStore(Request $request)
+    {
+        $validated = $request->validate([
+            'nama_lengkap'    => 'required|string|max:255',
+            'nisn'            => 'nullable|string|max:50',
+            'asal_sekolah'    => 'required|string|max:255',
+            'tanggal_lahir'   => 'nullable|date',
+            'alamat'          => 'nullable|string',
+            'email'           => 'nullable|email|max:255',
+            'no_wali'         => 'required|string|max:20',
+            'nama_wali'       => 'required|string|max:255',
+            'pekerjaan_wali'  => 'nullable|string|max:100',
+            'wave_id'         => 'nullable|exists:registration_waves,id',
+            'foto'            => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:20480',
+            'kk'              => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:20480',
+        ]);
 
-    $data = $validated;
+        $data = $validated;
 
-    unset($data['foto'], $data['kk']);
+        unset($data['foto'], $data['kk']);
 
-    if ($request->hasFile('kk')) {
-        $data['kk'] = $request->file('kk')->store('santri/kk', 'public');
-    }
-
-    if ($request->hasFile('foto')) {
-        $data['foto'] = $request->file('foto')->store('santri/foto', 'public');
-    }
-
-    $data['status'] = 'pending';
-    $data['acceptance_status'] = 'pending';
-
-    if (isset($data['wave_id'])) {
-        $wave = \App\Models\RegistrationWave::find($data['wave_id']);
-        if ($wave) {
-            $wave->increment('registered_count');
+        if ($request->hasFile('kk')) {
+            $data['kk'] = $request->file('kk')->store('santri/kk', 'public');
         }
+
+        if ($request->hasFile('foto')) {
+            $data['foto'] = $request->file('foto')->store('santri/foto', 'public');
+        }
+
+        $data['status'] = 'pending';
+        $data['acceptance_status'] = 'pending';
+
+        if (isset($data['wave_id'])) {
+            $wave = \App\Models\RegistrationWave::find($data['wave_id']);
+            if ($wave) {
+                $wave->increment('registered_count');
+            }
+        }
+
+        SantriRegistration::create($data);
+
+        if ($request->ajax() || $request->expectsJson()) {
+            return response()->json(['success' => true, 'message' => 'Pendaftaran berhasil!']);
+        }
+
+        return redirect()->route('admin.santri.index')->with('success', 'Data santri berhasil ditambahkan!');
     }
-
-    SantriRegistration::create($data);
-
-    if ($request->ajax() || $request->expectsJson()) {
-        return response()->json(['success' => true, 'message' => 'Pendaftaran berhasil!']);
-    }
-
-    // PERBAIKAN: Redirect ke halaman admin, bukan ke pendaftaran user
-    return redirect()->route('admin.santri.index')->with('success', 'Data santri berhasil ditambahkan!');
-}
 
     public function santriShow($id)
     {
@@ -144,68 +184,54 @@ class AdminController extends Controller
         return view('admin.santri.edit', compact('santri'));
     }
 
-   public function santriUpdate(Request $request, $id)
-{
-    // Debug: lihat apa saja yang dikirim
-    \Log::info('Files received:', ['kk' => $request->hasFile('kk'), 'foto' => $request->hasFile('foto')]);
+    public function santriUpdate(Request $request, $id)
+    {
+        $santri = SantriRegistration::findOrFail($id);
 
-    $santri = SantriRegistration::findOrFail($id);
+        $validated = $request->validate([
+            'nama_lengkap'      => 'required|string|max:255',
+            'nisn'              => 'nullable|string|max:50',
+            'asal_sekolah'      => 'required|string|max:255',
+            'tanggal_lahir'     => 'nullable|date',
+            'alamat'            => 'nullable|string',
+            'email'             => 'nullable|email|max:255',
+            'no_wali'           => 'required|string|max:20',
+            'nama_wali'         => 'required|string|max:255',
+            'pekerjaan_wali'    => 'nullable|string|max:100',
+            'kk'                => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:20480',
+            'foto'              => 'nullable|file|mimes:jpg,jpeg,png|max:2048',
+        ]);
 
-    $validated = $request->validate([
-        'nama_lengkap'      => 'required|string|max:255',
-        'nisn'              => 'nullable|string|max:50',
-        'asal_sekolah'      => 'required|string|max:255',
-        'tanggal_lahir'     => 'nullable|date',
-        'alamat'            => 'nullable|string',
-        'email'             => 'nullable|email|max:255',
-        'no_wali'           => 'required|string|max:20',
-        'nama_wali'         => 'required|string|max:255',
-        'pekerjaan_wali'    => 'nullable|string|max:100',
-        'kk'                => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:20480',
-        'foto'              => 'nullable|file|mimes:jpg,jpeg,png|max:2048',
-    ]);
+        $data = $validated;
 
-    $data = $validated;
+        unset($data['foto'], $data['kk']);
 
-    // Hapus file dari array data karena akan diproses terpisah
-    unset($data['foto'], $data['kk']);
-
-    // Proses upload KK
-    if ($request->hasFile('kk')) {
-        try {
-            // Hapus file lama
-            if ($santri->kk && Storage::disk('public')->exists($santri->kk)) {
-                Storage::disk('public')->delete($santri->kk);
+        if ($request->hasFile('kk')) {
+            try {
+                if ($santri->kk && Storage::disk('public')->exists($santri->kk)) {
+                    Storage::disk('public')->delete($santri->kk);
+                }
+                $data['kk'] = $request->file('kk')->store('santri/kk', 'public');
+            } catch (\Exception $e) {
+                return back()->withErrors(['kk' => 'Gagal upload KK: ' . $e->getMessage()]);
             }
-            // Upload file baru
-            $data['kk'] = $request->file('kk')->store('santri/kk', 'public');
-            \Log::info('KK uploaded: ' . $data['kk']);
-        } catch (\Exception $e) {
-            \Log::error('KK upload error: ' . $e->getMessage());
-            return back()->withErrors(['kk' => 'Gagal upload KK: ' . $e->getMessage()]);
         }
-    }
 
-    // Proses upload Foto
-    if ($request->hasFile('foto')) {
-        try {
-            // Hapus file lama
-            if ($santri->foto && Storage::disk('public')->exists($santri->foto)) {
-                Storage::disk('public')->delete($santri->foto);
+        if ($request->hasFile('foto')) {
+            try {
+                if ($santri->foto && Storage::disk('public')->exists($santri->foto)) {
+                    Storage::disk('public')->delete($santri->foto);
+                }
+                $data['foto'] = $request->file('foto')->store('santri/foto', 'public');
+            } catch (\Exception $e) {
+                return back()->withErrors(['foto' => 'Gagal upload foto: ' . $e->getMessage()]);
             }
-            // Upload file baru
-            $data['foto'] = $request->file('foto')->store('santri/foto', 'public');
-            \Log::info('Foto uploaded: ' . $data['foto']);
-        } catch (\Exception $e) {
-            \Log::error('Foto upload error: ' . $e->getMessage());
-            return back()->withErrors(['foto' => 'Gagal upload foto: ' . $e->getMessage()]);
         }
+
+        $santri->update($data);
+
+        return redirect()->route('admin.santri.index')->with('success', 'Data santri berhasil diupdate');
     }
-
-    $santri->update($data);
-
-    return redirect()->route('admin.santri.index')->with('success', 'Data santri berhasil diupdate');
-}
 
     public function santriDestroy($id)
     {
@@ -223,37 +249,119 @@ class AdminController extends Controller
         return redirect()->route('admin.santri.index')->with('success', 'Data santri berhasil dihapus');
     }
 
-   public function verifySantri($id)
-{
-    $santri = SantriRegistration::findOrFail($id);
+    public function verifySantri($id)
+    {
+        $santri = SantriRegistration::findOrFail($id);
 
-    $santri->update([
-        'status' => 'diterima',
-        'acceptance_status' => 'accepted',  // TAMBAHKAN INI
-        'tanggal_verifikasi' => now(),
-    ]);
+        $santri->update([
+            'status' => 'diterima',
+            'acceptance_status' => 'accepted',
+            'tanggal_verifikasi' => now(),
+        ]);
 
-    return redirect()->route('admin.santri.index')->with('success', 'Santri berhasil diterima!');
-}
+        return redirect()->route('admin.santri.index')->with('success', 'Santri berhasil diterima!');
+    }
 
     public function rejectSantri(Request $request, $id)
+    {
+        $request->validate([
+            'alasan_penolakan' => 'required|string|min:10'
+        ]);
+
+        $santri = SantriRegistration::findOrFail($id);
+
+        $santri->update([
+            'status' => 'ditolak',
+            'acceptance_status' => 'rejected',
+            'alasan_penolakan' => $request->alasan_penolakan,
+            'tanggal_verifikasi' => now(),
+        ]);
+
+        return redirect()->route('admin.santri.index')->with('success', 'Pendaftaran santri ditolak.');
+    }
+
+   // ==================== FEEDBACK (KRITIK & SARAN) ====================
+
+public function feedbackIndex(Request $request)
 {
-    $request->validate([
-        'alasan_penolakan' => 'required|string|min:10'
-    ]);
+    $query = Feedback::query();
 
-    $santri = SantriRegistration::findOrFail($id);
+    if ($request->filled('status')) {
+        if ($request->status === 'unread') {
+            $query->where('is_read', false);
+        } elseif ($request->status === 'replied') {
+            $query->where('is_replied', true);
+        }
+    }
 
-    $santri->update([
-        'status' => 'ditolak',
-        'acceptance_status' => 'rejected',  // TAMBAHKAN INI
-        'alasan_penolakan' => $request->alasan_penolakan,
-        'tanggal_verifikasi' => now(),
-    ]);
+    $feedbacks = $query->latest()->paginate(15);
+    $unreadCount = Feedback::where('is_read', false)->count();
 
-    return redirect()->route('admin.santri.index')->with('success', 'Pendaftaran santri ditolak.');
+    return view('admin.feedback.index', compact('feedbacks', 'unreadCount'));
 }
 
+public function feedbackShow($id)
+{
+    $feedback = Feedback::findOrFail($id);
+
+    if (!$feedback->is_read) {
+        $feedback->update(['is_read' => true]);
+    }
+
+    return view('admin.feedback.show', compact('feedback'));
+}
+
+public function feedbackReply(Request $request, $id)
+{
+    $request->validate([
+        'reply_message' => 'required|string|min:10',
+    ]);
+
+    $feedback = Feedback::findOrFail($id);
+
+    $feedback->update([
+        'is_replied' => true,
+        'reply_message' => $request->reply_message,
+        'replied_at' => now(),
+        'replied_by' => auth()->id(),
+        'is_read' => true,
+    ]);
+
+    return redirect()->route('admin.feedback.index')->with('success', 'Balasan berhasil dikirim.');
+}
+
+public function feedbackDestroy($id)
+{
+    $feedback = Feedback::findOrFail($id);
+    $feedback->delete();
+
+    return redirect()->route('admin.feedback.index')->with('success', 'Data feedback berhasil dihapus.');
+}
+
+public function feedbackMarkAllRead()
+{
+    Feedback::where('is_read', false)->update(['is_read' => true]);
+
+    return redirect()->back()->with('success', 'Semua feedback telah ditandai sebagai sudah dibaca.');
+}
+
+public function feedbackMarkAsRead($id)
+{
+    $feedback = Feedback::findOrFail($id);
+    $feedback->update(['is_read' => true]);
+
+    if (request()->ajax()) {
+        return response()->json(['success' => true]);
+    }
+
+    return redirect()->back()->with('success', 'Feedback ditandai sudah dibaca.');
+}
+
+public function feedbackUnreadCount()
+{
+    $count = Feedback::where('is_read', false)->count();
+    return response()->json(['count' => $count]);
+}
     // ==================== PEGAWAI ====================
 
     public function pegawaiIndex(Request $request)
@@ -377,7 +485,6 @@ class AdminController extends Controller
         return redirect()->route('admin.pegawai.show', $pegawai->id)
             ->with('success', 'Data pegawai berhasil diperbarui.');
     }
-
     public function pegawaiDestroy($id)
     {
         $pegawai = Pegawai::findOrFail($id);

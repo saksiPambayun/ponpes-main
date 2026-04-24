@@ -61,6 +61,15 @@ Route::prefix('admin')
         // Dashboard
         Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
 
+      // ==================== FEEDBACK (KRITIK & SARAN) ROUTES ====================
+Route::get('/feedback', [AdminController::class, 'feedbackIndex'])->name('feedback.index');
+Route::get('/feedback/{id}', [AdminController::class, 'feedbackShow'])->name('feedback.show');
+Route::post('/feedback/{id}/reply', [AdminController::class, 'feedbackReply'])->name('feedback.reply');
+Route::delete('/feedback/{id}', [AdminController::class, 'feedbackDestroy'])->name('feedback.destroy');
+Route::post('/feedback/mark-all-read', [AdminController::class, 'feedbackMarkAllRead'])->name('feedback.mark-all-read');
+Route::post('/feedback/{id}/mark-read', [AdminController::class, 'feedbackMarkAsRead'])->name('feedback.mark-read');
+Route::get('/feedback/unread-count', [AdminController::class, 'feedbackUnreadCount'])->name('feedback.unread-count');
+
         // Santri Registrations
         Route::get('/santri', [AdminController::class, 'santriIndex'])->name('santri.index');
         Route::get('/santri/create', [AdminController::class, 'santriCreate'])->name('santri.create');

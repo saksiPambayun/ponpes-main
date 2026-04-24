@@ -5,7 +5,6 @@
         <div class="hero-overlay">
             <div class="hero-content">
                 <h1>Penerimaan Santri Baru</h1>
-                <h2>Tahun Ajaran 2026/2027</h2>
             </div>
         </div>
     </section>
