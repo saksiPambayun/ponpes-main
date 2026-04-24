@@ -2,7 +2,7 @@
 
 
 //tessssssssssss
-//tes lagi 
+//tes lagi
 //lah
 //oke
 
@@ -13,6 +13,7 @@
 //bayun aneh
 
 //bayun gaje
+//kau yang aneh dasar kadal ijo
 
 
 use Illuminate\Support\Facades\Route;
