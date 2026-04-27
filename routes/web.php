@@ -69,8 +69,7 @@ Route::delete('/feedback/{id}', [AdminController::class, 'feedbackDestroy'])->na
 Route::post('/feedback/mark-all-read', [AdminController::class, 'feedbackMarkAllRead'])->name('feedback.mark-all-read');
 Route::post('/feedback/{id}/mark-read', [AdminController::class, 'feedbackMarkAsRead'])->name('feedback.mark-read');
 Route::get('/feedback/unread-count', [AdminController::class, 'feedbackUnreadCount'])->name('feedback.unread-count');
-
-        // Santri Registrations
+        // ==================== SANTRI REGISTRATIONS ====================
         Route::get('/santri', [AdminController::class, 'santriIndex'])->name('santri.index');
         Route::get('/santri/create', [AdminController::class, 'santriCreate'])->name('santri.create');
         Route::post('/santri', [AdminController::class, 'santriStore'])->name('santri.store');
@@ -80,6 +79,13 @@ Route::get('/feedback/unread-count', [AdminController::class, 'feedbackUnreadCou
         Route::delete('/santri/{id}', [AdminController::class, 'santriDestroy'])->name('santri.destroy');
         Route::post('/santri/{id}/verify', [AdminController::class, 'verifySantri'])->name('santri.verify');
         Route::post('/santri/{id}/reject', [AdminController::class, 'rejectSantri'])->name('santri.reject');
+
+        // ==================== DATA SANTRI & DATA PENDAFTAR (TERPISAH) ====================
+        // TAMBAHKAN ROUTE INI:
+        Route::get('/santri/data-santri', [AdminController::class, 'dataSantri'])->name('santri.data-santri');
+        Route::get('/pendaftar', [AdminController::class, 'dataPendaftar'])->name('pendaftar.index');
+        Route::post('/pendaftar/{id}/terima', [AdminController::class, 'terimaPendaftar'])->name('pendaftar.terima');
+        Route::post('/pendaftar/{id}/tolak', [AdminController::class, 'tolakPendaftar'])->name('pendaftar.tolak');
 
         // Pegawai
         Route::get('/pegawai', [AdminController::class, 'pegawaiIndex'])->name('pegawai.index');

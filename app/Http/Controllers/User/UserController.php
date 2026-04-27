@@ -107,15 +107,16 @@ class UserController extends Controller
         return back()->with('success', 'Avatar berhasil diupload!');
     }
 
-    // Home - dengan conditional tampilan (hanya tampil jika data cukup)
-    public function home()
-    {
-        $program = Program::latest()->take(3)->get();
-        $fasilitas = Fasilitas::latest()->get(); // ambil semua dulu, akan di-filter di view
-        $galeri = Gallery::latest()->get(); // ambil semua dulu, akan di-filter di view
+    // Home - dengan conditional tampilan (hanya tampil jika data cukup)// Home
+public function home()
+{
+    $program = Program::latest()->take(3)->get();
+    $fasilitas = Fasilitas::latest()->get();
+    $galeri = Gallery::latest()->get();
+    $profil = ProfilYayasan::first();
 
-        return view('public.home_user', compact('program', 'fasilitas', 'galeri'));
-    }
+    return view('home_user', compact('program', 'fasilitas', 'galeri', 'profil'));
+}
 
     // HAPUS METHOD legalitas() karena halaman legalitas dihapus dari user
     // public function legalitas() - HAPUS

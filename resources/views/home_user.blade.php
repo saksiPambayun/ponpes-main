@@ -1,9 +1,9 @@
+@extends('layouts.app')
 
+@section('title', 'Beranda')
 
-<?php $__env->startSection('title', 'Beranda'); ?>
-
-<?php $__env->startSection('content'); ?>
-    
+@section('content')
+    {{-- HERO SECTION --}}
     <section class="hero">
         <div class="hero-overlay"></div>
         <div class="hero-content">
@@ -11,44 +11,43 @@
             <p>Menyediakan pendidikan berbasis Al-Qur'an dan Sunnah dengan fasilitas yang nyaman serta tenaga pengajar
                 profesional.</p>
             <div class="hero-buttons">
-                <a href="<?php echo e(route('user.pendaftaran.index')); ?>" class="btn-daftar">Daftar Sekarang</a>
-                <a href="<?php echo e(route('tentang')); ?>" class="btn-secondary">Tentang Kami</a>
+                <a href="{{ route('user.pendaftaran.index') }}" class="btn-daftar">Daftar Sekarang</a>
+                <a href="{{ route('tentang') }}" class="btn-secondary">Tentang Kami</a>
             </div>
         </div>
     </section>
 
-    
+    {{-- TENTANG KAMI --}}
     <section class="about-section">
         <div class="about-container">
             <div class="about-image reveal-left">
-                <img src="<?php echo e(asset('images/g2.png')); ?>" alt="Tentang Kami">
+                <img src="{{ asset('images/g2.png') }}" alt="Tentang Kami">
             </div>
             <div class="about-text reveal-right">
                 <h2>Tentang Kami</h2>
                 <div class="line"></div>
                 <p>
-                    <?php echo e($profil->deskripsi ?? 'Pondok Pesantren Al-Ifadah berdiri pada 02 Mei 2014 di Desa Cangkreng, Kecamatan Lenteng, Kabupaten Sumenep. Bernaung di bawah Yayasan Al-Ifadah, pesantren ini berkomitmen mencetak generasi muslim penghafal Al-Qur\'an yang berakhlak, berilmu, dan siap menghadapi perkembangan zaman.'); ?>
-
+                    {{ $profil->deskripsi ?? 'Pondok Pesantren Al-Ifadah berdiri pada 02 Mei 2014 di Desa Cangkreng, Kecamatan Lenteng, Kabupaten Sumenep. Bernaung di bawah Yayasan Al-Ifadah, pesantren ini berkomitmen mencetak generasi muslim penghafal Al-Qur\'an yang berakhlak, berilmu, dan siap menghadapi perkembangan zaman.' }}
                 </p>
             </div>
             <div class="about-link">
-                <a href="<?php echo e(route('tentang')); ?>">Lihat selengkapnya →</a>
+                <a href="{{ route('tentang') }}">Lihat selengkapnya →</a>
             </div>
         </div>
     </section>
 
-    
+    {{-- PROGRAM PENDIDIKAN --}}
     <section class="program-section">
         <div class="program-container">
             <h2 class="program-title reveal-top">Program Pendidikan</h2>
             <div class="program-cards">
-                <?php $__empty_1 = true; $__currentLoopData = $program; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $p): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+                @forelse ($program as $p)
                     <div class="program-card">
-                        <h3><?php echo e($p->nama_program); ?></h3>
-                        <p><?php echo e($p->deskripsi); ?></p>
+                        <h3>{{ $p->nama_program }}</h3>
+                        <p>{{ $p->deskripsi }}</p>
                         <div class="card-line"></div>
                     </div>
-                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
+                @empty
                     <div class="program-card">
                         <h3>Tahfidz Murni</h3>
                         <p>Program tahfidz bagi semua orang Indonesia yang ingin mendalami ilmu pengetahuan dan teknologi.</p>
@@ -64,74 +63,74 @@
                         <p>Program lengkap tahunan 30 juz atau surat pilihan yang dapat dipilih oleh peserta.</p>
                         <div class="card-line"></div>
                     </div>
-                <?php endif; ?>
+                @endforelse
             </div>
         </div>
     </section>
 
-    
-    <?php if($fasilitas->count() > 0): ?>
+    {{-- FASILITAS (tampil jika ada data) --}}
+    @if($fasilitas->count() > 0)
         <section class="fasilitas-section">
             <div class="fasilitas-container">
                 <h2 class="fasilitas-title">Fasilitas</h2>
                 <div class="fasilitas-grid">
-                    <?php $__currentLoopData = $fasilitas->take(6); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                    @foreach ($fasilitas->take(6) as $item)
                         <div class="fasilitas-card">
-                            <img src="<?php echo e(asset('storage/' . $item->foto)); ?>" alt="<?php echo e($item->nama_fasilitas); ?>">
-                            <h3><?php echo e($item->nama_fasilitas); ?></h3>
+                            <img src="{{ asset('storage/' . $item->foto) }}" alt="{{ $item->nama_fasilitas }}">
+                            <h3>{{ $item->nama_fasilitas }}</h3>
                         </div>
-                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                    @endforeach
                 </div>
-                <?php if($fasilitas->count() > 6): ?>
+                @if($fasilitas->count() > 6)
                     <div class="fasilitas-link">
-                        <a href="<?php echo e(route('fasilitas')); ?>">Lihat selengkapnya →</a>
+                        <a href="{{ route('fasilitas') }}">Lihat selengkapnya →</a>
                     </div>
-                <?php endif; ?>
+                @endif
             </div>
         </section>
-    <?php endif; ?>
+    @endif
 
-    
-    <?php if($galeri->count() > 0): ?>
+    {{-- GALERI (tampil jika ada data) --}}
+    @if($galeri->count() > 0)
         <section class="galeri-section">
             <div class="container-galeri">
                 <h2 class="galeri-title">Galeri</h2>
                 <div class="galeri-wrapper">
                     <button class="galeri-btn btn-prev">&#10094;</button>
                     <div class="galeri-carousel">
-                        <?php $__currentLoopData = $galeri; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $g): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                        @foreach ($galeri as $g)
                             <div class="galeri-card">
-                                <img src="<?php echo e(asset('storage/' . $g->gambar)); ?>" alt="<?php echo e($g->judul); ?>">
+                                <img src="{{ asset('storage/' . $g->gambar) }}" alt="{{ $g->judul }}">
                             </div>
-                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                        @endforeach
                     </div>
                     <button class="galeri-btn btn-next">&#10095;</button>
                 </div>
-                <?php if($galeri->count() > 3): ?>
+                @if($galeri->count() > 3)
                     <div class="galeri-link">
-                        <a href="<?php echo e(route('galeri')); ?>">Lihat selengkapnya →</a>
+                        <a href="{{ route('galeri') }}">Lihat selengkapnya →</a>
                     </div>
-                <?php endif; ?>
+                @endif
             </div>
         </section>
-    <?php endif; ?>
+    @endif
 
-    
+    {{-- CTA PENDAFTARAN --}}
     <section class="cta-pendaftaran">
         <div class="cta-container">
             <div class="cta-left">
-                <img src="<?php echo e(asset('images/logo.png')); ?>" alt="Logo PPAI">
+                <img src="{{ asset('images/logo.png') }}" alt="Logo PPAI">
             </div>
             <div class="cta-right">
                 <h2>Pendaftaran Santri Baru Telah Dibuka</h2>
                 <p>Daftarkan putra-putri Anda sekarang dan bergabung bersama Pondok Pesantren Al-Ifadah</p>
-                <a href="<?php echo e(route('user.pendaftaran.index')); ?>" class="cta-primary">Daftar Sekarang</a>
+                <a href="{{ route('user.pendaftaran.index') }}" class="cta-primary">Daftar Sekarang</a>
             </div>
         </div>
     </section>
-<?php $__env->stopSection(); ?>
+@endsection
 
-<?php $__env->startPush('styles'); ?>
+@push('styles')
     <style>
         * {
             margin: 0;
@@ -142,7 +141,7 @@
         /* HERO */
         .hero {
             position: relative;
-            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('<?php echo e(asset("images/hero-bg.jpg")); ?>');
+            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('{{ asset("images/hero-bg.jpg") }}');
             background-size: cover;
             background-position: center;
             min-height: 80vh;
@@ -551,9 +550,9 @@
             }
         }
     </style>
-<?php $__env->stopPush(); ?>
+@endpush
 
-<?php $__env->startPush('scripts'); ?>
+@push('scripts')
     <script>
         const revealElements = document.querySelectorAll('.reveal-left, .reveal-right, .reveal-top');
         function checkReveal() {
@@ -573,5 +572,4 @@
             nextBtn.addEventListener('click', () => carousel.scrollBy({ left: 300, behavior: 'smooth' }));
         }
     </script>
-<?php $__env->stopPush(); ?>
-<?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH D:\ponpes-main\resources\views/home_user.blade.php ENDPATH**/ ?>
+@endpush
