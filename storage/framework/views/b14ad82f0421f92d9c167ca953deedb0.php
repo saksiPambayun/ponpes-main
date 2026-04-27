@@ -44,31 +44,42 @@
             <div class="program-cards">
                 <?php $__empty_1 = true; $__currentLoopData = $program; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $p): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
                     <div class="program-card">
+                        <div class="program-icon">
+                            <i class="fas fa-quran"></i>
+                        </div>
                         <h3><?php echo e($p->nama_program); ?></h3>
-                        <p><?php echo e($p->deskripsi); ?></p>
                         <div class="card-line"></div>
+                        <p><?php echo e($p->deskripsi); ?></p>
                     </div>
                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
                     <div class="program-card">
+                        <div class="program-icon">
+                            <i class="fas fa-quran"></i>
+                        </div>
                         <h3>Tahfidz Murni</h3>
-                        <p>Program tahfidz bagi semua orang Indonesia yang ingin mendalami ilmu pengetahuan dan teknologi.</p>
                         <div class="card-line"></div>
+                        <p>Program khusus bagi santri yang fokus menghafal Al-Qur'an tanpa sekolah formal.</p>
                     </div>
                     <div class="program-card">
+                        <div class="program-icon">
+                            <i class="fas fa-school"></i>
+                        </div>
                         <h3>Tahfidz & Sekolah Formal</h3>
-                        <p>Program formal yang menekankan pada tahfidz Aqidah Ushuluddin serta pendidikannya.</p>
                         <div class="card-line"></div>
+                        <p>Program terpadu antara hafalan Al-Qur'an dan pendidikan formal (MTs/SMA).</p>
                     </div>
                     <div class="program-card">
+                        <div class="program-icon">
+                            <i class="fas fa-star-of-life"></i>
+                        </div>
                         <h3>Tahfidz 30 Juz & Surat Pilihan</h3>
-                        <p>Program lengkap tahunan 30 juz atau surat pilihan yang dapat dipilih oleh peserta.</p>
                         <div class="card-line"></div>
+                        <p>Program target hafalan 30 juz atau surat tertentu dengan sistem bin-nadzhar.</p>
                     </div>
                 <?php endif; ?>
             </div>
         </div>
     </section>
-
     
     <?php if($fasilitas->count() > 0): ?>
         <section class="fasilitas-section">
@@ -95,13 +106,14 @@
     <?php if($galeri->count() > 0): ?>
         <section class="galeri-section">
             <div class="container-galeri">
-                <h2 class="galeri-title">Galeri</h2>
+                <h2 class="galeri-title reveal-top">Galeri</h2>
                 <div class="galeri-wrapper">
                     <button class="galeri-btn btn-prev">&#10094;</button>
-                    <div class="galeri-carousel">
+                    <div class="galeri-carousel" id="galeriCarousel">
                         <?php $__currentLoopData = $galeri; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $g): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                             <div class="galeri-card">
                                 <img src="<?php echo e(asset('storage/' . $g->gambar)); ?>" alt="<?php echo e($g->judul); ?>">
+                                <div class="galeri-caption"><?php echo e($g->judul ?? ''); ?></div>
                             </div>
                         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                     </div>
@@ -267,45 +279,76 @@
             font-weight: 600;
         }
 
-        /* PROGRAM */
-        .program-section {
-            padding: 60px 20px;
-            background: white;
-        }
-
-        .program-container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .program-title {
-            text-align: center;
-            font-size: 2rem;
-            color: #005F02;
-            margin-bottom: 50px;
-        }
-
-        .program-cards {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 30px;
-        }
-
+        /* PROGRAM CARD - TAMPILAN RAPI */
         .program-card {
             background: #eef3ec;
-            padding: 30px;
+            padding: 30px 20px;
             border-radius: 15px;
             text-align: center;
-            transition: 0.3s;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
         }
 
         .program-card:hover {
-            transform: translateY(-5px);
+            transform: translateY(-8px);
+            box-shadow: 0 15px 35px rgba(0, 95, 2, 0.15);
+        }
+
+        .program-icon {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, #005F02, #0a7c0e);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            transition: all 0.3s ease;
+        }
+
+        .program-icon i {
+            font-size: 32px;
+            color: white;
+        }
+
+        .program-card:hover .program-icon {
+            transform: scale(1.1);
+            background: linear-gradient(135deg, #0a7c0e, #005F02);
         }
 
         .program-card h3 {
             color: #005F02;
-            margin-bottom: 15px;
+            margin-bottom: 12px;
+            font-size: 1.25rem;
+            font-weight: 700;
+        }
+
+        .card-line {
+            width: 50px;
+            height: 3px;
+            background: #005F02;
+            margin: 12px auto;
+            border-radius: 3px;
+            transition: width 0.3s ease;
+        }
+
+        .program-card:hover .card-line {
+            width: 80px;
+        }
+
+        .program-card p {
+            color: #555;
+            line-height: 1.6;
+            font-size: 0.9rem;
+            margin-top: 10px;
+        }
+
+        /* Grid program cards */
+        .program-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
         }
 
         .card-line {
@@ -374,28 +417,16 @@
             font-weight: 600;
         }
 
-        /* GALERI */
+        /* GALERI IMPROVED */
         .galeri-section {
             padding: 60px 20px;
-            background: white;
-        }
-
-        .container-galeri {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .galeri-title {
-            text-align: center;
-            font-size: 2rem;
-            color: #005F02;
-            margin-bottom: 50px;
+            background: #f8f9fa;
         }
 
         .galeri-wrapper {
+            position: relative;
             display: flex;
             align-items: center;
-            justify-content: center;
             gap: 15px;
         }
 
@@ -406,6 +437,8 @@
             scroll-behavior: smooth;
             padding: 20px 0;
             flex: 1;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
         }
 
         .galeri-carousel::-webkit-scrollbar {
@@ -413,42 +446,79 @@
         }
 
         .galeri-card {
-            flex: 0 0 280px;
+            flex: 0 0 300px;
+            transition: 0.3s;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .galericard:hover {
+            transform: scale(1.02);
         }
 
         .galeri-card img {
             width: 100%;
             height: 220px;
             object-fit: cover;
-            border-radius: 12px;
+            transition: 0.3s;
+        }
+
+        .galeri-card:hover img {
+            transform: scale(1.05);
+        }
+
+        .galeri-caption {
+            padding: 10px;
+            text-align: center;
+            background: white;
+            font-size: 0.85rem;
+            color: #555;
+            font-weight: 500;
         }
 
         .galeri-btn {
             background: #005F02;
             color: white;
             border: none;
-            width: 40px;
-            height: 40px;
+            width: 45px;
+            height: 45px;
             border-radius: 50%;
             cursor: pointer;
             font-size: 18px;
             flex-shrink: 0;
+            transition: 0.3s;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
         }
 
         .galeri-btn:hover {
             background: #0d4f14;
+            transform: scale(1.05);
         }
 
-        .galeri-link {
-            text-align: center;
-            margin-top: 30px;
+        /* Auto-slide indicator dots */
+        .galeri-dots {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 20px;
         }
 
-        .galeri-link a {
-            color: #005F02;
-            text-decoration: none;
-            font-weight: 600;
+        .galeri-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #ccc;
+            cursor: pointer;
+            transition: 0.3s;
         }
+
+        .galeri-dot.active {
+            background: #005F02;
+            width: 25px;
+            border-radius: 5px;
+        }
+
 
         /* CTA */
         .cta-pendaftaran {
@@ -572,6 +642,120 @@
             prevBtn.addEventListener('click', () => carousel.scrollBy({ left: -300, behavior: 'smooth' }));
             nextBtn.addEventListener('click', () => carousel.scrollBy({ left: 300, behavior: 'smooth' }));
         }
+        // Reveal Animation (existing)
+        const revealElements = document.querySelectorAll('.reveal-left, .reveal-right, .reveal-top');
+        function checkReveal() {
+            revealElements.forEach(el => {
+                const rect = el.getBoundingClientRect();
+                if (rect.top < window.innerHeight - 100) el.classList.add('revealed');
+            });
+        }
+        window.addEventListener('load', checkReveal);
+        window.addEventListener('scroll', checkReveal);
+
+        // ========== GALERI AUTO-SLIDE (1 DETIK) + BISA DISENTUH ==========
+        const carousel = document.querySelector('.galeri-carousel');
+        const prevBtn = document.querySelector('.btn-prev');
+        const nextBtn = document.querySelector('.btn-next');
+
+        if (carousel && prevBtn && nextBtn) {
+            let autoSlideInterval;
+            let isHovering = false;
+            const slideAmount = 320; // Jarak scroll per slide
+
+            // Fungsi untuk scroll ke kiri/kanan
+            function scrollLeft() {
+                carousel.scrollBy({ left: -slideAmount, behavior: 'smooth' });
+            }
+
+            function scrollRight() {
+                carousel.scrollBy({ left: slideAmount, behavior: 'smooth' });
+            }
+
+            // Event manual untuk tombol
+            prevBtn.addEventListener('click', () => {
+                scrollLeft();
+                resetAutoSlide();
+            });
+
+            nextBtn.addEventListener('click', () => {
+                scrollRight();
+                resetAutoSlide();
+            });
+
+            // Auto slide setiap 1 detik
+            function startAutoSlide() {
+                if (autoSlideInterval) clearInterval(autoSlideInterval);
+                autoSlideInterval = setInterval(() => {
+                    if (!isHovering) {
+                        scrollRight();
+                    }
+                }, 1000); // 1000ms = 1 detik
+            }
+
+            function stopAutoSlide() {
+                if (autoSlideInterval) {
+                    clearInterval(autoSlideInterval);
+                    autoSlideInterval = null;
+                }
+            }
+
+            function resetAutoSlide() {
+                stopAutoSlide();
+                startAutoSlide();
+            }
+
+            // Hover: pause auto-slide
+            carousel.addEventListener('mouseenter', () => {
+                isHovering = true;
+                stopAutoSlide();
+            });
+
+            carousel.addEventListener('mouseleave', () => {
+                isHovering = false;
+                startAutoSlide();
+            });
+
+            // Start auto-slide
+            startAutoSlide();
+
+            // Optional: Tambah indicator dots
+            function addDots() {
+                const cards = document.querySelectorAll('.galeri-card');
+                const dotsContainer = document.createElement('div');
+                dotsContainer.className = 'galeri-dots';
+
+                cards.forEach((_, index) => {
+                    const dot = document.createElement('div');
+                    dot.className = 'galeri-dot';
+                    dot.addEventListener('click', () => {
+                        const scrollPosition = index * slideAmount;
+                        carousel.scrollTo({ left: scrollPosition, behavior: 'smooth' });
+                        resetAutoSlide();
+                    });
+                    dotsContainer.appendChild(dot);
+                });
+
+                carousel.parentElement.appendChild(dotsContainer);
+
+                // Update active dot on scroll
+                carousel.addEventListener('scroll', () => {
+                    const scrollPos = carousel.scrollLeft;
+                    const activeIndex = Math.round(scrollPos / slideAmount);
+                    document.querySelectorAll('.galeri-dot').forEach((dot, i) => {
+                        if (i === activeIndex) {
+                            dot.classList.add('active');
+                        } else {
+                            dot.classList.remove('active');
+                        }
+                    });
+                });
+            }
+
+            // Uncomment jika ingin menambahkan dots indicator
+            // addDots();
+        }
+
     </script>
 <?php $__env->stopPush(); ?>
 <?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH D:\ponpes-main\resources\views/home_user.blade.php ENDPATH**/ ?>

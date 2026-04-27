@@ -331,7 +331,7 @@
                 <div class="mb-6">
                     <p class="text-xs font-semibold text-green-200 uppercase tracking-wider mb-3 px-3">Pendaftaran</p>
 
-                    <!-- Data Pendaftar (Calon Santri yang belum fix) -->
+                    <!-- Data Pendaftar (Calon Santri) -->
                     <a href="<?php echo e(route('admin.pendaftar.index')); ?>"
                         class="sidebar-item flex items-center px-4 py-3 text-green-100 rounded-lg mb-1 <?php echo e(request()->routeIs('admin.pendaftar.*') ? 'active' : ''); ?>">
                         <div
@@ -352,9 +352,9 @@
                         <?php endif; ?>
                     </a>
 
-                    <!-- Data Santri (Santri yang sudah fix/diterima) -->
-                    <a href="<?php echo e(route('admin.santri.data-santri')); ?>"
-                        class="sidebar-item flex items-center px-4 py-3 text-green-100 rounded-lg mb-1 <?php echo e(request()->routeIs('admin.santri.data-santri') ? 'active' : ''); ?>">
+                    <!-- Data Santri (Santri Tetap) -->
+                    <a href="<?php echo e(route('admin.data-santri.index')); ?>"
+                        class="sidebar-item flex items-center px-4 py-3 text-green-100 rounded-lg mb-1 <?php echo e(request()->routeIs('admin.data-santri.*') ? 'active' : ''); ?>">
                         <div
                             class="icon-wrapper w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center mr-3">
                             <i class="fas fa-user-graduate"></i>
@@ -362,14 +362,14 @@
                         <span class="font-medium">Data Santri</span>
                         <?php
                             try {
-                                $diterimaCount = \App\Models\SantriRegistration::where('status', 'diterima')->count();
+                                $santriCount = \App\Models\SantriRegistration::where('status', 'diterima')->count();
                             } catch (\Exception $e) {
-                                $diterimaCount = 0;
+                                $santriCount = 0;
                             }
                         ?>
-                        <?php if($diterimaCount > 0): ?>
+                        <?php if($santriCount > 0): ?>
                             <span
-                                class="ml-auto bg-green-500 text-white text-xs px-2 py-0.5 rounded-full"><?php echo e($diterimaCount); ?></span>
+                                class="ml-auto bg-green-500 text-white text-xs px-2 py-0.5 rounded-full"><?php echo e($santriCount); ?></span>
                         <?php endif; ?>
                     </a>
 
@@ -383,6 +383,7 @@
                         <span class="font-medium">Kelola Gelombang</span>
                     </a>
                 </div>
+
                 <!-- KEPEGAWAIAN -->
                 <div class="mb-6">
                     <p class="text-xs font-semibold text-green-200 uppercase tracking-wider mb-3 px-3">Kepegawaian</p>

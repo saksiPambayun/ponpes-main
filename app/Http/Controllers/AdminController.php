@@ -280,7 +280,7 @@ class AdminController extends Controller
         return redirect()->route('admin.santri.index')->with('success', 'Pendaftaran santri ditolak.');
     }
 
-   // ==================== FEEDBACK (KRITIK & SARAN) ====================
+ // ==================== FEEDBACK (KRITIK & SARAN) ====================
 
 public function feedbackIndex(Request $request)
 {
@@ -294,7 +294,8 @@ public function feedbackIndex(Request $request)
         }
     }
 
-    $feedbacks = $query->latest()->paginate(15);
+    // Pagination 10 data per halaman (bukan 15)
+    $feedbacks = $query->latest()->paginate(10);
     $unreadCount = Feedback::where('is_read', false)->count();
 
     return view('admin.feedback.index', compact('feedbacks', 'unreadCount'));
@@ -311,6 +312,8 @@ public function feedbackShow($id)
     return view('admin.feedback.show', compact('feedback'));
 }
 
+// HAPUS ATAU KOMENTAR method ini
+/*
 public function feedbackReply(Request $request, $id)
 {
     $request->validate([
@@ -329,6 +332,7 @@ public function feedbackReply(Request $request, $id)
 
     return redirect()->route('admin.feedback.index')->with('success', 'Balasan berhasil dikirim.');
 }
+*/
 
 public function feedbackDestroy($id)
 {
@@ -742,11 +746,108 @@ public function feedbackUnreadCount()
         return back()->with('success', 'Email berhasil diubah');
     }
 
-    public function logout(Request $request)
-    {
-        Auth::logout();
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
-        return redirect('/login');
+    // ==================== DATA SANTRI (CALON SANTRI) ====================
+ public function dataSantri(Request $request)
+{
+    // Data santri yang sudah diterima (status = 'diterima')
+    $query = SantriRegistration::where('status', 'diterima')->with('wave');
+    
+    // Filter gelombang
+    if ($request->filled('wave_id')) {
+        $query->where('wave_id', $request->wave_id);
     }
+    
+    // Filter angkatan (tahun)
+    if ($request->filled('angkatan')) {
+        $query->whereYear('created_at', $request->angkatan);
+    }
+    
+    // Search
+    if ($request->filled('search')) {
+        $search = $request->search;
+        $query->where(function($q) use ($search) {
+            $q->where('nama_lengkap', 'like', "%{$search}%")
+              ->orWhere('nisn', 'like', "%{$search}%")
+              ->orWhere('asal_sekolah', 'like', "%{$search}%");
+        });
+    }
+    
+    $santriTetap = $query->latest()->paginate(10)->withQueryString();
+    
+    // Statistik lengkap (hitung dari database)
+    $totalSantri = SantriRegistration::where('status', 'diterima')->count();
+    
+    // Jika kolom jenis_kelamin belum ada, set default 0
+    try {
+        $lakiLaki = SantriRegistration::where('status', 'diterima')->where('jenis_kelamin', 'L')->count();
+        $perempuan = SantriRegistration::where('status', 'diterima')->where('jenis_kelamin', 'P')->count();
+    } catch (\Exception $e) {
+        $lakiLaki = 0;
+        $perempuan = 0;
+    }
+    
+    $stats = [
+        'total' => $totalSantri,
+        'laki_laki' => $lakiLaki,
+        'perempuan' => $perempuan,
+    ];
+    
+    // Data untuk filter
+    $waves = \App\Models\RegistrationWave::all();
+    $angkatanList = SantriRegistration::where('status', 'diterima')
+        ->selectRaw('YEAR(created_at) as tahun')
+        ->distinct()
+        ->orderBy('tahun', 'desc')
+        ->pluck('tahun');
+    
+    return view('admin.santri.data-santri', compact('santriTetap', 'stats', 'waves', 'angkatanList'));
+}
+
+// ==================== DATA PENDAFTAR (CALON SANTRI) ====================
+
+public function dataPendaftar(Request $request)
+{
+    // Data pendaftar (status pending, ditolak, atau belum diterima)
+    $query = SantriRegistration::with('wave');
+    
+    // Filter berdasarkan status
+    $statusFilter = $request->status ?? 'pending';
+    if (in_array($statusFilter, ['pending', 'diterima', 'ditolak'])) {
+        $query->where('status', $statusFilter);
+    } else {
+        $query->where('status', 'pending'); // default pending
+    }
+    
+    // Filter gelombang
+    if ($request->filled('wave_id')) {
+        $query->where('wave_id', $request->wave_id);
+    }
+    
+    // Search
+    if ($request->filled('search')) {
+        $search = $request->search;
+        $query->where(function($q) use ($search) {
+            $q->where('nama_lengkap', 'like', "%{$search}%")
+              ->orWhere('nisn', 'like', "%{$search}%")
+              ->orWhere('asal_sekolah', 'like', "%{$search}%")
+              ->orWhere('no_wali', 'like', "%{$search}%");
+        });
+    }
+    
+    $pendaftar = $query->latest()->paginate(10)->withQueryString();
+    
+    // Statistik untuk badge
+    $stats = [
+        'pending' => SantriRegistration::where('status', 'pending')->count(),
+        'diterima' => SantriRegistration::where('status', 'diterima')->count(),
+        'ditolak' => SantriRegistration::where('status', 'ditolak')->count(),
+    ];
+    
+    // Data untuk filter
+    $waves = \App\Models\RegistrationWave::all();
+    $currentStatus = $statusFilter;
+    
+    return view('admin.santri.data-pendaftar', compact('pendaftar', 'stats', 'waves', 'currentStatus'));
+}
+
 }

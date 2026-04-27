@@ -1,21 +1,5 @@
 <?php
 
-
-//tessssssssssss
-//tes lagi
-//lah
-//oke
-
-//tess
-
-//bisa ga
-
-//bayun aneh
-
-//bayun gaje
-//kau yang aneh dasar kadal ijo
-
-
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\StrukturOrganisasiController;
@@ -61,15 +45,31 @@ Route::prefix('admin')
         // Dashboard
         Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
 
-      // ==================== FEEDBACK (KRITIK & SARAN) ROUTES ====================
+  // ==================== FEEDBACK (KRITIK & SARAN) ROUTES ====================
 Route::get('/feedback', [AdminController::class, 'feedbackIndex'])->name('feedback.index');
 Route::get('/feedback/{id}', [AdminController::class, 'feedbackShow'])->name('feedback.show');
-Route::post('/feedback/{id}/reply', [AdminController::class, 'feedbackReply'])->name('feedback.reply');
+// Route::post('/feedback/{id}/reply', [AdminController::class, 'feedbackReply'])->name('feedback.reply'); // HAPUS BARIS INI
 Route::delete('/feedback/{id}', [AdminController::class, 'feedbackDestroy'])->name('feedback.destroy');
 Route::post('/feedback/mark-all-read', [AdminController::class, 'feedbackMarkAllRead'])->name('feedback.mark-all-read');
 Route::post('/feedback/{id}/mark-read', [AdminController::class, 'feedbackMarkAsRead'])->name('feedback.mark-read');
 Route::get('/feedback/unread-count', [AdminController::class, 'feedbackUnreadCount'])->name('feedback.unread-count');
-        // ==================== SANTRI REGISTRATIONS ====================
+              // ==================== DATA SANTRI (SANTRI TETAP) ====================
+        Route::get('/data-santri', [AdminController::class, 'dataSantri'])->name('data-santri.index');
+        Route::get('/data-santri/{id}', [AdminController::class, 'santriShow'])->name('data-santri.show');
+        Route::get('/data-santri/{id}/edit', [AdminController::class, 'santriEdit'])->name('data-santri.edit');
+        Route::put('/data-santri/{id}', [AdminController::class, 'santriUpdate'])->name('data-santri.update');
+        Route::delete('/data-santri/{id}', [AdminController::class, 'santriDestroy'])->name('data-santri.destroy');
+        
+        // ==================== DATA PENDAFTAR (CALON SANTRI) ====================
+        Route::get('/pendaftar', [AdminController::class, 'dataPendaftar'])->name('pendaftar.index');
+        Route::get('/pendaftar/{id}', [AdminController::class, 'santriShow'])->name('pendaftar.show');
+        Route::get('/pendaftar/{id}/edit', [AdminController::class, 'santriEdit'])->name('pendaftar.edit');
+        Route::put('/pendaftar/{id}', [AdminController::class, 'santriUpdate'])->name('pendaftar.update');
+        Route::delete('/pendaftar/{id}', [AdminController::class, 'santriDestroy'])->name('pendaftar.destroy');
+        Route::post('/pendaftar/{id}/verify', [AdminController::class, 'verifySantri'])->name('pendaftar.verify');
+        Route::post('/pendaftar/{id}/reject', [AdminController::class, 'rejectSantri'])->name('pendaftar.reject');
+        
+        // Untuk kompatibilitas backward
         Route::get('/santri', [AdminController::class, 'santriIndex'])->name('santri.index');
         Route::get('/santri/create', [AdminController::class, 'santriCreate'])->name('santri.create');
         Route::post('/santri', [AdminController::class, 'santriStore'])->name('santri.store');
@@ -77,15 +77,6 @@ Route::get('/feedback/unread-count', [AdminController::class, 'feedbackUnreadCou
         Route::get('/santri/{id}/edit', [AdminController::class, 'santriEdit'])->name('santri.edit');
         Route::put('/santri/{id}', [AdminController::class, 'santriUpdate'])->name('santri.update');
         Route::delete('/santri/{id}', [AdminController::class, 'santriDestroy'])->name('santri.destroy');
-        Route::post('/santri/{id}/verify', [AdminController::class, 'verifySantri'])->name('santri.verify');
-        Route::post('/santri/{id}/reject', [AdminController::class, 'rejectSantri'])->name('santri.reject');
-
-        // ==================== DATA SANTRI & DATA PENDAFTAR (TERPISAH) ====================
-        // TAMBAHKAN ROUTE INI:
-        Route::get('/santri/data-santri', [AdminController::class, 'dataSantri'])->name('santri.data-santri');
-        Route::get('/pendaftar', [AdminController::class, 'dataPendaftar'])->name('pendaftar.index');
-        Route::post('/pendaftar/{id}/terima', [AdminController::class, 'terimaPendaftar'])->name('pendaftar.terima');
-        Route::post('/pendaftar/{id}/tolak', [AdminController::class, 'tolakPendaftar'])->name('pendaftar.tolak');
 
         // Pegawai
         Route::get('/pegawai', [AdminController::class, 'pegawaiIndex'])->name('pegawai.index');

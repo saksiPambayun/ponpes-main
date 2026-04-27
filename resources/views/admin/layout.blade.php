@@ -331,14 +331,14 @@
                 <div class="mb-6">
                     <p class="text-xs font-semibold text-green-200 uppercase tracking-wider mb-3 px-3">Pendaftaran</p>
 
-                    <!-- Data Santri -->
-                    <a href="{{ route('admin.santri.index') }}"
-                        class="sidebar-item flex items-center px-4 py-3 text-green-100 rounded-lg mb-1 {{ request()->routeIs('admin.santri.*') ? 'active' : '' }}">
+                    <!-- Data Pendaftar (Calon Santri) -->
+                    <a href="{{ route('admin.pendaftar.index') }}"
+                        class="sidebar-item flex items-center px-4 py-3 text-green-100 rounded-lg mb-1 {{ request()->routeIs('admin.pendaftar.*') ? 'active' : '' }}">
                         <div
                             class="icon-wrapper w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center mr-3">
-                            <i class="fas fa-user-graduate"></i>
+                            <i class="fas fa-user-plus"></i>
                         </div>
-                        <span class="font-medium">Data Santri</span>
+                        <span class="font-medium">Data Pendaftar</span>
                         @php
                             try {
                                 $pendingCount = \App\Models\SantriRegistration::where('status', 'pending')->count();
@@ -348,7 +348,28 @@
                         @endphp
                         @if ($pendingCount > 0)
                             <span
-                                class="ml-auto bg-yellow-500 text-white text-xs px-2 py-0.5 rounded-full">{{ $pendingCount }}</span>
+                                class="ml-auto bg-yellow-500 text-white text-xs px-2 py-0.5 rounded-full animate-pulse">{{ $pendingCount }}</span>
+                        @endif
+                    </a>
+
+                    <!-- Data Santri (Santri Tetap) -->
+                    <a href="{{ route('admin.data-santri.index') }}"
+                        class="sidebar-item flex items-center px-4 py-3 text-green-100 rounded-lg mb-1 {{ request()->routeIs('admin.data-santri.*') ? 'active' : '' }}">
+                        <div
+                            class="icon-wrapper w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center mr-3">
+                            <i class="fas fa-user-graduate"></i>
+                        </div>
+                        <span class="font-medium">Data Santri</span>
+                        @php
+                            try {
+                                $santriCount = \App\Models\SantriRegistration::where('status', 'diterima')->count();
+                            } catch (\Exception $e) {
+                                $santriCount = 0;
+                            }
+                        @endphp
+                        @if ($santriCount > 0)
+                            <span
+                                class="ml-auto bg-green-500 text-white text-xs px-2 py-0.5 rounded-full">{{ $santriCount }}</span>
                         @endif
                     </a>
 
