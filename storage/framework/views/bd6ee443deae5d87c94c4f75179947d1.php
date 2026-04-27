@@ -1,7 +1,6 @@
-@extends('layouts.app')
-@section('title', 'Tentang Kami')
+<?php $__env->startSection('title', 'Tentang Kami'); ?>
 
-@section('content')
+<?php $__env->startSection('content'); ?>
     <section class="hero-tentang">
         <div class="hero-overlay">
             <h1 class="hero-title">Tentang Kami</h1>
@@ -16,12 +15,13 @@
 
             <div class="row align-items-start mb-4">
                 <div class="col-lg-7">
-                    <img src="{{ asset('images/g2.png') }}" class="foto-besar" alt="Pondok Pesantren Al-Ifadah">
+                    <img src="<?php echo e(asset('images/g2.png')); ?>" class="foto-besar" alt="Pondok Pesantren Al-Ifadah">
                 </div>
 
                 <div class="col-lg-5">
                     <p class="text-tentang">
-                        {!! nl2br(e($profil->deskripsi ?? 'Pondok Pesantren Al-Ifadah didirikan sebagai wujud komitmen dalam menghadirkan pendidikan Islam yang berkualitas serta berorientasi pada pembentukan karakter dan akhlak mulia. Sejak awal berdirinya, pesantren ini memiliki tujuan untuk mencetak generasi yang tidak hanya unggul dalam ilmu pengetahuan, tetapi juga kokoh dalam nilai-nilai keislaman.')) !!}
+                        <?php echo nl2br(e($profil->deskripsi ?? 'Pondok Pesantren Al-Ifadah didirikan sebagai wujud komitmen dalam menghadirkan pendidikan Islam yang berkualitas serta berorientasi pada pembentukan karakter dan akhlak mulia. Sejak awal berdirinya, pesantren ini memiliki tujuan untuk mencetak generasi yang tidak hanya unggul dalam ilmu pengetahuan, tetapi juga kokoh dalam nilai-nilai keislaman.')); ?>
+
                     </p>
                 </div>
             </div>
@@ -31,28 +31,29 @@
                     <div class="card-visi mb-4">
                         <h3>Visi</h3>
                         <p>
-                            {{ $profil->visi ?? 'Menjadi lembaga pendidikan Islam yang unggul dalam membentuk generasi berilmu, berakhlak mulia, dan berwawasan luas berdasarkan Al-Qur\'an dan Sunnah.' }}
+                            <?php echo e($profil->visi ?? 'Menjadi lembaga pendidikan Islam yang unggul dalam membentuk generasi berilmu, berakhlak mulia, dan berwawasan luas berdasarkan Al-Qur\'an dan Sunnah.'); ?>
+
                         </p>
                     </div>
 
                     <div class="card-misi">
                         <h3>Misi</h3>
-                        @php
+                        <?php
                             $misiText = $profil->misi ?? "Menyelenggarakan pendidikan Islam terpadu.\nMembina santri agar berakhlak mulia dan disiplin.\nMenciptakan lingkungan belajar yang kondusif.\nMenanamkan nilai kepemimpinan dan kemandirian.\nMengembangkan potensi akademik dan keagamaan.";
                             $misiList = explode("\n", $misiText);
-                        @endphp
+                        ?>
                         <ul>
-                            @foreach ($misiList as $misi)
-                                @if(trim($misi))
-                                    <li>{{ trim($misi) }}</li>
-                                @endif
-                            @endforeach
+                            <?php $__currentLoopData = $misiList; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $misi): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                <?php if(trim($misi)): ?>
+                                    <li><?php echo e(trim($misi)); ?></li>
+                                <?php endif; ?>
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                         </ul>
                     </div>
                 </div>
 
                 <div class="col-lg-5">
-                    <img src="{{ asset('images/g6.png') }}" class="foto-kanan" alt="Kegiatan Pondok Pesantren">
+                    <img src="<?php echo e(asset('images/g6.png')); ?>" class="foto-kanan" alt="Kegiatan Pondok Pesantren">
                 </div>
             </div>
         </div>
@@ -62,7 +63,7 @@
         <div class="container">
             <div class="row align-items-center">
                 <div class="col-lg-6">
-                    <img src="{{ asset('images/pict 2.png') }}" class="gambar-adart">
+                    <img src="<?php echo e(asset('images/pict 2.png')); ?>" class="gambar-adart">
                 </div>
 
                 <div class="col-lg-6">
@@ -81,7 +82,7 @@
                         dan peraturan yang berlaku guna menjaga profesionalitas,
                         transparansi, dan keberlangsungan lembaga.
                     </p>
-                    <a href="{{ asset('file/AD dan ART Ponpes Al - Ifadah.docx') }}" download class="btn-adart">
+                    <a href="<?php echo e(asset('file/AD dan ART Ponpes Al - Ifadah.docx')); ?>" download class="btn-adart">
                         Unduh Dokumen AD / ART
                     </a>
                 </div>
@@ -89,7 +90,7 @@
         </div>
     </section>
 
-    @include('components.footer')
+    <?php echo $__env->make('components.footer', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
 
     <style>
     .hero-tentang {
@@ -357,4 +358,5 @@
     }
 </style>
 
-@endsection
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\laragon\www\ponpes-main\resources\views/public/tentang.blade.php ENDPATH**/ ?>

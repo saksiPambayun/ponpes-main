@@ -4,7 +4,7 @@
 
 @section('content')
 
-    <section class="galeri">
+    <section class="galerii">
         <section class="galeri-section">
             <div class="galeri-header">
                 <h1 class="galeri-title">Galeri</h1>

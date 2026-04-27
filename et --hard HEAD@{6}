@@ -1,0 +1,52 @@
+[33m20fb6fb[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m)[m HEAD@{0}: reset: moving to ORIG_HEAD
+[33m21e523b[m[33m ([m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m HEAD@{1}: reset: moving to ORIG_HEAD
+[33m20fb6fb[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m)[m HEAD@{2}: reset: moving to ORIG_HEAD
+[33m21e523b[m[33m ([m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m HEAD@{3}: pull --tags origin main: Fast-forward
+[33m20fb6fb[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m)[m HEAD@{4}: pull --tags origin main: Fast-forward
+[33m61ac579[m HEAD@{5}: reset: moving to ORIG_HEAD
+[33m20fb6fb[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m)[m HEAD@{6}: pull --tags origin main: Fast-forward
+[33m61ac579[m HEAD@{7}: reset: moving to ORIG_HEAD
+[33m20fb6fb[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m)[m HEAD@{8}: pull --tags origin main: Fast-forward
+[33m61ac579[m HEAD@{9}: commit (merge): push
+[33m679321f[m HEAD@{10}: commit: almost finish
+[33mce602cd[m HEAD@{11}: pull --tags origin main: Fast-forward
+[33m0429342[m HEAD@{12}: pull --tags origin main: Fast-forward
+[33m8ea1d30[m HEAD@{13}: commit: update user 9
+[33mbd7e693[m HEAD@{14}: pull --tags origin main: Fast-forward
+[33mbe32d5d[m HEAD@{15}: pull --tags origin main: Fast-forward
+[33m39949b8[m HEAD@{16}: commit: update user 8
+[33m899431d[m HEAD@{17}: pull --tags origin main: Fast-forward
+[33m0573a4f[m HEAD@{18}: commit: update user 7
+[33m2cca093[m HEAD@{19}: pull --tags origin main: Fast-forward
+[33m489bae6[m HEAD@{20}: commit: update user 6
+[33m419a143[m HEAD@{21}: pull --tags origin main: Fast-forward
+[33mf63bcd4[m HEAD@{22}: commit: update user 5
+[33m3057a20[m HEAD@{23}: pull --tags origin main: Fast-forward
+[33mcab56cb[m HEAD@{24}: pull --tags origin main: Fast-forward
+[33mc81cc34[m HEAD@{25}: commit: update user 4
+[33m76c68d9[m HEAD@{26}: pull --tags origin main: Fast-forward
+[33m4031647[m HEAD@{27}: commit: update user 3
+[33m76cf11e[m HEAD@{28}: pull --tags origin main: Fast-forward
+[33m053dcb9[m HEAD@{29}: commit: update user 2
+[33mfcc58b7[m HEAD@{30}: pull origin main: Fast-forward
+[33mfcfeba2[m HEAD@{31}: commit: update user 1
+[33m184ee85[m HEAD@{32}: pull origin main: Fast-forward
+[33mf7cf501[m HEAD@{33}: commit: update error user
+[33m40044ae[m HEAD@{34}: commit: update woi 3
+[33m0490284[m HEAD@{35}: pull origin main: Fast-forward
+[33m9d6fe56[m HEAD@{36}: commit: update woi
+[33me2bcb7c[m HEAD@{37}: reset: moving to origin/main
+[33ma4fb59c[m HEAD@{38}: pull origin main: Merge made by the 'ort' strategy.
+[33m84799ad[m HEAD@{39}: checkout: moving from main to main
+[33m84799ad[m HEAD@{40}: rebase (abort): returning to refs/heads/main
+[33ma01a551[m HEAD@{41}: commit: update shinta 3
+[33m5e6b1e1[m HEAD@{42}: commit: update ajg
+[33me2bcb7c[m HEAD@{43}: pull origin main --rebase (start): checkout e2bcb7ce57810629ef970f3a7ed543fe586fa02e
+[33m84799ad[m HEAD@{44}: reset: moving to HEAD
+[33m84799ad[m HEAD@{45}: commit: remove large image
+[33m3daf875[m HEAD@{46}: commit: update shinta 2
+[33m38c1dc4[m HEAD@{47}: commit: remove large file
+[33m6d37712[m HEAD@{48}: Branch: renamed refs/heads/main to refs/heads/main
+[33m6d37712[m HEAD@{50}: commit: update shinta 1
+[33m8b88ad3[m HEAD@{51}: commit: update shinta
+[33mf2e44fd[m HEAD@{52}: clone: from https://github.com/saksiPambayun/ponpes-main.git
