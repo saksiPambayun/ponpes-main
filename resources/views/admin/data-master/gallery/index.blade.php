@@ -585,6 +585,37 @@
             border: 1px solid #dfe8d8;
         }
 
+        /* ===== BADGE KATEGORI DENGAN BACKGROUND PUTIH ===== */
+        .badge-kategori {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            background: #FFFFFF;
+            border: 1px solid;
+        }
+
+        .badge-kegiatan {
+            color: #005F02;
+            border-color: #005F02;
+        }
+
+        .badge-prestasi {
+            color: #0f4d1c;
+            border-color: #0f4d1c;
+        }
+
+        .badge-umum {
+            color: #2e6b37;
+            border-color: #2e6b37;
+        }
+
+        .badge-default {
+            color: #6c757d;
+            border-color: #6c757d;
+        }
+
         /* ===== FILTER ===== */
         .filter-form {
             display: flex;
