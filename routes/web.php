@@ -146,6 +146,13 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::resource('program', ProgramController::class);
 });
 
+// ==================== MANAJEMEN ADMIN (SUPERADMIN ONLY) ====================
+Route::prefix('admin')->name('admin.')->middleware(['auth', 'superadmin'])->group(function () {
+    Route::resource('admin-management', \App\Http\Controllers\Admin\AdminManagementController::class);
+    Route::get('admin-management/toggle-status/{id}', [\App\Http\Controllers\Admin\AdminManagementController::class, 'toggleStatus'])->name('admin-management.toggle-status');
+    Route::post('admin-management/bulk-action', [\App\Http\Controllers\Admin\AdminManagementController::class, 'bulkAction'])->name('admin-management.bulk-action');
+});
+
 //Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
 //    Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
 //    Route::resource('program', ProgramController::class);
@@ -227,7 +234,7 @@ Route::get('/pendaftaran', function () {
 
 // ==================== PUBLIC ROUTES ====================
 // HOME
-Route::get('/home', [UserController::class, 'home'])->name('home');
+//Route::get('/home', [UserController::class, 'home'])->name('home');
 
 // TENTANG
 Route::get('/tentang', [UserController::class, 'profilYayasanIndex'])->name('tentang');
@@ -303,3 +310,4 @@ Route::prefix('pendaftaran')->name('user.pendaftaran.')->group(function () {
     Route::get('/cek-status', [App\Http\Controllers\User\PendaftaranController::class, 'cekStatusForm'])->name('cek-status');
     Route::post('/cek-status', [App\Http\Controllers\User\PendaftaranController::class, 'cekStatus'])->name('cek-status.post');
 });
+

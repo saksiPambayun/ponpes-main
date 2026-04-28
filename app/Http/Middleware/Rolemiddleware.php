@@ -1,4 +1,5 @@
 <?php
+// app/Http/Middleware/RoleMiddleware.php
 
 namespace App\Http\Middleware;
 
@@ -8,35 +9,21 @@ use Illuminate\Http\Request;
 class RoleMiddleware
 {
     /**
-     * Handle an incoming request.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
-     * @param  string  $role
-     * @return mixed
+     * Handle request dengan multiple role
+     * Usage: ->middleware('role:admin|superadmin')
      */
-    public function handle(Request $request, Closure $next, string $role)
+    public function handle(Request $request, Closure $next, string $roles)
     {
         if (!auth()->check()) {
             return redirect()->route('login');
         }
 
-        $userRole = auth()->user()->role;
-        $allowedRoles = explode('|', $role); // support multiple roles: 'admin|superadmin'
+        $allowedRoles = explode('|', $roles);
 
-        // Jika user memiliki role yang diizinkan
-        if (in_array($userRole, $allowedRoles)) {
+        if (in_array(auth()->user()->role, $allowedRoles)) {
             return $next($request);
         }
 
-        // Jika tidak memiliki akses, redirect berdasarkan role
-        if ($userRole === 'admin' || $userRole === 'superadmin') {
-            return redirect()->route('admin.dashboard')
-                ->with('error', 'Anda tidak memiliki akses ke halaman tersebut.');
-        }
-
-        // User biasa
-        return redirect()->route('home')
-            ->with('error', 'Anda tidak memiliki akses ke halaman tersebut.');
+        abort(403, 'Akses ditolak. Anda tidak memiliki role yang diperlukan.');
     }
 }

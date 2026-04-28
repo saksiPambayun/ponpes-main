@@ -289,6 +289,63 @@
         .btn-success:hover {
             background: #047857;
         }
+
+        /* Custom styles for better table appearance */
+        .table {
+            margin-bottom: 0;
+        }
+
+        .table> :not(caption)>*>* {
+            padding: 1rem 0.75rem;
+        }
+
+        .card {
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.08) !important;
+        }
+
+        .btn {
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #005F02 0%, #0a8f0a 100%);
+            border: none;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0, 95, 2, 0.3);
+        }
+
+        .form-control,
+        .form-select {
+            border-radius: 8px;
+        }
+
+        .form-control:focus,
+        .form-select:focus {
+            border-color: #005F02;
+            box-shadow: 0 0 0 0.2rem rgba(0, 95, 2, 0.15);
+        }
+
+        .input-group-text {
+            border-radius: 8px 0 0 8px;
+        }
+
+        .form-control,
+        .form-select {
+            border-radius: 0 8px 8px 0;
+        }
+
+        .modal-content {
+            border-radius: 16px;
+        }
     </style>
 
     @stack('styles')
@@ -326,6 +383,25 @@
                         <span class="font-medium">Dashboard</span>
                     </a>
                 </div>
+
+                <!-- Di dalam <nav class="flex-1 overflow-y-auto py-6 px-4"> -->
+
+                <!-- ADMINISTRASI MENU (HANYA UNTUK SUPERADMIN) -->
+                @if(auth()->check() && auth()->user()->role === 'superadmin')
+                    <div class="mb-6">
+                        <p class="text-xs font-semibold text-green-200 uppercase tracking-wider mb-3 px-3">Administrasi</p>
+                        <a href="{{ route('admin.admin-management.index') }}"
+                            class="sidebar-item flex items-center px-4 py-3 text-green-100 rounded-lg mb-1 {{ request()->routeIs('admin.admin-management.*') ? 'active' : '' }}">
+                            <div
+                                class="icon-wrapper w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center mr-3">
+                                <i class="fas fa-users-cog"></i>
+                            </div>
+                            <span class="font-medium">Manajemen Admin</span>
+                        </a>
+                    </div>
+                @endif
+
+                <!-- LANJUTKAN MENU BERIKUTNYA (Pendaftaran, dll) -->
 
                 <!-- PENDAFTARAN -->
                 <div class="mb-6">
