@@ -52,6 +52,7 @@ Route::prefix('admin')
         Route::post('/feedback/mark-all-read', [AdminController::class, 'feedbackMarkAllRead'])->name('feedback.mark-all-read');
         Route::post('/feedback/{id}/mark-read', [AdminController::class, 'feedbackMarkAsRead'])->name('feedback.mark-read');
         Route::get('/feedback/unread-count', [AdminController::class, 'feedbackUnreadCount'])->name('feedback.unread-count');
+       // Route::post('/feedback/{id}/reply', [AdminController::class, 'feedbackReply'])->name('feedback.reply');
 
         // Data Santri
         Route::get('/data-santri', [AdminController::class, 'dataSantri'])->name('data-santri.index');

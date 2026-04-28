@@ -1,37 +1,37 @@
-@extends('admin.layout')
+<?php $__env->startSection('title', 'Kelola Gelombang Pendaftaran'); ?>
+<?php $__env->startSection('page-title', 'Kelola Gelombang Pendaftaran'); ?>
 
-@section('title', 'Kelola Gelombang Pendaftaran')
-@section('page-title', 'Kelola Gelombang Pendaftaran')
-
-@section('content')
+<?php $__env->startSection('content'); ?>
     <div class="mb-6 flex justify-between items-center">
         <div>
             <p class="text-gray-600">Kelola gelombang pendaftaran dan proses penerimaan santri.</p>
         </div>
-        <a href="{{ route('admin.pendaftaran.waves.create') }}" class="px-4 py-2 rounded-lg text-white"
+        <a href="<?php echo e(route('admin.pendaftaran.waves.create')); ?>" class="px-4 py-2 rounded-lg text-white"
             style="background: linear-gradient(135deg, #005F02, #0f4d1c);">
             <i class="fas fa-plus mr-2"></i>Tambah Gelombang
         </a>
     </div>
 
-    {{-- Alert Session --}}
-    @if(session('success'))
+    
+    <?php if(session('success')): ?>
         <div class="mb-4 p-4 bg-green-100 border-l-4 border-green-500 text-green-700 rounded flex items-center justify-between">
             <div>
-                <i class="fas fa-check-circle mr-2"></i> {{ session('success') }}
+                <i class="fas fa-check-circle mr-2"></i> <?php echo e(session('success')); ?>
+
             </div>
             <button onclick="this.parentElement.remove()" class="text-green-700">&times;</button>
         </div>
-    @endif
+    <?php endif; ?>
 
-    @if(session('error'))
+    <?php if(session('error')): ?>
         <div class="mb-4 p-4 bg-red-100 border-l-4 border-red-500 text-red-700 rounded flex items-center justify-between">
             <div>
-                <i class="fas fa-exclamation-circle mr-2"></i> {{ session('error') }}
+                <i class="fas fa-exclamation-circle mr-2"></i> <?php echo e(session('error')); ?>
+
             </div>
             <button onclick="this.parentElement.remove()" class="text-red-700">&times;</button>
         </div>
-    @endif
+    <?php endif; ?>
 
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
         <div class="card p-6" style="background: #fff; border-radius: 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
@@ -41,7 +41,7 @@
                 </div>
                 <div>
                     <p class="text-sm text-gray-500">Total Gelombang</p>
-                    <h3 class="text-2xl font-bold">{{ $waves->total() }}</h3>
+                    <h3 class="text-2xl font-bold"><?php echo e($waves->total()); ?></h3>
                 </div>
             </div>
         </div>
@@ -52,7 +52,7 @@
                 </div>
                 <div>
                     <p class="text-sm text-gray-500">Gelombang Aktif</p>
-                    <h3 class="text-2xl font-bold">{{ $activeWaves }}</h3>
+                    <h3 class="text-2xl font-bold"><?php echo e($activeWaves); ?></h3>
                 </div>
             </div>
         </div>
@@ -83,96 +83,97 @@
                     </tr>
                 </thead>
                 <tbody class="bg-white divide-y">
-                    @forelse($waves as $wave)
-                        @php
+                    <?php $__empty_1 = true; $__currentLoopData = $waves; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $wave): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+                        <?php
                             $hasRegistrations = $wave->registrations_count > 0;
-                        @endphp
+                        ?>
                         <tr class="hover:bg-gray-50 transition">
                             <td class="px-6 py-4">
-                                <div class="font-medium text-gray-800">{{ $wave->name }}</div>
-                                @if($wave->description)
-                                    <div class="text-xs text-gray-500 mt-1">{{ Str::limit($wave->description, 50) }}</div>
-                                @endif
+                                <div class="font-medium text-gray-800"><?php echo e($wave->name); ?></div>
+                                <?php if($wave->description): ?>
+                                    <div class="text-xs text-gray-500 mt-1"><?php echo e(Str::limit($wave->description, 50)); ?></div>
+                                <?php endif; ?>
                             </td>
                             <td class="px-6 py-4">
-                                <div class="text-sm text-gray-600">{{ \Carbon\Carbon::parse($wave->start_date)->format('d/m/Y') }}</div>
-                                <div class="text-xs text-gray-400">s/d {{ \Carbon\Carbon::parse($wave->end_date)->format('d/m/Y') }}</div>
+                                <div class="text-sm text-gray-600"><?php echo e(\Carbon\Carbon::parse($wave->start_date)->format('d/m/Y')); ?></div>
+                                <div class="text-xs text-gray-400">s/d <?php echo e(\Carbon\Carbon::parse($wave->end_date)->format('d/m/Y')); ?></div>
                             </td>
                             <td class="px-6 py-4">
-                                <div class="text-sm text-gray-600">{{ $wave->quota ?? 'Tidak terbatas' }}</div>
+                                <div class="text-sm text-gray-600"><?php echo e($wave->quota ?? 'Tidak terbatas'); ?></div>
                             </td>
                             <td class="px-6 py-4">
-                                <div class="text-sm font-semibold text-gray-700">{{ $wave->registrations_count }}</div>
-                                @if($wave->quota)
+                                <div class="text-sm font-semibold text-gray-700"><?php echo e($wave->registrations_count); ?></div>
+                                <?php if($wave->quota): ?>
                                     <div class="w-32 bg-gray-200 rounded-full h-1.5 mt-1">
                                         <div class="h-1.5 rounded-full"
-                                            style="width: {{ min(100, ($wave->registrations_count / $wave->quota) * 100) }}%; background: #005F02;">
+                                            style="width: <?php echo e(min(100, ($wave->registrations_count / $wave->quota) * 100)); ?>%; background: #005F02;">
                                         </div>
                                     </div>
-                                @endif
+                                <?php endif; ?>
                             </td>
                             <td class="px-6 py-4">
-                                @if($wave->is_active)
+                                <?php if($wave->is_active): ?>
                                     <span class="px-2 py-1 text-xs rounded-full" style="background: #eef3ec; color: #005F02;">
                                         <i class="fas fa-circle text-xs mr-1"></i>Aktif
                                     </span>
-                                @else
+                                <?php else: ?>
                                     <span class="px-2 py-1 text-xs rounded-full" style="background: #fef3c7; color: #d97706;">
                                         <i class="fas fa-circle text-xs mr-1"></i>Nonaktif
                                     </span>
-                                @endif
+                                <?php endif; ?>
                             </td>
                             <td class="px-6 py-4">
                                 <div class="flex space-x-3">
-                                    <a href="{{ route('admin.pendaftaran.waves.edit', $wave) }}"
+                                    <a href="<?php echo e(route('admin.pendaftaran.waves.edit', $wave)); ?>"
                                         class="text-blue-600 hover:text-blue-800 transition" title="Edit">
                                         <i class="fas fa-edit"></i>
                                     </a>
-                                    <form action="{{ route('admin.pendaftaran.waves.toggle-active', $wave) }}" method="POST" class="inline">
-                                        @csrf
+                                    <form action="<?php echo e(route('admin.pendaftaran.waves.toggle-active', $wave)); ?>" method="POST" class="inline">
+                                        <?php echo csrf_field(); ?>
                                         <button type="submit" class="text-yellow-600 hover:text-yellow-800 transition"
-                                            title="{{ $wave->is_active ? 'Nonaktifkan' : 'Aktifkan' }}">
-                                            <i class="fas {{ $wave->is_active ? 'fa-pause' : 'fa-play' }}"></i>
+                                            title="<?php echo e($wave->is_active ? 'Nonaktifkan' : 'Aktifkan'); ?>">
+                                            <i class="fas <?php echo e($wave->is_active ? 'fa-pause' : 'fa-play'); ?>"></i>
                                         </button>
                                     </form>
 
-                                    {{-- Tombol Hapus dengan SweetAlert --}}
+                                    
                                     <button type="button"
-                                        onclick="confirmDelete('{{ $wave->id }}', '{{ addslashes($wave->name) }}', {{ $hasRegistrations ? 'true' : 'false' }})"
+                                        onclick="confirmDelete('<?php echo e($wave->id); ?>', '<?php echo e(addslashes($wave->name)); ?>', <?php echo e($hasRegistrations ? 'true' : 'false'); ?>)"
                                         class="text-red-600 hover:text-red-800 transition delete-btn"
                                         title="Hapus">
                                         <i class="fas fa-trash"></i>
                                     </button>
 
-                                    {{-- Form delete tersembunyi --}}
-                                    <form id="delete-form-{{ $wave->id }}"
-                                        action="{{ route('admin.pendaftaran.waves.destroy', $wave) }}"
+                                    
+                                    <form id="delete-form-<?php echo e($wave->id); ?>"
+                                        action="<?php echo e(route('admin.pendaftaran.waves.destroy', $wave)); ?>"
                                         method="POST"
                                         style="display: none;">
-                                        @csrf
-                                        @method('DELETE')
+                                        <?php echo csrf_field(); ?>
+                                        <?php echo method_field('DELETE'); ?>
                                     </form>
                                 </div>
                             </td>
                         </tr>
-                    @empty
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
                         <tr>
                             <td colspan="6" class="px-6 py-10 text-center text-gray-500">
                                 <i class="fas fa-calendar-alt text-4xl mb-3 block"></i>
                                 <p>Belum ada gelombang pendaftaran.</p>
-                                <a href="{{ route('admin.pendaftaran.waves.create') }}"
+                                <a href="<?php echo e(route('admin.pendaftaran.waves.create')); ?>"
                                     class="mt-3 inline-block px-4 py-2 rounded-lg text-sm text-white"
                                     style="background: #005F02;">
                                     Buat Gelombang Baru
                                 </a>
                             </td>
                         </tr>
-                    @endforelse
+                    <?php endif; ?>
                 </tbody>
             </table>
         </div>
         <div class="px-6 py-4 border-t">
-            {{ $waves->links() }}
+            <?php echo e($waves->links()); ?>
+
         </div>
     </div>
 
@@ -182,7 +183,7 @@
                 <h3 class="font-bold text-gray-800">Proses Penerimaan Santri</h3>
             </div>
             <div class="p-6">
-                <a href="{{ route('admin.santri.index') }}" class="block p-4 rounded-lg hover:bg-gray-50 transition">
+                <a href="<?php echo e(route('admin.santri.index')); ?>" class="block p-4 rounded-lg hover:bg-gray-50 transition">
                     <div class="flex items-center">
                         <i class="fas fa-check-circle fa-2x mr-4" style="color: #005F02;"></i>
                         <div>
@@ -199,36 +200,36 @@
                 <h3 class="font-bold text-gray-800">Statistik Pendaftaran</h3>
             </div>
             <div class="p-6">
-                @php
+                <?php
                     $totalRegistered = \App\Models\SantriRegistration::count();
                     $totalAccepted = \App\Models\SantriRegistration::where('acceptance_status', 'accepted')->count();
                     $totalRejected = \App\Models\SantriRegistration::where('acceptance_status', 'rejected')->count();
                     $totalWaiting = \App\Models\SantriRegistration::where('acceptance_status', 'waiting_list')->count();
-                @endphp
+                ?>
                 <div class="space-y-3">
                     <div class="flex justify-between items-center py-2 border-b">
                         <span class="text-gray-600">Total Pendaftar</span>
-                        <span class="font-semibold text-gray-800">{{ $totalRegistered }}</span>
+                        <span class="font-semibold text-gray-800"><?php echo e($totalRegistered); ?></span>
                     </div>
                     <div class="flex justify-between items-center py-2 border-b">
                         <span class="text-gray-600">Diterima</span>
-                        <span class="font-semibold text-green-600">{{ $totalAccepted }}</span>
+                        <span class="font-semibold text-green-600"><?php echo e($totalAccepted); ?></span>
                     </div>
                     <div class="flex justify-between items-center py-2 border-b">
                         <span class="text-gray-600">Ditolak</span>
-                        <span class="font-semibold text-red-600">{{ $totalRejected }}</span>
+                        <span class="font-semibold text-red-600"><?php echo e($totalRejected); ?></span>
                     </div>
                     <div class="flex justify-between items-center py-2 border-b">
                         <span class="text-gray-600">Waiting List</span>
-                        <span class="font-semibold text-yellow-600">{{ $totalWaiting }}</span>
+                        <span class="font-semibold text-yellow-600"><?php echo e($totalWaiting); ?></span>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-@endsection
+<?php $__env->stopSection(); ?>
 
-@push('scripts')
+<?php $__env->startPush('scripts'); ?>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
 function confirmDelete(waveId, waveName, hasRegistrations) {
@@ -310,4 +311,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }, 1000);
 });
 </script>
-@endpush
+<?php $__env->stopPush(); ?>
+
+<?php echo $__env->make('admin.layout', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH D:\ponpes-main\resources\views/admin/pendaftaran/waves/index.blade.php ENDPATH**/ ?>

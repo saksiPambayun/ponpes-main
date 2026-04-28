@@ -8,9 +8,17 @@
         <div class="bg-white rounded-lg shadow overflow-hidden">
             <div class="p-6 border-b bg-gray-50 flex justify-between items-center">
                 <h3 class="text-lg font-bold">Detail Pesan</h3>
-                <a href="{{ route('admin.feedback.index') }}" class="text-gray-600 hover:text-gray-900">
-                    <i class="fas fa-arrow-left mr-2"></i>Kembali
-                </a>
+                <div class="flex items-center space-x-3">
+                    {{-- Tombol Hapus dengan SweetAlert --}}
+                    <button type="button"
+                        onclick="confirmDelete({{ $feedback->id }}, '{{ addslashes($feedback->name) }}')"
+                        class="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600">
+                        <i class="fas fa-trash mr-2"></i>Hapus
+                    </button>
+                    <a href="{{ route('admin.feedback.index') }}" class="text-gray-600 hover:text-gray-900">
+                        <i class="fas fa-arrow-left mr-2"></i>Kembali
+                    </a>
+                </div>
             </div>
 
             <div class="p-6">
@@ -41,31 +49,65 @@
                 </div>
 
                 <div class="border-t pt-6">
-                    <h4 class="font-semibold mb-4">Balasan</h4>
-
-                    @if($feedback->is_replied)
-                        <div class="mb-4 p-4 bg-green-50 rounded-lg border border-green-200">
-                            <div class="flex justify-between mb-2">
-                                <span class="text-sm font-semibold text-green-800">Balasan Anda:</span>
-                                <span class="text-xs text-green-600">{{ $feedback->replied_at->format('d M Y H:i') }}</span>
-                            </div>
-                            <p class="text-gray-700">{{ nl2br(e($feedback->reply_message)) }}</p>
-                        </div>
-                    @endif
-
-                    <form action="{{ route('admin.feedback.reply', $feedback->id) }}" method="POST">
-                        @csrf
-                        <textarea name="reply_message" rows="5"
-                            class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-green-500"
-                            placeholder="Tulis balasan untuk pengirim..."></textarea>
-                        <div class="flex justify-end mt-4">
-                            <button type="submit" class="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700">
-                                <i class="fas fa-paper-plane mr-2"></i>Kirim Balasan
-                            </button>
-                        </div>
-                    </form>
+                    <div class="bg-gray-50 rounded-lg p-4 text-center text-gray-500">
+                        <i class="fas fa-info-circle mr-2"></i>
+                        Kritik dan saran ini telah diterima. Terima kasih atas masukannya.
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+
+    {{-- Form delete tersembunyi --}}
+    <form id="delete-form-{{ $feedback->id }}"
+        action="{{ route('admin.feedback.destroy', $feedback->id) }}"
+        method="POST"
+        style="display: none;">
+        @csrf
+        @method('DELETE')
+    </form>
 @endsection
+
+@push('scripts')
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+function confirmDelete(feedbackId, feedbackName) {
+    Swal.fire({
+        title: '<span style="color: #dc2626;">⚠️ Hapus Feedback?</span>',
+        html: `
+            <div class="text-left">
+                <p class="mb-2">Apakah Anda yakin ingin menghapus feedback dari <strong>"${feedbackName}"</strong>?</p>
+                <div class="mt-3 p-3 bg-red-50 rounded-lg border border-red-200">
+                    <i class="fas fa-exclamation-triangle text-red-500 mr-2"></i>
+                    <span class="text-sm text-red-700">⚠️ Tindakan ini tidak dapat dibatalkan!</span>
+                </div>
+            </div>
+        `,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#dc2626',
+        cancelButtonColor: '#6c757d',
+        confirmButtonText: '<i class="fas fa-trash mr-1"></i> Ya, Hapus!',
+        cancelButtonText: '<i class="fas fa-times mr-1"></i> Batal',
+        reverseButtons: true,
+        customClass: {
+            popup: 'rounded-xl',
+            confirmButton: 'px-4 py-2 text-sm',
+            cancelButton: 'px-4 py-2 text-sm'
+        }
+    }).then((result) => {
+        if (result.isConfirmed) {
+            Swal.fire({
+                title: 'Menghapus...',
+                text: 'Sedang menghapus feedback',
+                allowOutsideClick: false,
+                didOpen: () => {
+                    Swal.showLoading();
+                }
+            });
+            document.getElementById(`delete-form-${feedbackId}`).submit();
+        }
+    });
+}
+</script>
+@endpush
