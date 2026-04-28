@@ -30,7 +30,7 @@
     <section class="about-section">
         <div class="about-container">
             <div class="about-image reveal-left">
-                <img src="{{ asset('images/pict 2.png') }}" alt="Tentang Kami">
+                <img src="{{ asset('images/pict-2.png') }}" alt="Tentang Kami">
             </div>
             <div class="about-text reveal-right">
                 <h2>Tentang Kami</h2>
@@ -100,11 +100,10 @@
 
                     <div class="galeri-carousel">
                         @foreach ($galeriPreview as $index => $g)
-                            <div
-                                class="galeri-card
-                            {{ $index == 0 ? 'active' : '' }}
-                            {{ $index == 1 ? 'next' : '' }}
-                            {{ $index == 2 ? 'prev' : '' }}">
+                            <div class="galeri-card
+                                        {{ $index == 0 ? 'active' : '' }}
+                                        {{ $index == 1 ? 'next' : '' }}
+                                        {{ $index == 2 ? 'prev' : '' }}">
 
                                 <img src="{{ asset('storage/' . $g->gambar) }}" alt="Galeri">
                             </div>
@@ -164,4 +163,3 @@
     window.addEventListener('load', checkReveal);
     window.addEventListener('scroll', checkReveal);
 </script>
-        

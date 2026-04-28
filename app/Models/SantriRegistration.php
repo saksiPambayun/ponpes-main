@@ -12,6 +12,7 @@ class SantriRegistration extends Model
     protected $table = 'santri_registrations';
 
     protected $fillable = [
+        'user_id',
         'nama_lengkap',
         'nisn',
         'asal_sekolah',

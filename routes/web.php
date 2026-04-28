@@ -37,30 +37,30 @@ Route::get('/register', [App\Http\Controllers\Auth\RegisterController::class, 's
 Route::post('/register', [App\Http\Controllers\Auth\RegisterController::class, 'register'])->name('register.process');
 
 // ==================== ADMIN ROUTES ====================
+// Gunakan middleware 'admin' (sudah ada di AdminMiddleware.php)
 Route::prefix('admin')
     ->name('admin.')
-    ->middleware(['auth'])
+    ->middleware(['auth', 'admin'])  // <-- TAMBAHKAN 'admin'!
     ->group(function () {
 
-        // Dashboard
         Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
 
-  // ==================== FEEDBACK (KRITIK & SARAN) ROUTES ====================
-Route::get('/feedback', [AdminController::class, 'feedbackIndex'])->name('feedback.index');
-Route::get('/feedback/{id}', [AdminController::class, 'feedbackShow'])->name('feedback.show');
-// Route::post('/feedback/{id}/reply', [AdminController::class, 'feedbackReply'])->name('feedback.reply'); // HAPUS BARIS INI
-Route::delete('/feedback/{id}', [AdminController::class, 'feedbackDestroy'])->name('feedback.destroy');
-Route::post('/feedback/mark-all-read', [AdminController::class, 'feedbackMarkAllRead'])->name('feedback.mark-all-read');
-Route::post('/feedback/{id}/mark-read', [AdminController::class, 'feedbackMarkAsRead'])->name('feedback.mark-read');
-Route::get('/feedback/unread-count', [AdminController::class, 'feedbackUnreadCount'])->name('feedback.unread-count');
-              // ==================== DATA SANTRI (SANTRI TETAP) ====================
+        // Feedback routes
+        Route::get('/feedback', [AdminController::class, 'feedbackIndex'])->name('feedback.index');
+        Route::get('/feedback/{id}', [AdminController::class, 'feedbackShow'])->name('feedback.show');
+        Route::delete('/feedback/{id}', [AdminController::class, 'feedbackDestroy'])->name('feedback.destroy');
+        Route::post('/feedback/mark-all-read', [AdminController::class, 'feedbackMarkAllRead'])->name('feedback.mark-all-read');
+        Route::post('/feedback/{id}/mark-read', [AdminController::class, 'feedbackMarkAsRead'])->name('feedback.mark-read');
+        Route::get('/feedback/unread-count', [AdminController::class, 'feedbackUnreadCount'])->name('feedback.unread-count');
+
+        // Data Santri
         Route::get('/data-santri', [AdminController::class, 'dataSantri'])->name('data-santri.index');
         Route::get('/data-santri/{id}', [AdminController::class, 'santriShow'])->name('data-santri.show');
         Route::get('/data-santri/{id}/edit', [AdminController::class, 'santriEdit'])->name('data-santri.edit');
         Route::put('/data-santri/{id}', [AdminController::class, 'santriUpdate'])->name('data-santri.update');
         Route::delete('/data-santri/{id}', [AdminController::class, 'santriDestroy'])->name('data-santri.destroy');
-        
-        // ==================== DATA PENDAFTAR (CALON SANTRI) ====================
+
+        // Data Pendaftar
         Route::get('/pendaftar', [AdminController::class, 'dataPendaftar'])->name('pendaftar.index');
         Route::get('/pendaftar/{id}', [AdminController::class, 'santriShow'])->name('pendaftar.show');
         Route::get('/pendaftar/{id}/edit', [AdminController::class, 'santriEdit'])->name('pendaftar.edit');
@@ -68,8 +68,8 @@ Route::get('/feedback/unread-count', [AdminController::class, 'feedbackUnreadCou
         Route::delete('/pendaftar/{id}', [AdminController::class, 'santriDestroy'])->name('pendaftar.destroy');
         Route::post('/pendaftar/{id}/verify', [AdminController::class, 'verifySantri'])->name('pendaftar.verify');
         Route::post('/pendaftar/{id}/reject', [AdminController::class, 'rejectSantri'])->name('pendaftar.reject');
-        
-        // Untuk kompatibilitas backward
+
+        // Santri (kompatibilitas)
         Route::get('/santri', [AdminController::class, 'santriIndex'])->name('santri.index');
         Route::get('/santri/create', [AdminController::class, 'santriCreate'])->name('santri.create');
         Route::post('/santri', [AdminController::class, 'santriStore'])->name('santri.store');
@@ -114,11 +114,9 @@ Route::get('/feedback/unread-count', [AdminController::class, 'feedbackUnreadCou
         Route::put('/akta-wakaf/{id}', [AdminController::class, 'aktaWakafUpdate'])->name('akta-wakaf.update');
         Route::delete('/akta-wakaf/{id}', [AdminController::class, 'aktaWakafDestroy'])->name('akta-wakaf.destroy');
 
-        // === DATA MASTER ROUTES ===
+        // Data Master
         Route::prefix('data-master')->name('data-master.')->group(function () {
             Route::get('/', [DataMasterController::class, 'index'])->name('index');
-
-            // Profil Yayasan
             Route::get('/profil-yayasan', [ProfilYayasanController::class, 'index'])->name('profil-yayasan');
             Route::get('/profil-yayasan/edit', [ProfilYayasanController::class, 'edit'])->name('profil-yayasan.edit');
             Route::post('/profil-yayasan/update', [ProfilYayasanController::class, 'update'])->name('profil-yayasan.update');
@@ -133,32 +131,24 @@ Route::get('/feedback/unread-count', [AdminController::class, 'feedbackUnreadCou
     });
 
 // ==================== ROUTES MANAJEMEN PENDAFTARAN (GELOMBANG) ====================
-Route::prefix('admin')->name('admin.')->middleware(['auth'])->group(function () {
-    // Pendaftaran & Gelombang
+Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(function () {
     Route::prefix('pendaftaran')->name('pendaftaran.')->group(function () {
         Route::resource('waves', \App\Http\Controllers\Admin\RegistrationWaveController::class);
         Route::post('waves/{wave}/toggle-active', [\App\Http\Controllers\Admin\RegistrationWaveController::class, 'toggleActive'])->name('waves.toggle-active');
-
-        // Proses penerimaan
         Route::post('santri/{id}/process-acceptance', [\App\Http\Controllers\Admin\RegistrationWaveController::class, 'processAcceptance'])->name('santri.process-acceptance');
         Route::post('santri/bulk-acceptance', [\App\Http\Controllers\Admin\RegistrationWaveController::class, 'bulkAcceptance'])->name('santri.bulk-acceptance');
-
-        // Pengumuman
-        //   Route::get('announcement', [\App\Http\Controllers\Admin\RegistrationWaveController::class, 'announcementIndex'])->name('announcement.index');
-        ///   Route::get('announcement/preview/{wave}', [\App\Http\Controllers\Admin\RegistrationWaveController::class, 'previewAnnouncement'])->name('announcement.preview');
-        //   Route::post('announcement/{wave}/publish', [\App\Http\Controllers\Admin\RegistrationWaveController::class, 'publishAnnouncement'])->name('announcement.publish');
     });
 });
 
-// program
-Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () {
-    Route::resource('data-master/program', ProgramController::class)->names('program');
-});
-
-Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
-    Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
+// Program routes for admin
+Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::resource('program', ProgramController::class);
 });
+
+//Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
+//    Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
+//    Route::resource('program', ProgramController::class);
+//});
 
 // notification
 Route::get('/notifications', [UserController::class, 'notifications'])->name('notifications');
@@ -201,7 +191,7 @@ Route::middleware(['auth', 'user'])->prefix('user')->name('user.')->group(functi
     Route::get('/gallery', [UserController::class, 'galleryIndex'])->name('gallery.index');
     Route::get('/gallery/{id}', [UserController::class, 'galleryShow'])->name('gallery.show');
 
-    // PROGRAM
+    // PROGRAM (hanya baca untuk user)
     Route::get('/program', [UserController::class, 'programIndex'])->name('program.index');
     Route::get('/program/{id}', [UserController::class, 'programShow'])->name('program.show');
 
@@ -263,16 +253,16 @@ Route::get('/galeri', [UserController::class, 'galeri'])->name('galeri');
 //  return view('public.form');
 //})->name('form');
 
-Route::prefix('pendaftaran')->name('user.pendaftaran.')->group(function () {
-    Route::get('/', [App\Http\Controllers\User\PendaftaranController::class, 'index'])->name('index');
-    Route::get('/form', [App\Http\Controllers\User\PendaftaranController::class, 'form'])->name('form');
-    Route::post('/store', [App\Http\Controllers\User\PendaftaranController::class, 'store'])->name('store');
-    Route::get('/status/{id}', [App\Http\Controllers\User\PendaftaranController::class, 'status'])->name('status');
-    Route::get('/cetak/{id}', [App\Http\Controllers\User\PendaftaranController::class, 'cetak'])->name('cetak');
-    Route::get('/download-pdf/{id}', [App\Http\Controllers\User\PendaftaranController::class, 'downloadPDF'])->name('download-pdf'); // TAMBAHKAN INI
-    Route::get('/cek-status', [App\Http\Controllers\User\PendaftaranController::class, 'cekStatusForm'])->name('cek-status');
-    Route::post('/cek-status', [App\Http\Controllers\User\PendaftaranController::class, 'cekStatus'])->name('cek-status.post');
-});
+//Route::prefix('pendaftaran')->name('user.pendaftaran.')->group(function () {
+ //   Route::get('/', [App\Http\Controllers\User\PendaftaranController::class, 'index'])->name('index');
+ //   Route::get('/form', [App\Http\Controllers\User\PendaftaranController::class, 'form'])->name('form');
+ //   Route::post('/store', [App\Http\Controllers\User\PendaftaranController::class, 'store'])->name('store');
+ //   Route::get('/status/{id}', [App\Http\Controllers\User\PendaftaranController::class, 'status'])->name('status');
+ //   Route::get('/cetak/{id}', [App\Http\Controllers\User\PendaftaranController::class, 'cetak'])->name('cetak');
+ //   Route::get('/download-pdf/{id}', [App\Http\Controllers\User\PendaftaranController::class, 'downloadPDF'])->name('download-pdf'); // TAMBAHKAN INI
+ //   Route::get('/cek-status', [App\Http\Controllers\User\PendaftaranController::class, 'cekStatusForm'])->name('cek-status');
+ //   Route::post('/cek-status', [App\Http\Controllers\User\PendaftaranController::class, 'cekStatus'])->name('cek-status.post');
+//});
 
 // HUBUNGI
 Route::get('/hubungi', [UserController::class, 'hubungi'])->name('hubungi');
@@ -282,10 +272,10 @@ Route::post('/daftar', [AdminController::class, 'santriStore'])->name('daftar');
 // EMAIL
 Route::post('/send-feedback', [FeedbackController::class, 'sendFeedback'])->name('send.feedback');
 
-// ==================== DATA MASTER ROUTES ====================
+// ==================== DATA MASTER ROUTES (ADMIN ONLY) ====================
 Route::prefix('admin/data-master')
     ->name('admin.data-master.')
-    ->middleware('auth')
+    ->middleware(['auth', 'admin'])  // <-- TAMBAHKAN 'admin'!
     ->group(function () {
         Route::resource('struktur-organisasi', StrukturOrganisasiController::class);
         Route::resource('fasilitas', FasilitasController::class);
@@ -295,3 +285,20 @@ Route::prefix('admin/data-master')
     });
 
 Route::resource('data-master/fasilitas', FasilitasController::class);
+
+// ==================== ROUTE PENDAFTARAN ====================
+// Route yang membutuhkan login (auth + user)
+Route::middleware(['auth', 'user'])->prefix('pendaftaran')->name('user.pendaftaran.')->group(function () {
+    Route::get('/', [App\Http\Controllers\User\PendaftaranController::class, 'index'])->name('index');
+    Route::get('/form', [App\Http\Controllers\User\PendaftaranController::class, 'form'])->name('form');
+    Route::post('/store', [App\Http\Controllers\User\PendaftaranController::class, 'store'])->name('store');
+    Route::get('/status/{id}', [App\Http\Controllers\User\PendaftaranController::class, 'status'])->name('status');
+    Route::get('/cetak/{id}', [App\Http\Controllers\User\PendaftaranController::class, 'cetak'])->name('cetak');
+    Route::get('/download-pdf/{id}', [App\Http\Controllers\User\PendaftaranController::class, 'downloadPDF'])->name('download-pdf');
+});
+
+// Route cek status untuk publik (tanpa middleware)
+Route::prefix('pendaftaran')->name('user.pendaftaran.')->group(function () {
+    Route::get('/cek-status', [App\Http\Controllers\User\PendaftaranController::class, 'cekStatusForm'])->name('cek-status');
+    Route::post('/cek-status', [App\Http\Controllers\User\PendaftaranController::class, 'cekStatus'])->name('cek-status.post');
+});

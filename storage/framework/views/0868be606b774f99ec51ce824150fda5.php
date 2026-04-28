@@ -80,7 +80,7 @@
         <div class="p-6 border-b flex justify-between items-center"
             style="border-color: #dfe8d8; background: #eef3ec; border-radius: 20px 20px 0 0;">
             <h3 class="font-bold" style="color: #222;">Pendaftaran Santri Terbaru</h3>
-            <a href="<?php echo e(route('admin.santri.index')); ?>"
+            <a href="<?php echo e(route('admin.pendaftar.index')); ?>"
                 style="color: #005F02; text-decoration: none; font-size: 0.8rem;">Lihat Semua</a>
         </div>
         <div class="overflow-x-auto">
@@ -138,7 +138,7 @@
                                         </span>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                        <a href="<?php echo e(route('admin.santri.show', $item->id)); ?>"
+                                        <a href="<?php echo e(route('admin.pendaftar.show', $item->id)); ?>"
                                             style="color: #005F02; text-decoration: none; transition: all 0.2s;"
                                             onmouseover="this.style.color='#0d4f14'" onmouseout="this.style.color='#005F02'"
                                             title="Detail">
@@ -236,12 +236,12 @@
     <!-- Form tersembunyi untuk verifikasi dan penolakan -->
     <?php $__currentLoopData = $santri; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
         <?php if($item->status == 'pending'): ?>
-            <form id="verify-form-<?php echo e($item->id); ?>" action="<?php echo e(route('admin.santri.verify', $item->id)); ?>" method="POST"
+            <form id="verify-form-<?php echo e($item->id); ?>" action="<?php echo e(route('admin.pendaftar.verify', $item->id)); ?>" method="POST"
                 style="display: none;">
                 <?php echo csrf_field(); ?>
             </form>
 
-            <form id="reject-form-<?php echo e($item->id); ?>" action="<?php echo e(route('admin.santri.reject', $item->id)); ?>" method="POST"
+            <form id="reject-form-<?php echo e($item->id); ?>" action="<?php echo e(route('admin.pendaftar.reject', $item->id)); ?>" method="POST"
                 style="display: none;">
                 <?php echo csrf_field(); ?>
             </form>

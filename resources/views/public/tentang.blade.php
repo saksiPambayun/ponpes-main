@@ -62,7 +62,7 @@
         <div class="container">
             <div class="row align-items-center">
                 <div class="col-lg-6">
-                    <img src="{{ asset('images/pict 2.png') }}" class="gambar-adart">
+                    <img src="{{ asset('images/pict-2.png') }}" class="gambar-adart">
                 </div>
 
                 <div class="col-lg-6">
@@ -92,269 +92,269 @@
     @include('components.footer')
 
     <style>
-    .hero-tentang {
-        height: 650px;
-        background-image: url("/images/hero.png");
-        background-size: cover;
-        background-position: center;
-        position: relative;
-        font-family: "Cabin", sans-serif;
-    }
+        .hero-tentang {
+            height: 650px;
+            background-image: url("/images/hero.png");
+            background-size: cover;
+            background-position: center;
+            position: relative;
+            font-family: "Cabin", sans-serif;
+        }
 
-    .hero-overlay {
-        height: 100%;
-        width: 100%;
-        background: rgba(22, 101, 52, 0.45);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        text-align: center;
-        padding: 20px;
-    }
+        .hero-overlay {
+            height: 100%;
+            width: 100%;
+            background: rgba(22, 101, 52, 0.45);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 20px;
+        }
 
-    .hero-title {
-        font-size: 64px;
-        color: white;
-        font-weight: 700;
-        margin-bottom: 15px;
-        text-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
-    }
+        .hero-title {
+            font-size: 64px;
+            color: white;
+            font-weight: 700;
+            margin-bottom: 15px;
+            text-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+        }
 
-    .tentang-section {
-        padding: 80px 0;
-    }
+        .tentang-section {
+            padding: 80px 0;
+        }
 
-    .judul-tentang {
-        text-align: center;
-        font-size: 38px;
-        font-weight: 700;
-        color: #0c6b1f;
-        margin-bottom: 50px;
-    }
+        .judul-tentang {
+            text-align: center;
+            font-size: 38px;
+            font-weight: 700;
+            color: #0c6b1f;
+            margin-bottom: 50px;
+        }
 
-    .foto-besar {
-        width: 100%;
-        border-radius: 18px;
-        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-    }
+        .foto-besar {
+            width: 100%;
+            border-radius: 18px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
 
-    .foto-kanan {
-        width: 100%;
-        border-radius: 18px;
-        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-        margin-top: 80px;
-    }
+        .foto-kanan {
+            width: 100%;
+            border-radius: 18px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+            margin-top: 80px;
+        }
 
-    .text-tentang {
-        font-size: 16px;
-        line-height: 1.8;
-        color: #333;
-    }
+        .text-tentang {
+            font-size: 16px;
+            line-height: 1.8;
+            color: #333;
+        }
 
-    .card-visi,
-    .card-misi {
-        background: #dfe7dc;
-        padding: 30px;
-        border-radius: 16px;
-        transition: 0.3s;
-        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
-    }
+        .card-visi,
+        .card-misi {
+            background: #dfe7dc;
+            padding: 30px;
+            border-radius: 16px;
+            transition: 0.3s;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+        }
 
-    .card-visi h3,
-    .card-misi h3 {
-        color: #0c6b1f;
-        font-weight: 700;
-        margin-bottom: 15px;
-    }
+        .card-visi h3,
+        .card-misi h3 {
+            color: #0c6b1f;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
 
-    .card-misi ul {
-        padding-left: 18px;
-    }
+        .card-misi ul {
+            padding-left: 18px;
+        }
 
-    .card-misi li {
-        margin-bottom: 8px;
-    }
+        .card-misi li {
+            margin-bottom: 8px;
+        }
 
-    .card-visi:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
-    }
+        .card-visi:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
 
-    .card-misi:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
-    }
+        .card-misi:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
 
-    .adart-section {
-        padding: 100px 0;
-    }
+        .adart-section {
+            padding: 100px 0;
+        }
 
-    .gambar-adart {
-        width: 100%;
-        max-width: 567px;
-        display: block;
-        margin: auto;
-    }
+        .gambar-adart {
+            width: 100%;
+            max-width: 567px;
+            display: block;
+            margin: auto;
+        }
 
-    .judul-adart {
-        color: #0f6b1e;
-        font-size: 34px;
-        font-weight: 700;
-        margin-bottom: 20px;
-    }
+        .judul-adart {
+            color: #0f6b1e;
+            font-size: 34px;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
 
-    .text-adart {
-        font-size: 15px;
-        line-height: 1.7;
-        margin-bottom: 15px;
-        color: #333;
-    }
+        .text-adart {
+            font-size: 15px;
+            line-height: 1.7;
+            margin-bottom: 15px;
+            color: #333;
+        }
 
-    .btn-adart {
-        display: inline-block;
-        margin-top: 10px;
-        padding: 12px 32px;
-        border-radius: 10px;
-        background: linear-gradient(90deg, #4f8f4d, #cddfa9);
-        color: white;
-        text-decoration: none;
-        font-weight: 500;
-        transition: 0.3s;
-    }
+        .btn-adart {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 12px 32px;
+            border-radius: 10px;
+            background: linear-gradient(90deg, #4f8f4d, #cddfa9);
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: 0.3s;
+        }
 
-    .btn-adart:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
-    }
+        .btn-adart:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
 
-    .struktur-section {
-        padding: 100px 0;
-    }
+        .struktur-section {
+            padding: 100px 0;
+        }
 
-    .judul-struktur {
-        font-size: 32px;
-        font-weight: 700;
-        color: #0f6b1e;
-        margin-bottom: 20px;
-    }
+        .judul-struktur {
+            font-size: 32px;
+            font-weight: 700;
+            color: #0f6b1e;
+            margin-bottom: 20px;
+        }
 
-    .text-struktur {
-        font-size: 16px;
-        line-height: 1.7;
-        margin-bottom: 15px;
-        color: #333;
-    }
+        .text-struktur {
+            font-size: 16px;
+            line-height: 1.7;
+            margin-bottom: 15px;
+            color: #333;
+        }
 
-    .struktur-card {
-        position: relative;
-        display: block;
-        background: #e6efd8;
-        padding: 20px;
-        border-radius: 16px;
-        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
-        text-decoration: none;
-        overflow: hidden;
-    }
+        .struktur-card {
+            position: relative;
+            display: block;
+            background: #e6efd8;
+            padding: 20px;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+            text-decoration: none;
+            overflow: hidden;
+        }
 
-    .struktur-card img {
-        width: 100%;
-        border-radius: 10px;
-        transition: 0.4s;
-        filter: blur(2px);
-    }
+        .struktur-card img {
+            width: 100%;
+            border-radius: 10px;
+            transition: 0.4s;
+            filter: blur(2px);
+        }
 
-    .struktur-card img:hover {
-        filter: blur(0px);
-    }
+        .struktur-card img:hover {
+            filter: blur(0px);
+        }
 
-    .struktur-overlay {
-        position: absolute;
-        bottom: 20px;
-        left: 20px;
-        right: 20px;
-        background: linear-gradient(90deg, #4f8f4d, #cddfa9);
-        color: white;
-        text-align: center;
-        padding: 10px;
-        border-radius: 8px;
-        font-weight: 500;
-        opacity: 0;
-        transition: 0.3s;
-    }
+        .struktur-overlay {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            right: 20px;
+            background: linear-gradient(90deg, #4f8f4d, #cddfa9);
+            color: white;
+            text-align: center;
+            padding: 10px;
+            border-radius: 8px;
+            font-weight: 500;
+            opacity: 0;
+            transition: 0.3s;
+        }
 
-    .struktur-card:hover img {
-        transform: scale(1.05);
-    }
+        .struktur-card:hover img {
+            transform: scale(1.05);
+        }
 
-    .struktur-card:hover .struktur-overlay {
-        opacity: 1;
-    }
+        .struktur-card:hover .struktur-overlay {
+            opacity: 1;
+        }
 
-    .legalitas-section {
-        padding: 100px 0;
-        background: #e9f0e4;
-    }
+        .legalitas-section {
+            padding: 100px 0;
+            background: #e9f0e4;
+        }
 
-    .judul-legalitas {
-        font-size: 34px;
-        font-weight: 700;
-        color: #0f6b1e;
-        margin-bottom: 10px;
-    }
+        .judul-legalitas {
+            font-size: 34px;
+            font-weight: 700;
+            color: #0f6b1e;
+            margin-bottom: 10px;
+        }
 
-    .deskripsi-legalitas {
-        max-width: 700px;
-        margin: auto;
-        font-size: 15px;
-        color: #333;
-    }
+        .deskripsi-legalitas {
+            max-width: 700px;
+            margin: auto;
+            font-size: 15px;
+            color: #333;
+        }
 
-    .legalitas-card {
-        background: #f5f5f5;
-        padding: 20px;
-        border-radius: 16px;
-        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
-        transition: 0.3s;
-    }
+        .legalitas-card {
+            background: #f5f5f5;
+            padding: 20px;
+            border-radius: 16px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+            transition: 0.3s;
+        }
 
-    .legalitas-card:hover {
-        transform: translateY(-6px);
-    }
+        .legalitas-card:hover {
+            transform: translateY(-6px);
+        }
 
-    .legalitas-img {
-        height: 180px;
-        background: #9bbf84;
-        border-radius: 14px;
-        margin-bottom: 15px;
-    }
+        .legalitas-img {
+            height: 180px;
+            background: #9bbf84;
+            border-radius: 14px;
+            margin-bottom: 15px;
+        }
 
-    .legalitas-img img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-    }
+        .legalitas-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
 
-    .legalitas-card h5 {
-        color: #0f6b1e;
-        font-weight: 600;
-    }
+        .legalitas-card h5 {
+            color: #0f6b1e;
+            font-weight: 600;
+        }
 
-    .btn-legalitas {
-        display: inline-block;
-        margin-top: 30px;
-        padding: 12px 40px;
-        border-radius: 10px;
-        background: linear-gradient(90deg, #4f8f4d, #cddfa9);
-        color: white;
-        text-decoration: none;
-        font-weight: 500;
-        transition: 0.3s;
-    }
+        .btn-legalitas {
+            display: inline-block;
+            margin-top: 30px;
+            padding: 12px 40px;
+            border-radius: 10px;
+            background: linear-gradient(90deg, #4f8f4d, #cddfa9);
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: 0.3s;
+        }
 
-    .btn-legalitas:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
-    }
-</style>
+        .btn-legalitas:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+    </style>
 
 @endsection

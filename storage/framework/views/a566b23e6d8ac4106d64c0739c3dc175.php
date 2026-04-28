@@ -513,4 +513,4 @@ unset($__errorArgs, $__bag); ?>
 </body>
 
 </html>
-<?php /**PATH D:\laragon\www\pondok_gue\ponpes-main\resources\views/auth/register.blade.php ENDPATH**/ ?>
+<?php /**PATH D:\ponpes-main\resources\views/auth/register.blade.php ENDPATH**/ ?>

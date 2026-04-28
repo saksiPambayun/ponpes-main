@@ -15,7 +15,7 @@ class LoginController extends Controller
             if ($user->role === 'admin' || $user->role === 'superadmin') {
                 return redirect()->route('admin.dashboard');
             }
-            // User biasa diarahkan ke HOME (bukan dashboard terpisah)
+            // User biasa diarahkan ke HOME (halaman publik)
             return redirect()->route('home');
         }
 
@@ -50,7 +50,7 @@ class LoginController extends Controller
                 return redirect()->intended(route('admin.dashboard'));
             }
 
-            // USER BIASA: redirect ke HOME (halaman utama)
+            // USER BIASA: redirect ke HOME (halaman publik)
             return redirect()->intended(route('home'));
         }
 

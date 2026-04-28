@@ -150,7 +150,7 @@
                                 <div class="flex flex-col items-center">
                                     <i class="fas fa-inbox text-4xl mb-3" style="color: #8cbf73;"></i>
                                     <p class="text-gray-500">Belum ada data pendaftaran santri.</p>
-                                    <a href="{{ route('admin.pendaftar.create') }}" class="mt-3 px-4 py-2 rounded-md text-sm"
+                                    <a href="{{ route('admin.santri.create') }}" class="mt-3 px-4 py-2 rounded-md text-sm"
                                         style="background: linear-gradient(135deg, #005F02, #0f4d1c); color: #fff; text-decoration: none;">
                                         Tambah Santri Baru
                                     </a>
