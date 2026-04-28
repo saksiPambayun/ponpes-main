@@ -9,21 +9,19 @@ class RegistrationWave extends Model
 {
     use HasFactory;
 
-    protected $table = 'registration_waves';
-
     protected $fillable = [
         'name',
+        'description',
         'start_date',
         'end_date',
         'is_active',
-        'description',
         'quota',
-        'registered_count'
+        'registered_count',
     ];
 
     protected $casts = [
-        'start_date' => 'date',
-        'end_date' => 'date',
+        'start_date' => 'datetime',
+        'end_date' => 'datetime',
         'is_active' => 'boolean',
     ];
 
@@ -32,17 +30,15 @@ class RegistrationWave extends Model
         return $this->hasMany(SantriRegistration::class, 'wave_id');
     }
 
-    public function isOpen()
+    public function isOpen(): bool
     {
         $now = now();
-        return $this->is_active &&
-               $now->between($this->start_date, $this->end_date) &&
-               (!$this->quota || $this->registered_count < $this->quota);
+        return $this->is_active && $now >= $this->start_date && $now <= $this->end_date;
     }
 
-    public function getRemainingQuotaAttribute()
+    public function isFull(): bool
     {
-        if (!$this->quota) return null;
-        return max(0, $this->quota - $this->registered_count);
+        if (!$this->quota) return false;
+        return $this->registered_count >= $this->quota;
     }
 }

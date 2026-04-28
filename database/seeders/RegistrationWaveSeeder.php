@@ -1,33 +1,32 @@
 <?php
-// database/seeders/RegistrationWaveSeeder.php
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Seeder;
 use App\Models\RegistrationWave;
+use Illuminate\Database\Seeder;
 
 class RegistrationWaveSeeder extends Seeder
 {
-    public function run()
+    public function run(): void
     {
         RegistrationWave::create([
             'name' => 'Gelombang 1',
-            'start_date' => '2026-03-10',
-            'end_date' => '2026-05-02',
+            'description' => 'Pendaftaran awal tahun ajaran baru',
+            'start_date' => now()->subDays(10),
+            'end_date' => now()->addDays(20),
             'is_active' => true,
-            'description' => 'Pendaftaran gelombang pertama',
             'quota' => 100,
-            'registered_count' => 0
+            'registered_count' => 0,
         ]);
 
         RegistrationWave::create([
             'name' => 'Gelombang 2',
-            'start_date' => '2026-06-10',
-            'end_date' => '2026-07-02',
-            'is_active' => false,
             'description' => 'Pendaftaran gelombang kedua',
-            'quota' => 150,
-            'registered_count' => 0
+            'start_date' => now()->addDays(21),
+            'end_date' => now()->addDays(50),
+            'is_active' => false,
+            'quota' => 100,
+            'registered_count' => 0,
         ]);
     }
 }
