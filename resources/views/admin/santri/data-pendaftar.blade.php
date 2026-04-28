@@ -26,21 +26,24 @@
                     class="py-3 px-6 text-center border-b-2 {{ $currentStatus == 'pending' ? 'border-green-500 text-green-600' : 'border-transparent text-gray-500 hover:text-gray-700' }}">
                     <i class="fas fa-clock mr-1"></i> Menunggu
                     @if($stats['pending'] > 0)
-                        <span class="ml-1 bg-yellow-100 text-yellow-800 px-2 py-0.5 rounded-full text-xs">{{ $stats['pending'] }}</span>
+                        <span
+                            class="ml-1 bg-yellow-100 text-yellow-800 px-2 py-0.5 rounded-full text-xs">{{ $stats['pending'] }}</span>
                     @endif
                 </a>
                 <a href="{{ route('admin.pendaftar.index', array_merge(request()->all(), ['status' => 'diterima'])) }}"
                     class="py-3 px-6 text-center border-b-2 {{ $currentStatus == 'diterima' ? 'border-green-500 text-green-600' : 'border-transparent text-gray-500 hover:text-gray-700' }}">
                     <i class="fas fa-check-circle mr-1"></i> Diterima
                     @if($stats['diterima'] > 0)
-                        <span class="ml-1 bg-green-100 text-green-800 px-2 py-0.5 rounded-full text-xs">{{ $stats['diterima'] }}</span>
+                        <span
+                            class="ml-1 bg-green-100 text-green-800 px-2 py-0.5 rounded-full text-xs">{{ $stats['diterima'] }}</span>
                     @endif
                 </a>
                 <a href="{{ route('admin.pendaftar.index', array_merge(request()->all(), ['status' => 'ditolak'])) }}"
                     class="py-3 px-6 text-center border-b-2 {{ $currentStatus == 'ditolak' ? 'border-green-500 text-green-600' : 'border-transparent text-gray-500 hover:text-gray-700' }}">
                     <i class="fas fa-times-circle mr-1"></i> Ditolak
                     @if($stats['ditolak'] > 0)
-                        <span class="ml-1 bg-red-100 text-red-800 px-2 py-0.5 rounded-full text-xs">{{ $stats['ditolak'] }}</span>
+                        <span
+                            class="ml-1 bg-red-100 text-red-800 px-2 py-0.5 rounded-full text-xs">{{ $stats['ditolak'] }}</span>
                     @endif
                 </a>
             </nav>
@@ -137,11 +140,13 @@
                                     </a>
 
                                     @if($santri->status == 'pending')
-                                        <button type="button" onclick="openAcceptModal({{ $santri->id }})"
+                                        <button type="button"
+                                            onclick="openAcceptModal({{ $santri->id }}, '{{ addslashes($santri->nama_lengkap) }}')"
                                             class="text-green-600 hover:text-green-800" title="Terima">
                                             <i class="fas fa-check-circle"></i>
                                         </button>
-                                        <button type="button" onclick="openRejectModal({{ $santri->id }})"
+                                        <button type="button"
+                                            onclick="openRejectModal({{ $santri->id }}, '{{ addslashes($santri->nama_lengkap) }}')"
                                             class="text-red-600 hover:text-red-800" title="Tolak">
                                             <i class="fas fa-times-circle"></i>
                                         </button>
@@ -153,7 +158,7 @@
                                     </a>
 
                                     <button type="button"
-                                        onclick="openDeleteModal({{ $santri->id }}, '{{ $santri->nama_lengkap }}')"
+                                        onclick="openDeleteModal({{ $santri->id }}, '{{ addslashes($santri->nama_lengkap) }}')"
                                         class="text-red-600 hover:text-red-800" title="Hapus">
                                         <i class="fas fa-trash"></i>
                                     </button>
@@ -184,3 +189,200 @@
         </div>
     </div>
 @endsection
+@push('scripts')
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        function openAcceptModal(id, name) {
+            Swal.fire({
+                title: 'Terima Pendaftaran?',
+                html: `Apakah Anda yakin ingin menerima santri <strong>${name}</strong>?`,
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#10b981',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: '<i class="fas fa-check mr-1"></i> Ya, Terima!',
+                cancelButtonText: '<i class="fas fa-times mr-1"></i> Batal',
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.fire({
+                        title: 'Memproses...',
+                        text: 'Sedang menerima pendaftaran',
+                        allowOutsideClick: false,
+                        didOpen: () => {
+                            Swal.showLoading();
+                        }
+                    });
+
+                    // Gunakan fetch AJAX
+                    fetch(`/admin/pendaftar/${id}/verify`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        }
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Berhasil!',
+                                    text: data.message,
+                                    confirmButtonColor: '#10b981'
+                                }).then(() => {
+                                    window.location.reload();
+                                });
+                            } else {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Gagal!',
+                                    text: data.message || 'Terjadi kesalahan',
+                                    confirmButtonColor: '#dc2626'
+                                });
+                            }
+                        })
+                        .catch(error => {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error!',
+                                text: 'Terjadi kesalahan pada server',
+                                confirmButtonColor: '#dc2626'
+                            });
+                        });
+                }
+            });
+        }
+
+        function openRejectModal(id, name) {
+            Swal.fire({
+                title: 'Tolak Pendaftaran',
+                html: `
+                        <div class="text-left">
+                            <p class="mb-3">Tolak pendaftaran santri <strong>${name}</strong>?</p>
+                            <label class="block text-sm font-medium text-gray-700 text-left mb-1">Alasan Penolakan</label>
+                            <textarea id="alasanPenolakan" class="swal2-textarea" rows="3" placeholder="Masukkan alasan penolakan..."></textarea>
+                        </div>
+                    `,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#dc2626',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: '<i class="fas fa-times mr-1"></i> Tolak',
+                cancelButtonText: '<i class="fas fa-undo mr-1"></i> Batal',
+                preConfirm: () => {
+                    const alasan = document.getElementById('alasanPenolakan').value;
+                    if (!alasan.trim()) {
+                        Swal.showValidationMessage('Alasan penolakan tidak boleh kosong!');
+                        return false;
+                    }
+                    return alasan;
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.fire({
+                        title: 'Memproses...',
+                        text: 'Sedang menolak pendaftaran',
+                        allowOutsideClick: false,
+                        didOpen: () => {
+                            Swal.showLoading();
+                        }
+                    });
+
+                    // Gunakan fetch AJAX
+                    fetch(`/admin/pendaftar/${id}/reject`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        },
+                        body: JSON.stringify({
+                            alasan_penolakan: result.value
+                        })
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Berhasil!',
+                                    text: data.message,
+                                    confirmButtonColor: '#10b981'
+                                }).then(() => {
+                                    window.location.reload();
+                                });
+                            } else {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Gagal!',
+                                    text: data.message || 'Terjadi kesalahan',
+                                    confirmButtonColor: '#dc2626'
+                                });
+                            }
+                        })
+                        .catch(error => {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error!',
+                                text: 'Terjadi kesalahan pada server',
+                                confirmButtonColor: '#dc2626'
+                            });
+                        });
+                }
+            });
+        }
+
+        function openDeleteModal(id, name) {
+            Swal.fire({
+                title: '<span style="color: #dc2626;">⚠️ Hapus Data?</span>',
+                html: `
+                        <div class="text-left">
+                            <p class="mb-2">Apakah Anda yakin ingin menghapus data pendaftar <strong>"${name}"</strong>?</p>
+                            <div class="mt-3 p-3 bg-red-50 rounded-lg border border-red-200">
+                                <i class="fas fa-exclamation-triangle text-red-500 mr-2"></i>
+                                <span class="text-sm text-red-700">⚠️ Tindakan ini tidak dapat dibatalkan!</span>
+                            </div>
+                        </div>
+                    `,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#dc2626',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: '<i class="fas fa-trash mr-1"></i> Ya, Hapus!',
+                cancelButtonText: '<i class="fas fa-times mr-1"></i> Batal',
+                reverseButtons: true,
+                customClass: {
+                    popup: 'rounded-xl',
+                    confirmButton: 'px-4 py-2 text-sm',
+                    cancelButton: 'px-4 py-2 text-sm'
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.fire({
+                        title: 'Menghapus...',
+                        text: 'Sedang menghapus data',
+                        allowOutsideClick: false,
+                        didOpen: () => {
+                            Swal.showLoading();
+                        }
+                    });
+                    document.getElementById(`deleteForm${id}`).submit();
+                }
+            });
+        }
+
+        // Auto close alert setelah 3 detik
+        document.addEventListener('DOMContentLoaded', function () {
+            setTimeout(function () {
+                const alerts = document.querySelectorAll('.bg-green-100, .bg-red-100, .bg-yellow-100');
+                alerts.forEach(alert => {
+                    setTimeout(() => {
+                        alert.style.transition = 'opacity 0.5s';
+                        alert.style.opacity = '0';
+                        setTimeout(() => alert.remove(), 500);
+                    }, 3000);
+                });
+            }, 1000);
+        });
+    </script>
+@endpush

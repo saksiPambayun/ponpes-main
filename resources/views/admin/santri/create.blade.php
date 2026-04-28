@@ -6,7 +6,7 @@
 @section('content')
     <div class="max-w-4xl mx-auto">
         <div class="card p-8">
-            <form action="{{ route('admin.santri.store') }}" method="POST" enctype="multipart/form-data">
+            <form action="{{ route('admin.pendaftar.store') }}?via=admin" method="POST" enctype="multipart/form-data">
                 @csrf
 
                 {{-- INFORMASI PRIBADI --}}

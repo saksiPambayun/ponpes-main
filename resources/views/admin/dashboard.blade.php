@@ -105,45 +105,56 @@
                 </thead>
                 <tbody class="bg-white divide-y" style="border-color: #dfe8d8;">
                     @forelse($santri as $index => $item)
-                                <tr class="hover:bg-gray-50" style="transition: background 0.2s;">
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm" style="color: #333;">
-                                        {{ $index + 1 }}
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap">
-                                        <div class="text-sm font-medium" style="color: #222;">{{ $item->nama_lengkap }}</div>
-                                        <div class="text-xs" style="color: #8cbf73;">{{ $item->nisn ?? '-' }}</div>
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap">
-                                        <div class="text-sm" style="color: #333;">{{ $item->asal_sekolah }}</div>
-                                        <div class="text-xs" style="color: #8cbf73;">{{ $item->jurusan ?? '-' }}</div>
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap">
-                                        <div class="text-sm" style="color: #333;">
-                                            {{ $item->created_at ? $item->created_at->format('d/m/Y') : '-' }}
-                                        </div>
-                                        <div class="text-xs" style="color: #8cbf73;">
-                                            {{ $item->created_at ? $item->created_at->format('H:i') : '' }}
-                                        </div>
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap">
-                                        <span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full"
-                                            style="{{ $item->status == 'diterima' ? 'background: #eef3ec; color: #005F02;' :
-                        ($item->status == 'pending' ? 'background: #fef3c7; color: #d97706;' :
-                            ($item->status == 'ditolak' ? 'background: #fef2f2; color: #dc2626;' : 'background: #f4f4f4; color: #2d2d2d;')) }}">
-                                            {{ $item->status == 'pending' ? 'Menunggu' :
-                        ($item->status == 'ditolak' ? 'Ditolak' :
-                            ($item->status == 'diterima' ? 'Diterima' : ucfirst($item->status))) }}
-                                        </span>
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                        <a href="{{ route('admin.pendaftar.show', $item->id) }}"
-                                            style="color: #005F02; text-decoration: none; transition: all 0.2s;"
-                                            onmouseover="this.style.color='#0d4f14'" onmouseout="this.style.color='#005F02'"
-                                            title="Detail">
-                                            <i class="fas fa-eye"></i>
-                                        </a>
-                                    </td>
-                                </tr>
+                        <tr class="hover:bg-gray-50" style="transition: background 0.2s;">
+                            <td class="px-6 py-4 whitespace-nowrap text-sm" style="color: #333;">
+                                {{ $index + 1 }}
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-sm font-medium" style="color: #222;">{{ $item->nama_lengkap }}</div>
+                                <div class="text-xs" style="color: #8cbf73;">{{ $item->nisn ?? '-' }}</div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-sm" style="color: #333;">{{ $item->asal_sekolah }}</div>
+                                <div class="text-xs" style="color: #8cbf73;">{{ $item->jurusan ?? '-' }}</div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-sm" style="color: #333;">
+                                    {{ $item->created_at ? $item->created_at->format('d/m/Y') : '-' }}
+                                </div>
+                                <div class="text-xs" style="color: #8cbf73;">
+                                    {{ $item->created_at ? $item->created_at->format('H:i') : '' }}
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                <div class="flex space-x-2">
+                                    <!-- Tombol Detail -->
+                                    <a href="{{ route('admin.pendaftar.show', $item->id) }}"
+                                        style="color: #005F02; text-decoration: none; transition: all 0.2s;"
+                                        onmouseover="this.style.color='#0d4f14'" onmouseout="this.style.color='#005F02'"
+                                        title="Detail">
+                                        <i class="fas fa-eye"></i>
+                                    </a>
+
+                                    <!-- Tombol Verifikasi (hanya untuk status pending) -->
+                                    @if($item->status == 'pending')
+                                        <button onclick="verifySantri({{ $item->id }})"
+                                            style="color: #10b981; background: none; border: none; cursor: pointer; transition: all 0.2s;"
+                                            onmouseover="this.style.color='#059669'" onmouseout="this.style.color='#10b981'"
+                                            title="Terima Santri">
+                                            <i class="fas fa-check-circle"></i>
+                                        </button>
+
+                                        <!-- Tombol Tolak -->
+                                        <button onclick="rejectSantri({{ $item->id }})"
+                                            style="color: #ef4444; background: none; border: none; cursor: pointer; transition: all 0.2s;"
+                                            onmouseover="this.style.color='#dc2626'" onmouseout="this.style.color='#ef4444'"
+                                            title="Tolak Santri">
+                                            <i class="fas fa-times-circle"></i>
+                                        </button>
+                                    @endif
+                                </div>
+                            </td>
+                        </tr>
                     @empty
                         <tr>
                             <td colspan="6" class="px-6 py-10 text-center" style="color: #2d2d2d;">

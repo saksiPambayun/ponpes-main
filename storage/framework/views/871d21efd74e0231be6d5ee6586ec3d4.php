@@ -346,6 +346,21 @@
         .modal-content {
             border-radius: 16px;
         }
+
+        .badge-pending {
+            background: #fef3c7;
+            color: #d97706;
+        }
+
+        .badge-success {
+            background: #eef3ec;
+            color: #005F02;
+        }
+
+        .badge-danger {
+            background: #fef2f2;
+            color: #dc2626;
+        }
     </style>
 
     <?php echo $__env->yieldPushContent('styles'); ?>

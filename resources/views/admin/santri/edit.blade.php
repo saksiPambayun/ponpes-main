@@ -25,7 +25,7 @@
                 </div>
             @endif
 
-            <form action="{{ route('admin.santri.update', $santri->id) }}" method="POST" enctype="multipart/form-data">
+        <form action="{{ route('admin.pendaftar.update', $santri->id) }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
 
@@ -117,7 +117,7 @@
                                 <div class="mb-3 p-3 bg-green-50 border border-green-200 rounded-lg">
                                     <p class="text-xs text-green-700 font-medium mb-2">✓ File saat ini:</p>
                                     @php
-                                        $kkExtension = strtolower(pathinfo($santri->kk, PATHINFO_EXTENSION));
+    $kkExtension = strtolower(pathinfo($santri->kk, PATHINFO_EXTENSION));
                                     @endphp
                                     @if(in_array($kkExtension, ['jpg', 'jpeg', 'png']))
                                         <img src="{{ asset('storage/' . $santri->kk) }}"
@@ -159,7 +159,7 @@
                                 <div class="mb-3 p-3 bg-green-50 border border-green-200 rounded-lg">
                                     <p class="text-xs text-green-700 font-medium mb-2">✓ File saat ini:</p>
                                     @php
-                                        $fotoExtension = strtolower(pathinfo($santri->foto, PATHINFO_EXTENSION));
+    $fotoExtension = strtolower(pathinfo($santri->foto, PATHINFO_EXTENSION));
                                     @endphp
                                     @if(in_array($fotoExtension, ['jpg', 'jpeg', 'png']))
                                         <img src="{{ asset('storage/' . $santri->foto) }}"

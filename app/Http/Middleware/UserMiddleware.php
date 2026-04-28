@@ -15,19 +15,12 @@ class UserMiddleware
         }
 
         $user = auth()->user();
+        $allowedRoles = ['user', 'admin', 'superadmin']; // SEMUA ROLE diizinkan
 
-        // Jika admin/superadmin coba akses user area, redirect ke admin dashboard
-        if ($user->role === 'admin' || $user->role === 'superadmin') {
-            return redirect()->route('admin.dashboard')
-                ->with('error', 'Anda adalah admin, tidak bisa mengakses halaman user.');
-        }
-
-        // Jika role user, lanjutkan
-        if ($user->role === 'user') {
+        if (in_array($user->role, $allowedRoles)) {
             return $next($request);
         }
 
-        // Role tidak dikenal
         abort(403, 'Akses ditolak.');
     }
 }

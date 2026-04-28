@@ -23,7 +23,7 @@ class AdminMiddleware
 
         // User biasa ditolak
         if ($request->ajax() || $request->expectsJson()) {
-            return response()->json(['error' => 'Unauthorized'], 403);
+            return response()->json(['error' => 'Unauthorized - Admin only'], 403);
         }
 
         return redirect()->route('home')->with('error', 'Anda tidak memiliki akses ke halaman administrator.');

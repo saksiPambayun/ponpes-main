@@ -24,7 +24,7 @@
                 </div>
             <?php endif; ?>
 
-            <form action="<?php echo e(route('admin.santri.update', $santri->id)); ?>" method="POST" enctype="multipart/form-data">
+        <form action="<?php echo e(route('admin.pendaftar.update', $santri->id)); ?>" method="POST" enctype="multipart/form-data">
                 <?php echo csrf_field(); ?>
                 <?php echo method_field('PUT'); ?>
 
@@ -172,7 +172,7 @@ unset($__errorArgs, $__bag); ?>
                                 <div class="mb-3 p-3 bg-green-50 border border-green-200 rounded-lg">
                                     <p class="text-xs text-green-700 font-medium mb-2">✓ File saat ini:</p>
                                     <?php
-                                        $kkExtension = strtolower(pathinfo($santri->kk, PATHINFO_EXTENSION));
+    $kkExtension = strtolower(pathinfo($santri->kk, PATHINFO_EXTENSION));
                                     ?>
                                     <?php if(in_array($kkExtension, ['jpg', 'jpeg', 'png'])): ?>
                                         <img src="<?php echo e(asset('storage/' . $santri->kk)); ?>"
@@ -221,7 +221,7 @@ unset($__errorArgs, $__bag); ?>
                                 <div class="mb-3 p-3 bg-green-50 border border-green-200 rounded-lg">
                                     <p class="text-xs text-green-700 font-medium mb-2">✓ File saat ini:</p>
                                     <?php
-                                        $fotoExtension = strtolower(pathinfo($santri->foto, PATHINFO_EXTENSION));
+    $fotoExtension = strtolower(pathinfo($santri->foto, PATHINFO_EXTENSION));
                                     ?>
                                     <?php if(in_array($fotoExtension, ['jpg', 'jpeg', 'png'])): ?>
                                         <img src="<?php echo e(asset('storage/' . $santri->foto)); ?>"
@@ -316,4 +316,4 @@ unset($__errorArgs, $__bag); ?>
     </script>
 <?php $__env->stopSection(); ?>
 
-<?php echo $__env->make('admin.layout', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH D:\ponpes-main\resources\views\admin\santri\edit.blade.php ENDPATH**/ ?>
+<?php echo $__env->make('admin.layout', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH D:\ponpes-main\resources\views/admin/santri/edit.blade.php ENDPATH**/ ?>

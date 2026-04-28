@@ -267,36 +267,72 @@ class AdminController extends Controller
         return redirect()->route('admin.santri.index')->with('success', 'Data santri berhasil dihapus');
     }
 
-    public function verifySantri($id)
-    {
+   public function verifySantri($id)
+{
+    try {
         $santri = SantriRegistration::findOrFail($id);
-
+        
         $santri->update([
             'status' => 'diterima',
             'acceptance_status' => 'accepted',
             'tanggal_verifikasi' => now(),
         ]);
-
-        return redirect()->route('admin.santri.index')->with('success', 'Santri berhasil diterima!');
+        
+        if (request()->ajax() || request()->expectsJson()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Santri berhasil diterima!'
+            ]);
+        }
+        
+        return redirect()->back()->with('success', 'Santri berhasil diterima!');
+        
+    } catch (\Exception $e) {
+        if (request()->ajax() || request()->expectsJson()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Gagal menerima santri: ' . $e->getMessage()
+            ], 500);
+        }
+        return redirect()->back()->with('error', 'Gagal menerima santri');
     }
+}
 
-    public function rejectSantri(Request $request, $id)
-    {
+public function rejectSantri(Request $request, $id)
+{
+    try {
         $request->validate([
             'alasan_penolakan' => 'required|string|min:10'
         ]);
 
         $santri = SantriRegistration::findOrFail($id);
-
+        
         $santri->update([
             'status' => 'ditolak',
             'acceptance_status' => 'rejected',
             'alasan_penolakan' => $request->alasan_penolakan,
             'tanggal_verifikasi' => now(),
         ]);
-
-        return redirect()->route('admin.santri.index')->with('success', 'Pendaftaran santri ditolak.');
+        
+        if (request()->ajax() || request()->expectsJson()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Pendaftaran santri ditolak.'
+            ]);
+        }
+        
+        return redirect()->back()->with('success', 'Pendaftaran santri ditolak.');
+        
+    } catch (\Exception $e) {
+        if (request()->ajax() || request()->expectsJson()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Gagal menolak santri: ' . $e->getMessage()
+            ], 500);
+        }
+        return redirect()->back()->with('error', 'Gagal menolak santri');
     }
+}
 
  // ==================== FEEDBACK (KRITIK & SARAN) ====================
 
