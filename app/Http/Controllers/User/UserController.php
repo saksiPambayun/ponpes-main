@@ -129,11 +129,25 @@ public function home()
     }
 
     // Galeri
-    public function galeri()
-    {
-        $galeri = Gallery::all();
-        return view('public.galeri', compact('galeri'));
-    }
+// Gallery untuk user (user section)
+
+public function galleryIndex()
+{
+    $galeri = Gallery::latest()->paginate(12);
+    return view('user.gallery.index', compact('galeri'));
+}
+// Alias dari galleryIndex untuk kompatibilitas route
+public function galeri()
+{
+    return $this->galleryIndex();
+}
+
+public function galleryShow($id)
+{
+    $gallery = Gallery::findOrFail($id);
+    return view('user.gallery.show', compact('gallery'));
+}   
+
 
     // Fasilitas
     public function fasilitas()
@@ -149,12 +163,21 @@ public function home()
         return view('public.tentang', compact('profil'));
     }
 
-    // Hubungi
-    public function hubungi()
-    {
-        $profil = ProfilYayasan::first();
-        return view('public.hubungi', compact('profil'));
+   public function hubungi()
+{
+    // Ambil data profil, jika tidak ada berikan data default
+    $profil = ProfilYayasan::first();
+
+    // Jika $profil null, buat objek kosong dengan property default
+    if (!$profil) {
+        $profil = new \stdClass();
+        $profil->telepon = 'Belum diisi';
+        $profil->email = 'Belum diisi';
+        $profil->alamat = 'Belum diisi';
     }
+
+    return view('public.hubungi', compact('profil'));
+}
 
     // Struktur
     public function strukturIndex()

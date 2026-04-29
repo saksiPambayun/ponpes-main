@@ -34,5 +34,10 @@ return [
             'channel' => env('SLACK_BOT_USER_DEFAULT_CHANNEL'),
         ],
     ],
+     'whatsapp' => [
+        'api_url' => env('WHATSAPP_API_URL', 'https://api.fonnte.com/send'),
+        'api_key' => env('WHATSAPP_API_KEY'),
+        'sender_number' => env('WHATSAPP_SENDER_NUMBER'),
+    ],
 
 ];

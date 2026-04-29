@@ -3,7 +3,6 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\StrukturOrganisasiController;
-// use App\Http\Controllers\AuthController;
 use App\Http\Controllers\GalleryController;
 use App\Http\Controllers\ProfilYayasanController;
 use App\Http\Controllers\FasilitasController;
@@ -11,11 +10,7 @@ use App\Http\Controllers\ProgramController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\DataMasterController;
 use App\Http\Controllers\user\UserController;
-use App\Http\Controllers\User\SantriController;
-use App\Http\Controllers\Admin\SantriController as AdminSantriController;
-use App\Http\Controllers\User\SantriController as UserSantriController;
 use App\Http\Controllers\Auth\RegisterController;
-//use App\Http\Controllers\Frontend\User\UserController;
 use App\Http\Controllers\FeedbackController;
 
 /*
@@ -24,35 +19,56 @@ use App\Http\Controllers\FeedbackController;
 |---------------------------------------------------------------------------
 */
 
-// Redirect root to login
+// ==================== PUBLIC ROUTES ====================
 Route::get('/', [UserController::class, 'home'])->name('home');
+Route::get('/tentang', [UserController::class, 'profilYayasanIndex'])->name('tentang');
+Route::get('/struktur', [UserController::class, 'strukturIndex'])->name('struktur');
+Route::get('/fasilitas', [UserController::class, 'fasilitas'])->name('fasilitas');
+Route::get('/galeri', [UserController::class, 'galeri'])->name('galeri');
+Route::get('/hubungi', [UserController::class, 'hubungi'])->name('hubungi');
+Route::post('/daftar', [AdminController::class, 'santriStore'])->name('daftar');
+Route::post('/send-feedback', [FeedbackController::class, 'sendFeedback'])->name('send.feedback');
 
-// === LOGIN ROUTES (Fix) ===
+// ==================== LOGIN & REGISTER ====================
 Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [LoginController::class, 'login'])->name('login.post');
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+Route::get('/register', [RegisterController::class, 'showRegister'])->name('register');
+Route::post('/register', [RegisterController::class, 'register'])->name('register.process');
 
-// register
-Route::get('/register', [App\Http\Controllers\Auth\RegisterController::class, 'showRegister'])->name('register');
-Route::post('/register', [App\Http\Controllers\Auth\RegisterController::class, 'register'])->name('register.process');
+// ==================== NOTIFICATIONS ====================
+Route::get('/notifications', [UserController::class, 'notifications'])->name('notifications');
+Route::post('/notifications/{id}/mark-read', [UserController::class, 'markAsRead'])->name('notifications.mark-read');
+Route::post('/notifications/mark-all-read', [UserController::class, 'markAllRead'])->name('notifications.mark-all-read');
+Route::get('/notifications/unread-count', [UserController::class, 'unreadCount'])->name('notifications.unread-count');
+
+// ==================== PENDAFTARAN PUBLIC ====================
+Route::get('/pendaftaran', function () {
+    return redirect()->route('user.pendaftaran.index');
+})->name('pendaftaran');
+
+Route::prefix('pendaftaran')->name('user.pendaftaran.')->group(function () {
+    Route::get('/cek-status', [App\Http\Controllers\User\PendaftaranController::class, 'cekStatusForm'])->name('cek-status');
+    Route::post('/cek-status', [App\Http\Controllers\User\PendaftaranController::class, 'cekStatus'])->name('cek-status.post');
+});
 
 // ==================== ADMIN ROUTES ====================
-// Gunakan middleware 'admin' (sudah ada di AdminMiddleware.php)
 Route::prefix('admin')
     ->name('admin.')
-    ->middleware(['auth', 'admin'])  // <-- TAMBAHKAN 'admin'!
+    ->middleware(['auth', 'admin'])
     ->group(function () {
-
+        // Dashboard
         Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
 
-        // Feedback routes
+        // Feedback & WhatsApp
         Route::get('/feedback', [AdminController::class, 'feedbackIndex'])->name('feedback.index');
         Route::get('/feedback/{id}', [AdminController::class, 'feedbackShow'])->name('feedback.show');
         Route::delete('/feedback/{id}', [AdminController::class, 'feedbackDestroy'])->name('feedback.destroy');
         Route::post('/feedback/mark-all-read', [AdminController::class, 'feedbackMarkAllRead'])->name('feedback.mark-all-read');
         Route::post('/feedback/{id}/mark-read', [AdminController::class, 'feedbackMarkAsRead'])->name('feedback.mark-read');
         Route::get('/feedback/unread-count', [AdminController::class, 'feedbackUnreadCount'])->name('feedback.unread-count');
-       // Route::post('/feedback/{id}/reply', [AdminController::class, 'feedbackReply'])->name('feedback.reply');
+        Route::post('/feedback/{id}/reply-whatsapp', [AdminController::class, 'feedbackReplyWhatsApp'])->name('feedback.reply-whatsapp');
+        Route::get('/whatsapp/status', [AdminController::class, 'checkWhatsAppStatus'])->name('whatsapp.status');
 
         // Data Santri
         Route::get('/data-santri', [AdminController::class, 'dataSantri'])->name('data-santri.index');
@@ -70,7 +86,7 @@ Route::prefix('admin')
         Route::post('/pendaftar/{id}/verify', [AdminController::class, 'verifySantri'])->name('pendaftar.verify');
         Route::post('/pendaftar/{id}/reject', [AdminController::class, 'rejectSantri'])->name('pendaftar.reject');
 
-        // Santri (kompatibilitas)
+        // Santri
         Route::get('/santri', [AdminController::class, 'santriIndex'])->name('santri.index');
         Route::get('/santri/create', [AdminController::class, 'santriCreate'])->name('santri.create');
         Route::post('/santri', [AdminController::class, 'santriStore'])->name('santri.store');
@@ -131,159 +147,10 @@ Route::prefix('admin')
         Route::post('/profile/change-email', [AdminController::class, 'changeEmail'])->name('profile.change-email');
     });
 
-// ==================== ROUTES MANAJEMEN PENDAFTARAN (GELOMBANG) ====================
-Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(function () {
-    Route::prefix('pendaftaran')->name('pendaftaran.')->group(function () {
-        Route::resource('waves', \App\Http\Controllers\Admin\RegistrationWaveController::class);
-        Route::post('waves/{wave}/toggle-active', [\App\Http\Controllers\Admin\RegistrationWaveController::class, 'toggleActive'])->name('waves.toggle-active');
-        Route::post('santri/{id}/process-acceptance', [\App\Http\Controllers\Admin\RegistrationWaveController::class, 'processAcceptance'])->name('santri.process-acceptance');
-        Route::post('santri/bulk-acceptance', [\App\Http\Controllers\Admin\RegistrationWaveController::class, 'bulkAcceptance'])->name('santri.bulk-acceptance');
-    });
-});
-
-// Program routes for admin
-Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
-    Route::resource('program', ProgramController::class);
-});
-
-// ==================== MANAJEMEN ADMIN (SUPERADMIN ONLY) ====================
-Route::prefix('admin')->name('admin.')->middleware(['auth', 'superadmin'])->group(function () {
-    Route::resource('admin-management', \App\Http\Controllers\Admin\AdminManagementController::class);
-    Route::get('admin-management/toggle-status/{id}', [\App\Http\Controllers\Admin\AdminManagementController::class, 'toggleStatus'])->name('admin-management.toggle-status');
-    Route::post('admin-management/bulk-action', [\App\Http\Controllers\Admin\AdminManagementController::class, 'bulkAction'])->name('admin-management.bulk-action');
-});
-
-//Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
-//    Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
-//    Route::resource('program', ProgramController::class);
-//});
-
-// notification
-Route::get('/notifications', [UserController::class, 'notifications'])->name('notifications');
-Route::post('/notifications/{id}/mark-read', [UserController::class, 'markAsRead'])->name('notifications.mark-read');
-Route::post('/notifications/mark-all-read', [UserController::class, 'markAllRead'])->name('notifications.mark-all-read');
-Route::get('/notifications/unread-count', [UserController::class, 'unreadCount'])->name('notifications.unread-count');
-
-// ==================== ROUTE KHUSUS USER ====================
-Route::middleware(['auth', 'user'])->prefix('user')->name('user.')->group(function () {
-
-    Route::get('/check-user', function () {
-        if (!auth()->check()) {
-            return "Belum login. Silakan login terlebih dahulu.";
-        }
-
-        $user = auth()->user();
-        return "Login sebagai: " . $user->name . "<br>Email: " . $user->email . "<br>Role: " . $user->role;
-    });
-
-    // DASHBOARD
-    Route::get('/dashboard', [UserController::class, 'dashboard'])->name('dashboard');
-
-    // PROFILE
-    Route::get('/profile', [UserController::class, 'profile'])->name('profile');
-    Route::get('/profile/edit', [UserController::class, 'editProfile'])->name('profile.edit');
-    Route::put('/profile', [UserController::class, 'updateProfile'])->name('profile.update');
-    Route::post('/profile/change-password', [UserController::class, 'changePassword'])->name('profile.change-password');
-    Route::post('/profile/upload-avatar', [UserController::class, 'uploadAvatar'])->name('profile.upload-avatar');
-
-    // SANTRI
-    Route::get('/santri', [UserController::class, 'santriIndex'])->name('santri.index');
-    Route::get('/santri/create', [UserController::class, 'santriCreate'])->name('santri.create');
-    Route::post('/santri', [UserController::class, 'santriStore'])->name('santri.store');
-    Route::get('/santri/{id}', [UserController::class, 'santriShow'])->name('santri.show');
-    Route::get('/santri/{id}/edit', [UserController::class, 'santriEdit'])->name('santri.edit');
-    Route::put('/santri/{id}', [UserController::class, 'santriUpdate'])->name('santri.update');
-    Route::delete('/santri/{id}', [UserController::class, 'santriDestroy'])->name('santri.destroy');
-
-    // GALLERY
-    Route::get('/gallery', [UserController::class, 'galleryIndex'])->name('gallery.index');
-    Route::get('/gallery/{id}', [UserController::class, 'galleryShow'])->name('gallery.show');
-
-    // PROGRAM (hanya baca untuk user)
-    Route::get('/program', [UserController::class, 'programIndex'])->name('program.index');
-    Route::get('/program/{id}', [UserController::class, 'programShow'])->name('program.show');
-
-    // STRUKTUR ORGANISASI
-    Route::get('/struktur-organisasi', [UserController::class, 'strukturIndex'])->name('struktur.index');
-    Route::get('/struktur-organisasi/{id}', [UserController::class, 'strukturShow'])->name('struktur.show');
-
-    // PROFIL YAYASAN
-    Route::get('/profil-yayasan', [UserController::class, 'profilYayasanIndex'])->name('profil-yayasan.index');
-    Route::get('/profil-yayasan/{id}', [UserController::class, 'profilYayasanShow'])->name('profil-yayasan.show');
-
-    // AKTA YAYASAN
-    Route::get('/akta-yayasan', [UserController::class, 'aktaYayasanIndex'])->name('akta-yayasan.index');
-    Route::get('/akta-yayasan/{id}', [UserController::class, 'aktaYayasanShow'])->name('akta-yayasan.show');
-
-    // AKTA WAKAF
-    Route::get('/akta-wakaf', [UserController::class, 'aktaWakafIndex'])->name('akta-wakaf.index');
-    Route::get('/akta-wakaf/{id}', [UserController::class, 'aktaWakafShow'])->name('akta-wakaf.show');
-
-    // NOTIFICATIONS
-    Route::get('/notifications', [UserController::class, 'notifications'])->name('notifications');
-    Route::get('/notifications/unread', [UserController::class, 'getUnreadNotifications'])->name('notifications.unread');
-    Route::post('/notifications/{id}/mark-read', [UserController::class, 'markAsRead'])->name('notifications.mark-read');
-    Route::post('/notifications/mark-all-read', [UserController::class, 'markAllRead'])->name('notifications.mark-all-read');
-
-    Route::get('/user-test', [App\Http\Controllers\User\UserController::class, 'dashboard'])->middleware('auth');
-});
-// Tambahkan di bagian PUBLIC ROUTES, sebelum route lainnya
-Route::get('/pendaftaran', function () {
-    return redirect()->route('user.pendaftaran.index');
-})->name('pendaftaran');
-
-// ==================== PUBLIC ROUTES ====================
-// HOME
-//Route::get('/home', [UserController::class, 'home'])->name('home');
-
-// TENTANG
-Route::get('/tentang', [UserController::class, 'profilYayasanIndex'])->name('tentang');
-
-// STRUKTUR
-Route::get('/struktur', [UserController::class, 'strukturIndex'])->name('struktur');
-
-// LEGALITAS (akta yayasan + wakaf)
-//Route::get('/legalitas', [UserController::class, 'legalitas'])->name('legalitas');
-
-// FASILITAS
-Route::get('/fasilitas', [UserController::class, 'fasilitas'])->name('fasilitas');
-
-// GALERI
-Route::get('/galeri', [UserController::class, 'galeri'])->name('galeri');
-
-// PENDAFTARAN
-//Route::get('/pendaftaran', function () {
-//  return view('public.pendaftaran');
-//})->name('pendaftaran');
-
-// FORM
-//Route::get('/form', function () {
-//  return view('public.form');
-//})->name('form');
-
-//Route::prefix('pendaftaran')->name('user.pendaftaran.')->group(function () {
- //   Route::get('/', [App\Http\Controllers\User\PendaftaranController::class, 'index'])->name('index');
- //   Route::get('/form', [App\Http\Controllers\User\PendaftaranController::class, 'form'])->name('form');
- //   Route::post('/store', [App\Http\Controllers\User\PendaftaranController::class, 'store'])->name('store');
- //   Route::get('/status/{id}', [App\Http\Controllers\User\PendaftaranController::class, 'status'])->name('status');
- //   Route::get('/cetak/{id}', [App\Http\Controllers\User\PendaftaranController::class, 'cetak'])->name('cetak');
- //   Route::get('/download-pdf/{id}', [App\Http\Controllers\User\PendaftaranController::class, 'downloadPDF'])->name('download-pdf'); // TAMBAHKAN INI
- //   Route::get('/cek-status', [App\Http\Controllers\User\PendaftaranController::class, 'cekStatusForm'])->name('cek-status');
- //   Route::post('/cek-status', [App\Http\Controllers\User\PendaftaranController::class, 'cekStatus'])->name('cek-status.post');
-//});
-
-// HUBUNGI
-Route::get('/hubungi', [UserController::class, 'hubungi'])->name('hubungi');
-
-Route::post('/daftar', [AdminController::class, 'santriStore'])->name('daftar');
-
-// EMAIL
-Route::post('/send-feedback', [FeedbackController::class, 'sendFeedback'])->name('send.feedback');
-
-// ==================== DATA MASTER ROUTES (ADMIN ONLY) ====================
+// ==================== ADMIN DATA MASTER ====================
 Route::prefix('admin/data-master')
     ->name('admin.data-master.')
-    ->middleware(['auth', 'admin'])  // <-- TAMBAHKAN 'admin'!
+    ->middleware(['auth', 'admin'])
     ->group(function () {
         Route::resource('struktur-organisasi', StrukturOrganisasiController::class);
         Route::resource('fasilitas', FasilitasController::class);
@@ -294,8 +161,60 @@ Route::prefix('admin/data-master')
 
 Route::resource('data-master/fasilitas', FasilitasController::class);
 
-// ==================== ROUTE PENDAFTARAN ====================
-// Route yang membutuhkan login (auth + user)
+// ==================== ADMIN PENDAFTARAN ====================
+Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(function () {
+    Route::prefix('pendaftaran')->name('pendaftaran.')->group(function () {
+        Route::resource('waves', \App\Http\Controllers\Admin\RegistrationWaveController::class);
+        Route::post('waves/{wave}/toggle-active', [\App\Http\Controllers\Admin\RegistrationWaveController::class, 'toggleActive'])->name('waves.toggle-active');
+        Route::post('santri/{id}/process-acceptance', [\App\Http\Controllers\Admin\RegistrationWaveController::class, 'processAcceptance'])->name('santri.process-acceptance');
+        Route::post('santri/bulk-acceptance', [\App\Http\Controllers\Admin\RegistrationWaveController::class, 'bulkAcceptance'])->name('santri.bulk-acceptance');
+    });
+});
+
+// ==================== ADMIN PROGRAM ====================
+Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
+    Route::resource('program', ProgramController::class);
+});
+
+// ==================== SUPERADMIN ROUTES ====================
+Route::prefix('admin')->name('admin.')->middleware(['auth', 'superadmin'])->group(function () {
+    Route::resource('admin-management', \App\Http\Controllers\Admin\AdminManagementController::class);
+    Route::get('admin-management/toggle-status/{id}', [\App\Http\Controllers\Admin\AdminManagementController::class, 'toggleStatus'])->name('admin-management.toggle-status');
+    Route::post('admin-management/bulk-action', [\App\Http\Controllers\Admin\AdminManagementController::class, 'bulkAction'])->name('admin-management.bulk-action');
+});
+
+// ==================== USER ROUTES ====================
+Route::middleware(['auth', 'user'])->prefix('user')->name('user.')->group(function () {
+    Route::get('/dashboard', [UserController::class, 'dashboard'])->name('dashboard');
+    Route::get('/profile', [UserController::class, 'profile'])->name('profile');
+    Route::get('/profile/edit', [UserController::class, 'editProfile'])->name('profile.edit');
+    Route::put('/profile', [UserController::class, 'updateProfile'])->name('profile.update');
+    Route::post('/profile/change-password', [UserController::class, 'changePassword'])->name('profile.change-password');
+    Route::post('/profile/upload-avatar', [UserController::class, 'uploadAvatar'])->name('profile.upload-avatar');
+
+    Route::get('/santri', [UserController::class, 'santriIndex'])->name('santri.index');
+    Route::get('/santri/create', [UserController::class, 'santriCreate'])->name('santri.create');
+    Route::post('/santri', [UserController::class, 'santriStore'])->name('santri.store');
+    Route::get('/santri/{id}', [UserController::class, 'santriShow'])->name('santri.show');
+    Route::get('/santri/{id}/edit', [UserController::class, 'santriEdit'])->name('santri.edit');
+    Route::put('/santri/{id}', [UserController::class, 'santriUpdate'])->name('santri.update');
+    Route::delete('/santri/{id}', [UserController::class, 'santriDestroy'])->name('santri.destroy');
+
+ Route::get('/gallery', [UserController::class, 'galleryIndex'])->name('gallery.index');
+Route::get('/gallery/{id}', [UserController::class, 'galleryShow'])->name('gallery.show');
+    Route::get('/program', [UserController::class, 'programIndex'])->name('program.index');
+    Route::get('/program/{id}', [UserController::class, 'programShow'])->name('program.show');
+    Route::get('/struktur-organisasi', [UserController::class, 'strukturIndex'])->name('struktur.index');
+    Route::get('/struktur-organisasi/{id}', [UserController::class, 'strukturShow'])->name('struktur.show');
+    Route::get('/profil-yayasan', [UserController::class, 'profilYayasanIndex'])->name('profil-yayasan.index');
+    Route::get('/profil-yayasan/{id}', [UserController::class, 'profilYayasanShow'])->name('profil-yayasan.show');
+    Route::get('/akta-yayasan', [UserController::class, 'aktaYayasanIndex'])->name('akta-yayasan.index');
+    Route::get('/akta-yayasan/{id}', [UserController::class, 'aktaYayasanShow'])->name('akta-yayasan.show');
+    Route::get('/akta-wakaf', [UserController::class, 'aktaWakafIndex'])->name('akta-wakaf.index');
+    Route::get('/akta-wakaf/{id}', [UserController::class, 'aktaWakafShow'])->name('akta-wakaf.show');
+});
+
+// ==================== PENDAFTARAN USER ====================
 Route::middleware(['auth', 'user'])->prefix('pendaftaran')->name('user.pendaftaran.')->group(function () {
     Route::get('/', [App\Http\Controllers\User\PendaftaranController::class, 'index'])->name('index');
     Route::get('/form', [App\Http\Controllers\User\PendaftaranController::class, 'form'])->name('form');
@@ -305,9 +224,9 @@ Route::middleware(['auth', 'user'])->prefix('pendaftaran')->name('user.pendaftar
     Route::get('/download-pdf/{id}', [App\Http\Controllers\User\PendaftaranController::class, 'downloadPDF'])->name('download-pdf');
 });
 
-// Route cek status untuk publik (tanpa middleware)
-Route::prefix('pendaftaran')->name('user.pendaftaran.')->group(function () {
-    Route::get('/cek-status', [App\Http\Controllers\User\PendaftaranController::class, 'cekStatusForm'])->name('cek-status');
-    Route::post('/cek-status', [App\Http\Controllers\User\PendaftaranController::class, 'cekStatus'])->name('cek-status.post');
-});
-
+// ==================== TEST WHATSAPP ROUTE (HAPUS NANTI) ====================
+//Route::middleware(['auth', 'admin'])->get('/test-wa', function () {
+  //  $whatsapp = new \App\Services\WhatsAppService();
+  //  $result = $whatsapp->sendMessage('6281234567890', '🧪 Test dari Pondok Pesantren Al-Ifadah');
+  //  return response()->json($result);
+//});

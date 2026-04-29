@@ -18,6 +18,8 @@ use App\Models\Gallery;
 use App\Models\Notification;
 use App\Models\Feedback;
 use App\Traits\NotifiableTrait;
+use App\Services\WhatsAppService;
+use Illuminate\Support\Facades\Schema;
 
 class AdminController extends Controller
 {
@@ -271,22 +273,22 @@ class AdminController extends Controller
 {
     try {
         $santri = SantriRegistration::findOrFail($id);
-        
+
         $santri->update([
             'status' => 'diterima',
             'acceptance_status' => 'accepted',
             'tanggal_verifikasi' => now(),
         ]);
-        
+
         if (request()->ajax() || request()->expectsJson()) {
             return response()->json([
                 'success' => true,
                 'message' => 'Santri berhasil diterima!'
             ]);
         }
-        
+
         return redirect()->back()->with('success', 'Santri berhasil diterima!');
-        
+
     } catch (\Exception $e) {
         if (request()->ajax() || request()->expectsJson()) {
             return response()->json([
@@ -306,23 +308,23 @@ public function rejectSantri(Request $request, $id)
         ]);
 
         $santri = SantriRegistration::findOrFail($id);
-        
+
         $santri->update([
             'status' => 'ditolak',
             'acceptance_status' => 'rejected',
             'alasan_penolakan' => $request->alasan_penolakan,
             'tanggal_verifikasi' => now(),
         ]);
-        
+
         if (request()->ajax() || request()->expectsJson()) {
             return response()->json([
                 'success' => true,
                 'message' => 'Pendaftaran santri ditolak.'
             ]);
         }
-        
+
         return redirect()->back()->with('success', 'Pendaftaran santri ditolak.');
-        
+
     } catch (\Exception $e) {
         if (request()->ajax() || request()->expectsJson()) {
             return response()->json([
@@ -336,90 +338,128 @@ public function rejectSantri(Request $request, $id)
 
  // ==================== FEEDBACK (KRITIK & SARAN) ====================
 
-public function feedbackIndex(Request $request)
-{
-    $query = Feedback::query();
+    public function feedbackIndex(Request $request)
+    {
+        $feedbacks = Feedback::orderBy('created_at', 'desc')
+            ->paginate(10);
+        $unreadCount = Feedback::where('is_read', false)->count();
 
-    if ($request->filled('status')) {
-        if ($request->status === 'unread') {
-            $query->where('is_read', false);
-        } elseif ($request->status === 'replied') {
-            $query->where('is_replied', true);
-        }
+        return view('admin.feedback.index', compact('feedbacks', 'unreadCount'));
     }
 
-    // Pagination 10 data per halaman (bukan 15)
-    $feedbacks = $query->latest()->paginate(10);
-    $unreadCount = Feedback::where('is_read', false)->count();
-
-    return view('admin.feedback.index', compact('feedbacks', 'unreadCount'));
-}
-
-public function feedbackShow($id)
+    public function feedbackShow($id)
 {
+    // Debug: cek apakah fungsi dipanggil
+    \Log::info('feedbackShow dipanggil dengan ID: ' . $id);
+
     $feedback = Feedback::findOrFail($id);
 
+    // Debug: cek apakah feedback ditemukan
+    \Log::info('Feedback ditemukan: ' . $feedback->name);
+
     if (!$feedback->is_read) {
-        $feedback->update(['is_read' => true]);
+        $feedback->markAsRead();
     }
 
     return view('admin.feedback.show', compact('feedback'));
 }
 
-// HAPUS ATAU KOMENTAR method ini
-/*
-public function feedbackReply(Request $request, $id)
-{
-    $request->validate([
-        'reply_message' => 'required|string|min:10',
-    ]);
+    public function feedbackDestroy($id)
+    {
+        try {
+            $feedback = Feedback::findOrFail($id);
+            $feedback->delete();
 
-    $feedback = Feedback::findOrFail($id);
+            return redirect()->route('admin.feedback.index')
+                ->with('success', 'Masukan berhasil dihapus!');
+        } catch (\Exception $e) {
+            return redirect()->route('admin.feedback.index')
+                ->with('error', 'Gagal menghapus masukan!');
+        }
+    }
 
-    $feedback->update([
-        'is_replied' => true,
-        'reply_message' => $request->reply_message,
-        'replied_at' => now(),
-        'replied_by' => auth()->id(),
-        'is_read' => true,
-    ]);
+    public function feedbackMarkAllRead()
+    {
+        Feedback::where('is_read', false)->update(['is_read' => true]);
 
-    return redirect()->route('admin.feedback.index')->with('success', 'Balasan berhasil dikirim.');
-}
-*/
+        return redirect()->route('admin.feedback.index')
+            ->with('success', 'Semua masukan telah ditandai dibaca!');
+    }
 
-public function feedbackDestroy($id)
-{
-    $feedback = Feedback::findOrFail($id);
-    $feedback->delete();
+    public function feedbackMarkAsRead($id)
+    {
+        $feedback = Feedback::findOrFail($id);
+        $feedback->markAsRead();
 
-    return redirect()->route('admin.feedback.index')->with('success', 'Data feedback berhasil dihapus.');
-}
-
-public function feedbackMarkAllRead()
-{
-    Feedback::where('is_read', false)->update(['is_read' => true]);
-
-    return redirect()->back()->with('success', 'Semua feedback telah ditandai sebagai sudah dibaca.');
-}
-
-public function feedbackMarkAsRead($id)
-{
-    $feedback = Feedback::findOrFail($id);
-    $feedback->update(['is_read' => true]);
-
-    if (request()->ajax()) {
         return response()->json(['success' => true]);
     }
 
-    return redirect()->back()->with('success', 'Feedback ditandai sudah dibaca.');
+    public function feedbackUnreadCount()
+    {
+        $count = Feedback::where('is_read', false)->count();
+
+        return response()->json(['unread_count' => $count]);
+    }
+
+    // Method baru untuk reply via WhatsApppublic function feedbackReplyWhatsApp(Request $request, $id)
+public function feedbackReplyWhatsApp(Request $request, $id)
+{
+    $request->validate([
+        'reply_message' => 'required|string|min:5|max:1000',
+    ]);
+
+    $feedback = Feedback::findOrFail($id);
+
+    if (!$feedback->hasPhoneNumber()) {
+        return redirect()->route('admin.feedback.show', $feedback->id)
+            ->with('error', 'Pengirim tidak mencantumkan nomor telepon!');
+    }
+
+    $whatsappService = new WhatsAppService();
+    $formattedPhone = $feedback->getFormattedPhone();
+
+    // Panggil method sendReplyTemplate dari WhatsAppService
+    $message = $whatsappService->sendReplyTemplate(
+        $feedback->name,
+        $request->reply_message,
+        $feedback->message
+    );
+
+    $result = $whatsappService->sendMessage($formattedPhone, $message);
+
+    $updateData = [
+        'is_replied' => true,
+        'reply_message' => $request->reply_message,
+        'replied_at' => now(),
+        'replied_by' => Auth::id(),
+    ];
+
+    if (Schema::hasColumn('feedbacks', 'whatsapp_reply')) {
+        $updateData['whatsapp_reply'] = $message;
+        $updateData['whatsapp_replied_at'] = now();
+        $updateData['whatsapp_reply_status'] = $result['success'] ? 'sent' : 'failed';
+    }
+
+    $feedback->update($updateData);
+
+    if ($result['success']) {
+        return redirect()->route('admin.feedback.show', $feedback->id)
+            ->with('success', 'Balasan berhasil dikirim via WhatsApp!');
+    }
+
+    return redirect()->route('admin.feedback.show', $feedback->id)
+        ->with('error', 'Gagal kirim: ' . ($result['error'] ?? 'Unknown error'));
+}
+/**
+ * Cek status WhatsApp
+ */
+public function checkWhatsAppStatus()
+{
+    $whatsappService = new \App\Services\WhatsAppService();
+    $status = $whatsappService->checkConnection();
+    return response()->json($status);
 }
 
-public function feedbackUnreadCount()
-{
-    $count = Feedback::where('is_read', false)->count();
-    return response()->json(['count' => $count]);
-}
     // ==================== PEGAWAI ====================
 
     public function pegawaiIndex(Request $request)

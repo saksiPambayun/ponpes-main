@@ -1,8 +1,6 @@
-@extends('layouts.app')
+<?php $__env->startSection('title', 'Hubungi Kami'); ?>
 
-@section('title', 'Hubungi Kami')
-
-@section('content')
+<?php $__env->startSection('content'); ?>
     <section class="hubungi-section">
         <h1 class="hubungi-title">Hubungi Kami</h1>
 
@@ -12,7 +10,7 @@
                     <i class="bi bi-telephone-fill"></i>
                     <div>
                         <h3>Nomor Telepon</h3>
-                        <p>{{ $profil->telepon ?? 'Belum diisi' }}</p>
+                        <p><?php echo e($profil->telepon ?? 'Belum diisi'); ?></p>
                     </div>
                 </div>
 
@@ -20,7 +18,7 @@
                     <i class="bi bi-envelope-fill"></i>
                     <div>
                         <h3>Email</h3>
-                        <p>{{ $profil->email ?? 'Belum diisi' }}</p>
+                        <p><?php echo e($profil->email ?? 'Belum diisi'); ?></p>
                     </div>
                 </div>
 
@@ -29,13 +27,14 @@
                     <div>
                         <h3>Whatsapp</h3>
                         <p>
-                            @if(isset($profil) && $profil && $profil->telepon)
-                                <a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', $profil->telepon) }}">
-                                    {{ $profil->telepon }}
+                            <?php if(isset($profil) && $profil && $profil->telepon): ?>
+                                <a href="https://wa.me/<?php echo e(preg_replace('/[^0-9]/', '', $profil->telepon)); ?>">
+                                    <?php echo e($profil->telepon); ?>
+
                                 </a>
-                            @else
+                            <?php else: ?>
                                 Belum diisi
-                            @endif
+                            <?php endif; ?>
                         </p>
                     </div>
                 </div>
@@ -44,33 +43,34 @@
                     <i class="bi bi-geo-alt-fill"></i>
                     <div>
                         <h3>Lokasi</h3>
-                        <p>{{ $profil->alamat ?? 'Belum diisi' }}</p>
+                        <p><?php echo e($profil->alamat ?? 'Belum diisi'); ?></p>
                     </div>
                 </div>
             </div>
 
             <div class="hubungi-form">
-                @if(session('success'))
+                <?php if(session('success')): ?>
                     <div class="alert alert-success">
-                        {{ session('success') }}
-                    </div>
-                @endif
+                        <?php echo e(session('success')); ?>
 
-                @if($errors->any())
+                    </div>
+                <?php endif; ?>
+
+                <?php if($errors->any()): ?>
                     <div class="alert alert-danger">
-                        @foreach($errors->all() as $error)
-                            <p>{{ $error }}</p>
-                        @endforeach
+                        <?php $__currentLoopData = $errors->all(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $error): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                            <p><?php echo e($error); ?></p>
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                     </div>
-                @endif
+                <?php endif; ?>
 
-                <form action="{{ route('send.feedback') }}" method="POST">
-                    @csrf
-                    <input type="text" name="name" placeholder="Nama Anda" value="{{ old('name') }}" required>
-                    <input type="email" name="email" placeholder="Alamat Email Anda" value="{{ old('email') }}" required>
-                    <input type="text" name="phone" placeholder="No. Telepon" value="{{ old('phone') }}">
+                <form action="<?php echo e(route('send.feedback')); ?>" method="POST">
+                    <?php echo csrf_field(); ?>
+                    <input type="text" name="name" placeholder="Nama Anda" value="<?php echo e(old('name')); ?>" required>
+                    <input type="email" name="email" placeholder="Alamat Email Anda" value="<?php echo e(old('email')); ?>" required>
+                    <input type="text" name="phone" placeholder="No. Telepon" value="<?php echo e(old('phone')); ?>">
                     <textarea name="message" placeholder="Isi Saran dan Kritik Di sini"
-                        required>{{ old('message') }}</textarea>
+                        required><?php echo e(old('message')); ?></textarea>
                     <button type="submit">
                         Kirim Saran dan Kritik
                     </button>
@@ -102,4 +102,6 @@
             margin: 0;
         }
     </style>
-@endsection
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH D:\ponpes-main\resources\views/public/hubungi.blade.php ENDPATH**/ ?>
