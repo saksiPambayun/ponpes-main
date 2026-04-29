@@ -1,9 +1,7 @@
-@extends('admin.layout')
+<?php $__env->startSection('title', 'Dashboard'); ?>
+<?php $__env->startSection('page-title', 'Ringkasan Sistem'); ?>
 
-@section('title', 'Dashboard')
-@section('page-title', 'Ringkasan Sistem')
-
-@section('content')
+<?php $__env->startSection('content'); ?>
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
         <!-- Card Santri Pending -->
         <div class="card p-6 border-l-4"
@@ -14,7 +12,7 @@
                 </div>
                 <div>
                     <p class="text-sm text-gray-500 uppercase font-bold">Santri Pending</p>
-                    <h3 class="text-2xl font-bold" style="color: #222;">{{ $stats['santri_pending'] }}</h3>
+                    <h3 class="text-2xl font-bold" style="color: #222;"><?php echo e($stats['santri_pending']); ?></h3>
                 </div>
             </div>
         </div>
@@ -28,7 +26,7 @@
                 </div>
                 <div>
                     <p class="text-sm text-gray-500 uppercase font-bold">Santri Diterima</p>
-                    <h3 class="text-2xl font-bold" style="color: #222;">{{ $stats['santri_diterima'] }}</h3>
+                    <h3 class="text-2xl font-bold" style="color: #222;"><?php echo e($stats['santri_diterima']); ?></h3>
                 </div>
             </div>
         </div>
@@ -42,7 +40,7 @@
                 </div>
                 <div>
                     <p class="text-sm text-gray-500 uppercase font-bold">Pegawai Aktif</p>
-                    <h3 class="text-2xl font-bold" style="color: #222;">{{ $stats['pegawai_total'] }}</h3>
+                    <h3 class="text-2xl font-bold" style="color: #222;"><?php echo e($stats['pegawai_total']); ?></h3>
                 </div>
             </div>
         </div>
@@ -56,7 +54,7 @@
                 </div>
                 <div>
                     <p class="text-sm text-gray-500 uppercase font-bold">Total SK</p>
-                    <h3 class="text-2xl font-bold" style="color: #222;">{{ $stats['sk_total'] }}</h3>
+                    <h3 class="text-2xl font-bold" style="color: #222;"><?php echo e($stats['sk_total']); ?></h3>
                 </div>
             </div>
         </div>
@@ -70,7 +68,7 @@
                 </div>
                 <div>
                     <p class="text-sm text-gray-500 uppercase font-bold">Akta Yayasan</p>
-                    <h3 class="text-2xl font-bold" style="color: #222;">{{ $stats['akta_yayasan_total'] }}</h3>
+                    <h3 class="text-2xl font-bold" style="color: #222;"><?php echo e($stats['akta_yayasan_total']); ?></h3>
                 </div>
             </div>
         </div>
@@ -82,7 +80,7 @@
         <div class="p-6 border-b flex justify-between items-center"
             style="border-color: #dfe8d8; background: #eef3ec; border-radius: 20px 20px 0 0;">
             <h3 class="font-bold" style="color: #222;">Pendaftaran Santri Terbaru</h3>
-            <a href="{{ route('admin.pendaftar.index') }}"
+            <a href="<?php echo e(route('admin.pendaftar.index')); ?>"
                 style="color: #005F02; text-decoration: none; font-size: 0.8rem;">Lihat Semua</a>
         </div>
         <div class="overflow-x-auto">
@@ -104,29 +102,32 @@
                     </tr>
                 </thead>
                 <tbody class="bg-white divide-y" style="border-color: #dfe8d8;">
-                    @forelse($santri as $index => $item)
+                    <?php $__empty_1 = true; $__currentLoopData = $santri; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
                         <tr class="hover:bg-gray-50" style="transition: background 0.2s;">
                             <td class="px-6 py-4 whitespace-nowrap text-sm" style="color: #333;">
-                                {{ $santri->firstItem() + $index }}
+                                <?php echo e($santri->firstItem() + $index); ?>
+
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap">
-                                        <div class="text-sm font-medium" style="color: #222;">{{ $item->nama_lengkap }}</div>
-                                        <div class="text-xs" style="color: #8cbf73;">{{ $item->nisn ?? '-' }}</div>
+                                        <div class="text-sm font-medium" style="color: #222;"><?php echo e($item->nama_lengkap); ?></div>
+                                        <div class="text-xs" style="color: #8cbf73;"><?php echo e($item->nisn ?? '-'); ?></div>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap">
-                                        <div class="text-sm" style="color: #333;">{{ $item->asal_sekolah }}</div>
-                                        <div class="text-xs" style="color: #8cbf73;">{{ $item->jurusan ?? '-' }}</div>
+                                        <div class="text-sm" style="color: #333;"><?php echo e($item->asal_sekolah); ?></div>
+                                        <div class="text-xs" style="color: #8cbf73;"><?php echo e($item->jurusan ?? '-'); ?></div>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <div class="text-sm" style="color: #333;">
-                                            {{ $item->created_at ? $item->created_at->format('d/m/Y') : '-' }}
+                                            <?php echo e($item->created_at ? $item->created_at->format('d/m/Y') : '-'); ?>
+
                                         </div>
                                         <div class="text-xs" style="color: #8cbf73;">
-                                            {{ $item->created_at ? $item->created_at->format('H:i') : '' }}
+                                            <?php echo e($item->created_at ? $item->created_at->format('H:i') : ''); ?>
+
                                         </div>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap">
-                                        @php
+                                        <?php
                                             $statusClass = [
                                                 'pending' => 'bg-yellow-100 text-yellow-800',
                                                 'diterima' => 'bg-green-100 text-green-800',
@@ -138,72 +139,74 @@
                                                 'diterima' => 'Diterima',
                                                 'ditolak' => 'Ditolak',
                                             ][$item->status] ?? ucfirst($item->status);
-                                        @endphp
+                                        ?>
 
-                                        <span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full {{ $statusClass }}">
-                                            {{ $statusText }}
+                                        <span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full <?php echo e($statusClass); ?>">
+                                            <?php echo e($statusText); ?>
+
                                         </span>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                                         <div class="flex space-x-2">
                                             <!-- Tombol Detail -->
-                                            <a href="{{ route('admin.pendaftar.show', $item->id) }}"
+                                            <a href="<?php echo e(route('admin.pendaftar.show', $item->id)); ?>"
                                                 style="color: #005F02; text-decoration: none;"
                                                 title="Detail">
                                                 <i class="fas fa-eye"></i>
                                             </a>
 
                                             <!-- Tombol Verifikasi (hanya untuk status pending) -->
-                                            @if($item->status == 'pending')
-                                                <button onclick="verifySantri({{ $item->id }})"
+                                            <?php if($item->status == 'pending'): ?>
+                                                <button onclick="verifySantri(<?php echo e($item->id); ?>)"
                                                     style="color: #10b981; background: none; border: none; cursor: pointer;"
                                                     title="Terima Santri">
                                                     <i class="fas fa-check-circle"></i>
                                                 </button>
 
                                                 <!-- Tombol Tolak -->
-                                                <button onclick="rejectSantri({{ $item->id }})"
+                                                <button onclick="rejectSantri(<?php echo e($item->id); ?>)"
                                                     style="color: #ef4444; background: none; border: none; cursor: pointer;"
                                                     title="Tolak Santri">
                                                     <i class="fas fa-times-circle"></i>
                                                 </button>
-                                            @endif
+                                            <?php endif; ?>
                                         </div>
                                     </td>
                                 </tr>
-                    @empty
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
                             <tr>
                                 <td colspan="6" class="px-6 py-10 text-center" style="color: #2d2d2d;">
                                     <div class="flex flex-col items-center">
                                         <i class="fas fa-inbox text-4xl mb-3" style="color: #8cbf73;"></i>
                                         <p class="text-gray-500">Belum ada data pendaftaran santri.</p>
-                                        <a href="{{ route('admin.santri.create') }}" class="mt-3 px-4 py-2 rounded-md text-sm"
+                                        <a href="<?php echo e(route('admin.santri.create')); ?>" class="mt-3 px-4 py-2 rounded-md text-sm"
                                             style="background: linear-gradient(135deg, #005F02, #0f4d1c); color: #fff; text-decoration: none;">
                                             Tambah Santri Baru
                                         </a>
                                     </div>
                                 </td>
                             </tr>
-                        @endforelse
+                        <?php endif; ?>
                     </tbody>
                 </table>
             </div>
 
             <!-- Pagination dengan info lengkap -->
-            @if($santri->hasPages())
+            <?php if($santri->hasPages()): ?>
                 <div class="px-6 py-4 border-t" style="border-color: #dfe8d8; background: #f9fafb;">
                     <div class="flex flex-col sm:flex-row justify-between items-center gap-4">
                         <div class="text-sm text-gray-600">
-                            Menampilkan <span class="font-semibold">{{ $santri->firstItem() }}</span>
-                            sampai <span class="font-semibold">{{ $santri->lastItem() }}</span>
-                            dari <span class="font-semibold">{{ $santri->total() }}</span> data
+                            Menampilkan <span class="font-semibold"><?php echo e($santri->firstItem()); ?></span>
+                            sampai <span class="font-semibold"><?php echo e($santri->lastItem()); ?></span>
+                            dari <span class="font-semibold"><?php echo e($santri->total()); ?></span> data
                         </div>
                         <div>
-                            {{ $santri->onEachSide(1)->links() }}
+                            <?php echo e($santri->onEachSide(1)->links()); ?>
+
                         </div>
                     </div>
                 </div>
-            @endif
+            <?php endif; ?>
         </div>
 
         <style>
@@ -264,9 +267,9 @@
                 }
             }
         </style>
-@endsection
+<?php $__env->stopSection(); ?>
 
-@push('scripts')
+<?php $__env->startPush('scripts'); ?>
     <script>
         function verifySantri(id) {
             if (confirm('Apakah Anda yakin ingin menerima santri ini?')) {
@@ -279,7 +282,7 @@
                     fetch(`/admin/pendaftar/${id}/verify`, {
                         method: 'POST',
                         headers: {
-                            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                            'X-CSRF-TOKEN': '<?php echo e(csrf_token()); ?>',
                             'Content-Type': 'application/json'
                         },
                     })
@@ -312,7 +315,7 @@
                     fetch(`/admin/pendaftar/${id}/reject`, {
                         method: 'POST',
                         headers: {
-                            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                            'X-CSRF-TOKEN': '<?php echo e(csrf_token()); ?>',
                             'Content-Type': 'application/json'
                         },
                         body: JSON.stringify({ alasan_penolakan: alasan })
@@ -331,23 +334,25 @@
             }
         }
     </script>
-@endpush
+<?php $__env->stopPush(); ?>
 
-@push('forms')
+<?php $__env->startPush('forms'); ?>
     <!-- Form tersembunyi untuk verifikasi dan penolakan -->
-    @foreach($santri as $item)
-        @if($item->status == 'pending')
-            <form id="verify-form-{{ $item->id }}"
-                  action="{{ route('admin.pendaftar.verify', $item->id) }}"
+    <?php $__currentLoopData = $santri; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+        <?php if($item->status == 'pending'): ?>
+            <form id="verify-form-<?php echo e($item->id); ?>"
+                  action="<?php echo e(route('admin.pendaftar.verify', $item->id)); ?>"
                   method="POST" style="display: none;">
-                @csrf
+                <?php echo csrf_field(); ?>
             </form>
 
-            <form id="reject-form-{{ $item->id }}"
-                  action="{{ route('admin.pendaftar.reject', $item->id) }}"
+            <form id="reject-form-<?php echo e($item->id); ?>"
+                  action="<?php echo e(route('admin.pendaftar.reject', $item->id)); ?>"
                   method="POST" style="display: none;">
-                @csrf
+                <?php echo csrf_field(); ?>
             </form>
-        @endif
-    @endforeach
-@endpush
+        <?php endif; ?>
+    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+<?php $__env->stopPush(); ?>
+
+<?php echo $__env->make('admin.layout', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH D:\ponpes-main\resources\views/admin/dashboard.blade.php ENDPATH**/ ?>
