@@ -134,6 +134,7 @@ public function home()
 public function galleryIndex()
 {
     $galeri = Gallery::latest()->paginate(12);
+    // dd($galeri->first());
     return view('user.gallery.index', compact('galeri'));
 }
 // Alias dari galleryIndex untuk kompatibilitas route

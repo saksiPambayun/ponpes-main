@@ -1,9 +1,7 @@
-@extends('layouts.app')
+<?php $__env->startSection('title', 'Galeri'); ?>
+<?php $__env->startSection('page-title', 'Galeri Dokumentasi'); ?>
 
-@section('title', 'Galeri')
-@section('page-title', 'Galeri Dokumentasi')
-
-@section('content')
+<?php $__env->startSection('content'); ?>
 
 <style>
     .galeri {
@@ -98,33 +96,36 @@
 
         <h1 class="galeri-title">Galeri</h1>
 
-        @if($galeri->count() > 0)
+        <?php if($galeri->count() > 0): ?>
             <div class="galeri-grid">
-                @foreach ($galeri as $item)
-                    <div class="galeri-item" onclick="window.location='{{ route('user.gallery.show', $item->id) }}'">
+                <?php $__currentLoopData = $galeri; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                    <div class="galeri-item" onclick="window.location='<?php echo e(route('user.gallery.show', $item->id)); ?>'">
 
                         <div class="galeri-img">
-                            <img src="{{ asset('storage/' . $item->gambar) }}" alt="">
+                            <img src="<?php echo e(asset('storage/' . $item->gambar)); ?>" alt="">
                         </div>
 
                         <div class="galeri-desc">
-                            {{ $item->deskripsi }}
+                            <?php echo e($item->deskripsi); ?>
+
                         </div>
 
                         <div class="galeri-tanggal">
-                            {{ \Carbon\Carbon::parse($item->tanggal_kegiatan)->format('d M Y') }}
+                            <?php echo e(\Carbon\Carbon::parse($item->tanggal_kegiatan)->format('d M Y')); ?>
+
                         </div>
 
                     </div>
-                @endforeach
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
             </div>
-        @else
+        <?php else: ?>
             <div class="empty-gallery">
                 <p>Belum ada dokumentasi kegiatan.</p>
             </div>
-        @endif
+        <?php endif; ?>
 
     </section>
 </section>
 
-@endsection
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH D:\laragon\www\pondok_gue\ponpes-main\resources\views/user/gallery/index.blade.php ENDPATH**/ ?>
