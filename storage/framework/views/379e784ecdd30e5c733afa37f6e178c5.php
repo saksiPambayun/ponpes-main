@@ -1,232 +1,215 @@
-
-
 <?php $__env->startSection('title', 'Galeri'); ?>
 <?php $__env->startSection('page-title', 'Galeri Dokumentasi'); ?>
 
 <?php $__env->startSection('content'); ?>
+
+    <section class="galeri-page">
+        <div class="galeri-container">
+            <div class="galeri-header-wrapper">
+                <div class="section-header">
+                    <h1 class="section-title">Galeri Kegiatan</h1>
+                    <p class="section-subtitle">Dokumentasi berbagai kegiatan di Pondok Pesantren Al-Ifadah</p>
+                </div>
+            </div>
+
+            <?php if($galeri->count() > 0): ?>
+                <div class="cards-grid">
+                    <?php $__currentLoopData = $galeri; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                        <div class="card" onclick="window.location='<?php echo e(route('user.gallery.show', $item->id)); ?>'">
+                            <div class="card-image">
+                                <img src="<?php echo e(asset('storage/' . $item->gambar)); ?>" alt="<?php echo e($item->deskripsi); ?>">
+                                <div class="card-overlay"></div>
+                            </div>
+                            <div class="card-content">
+                                <!-- Hanya SATU tanggal -->
+                                <div class="card-date">
+                                    <?php echo e(\Carbon\Carbon::parse($item->tanggal_kegiatan)->format('d F Y')); ?>
+
+                                </div>
+                                <h3 class="card-title"><?php echo e($item->deskripsi); ?></h3>
+                                <button class="learn-more">Lihat Detail</button>
+                            </div>
+                        </div>
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                </div>
+            <?php else: ?>
+                <div class="empty-state">
+                    <p>Belum ada dokumentasi kegiatan saat ini.</p>
+                </div>
+            <?php endif; ?>
+        </div>
+    </section>
+
     <style>
-        :root {
-            --green-main: #005F02;
-            --green-light: #4ca94d;
-            --green-soft: #8cbf73;
-            --bg-soft: #eef3ec;
+        .galeri-page {
+            background-color: #f8fafc;
+            padding: 80px 0 90px;
+            width: 100%;
         }
 
-        .galeri-section {
-            padding: 2rem 1rem;
-            max-width: 1200px;
+        .galeri-container {
+            max-width: 1280px;
             margin: 0 auto;
+            padding: 0 20px;
+            width: 100%;
         }
 
-        .galeri-header {
-            text-align: center;
-            margin-bottom: 3rem;
+        .galeri-header-wrapper {
+            width: 100%;
+            text-align: center !important;
+            display: block !important;
         }
 
-        .galeri-title {
-            font-size: 2rem;
-            font-weight: 700;
-            color: var(--green-main);
-            margin-bottom: 0.5rem;
-            position: relative;
-            display: inline-block;
+        .section-header {
+            text-align: center !important;
+            margin-bottom: 60px;
+            width: 100%;
+            display: block;
         }
 
-        .galeri-title:after {
-            content: '';
-            position: absolute;
-            bottom: -10px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 60px;
-            height: 3px;
-            background: linear-gradient(135deg, var(--green-main) 0%, var(--green-light) 100%);
-            border-radius: 2px;
+        .section-title {
+            font-size: 40px !important;
+            font-weight: 700 !important;
+            color: #166534 !important;
+            margin-bottom: 12px !important;
+            text-align: center !important;
+            display: block !important;
+            width: 100% !important;
         }
 
-        .galeri-subtitle {
-            color: #666;
-            font-size: 1rem;
-            margin-top: 1.5rem;
+        .section-subtitle {
+            font-size: 17px !important;
+            color: #64748b !important;
+            text-align: center !important;
+            display: block !important;
+            width: 100% !important;
         }
 
-        .galeri-grid {
+        .cards-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 1.5rem;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 22px;
         }
 
-        .galeri-item {
-            position: relative;
+        .card {
             background: white;
             border-radius: 16px;
             overflow: hidden;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.07);
+            transition: all 0.3s ease;
             cursor: pointer;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
         }
 
-        .galeri-item:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+        .card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
         }
 
-        .galeri-item img {
+        .card-image {
+            position: relative;
+            height: 185px;
+            overflow: hidden;
+        }
+
+        .card-image img {
             width: 100%;
-            height: 250px;
+            height: 100%;
             object-fit: cover;
-            transition: transform 0.3s ease;
+            transition: transform 0.5s ease;
         }
 
-        .galeri-item:hover img {
+        .card:hover .card-image img {
             transform: scale(1.05);
         }
 
-        .galeri-overlay {
+        .card-overlay {
             position: absolute;
             bottom: 0;
             left: 0;
             right: 0;
-            background: linear-gradient(to top, rgba(0, 0, 0, 0.85), transparent);
-            padding: 1.5rem 1rem 1rem;
-            transform: translateY(100%);
-            transition: transform 0.3s ease;
+            height: 55%;
+            background: linear-gradient(transparent, rgba(0, 0, 0, 0.82));
         }
 
-        .galeri-item:hover .galeri-overlay {
-            transform: translateY(0);
+        .card-content {
+            padding: 14px 16px 18px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
         }
 
-        .galeri-tanggal {
+        .card-date {
+            font-size: 12.5px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #333333 !important;
+            background: rgba(255, 255, 255, 0.9);
             display: inline-block;
-            background: rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(4px);
-            padding: 0.25rem 0.75rem;
-            border-radius: 20px;
-            font-size: 0.7rem;
-            color: white;
-            margin-bottom: 0.5rem;
+            padding: 2px 8px;
+            border-radius: 4px;
+            width: fit-content;
         }
 
-        .galeri-desc {
+        .card-title {
+            font-size: 15.5px;
+            font-weight: 600;
             color: white;
-            font-size: 0.85rem;
-            margin: 0;
             line-height: 1.4;
+            margin-bottom: 12px;
+            margin-top: 4px;
+            flex: 1;
             display: -webkit-box;
-            -webkit-line-clamp: 2;
+            -webkit-line-clamp: 3;
             -webkit-box-orient: vertical;
             overflow: hidden;
         }
 
-        /* Empty state */
-        .empty-gallery {
+        .learn-more {
+            background: white;
+            color: #166534;
+            border: none;
+            padding: 7px 18px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 13.5px;
+            cursor: pointer;
+            align-self: flex-start;
+            transition: all 0.3s ease;
+        }
+
+        .card:hover .learn-more {
+            background: #166534;
+            color: white;
+        }
+
+        .empty-state {
             text-align: center;
-            padding: 4rem 2rem;
+            padding: 80px 20px;
+            color: #64748b;
+            font-size: 17px;
             background: white;
             border-radius: 16px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
         }
 
-        .empty-gallery i {
-            font-size: 4rem;
-            color: var(--green-soft);
-            margin-bottom: 1rem;
-        }
-
-        .empty-gallery p {
-            color: #666;
-            font-size: 1rem;
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .galeri-grid {
-                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-                gap: 1rem;
-            }
-
-            .galeri-title {
-                font-size: 1.5rem;
-            }
-
-            .galeri-item img {
-                height: 200px;
+        @media (max-width: 992px) {
+            .cards-grid {
+                grid-template-columns: repeat(2, 1fr);
             }
         }
 
-        @media (max-width: 480px) {
-            .galeri-grid {
+        @media (max-width: 576px) {
+            .cards-grid {
                 grid-template-columns: 1fr;
             }
-        }
 
-        /* Pagination */
-        .pagination {
-            display: flex;
-            justify-content: center;
-            gap: 0.5rem;
-            margin-top: 2rem;
-            flex-wrap: wrap;
-        }
-
-        .pagination .page-link {
-            padding: 0.5rem 1rem;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            color: var(--green-main);
-            text-decoration: none;
-            transition: all 0.2s;
-        }
-
-        .pagination .page-link:hover {
-            background: var(--green-main);
-            color: white;
-            border-color: var(--green-main);
-        }
-
-        .pagination .active .page-link {
-            background: var(--green-main);
-            color: white;
-            border-color: var(--green-main);
+            .card-image {
+                height: 175px;
+            }
         }
     </style>
 
-    <section class="galeri-section">
-        <div class="galeri-header">
-            <h1 class="galeri-title">Galeri</h1>
-        </div>
-
-        <?php if($galeri && $galeri->count() > 0): ?>
-            <div class="galeri-grid">
-                <?php $__currentLoopData = $galeri; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                    <div class="galeri-item" onclick="window.location='<?php echo e(route('user.gallery.show', $item->id)); ?>'">
-                        <img src="<?php echo e(asset('storage/' . ($item->gambar ?? $item->foto))); ?>" alt="<?php echo e($item->judul ?? 'Galeri'); ?>">
-                        <div class="galeri-overlay">
-                            <span class="galeri-tanggal">
-                                <i class="fas fa-calendar-alt"></i>
-                                <?php echo e(\Carbon\Carbon::parse($item->tanggal ?? $item->created_at)->format('d F Y')); ?>
-
-                            </span>
-                            <p class="galeri-desc"><?php echo e($item->deskripsi ?? $item->judul ?? 'Dokumentasi kegiatan'); ?></p>
-                        </div>
-                    </div>
-                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-            </div>
-
-            <?php if(method_exists($galeri, 'links')): ?>
-                <div class="pagination">
-                    <?php echo e($galeri->links()); ?>
-
-                </div>
-            <?php endif; ?>
-        <?php else: ?>
-            <div class="empty-gallery">
-                <i class="fas fa-images"></i>
-                <p>Belum ada foto galeri</p>
-                <p style="font-size: 0.85rem; margin-top: 0.5rem;">Dokumentasi kegiatan akan segera ditambahkan</p>
-            </div>
-        <?php endif; ?>
-    </section>
 <?php $__env->stopSection(); ?>
 <?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH D:\ponpes-main\resources\views/user/gallery/index.blade.php ENDPATH**/ ?>

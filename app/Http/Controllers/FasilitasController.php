@@ -64,6 +64,7 @@ class FasilitasController extends Controller
             'tanggal_pengadaan' => 'nullable|date',
             'foto' => 'nullable|mimetypes:image/jpeg,image/png,image/webp,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document|max:5120',
             'keterangan' => 'nullable|string',
+            'tanggal_fasilitas' => 'nullable|date',
         ]);
 
         $data = $request->except('foto');
@@ -113,6 +114,7 @@ class FasilitasController extends Controller
         'tanggal_pengadaan' => 'nullable|date',
         'foto' => 'nullable|mimetypes:image/jpeg,image/png,image/webp,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document|max:5120',
         'keterangan' => 'nullable|string',
+        'tanggal_fasilitas' => 'nullable|date',
     ]);
 
     // Cari data berdasarkan ID

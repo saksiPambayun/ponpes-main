@@ -147,15 +147,22 @@ public function galleryShow($id)
 {
     $gallery = Gallery::findOrFail($id);
     return view('user.gallery.show', compact('gallery'));
-}   
+}
 
 
-    // Fasilitas
-    public function fasilitas()
-    {
-        $fasilitas = Fasilitas::all();
-        return view('public.fasilitas', compact('fasilitas'));
-    }
+// Fasilitas
+public function fasilitas()
+{
+    $fasilitas = Fasilitas::all();
+    return view('public.fasilitas', compact('fasilitas'));
+}
+
+// Tambahkan method ini untuk show detail fasilitas
+public function fasilitasShow($id)
+{
+    $fasilitas = Fasilitas::findOrFail($id);
+    return view('public.fasilitas_show', compact('fasilitas'));
+}
 
     // Profil Yayasan
     public function profilYayasanIndex()

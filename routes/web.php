@@ -24,6 +24,7 @@ Route::get('/', [UserController::class, 'home'])->name('home');
 Route::get('/tentang', [UserController::class, 'profilYayasanIndex'])->name('tentang');
 Route::get('/struktur', [UserController::class, 'strukturIndex'])->name('struktur');
 Route::get('/fasilitas', [UserController::class, 'fasilitas'])->name('fasilitas');
+Route::get('/fasilitas/{id}', [UserController::class, 'fasilitasShow'])->name('fasilitas.show'); // Tambahkan ini
 Route::get('/galeri', [UserController::class, 'galeri'])->name('galeri');
 Route::get('/hubungi', [UserController::class, 'hubungi'])->name('hubungi');
 Route::post('/daftar', [AdminController::class, 'santriStore'])->name('daftar');

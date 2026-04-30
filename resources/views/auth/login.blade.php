@@ -306,7 +306,7 @@
     <div class="login-container">
         <div class="logo-wrapper">
             <div class="logo-image">
-                <img src="{{ asset('gallery/logoo.jpeg') }}" alt="Logo Yayasan">
+                <img src="{{ asset('images/logo.png') }}" alt="Logo Yayasan">
             </div>
             <h1 class="logo-title">Admin Yayasan</h1>
             <p class="logo-subtitle">Silakan login untuk melanjutkan</p>
@@ -365,11 +365,11 @@
                 </a>
             </div>
 
-        <p class="footer">
-            <i class="far fa-copyright"></i>
-            {{ date('Y') }} Yayasan Management System. All rights reserved.
-        </p>
-    </div>
+            <p class="footer">
+                <i class="far fa-copyright"></i>
+                {{ date('Y') }} Yayasan Management System. All rights reserved.
+            </p>
+        </div>
 </body>
 
 </html>
