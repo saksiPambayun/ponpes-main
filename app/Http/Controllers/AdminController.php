@@ -74,6 +74,11 @@ class AdminController extends Controller
 
     public function dashboard()
     {
+        \Log::info('Dashboard method called', [
+        'user_id' => auth()->id(),
+        'user_role' => auth()->user()->role ?? 'none'
+    ]);
+    
         $stats = [
             'santri_pending'     => SantriRegistration::where('status', 'pending')->count(),
             'santri_total'       => SantriRegistration::count(),

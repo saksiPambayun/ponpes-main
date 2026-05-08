@@ -1,291 +1,269 @@
 @extends('admin.layout')
 
-@section('title', 'Profil Yayasan')
+@section('title', 'Kelola Gallery')
+@section('page-title', 'Gallery')
+
 @section('content')
-    <div class="page-wrapper" style="background: #f4f4f4; min-height: 100vh; padding: 2rem;">
-        {{-- PAGE HEADER --}}
-        <div class="page-header"
-            style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem;">
-            <div class="header-left" style="display: flex; align-items: center; gap: 1rem;">
-                <div class="header-icon"
-                    style="width: 48px; height: 48px; background: linear-gradient(135deg, #005F02, #0f4d1c); border-radius: 14px; display: flex; align-items: center; justify-content: center;">
-                    <i class="fas fa-building" style="color: #fff; font-size: 1.2rem;"></i>
-                </div>
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
                 <div>
-                    <h1 class="page-title" style="font-size: 1.5rem; font-weight: 700; color: #222; margin: 0;">Profil
-                        Yayasan</h1>
-                    <nav class="breadcrumb-nav"
-                        style="display: flex; align-items: center; gap: 6px; font-size: 0.8rem; color: #64748b; margin-top: 4px;">
-                        <a href="{{ url('/admin/dashboard') }}" class="breadcrumb-link"
-                            style="color: #64748b; text-decoration: none;">Dashboard</a>
-                        <i class="fas fa-chevron-right breadcrumb-sep" style="font-size: 0.6rem;"></i>
-                        <span class="breadcrumb-current" style="color: #005F02; font-weight: 600;">Profil Yayasan</span>
-                    </nav>
+                    <h2 class="mb-1" style="color: #005F02;">Kelola Gallery</h2>
+                    <p class="text-muted mb-0">Kelola foto gallery kegiatan pondok pesantren</p>
                 </div>
+                <a href="{{ route('admin.data-master.gallery.create') }}" class="btn btn-primary" style="background: #005F02; border: none;">
+                    <i class="fas fa-plus me-2"></i> Tambah Gallery
+                </a>
             </div>
-    <a href="{{ route('admin.data-master.profil-yayasan.edit') }}" class="btn-smooth">
-            <i class="fas fa-pencil-alt"></i> Edit Profil
-        </a>
         </div>
+    </div>
 
-        {{-- ALERT --}}
-        @if(session('success'))
-            <div class="alert-success-box"
-                style="display: flex; align-items: center; gap: 10px; background: #eef3ec; border-left: 4px solid #005F02; border-radius: 10px; padding: 12px 16px; margin-bottom: 20px;">
-                <i class="fas fa-check-circle" style="color: #005F02;"></i>
-                <span style="color: #0d4f14;">{{ session('success') }}</span>
-            </div>
-        @endif
+    @if(session('success'))
+        <div class="alert alert-success alert-dismissible fade show mb-4" role="alert" style="background: #eef3ec; border-left: 4px solid #005F02; color: #0d4f14;">
+            <i class="fas fa-check-circle me-2" style="color: #005F02;"></i> {{ session('success') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
 
-        <div class="content-grid" style="display: grid; grid-template-columns: 300px 1fr; gap: 24px; align-items: start;">
-            {{-- ===== KOLOM KIRI - LOGO ===== --}}
-            <div class="sidebar-col">
-            <div class="section-card smooth-card"
-                    style="background: #ffffff; border-radius: 20px; box-shadow: 0 2px 20px rgba(0,0,0,0.1); overflow: hidden;">
-                    <div class="section-card-header"
-                        style="background: linear-gradient(135deg, #005F02, #0f4d1c); padding: 1rem 1.5rem;">
-                        <div class="section-card-title" style="display: flex; align-items: center; gap: 8px;">
-                            <i class="fas fa-image" style="color: #fff;"></i>
-                            <span style="color: #fff; font-weight: 600;">Logo Yayasan</span>
-                        </div>
+    @if(session('error'))
+        <div class="alert alert-danger alert-dismissible fade show mb-4" role="alert">
+            <i class="fas fa-exclamation-circle me-2"></i> {{ session('error') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
+
+    <!-- Statistik Cards -->
+    <div class="row mb-4">
+        <div class="col-md-3 mb-3">
+            <div class="card text-center" style="background: #ffffff; border-radius: 16px; border: 1px solid #dfe8d8;">
+                <div class="card-body">
+                    <div class="p-3 rounded-full mx-auto mb-3" style="background: #eef3ec; width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; border-radius: 50%;">
+                        <i class="fas fa-images fa-2x" style="color: #005F02;"></i>
                     </div>
-                    <div class="section-card-body" style="padding: 1.5rem; text-align: center;">
-                        @if($profil->logo)
-                            <img src="{{ asset('storage/' . $profil->logo) }}" alt="Logo Yayasan"
-                                style="max-width: 100%; max-height: 150px; object-fit: contain;">
-                        @else
-                            <div style="padding: 2rem; background: #eef3ec; border-radius: 12px; text-align: center;">
-                                <i class="fas fa-building" style="font-size: 3rem; color: #8cbf73;"></i>
-                                <p style="color: #2d2d2d; margin-top: 0.5rem;">Belum ada logo</p>
-                            </div>
-                        @endif
-                    </div>
+                    <h3 class="mb-0" style="color: #222;">{{ $galleries->total() ?? 0 }}</h3>
+                    <p class="text-muted mb-0">Total Gallery</p>
                 </div>
             </div>
-
-            {{-- ===== KOLOM KANAN ===== --}}
-            <div class="main-col" style="display: flex; flex-direction: column; gap: 20px;">
-                {{-- Identitas Yayasan --}}
-            <div class="section-card smooth-card"
-                    style="background: #ffffff; border-radius: 20px; box-shadow: 0 2px 20px rgba(0,0,0,0.1); overflow: hidden;">
-                    <div class="section-card-header"
-                        style="background: linear-gradient(135deg, #005F02, #0f4d1c); padding: 1rem 1.5rem;">
-                        <div class="section-card-title" style="display: flex; align-items: center; gap: 8px;">
-                            <i class="fas fa-id-card" style="color: #fff;"></i>
-                            <span style="color: #fff; font-weight: 600;">Identitas Yayasan</span>
-                        </div>
+        </div>
+        <div class="col-md-3 mb-3">
+            <div class="card text-center" style="background: #ffffff; border-radius: 16px; border: 1px solid #dfe8d8;">
+                <div class="card-body">
+                    <div class="p-3 rounded-full mx-auto mb-3" style="background: #eef3ec; width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; border-radius: 50%;">
+                        <i class="fas fa-calendar-check fa-2x" style="color: #005F02;"></i>
                     </div>
-                    <div class="section-card-body" style="padding: 1.5rem;">
-                        <div style="display: grid; gap: 0.75rem;">
-                            <div style="display: flex; padding: 0.5rem 0; border-bottom: 1px solid #dfe8d8;">
-                                <div style="width: 140px; font-size: 0.82rem; font-weight: 600; color: #2d2d2d;">Nama
-                                    Yayasan</div>
-                                <div style="flex: 1; font-size: 0.87rem; color: #333;">{{ $profil->nama_yayasan ?? '-' }}
-                                </div>
-                            </div>
-                            <div style="display: flex; padding: 0.5rem 0; border-bottom: 1px solid #dfe8d8;">
-                                <div style="width: 140px; font-size: 0.82rem; font-weight: 600; color: #2d2d2d;">Tahun
-                                    Berdiri</div>
-                                <div style="flex: 1; font-size: 0.87rem; color: #333;">
-                                    {{ $profil->tahun_berdiri ?? '-' }}</div>
-                            </div>
-                            <div style="display: flex; padding: 0.5rem 0;">
-                                <div style="width: 140px; font-size: 0.82rem; font-weight: 600; color: #2d2d2d;">Tentang
-                                    Kami</div>
-                                <div style="flex: 1; font-size: 0.87rem; color: #333; line-height: 1.6;">
-                                    {{ $profil->deskripsi ?? '-' }}</div>
-                            </div>
-                        </div>
-                    </div>
+                    <h3 class="mb-0" style="color: #222;">0</h3>
+                    <p class="text-muted mb-0">Kegiatan</p>
                 </div>
-
-                {{-- Visi & Misi --}}
-            <div class="section-card smooth-card"
-                    style="background: #ffffff; border-radius: 20px; box-shadow: 0 2px 20px rgba(0,0,0,0.1); overflow: hidden;">
-                    <div class="section-card-header"
-                        style="background: linear-gradient(135deg, #005F02, #0f4d1c); padding: 1rem 1.5rem;">
-                        <div class="section-card-title" style="display: flex; align-items: center; gap: 8px;">
-                            <i class="fas fa-bullseye" style="color: #fff;"></i>
-                            <span style="color: #fff; font-weight: 600;">Visi & Misi</span>
-                        </div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-3">
+            <div class="card text-center" style="background: #ffffff; border-radius: 16px; border: 1px solid #dfe8d8;">
+                <div class="card-body">
+                    <div class="p-3 rounded-full mx-auto mb-3" style="background: #eef3ec; width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; border-radius: 50%;">
+                        <i class="fas fa-trophy fa-2x" style="color: #005F02;"></i>
                     </div>
-                    <div class="section-card-body" style="padding: 1.5rem;">
-                        <div style="margin-bottom: 1.5rem;">
-                            <div
-                                style="display: inline-block; background: #eef3ec; color: #005F02; font-size: 0.75rem; font-weight: 700; padding: 4px 12px; border-radius: 20px; margin-bottom: 10px;">
-                                VISI</div>
-                            <p style="font-size: 0.87rem; color: #333; line-height: 1.6; margin: 0;">
-                                {{ $profil->visi ?? '-' }}</p>
-                        </div>
-                        <div>
-                            <div
-                                style="display: inline-block; background: #eef3ec; color: #005F02; font-size: 0.75rem; font-weight: 700; padding: 4px 12px; border-radius: 20px; margin-bottom: 10px;">
-                                MISI</div>
-                            <p
-                                style="font-size: 0.87rem; color: #333; line-height: 1.6; margin: 0; white-space: pre-line;">
-                                {{ $profil->misi ?? '-' }}</p>
-                        </div>
-                    </div>
+                    <h3 class="mb-0" style="color: #222;">1</h3>
+                    <p class="text-muted mb-0">Prestasi</p>
                 </div>
-
-                {{-- Kontak & Alamat --}}
-            <div class="section-card smooth-card"
-                    style="background: #ffffff; border-radius: 20px; box-shadow: 0 2px 20px rgba(0,0,0,0.1); overflow: hidden;">
-                    <div class="section-card-header"
-                        style="background: linear-gradient(135deg, #005F02, #0f4d1c); padding: 1rem 1.5rem;">
-                        <div class="section-card-title" style="display: flex; align-items: center; gap: 8px;">
-                            <i class="fas fa-map-marker-alt" style="color: #fff;"></i>
-                            <span style="color: #fff; font-weight: 600;">Kontak & Alamat</span>
-                        </div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-3">
+            <div class="card text-center" style="background: #ffffff; border-radius: 16px; border: 1px solid #dfe8d8;">
+                <div class="card-body">
+                    <div class="p-3 rounded-full mx-auto mb-3" style="background: #eef3ec; width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; border-radius: 50%;">
+                        <i class="fas fa-newspaper fa-2x" style="color: #005F02;"></i>
                     </div>
-                    <div class="section-card-body" style="padding: 1.5rem;">
-                        <div style="display: grid; gap: 0.75rem;">
-                            <div style="display: flex; padding: 0.5rem 0; border-bottom: 1px solid #dfe8d8;">
-                                <div style="width: 100px; font-size: 0.82rem; font-weight: 600; color: #2d2d2d;">Alamat
-                                </div>
-                                <div style="flex: 1; font-size: 0.87rem; color: #333;">
-                                    {{ $profil->alamat ?? '-' }}
-                                    @if($profil->kota || $profil->provinsi)
-                                        <br><span
-                                            style="color: #2d2d2d;">{{ implode(', ', array_filter([$profil->kota, $profil->provinsi, $profil->kode_pos])) }}</span>
-                                    @endif
-                                </div>
-                            </div>
-                            <div style="display: flex; padding: 0.5rem 0; border-bottom: 1px solid #dfe8d8;">
-                                <div style="width: 100px; font-size: 0.82rem; font-weight: 600; color: #2d2d2d;">Telepon
-                                </div>
-                                <div style="flex: 1; font-size: 0.87rem; color: #333;">{{ $profil->telepon ?? '-' }}
-                                </div>
-                            </div>
-                            <div style="display: flex; padding: 0.5rem 0; border-bottom: 1px solid #dfe8d8;">
-                                <div style="width: 100px; font-size: 0.82rem; font-weight: 600; color: #2d2d2d;">Email</div>
-                                <div style="flex: 1; font-size: 0.87rem; color: #333;">{{ $profil->email ?? '-' }}</div>
-                            </div>
-                            <div style="display: flex; padding: 0.5rem 0;">
-                                <div style="width: 100px; font-size: 0.82rem; font-weight: 600; color: #2d2d2d;">Website
-                                </div>
-                                <div style="flex: 1; font-size: 0.87rem; color: #333;">{{ $profil->website ?? '-' }}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                {{-- Media Sosial --}}
-            <div class="section-card smooth-card"
-                    style="background: #ffffff; border-radius: 20px; box-shadow: 0 2px 20px rgba(0,0,0,0.1); overflow: hidden;">
-                    <div class="section-card-header"
-                        style="background: linear-gradient(135deg, #005F02, #0f4d1c); padding: 1rem 1.5rem;">
-                        <div class="section-card-title" style="display: flex; align-items: center; gap: 8px;">
-                            <i class="fas fa-share-alt" style="color: #fff;"></i>
-                            <span style="color: #fff; font-weight: 600;">Media Sosial</span>
-                        </div>
-                    </div>
-                    <div class="section-card-body" style="padding: 1.5rem;">
-                        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem;">
-                            <div>
-                                <div style="font-size: 0.75rem; font-weight: 600; color: #2d2d2d; margin-bottom: 0.25rem;">
-                                    <i class="fab fa-instagram" style="color: #e1306c;"></i> Instagram</div>
-                                <div style="font-size: 0.85rem; color: #333;">
-                                    @if($profil->instagram)
-                                        <a href="https://instagram.com/{{ ltrim($profil->instagram, '@') }}" target="_blank"
-                                            style="color: #005F02; text-decoration: none;">@
-                                            {{ ltrim($profil->instagram, '@') }}</a>
-                                    @else
-                                        -
-                                    @endif
-                                </div>
-                            </div>
-                            <div>
-                                <div style="font-size: 0.75rem; font-weight: 600; color: #2d2d2d; margin-bottom: 0.25rem;">
-                                    <i class="fab fa-facebook" style="color: #1877f2;"></i> Facebook</div>
-                                <div style="font-size: 0.85rem; color: #333;">{{ $profil->facebook ?? '-' }}</div>
-                            </div>
-                            <div>
-                                <div style="font-size: 0.75rem; font-weight: 600; color: #2d2d2d; margin-bottom: 0.25rem;">
-                                    <i class="fab fa-youtube" style="color: #ff0000;"></i> YouTube</div>
-                                <div style="font-size: 0.85rem; color: #333;">{{ $profil->youtube ?? '-' }}</div>
-                            </div>
-                        </div>
-                    </div>
+                    <h3 class="mb-0" style="color: #222;">1</h3>
+                    <p class="text-muted mb-0">Umum</p>
                 </div>
             </div>
         </div>
     </div>
-@endsection
 
-<style>
-    /* ================= CARD SMOOTH ================= */
-    .smooth-card {
-        transition: all 0.3s ease;
-    }
+    <!-- Filter Form -->
+    <div class="card mb-4" style="background: #ffffff; border-radius: 16px; border: 1px solid #dfe8d8;">
+        <div class="card-header" style="background: #005F02; border-bottom: 1px solid #0d4f14; border-radius: 16px 16px 0 0;">
+            <h5 class="mb-0" style="color: #ffffff;">
+                <i class="fas fa-filter me-2"></i> Filter Data
+            </h5>
+        </div>
+        <div class="card-body" style="background: #ffffff;">
+            <form method="GET" action="{{ route('admin.data-master.gallery.index') }}" class="row g-3">
+                <div class="col-md-4">
+                    <label for="search" class="form-label" style="color: #333; font-weight: 500;">CARI</label>
+                    <input type="text" name="search" id="search" class="form-control" 
+                           placeholder="Judul atau deskripsi..." value="{{ request('search') }}"
+                           style="border-color: #dfe8d8; border-radius: 8px;">
+                </div>
+                <div class="col-md-3">
+                    <label for="kategori" class="form-label" style="color: #333; font-weight: 500;">KATEGORI</label>
+                    <select name="kategori" id="kategori" class="form-select" style="border-color: #dfe8d8; border-radius: 8px;">
+                        <option value="">Semua Kategori</option>
+                        <option value="kegiatan" {{ request('kategori') == 'kegiatan' ? 'selected' : '' }}>Kegiatan</option>
+                        <option value="prestasi" {{ request('kategori') == 'prestasi' ? 'selected' : '' }}>Prestasi</option>
+                        <option value="umum" {{ request('kategori') == 'umum' ? 'selected' : '' }}>Umum</option>
+                    </select>
+                </div>
+                <div class="col-md-5 d-flex align-items-end gap-2">
+                    <button type="submit" class="btn" style="background: #005F02; color: #ffffff; border: none; border-radius: 8px; padding: 8px 20px;">
+                        <i class="fas fa-search me-1"></i> Cari
+                    </button>
+                    <a href="{{ route('admin.data-master.gallery.index') }}" class="btn" style="background: #dfe8d8; color: #333; border: none; border-radius: 8px; padding: 8px 20px; text-decoration: none;">
+                        <i class="fas fa-undo me-1"></i> Reset
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
 
-    .smooth-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
-    }
+    <!-- Tabel Gallery -->
+    <div class="card" style="background: #ffffff; border-radius: 16px; border: 1px solid #dfe8d8; overflow: hidden;">
+        <div class="table-responsive">
+            <table class="table table-hover mb-0">
+                <thead style="background: #005F02;">
+                    <tr>
+                        <th style="width: 50px; color: #ffffff; font-weight: 600; padding: 12px 16px;">NO</th>
+                        <th style="color: #ffffff; font-weight: 600; padding: 12px 16px;">GAMBAR</th>
+                        <th style="color: #ffffff; font-weight: 600; padding: 12px 16px;">JUDUL</th>
+                        <th style="color: #ffffff; font-weight: 600; padding: 12px 16px;">KATEGORI</th>
+                        <th style="color: #ffffff; font-weight: 600; padding: 12px 16px;">TANGGAL</th>
+                        <th style="width: 120px; color: #ffffff; font-weight: 600; padding: 12px 16px;">AKSI</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse($galleries as $index => $gallery)
+                        <tr class="table-row" style="border-bottom: 1px solid #dfe8d8;">
+                            <td>{{ $galleries->firstItem() + $index }}</td>
+                            <td>
+                                @if($gallery->gambar)
+                                    <img src="{{ asset('storage/' . $gallery->gambar) }}" alt="{{ $gallery->judul }}" 
+                                         style="width: 50px; height: 50px; object-fit: cover; border-radius: 8px;">
+                                @else
+                                    <div style="width: 50px; height: 50px; background: #eef3ec; border-radius: 8px; display: flex; align-items: center; justify-content: center;">
+                                        <i class="fas fa-image" style="color: #8cbf73;"></i>
+                                    </div>
+                                @endif
+                            </td>
+                            <td>
+                                <strong style="color: #222;">{{ $gallery->judul ?? '-' }}</strong>
+                                @if($gallery->deskripsi)
+                                    <br><small class="text-muted" style="color: #666;">{{ Str::limit($gallery->deskripsi, 50) }}</small>
+                                @endif
+                            </td>
+                            <td>
+                                @php
+                                    $kategoriColors = [
+                                        'kegiatan' => ['bg' => '#eef3ec', 'color' => '#005F02'],
+                                        'prestasi' => ['bg' => '#e8f5e9', 'color' => '#2e7d32'],
+                                        'umum' => ['bg' => '#e3f2fd', 'color' => '#1565c0'],
+                                    ];
+                                    $color = $kategoriColors[$gallery->kategori] ?? ['bg' => '#f5f5f5', 'color' => '#666'];
+                                @endphp
+                                <span class="badge" style="background: {{ $color['bg'] }}; color: {{ $color['color'] }}; padding: 5px 12px; border-radius: 20px; font-size: 0.75rem;">
+                                    {{ ucfirst($gallery->kategori ?? 'Umum') }}
+                                </span>
+                            </td>
+                            <td style="color: #333;">
+                                {{ $gallery->created_at ? \Carbon\Carbon::parse($gallery->created_at)->format('d/m/Y') : '-' }}
+                            </td>
+                            <td>
+                                <div class="d-flex gap-2">
+                                    <a href="{{ route('admin.data-master.gallery.show', $gallery->id) }}" 
+                                       class="btn btn-sm" style="background: #0dcaf0; color: #000; border: none; width: 32px; height: 32px; display: inline-flex; align-items: center; justify-content: center; border-radius: 6px;" title="Detail">
+                                        <i class="fas fa-eye"></i>
+                                    </a>
+                                    <a href="{{ route('admin.data-master.gallery.edit', $gallery->id) }}" 
+                                       class="btn btn-sm" style="background: #ffc107; color: #000; border: none; width: 32px; height: 32px; display: inline-flex; align-items: center; justify-content: center; border-radius: 6px;" title="Edit">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                    <button onclick="openDeleteModal({{ $gallery->id }}, '{{ addslashes($gallery->judul) }}')" 
+                                            class="btn btn-sm" style="background: #dc3545; color: #fff; border: none; width: 32px; height: 32px; display: inline-flex; align-items: center; justify-content: center; border-radius: 6px;" title="Hapus">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                                <form id="deleteForm{{ $gallery->id }}" 
+                                      action="{{ route('admin.data-master.gallery.destroy', $gallery->id) }}" 
+                                      method="POST" style="display: none;">
+                                    @csrf
+                                    @method('DELETE')
+                                </form>
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="6" class="text-center py-5" style="background: #ffffff;">
+                                <i class="fas fa-images fa-4x mb-3" style="color: #8cbf73;"></i>
+                                <p class="text-muted mb-0">Belum ada data gallery.</p>
+                                <a href="{{ route('admin.data-master.gallery.create') }}" class="btn btn-sm mt-3" style="background: #005F02; color: #ffffff; border: none; border-radius: 8px;">
+                                    <i class="fas fa-plus me-1"></i> Tambah Gallery Pertama
+                                </a>
+                            </td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
+        @if($galleries->hasPages())
+            <div class="card-footer" style="background: #ffffff; border-top: 1px solid #dfe8d8;">
+                {{ $galleries->links() }}
+            </div>
+        @endif
+    </div>
 
-    /* ================= HEADER ICON ================= */
-    .header-icon {
-        transition: all 0.3s ease;
-    }
-
-    .header-icon:hover {
-        transform: scale(1.05) rotate(2deg);
-    }
-
-    /* ================= BUTTON SMOOTH ================= */
-    .btn-smooth {
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        background: linear-gradient(135deg, #005F02, #0f4d1c);
-        color: #fff;
-        border-radius: 10px;
-        padding: 10px 20px;
-        text-decoration: none;
-        transition: all 0.25s ease;
-    }
-
-    .btn-smooth:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
-    }
-
-    /* ================= IMAGE LOGO ================= */
-    .section-card-body img {
-        transition: all 0.3s ease;
-    }
-
-    .section-card-body img:hover {
-        transform: scale(1.05);
-    }
-
-    /* ================= LIST ITEM (IDENTITAS, DLL) ================= */
-    .section-card-body div[style*="display: flex"] {
-        transition: all 0.2s ease;
-    }
-
-    .section-card-body div[style*="display: flex"]:hover {
-        background: #f8faf8;
-        border-radius: 6px;
-        padding-left: 5px;
-    }
-
-    /* ================= SOCIAL LINK ================= */
-    .section-card-body a {
-        transition: all 0.2s ease;
-    }
-
-    .section-card-body a:hover {
-        color: #0f4d1c;
-        text-decoration: underline;
-    }
-
-    /* ================= RESPONSIVE ================= */
-    @media (max-width: 768px) {
-        .content-grid {
-            grid-template-columns: 1fr !important;
+    <style>
+        /* Table row hover effect */
+        .table-row:hover {
+            background: #eef3ec !important;
+            transition: all 0.2s ease;
         }
-    }
-</style>
+
+        /* Table header styling */
+        .table thead th {
+            font-weight: 600;
+            font-size: 0.85rem;
+            border-bottom: none;
+        }
+
+        /* Table cell styling */
+        .table tbody td {
+            vertical-align: middle;
+        }
+
+        /* Button hover effects */
+        .btn-sm:hover {
+            transform: translateY(-1px);
+            transition: all 0.2s ease;
+        }
+
+        /* Pagination styling */
+        .pagination {
+            margin: 0;
+            justify-content: flex-end;
+        }
+
+        .pagination .page-item .page-link {
+            color: #005F02;
+            border-color: #dfe8d8;
+            background: #ffffff;
+        }
+
+        .pagination .page-item.active .page-link {
+            background: #005F02;
+            border-color: #005F02;
+            color: #ffffff;
+        }
+
+        .pagination .page-item .page-link:hover {
+            background: #eef3ec;
+            color: #0d4f14;
+        }
+
+        /* Form control focus */
+        .form-control:focus, 
+        .form-select:focus {
+            border-color: #005F02;
+            box-shadow: 0 0 0 0.2rem rgba(0, 95, 2, 0.15);
+            outline: none;
+        }
+    </style>
+@endsection

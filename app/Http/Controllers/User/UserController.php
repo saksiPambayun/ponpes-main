@@ -171,6 +171,12 @@ public function fasilitasShow($id)
         return view('public.tentang', compact('profil'));
     }
 
+    public function pendaftaran()
+{
+    $biaya = \App\Models\BiayaPendaftaran::aktif()->orderBy('urutan')->get();
+    return view('user.pendaftaran.index', compact('biaya'));
+}
+
    public function hubungi()
 {
     // Ambil data profil, jika tidak ada berikan data default

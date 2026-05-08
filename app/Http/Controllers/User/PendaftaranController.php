@@ -5,18 +5,16 @@ namespace App\Http\Controllers\User;
 use App\Http\Controllers\Controller;
 use App\Models\RegistrationWave;
 use App\Models\SantriRegistration;
+use App\Models\BiayaPendaftaran;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Barryvdh\DomPDF\Facade\Pdf;
 
 class PendaftaranController extends Controller
 {
-    // HAPUS constructor ini!
-    // public function __construct()
-    // {
-    //     $this->middleware(['auth', 'user'])->except(['cekStatusForm', 'cekStatus']);
-    // }
-
+    // HAPUS method __construct() seluruhnya!
+    // Jangan pakai $this->middleware() di constructor
+    
     // Halaman pendaftaran untuk user
     public function index()
     {
@@ -37,8 +35,12 @@ class PendaftaranController extends Controller
             ->first();
 
         $allWaves = RegistrationWave::orderBy('start_date', 'desc')->get();
+        
+        // Ambil biaya pendaftaran
+        $biayaList = BiayaPendaftaran::aktif()->orderBy('urutan', 'asc')->get();
+        $totalBiaya = $biayaList->sum('nominal');
 
-        return view('user.pendaftaran.index', compact('activeWave', 'allWaves', 'myRegistrations'));
+        return view('user.pendaftaran.index', compact('activeWave', 'allWaves', 'myRegistrations', 'biayaList', 'totalBiaya'));
     }
 
     // Form pendaftaran
@@ -68,8 +70,12 @@ class PendaftaranController extends Controller
             return redirect()->route('user.pendaftaran.index')
                 ->with('error', 'Tidak ada gelombang pendaftaran yang aktif.');
         }
+        
+        // Ambil biaya pendaftaran
+        $biayaList = BiayaPendaftaran::aktif()->orderBy('urutan', 'asc')->get();
+        $totalBiaya = $biayaList->sum('nominal');
 
-        return view('user.pendaftaran.form', compact('activeWave'));
+        return view('user.pendaftaran.form', compact('activeWave', 'biayaList', 'totalBiaya'));
     }
 
     // Proses simpan pendaftaran

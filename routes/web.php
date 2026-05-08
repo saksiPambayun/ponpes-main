@@ -12,6 +12,7 @@ use App\Http\Controllers\DataMasterController;
 use App\Http\Controllers\user\UserController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\FeedbackController;
+use App\Http\Controllers\User\PendaftaranController;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,7 +25,7 @@ Route::get('/', [UserController::class, 'home'])->name('home');
 Route::get('/tentang', [UserController::class, 'profilYayasanIndex'])->name('tentang');
 Route::get('/struktur', [UserController::class, 'strukturIndex'])->name('struktur');
 Route::get('/fasilitas', [UserController::class, 'fasilitas'])->name('fasilitas');
-Route::get('/fasilitas/{id}', [UserController::class, 'fasilitasShow'])->name('fasilitas.show'); // Tambahkan ini
+Route::get('/fasilitas/{id}', [UserController::class, 'fasilitasShow'])->name('fasilitas.detail');
 Route::get('/galeri', [UserController::class, 'galeri'])->name('galeri');
 Route::get('/hubungi', [UserController::class, 'hubungi'])->name('hubungi');
 Route::post('/daftar', [AdminController::class, 'santriStore'])->name('daftar');
@@ -86,6 +87,11 @@ Route::prefix('admin')
         Route::delete('/pendaftar/{id}', [AdminController::class, 'santriDestroy'])->name('pendaftar.destroy');
         Route::post('/pendaftar/{id}/verify', [AdminController::class, 'verifySantri'])->name('pendaftar.verify');
         Route::post('/pendaftar/{id}/reject', [AdminController::class, 'rejectSantri'])->name('pendaftar.reject');
+         Route::post('/pendaftar', [AdminController::class, 'santriStore'])->name('pendaftar.store');
+
+         // Biaya Pendaftaran (CRUD)
+Route::resource('biaya-pendaftaran', \App\Http\Controllers\Admin\BiayaPendaftaranController::class);
+Route::post('biaya-pendaftaran/{id}/toggle-status', [\App\Http\Controllers\Admin\BiayaPendaftaranController::class, 'toggleStatus'])->name('biaya-pendaftaran.toggle-status');
 
         // Santri
         Route::get('/santri', [AdminController::class, 'santriIndex'])->name('santri.index');
@@ -95,6 +101,8 @@ Route::prefix('admin')
         Route::get('/santri/{id}/edit', [AdminController::class, 'santriEdit'])->name('santri.edit');
         Route::put('/santri/{id}', [AdminController::class, 'santriUpdate'])->name('santri.update');
         Route::delete('/santri/{id}', [AdminController::class, 'santriDestroy'])->name('santri.destroy');
+        Route::post('/santri/{id}/verify', [AdminController::class, 'verifySantri'])->name('santri.verify');
+        Route::post('/santri/{id}/reject', [AdminController::class, 'rejectSantri'])->name('santri.reject');
 
         // Pegawai
         Route::get('/pegawai', [AdminController::class, 'pegawaiIndex'])->name('pegawai.index');
@@ -151,7 +159,7 @@ Route::prefix('admin')
 // ==================== ADMIN DATA MASTER ====================
 Route::prefix('admin/data-master')
     ->name('admin.data-master.')
-    ->middleware(['auth', 'admin'])
+    ->middleware(['auth', 'admin'])  // ← HAPUS 'superadmin'
     ->group(function () {
         Route::resource('struktur-organisasi', StrukturOrganisasiController::class);
         Route::resource('fasilitas', FasilitasController::class);
@@ -160,22 +168,22 @@ Route::prefix('admin/data-master')
         Route::resource('program', ProgramController::class);
     });
 
-Route::resource('data-master/fasilitas', FasilitasController::class);
-
 // ==================== ADMIN PENDAFTARAN ====================
-Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(function () {
-    Route::prefix('pendaftaran')->name('pendaftaran.')->group(function () {
-        Route::resource('waves', \App\Http\Controllers\Admin\RegistrationWaveController::class);
-        Route::post('waves/{wave}/toggle-active', [\App\Http\Controllers\Admin\RegistrationWaveController::class, 'toggleActive'])->name('waves.toggle-active');
-        Route::post('santri/{id}/process-acceptance', [\App\Http\Controllers\Admin\RegistrationWaveController::class, 'processAcceptance'])->name('santri.process-acceptance');
-        Route::post('santri/bulk-acceptance', [\App\Http\Controllers\Admin\RegistrationWaveController::class, 'bulkAcceptance'])->name('santri.bulk-acceptance');
+Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])  // ← HAPUS 'superadmin'
+    ->group(function () {
+        Route::prefix('pendaftaran')->name('pendaftaran.')->group(function () {
+            Route::resource('waves', \App\Http\Controllers\Admin\RegistrationWaveController::class);
+            Route::post('waves/{wave}/toggle-active', [\App\Http\Controllers\Admin\RegistrationWaveController::class, 'toggleActive'])->name('waves.toggle-active');
+            Route::post('santri/{id}/process-acceptance', [\App\Http\Controllers\Admin\RegistrationWaveController::class, 'processAcceptance'])->name('santri.process-acceptance');
+            Route::post('santri/bulk-acceptance', [\App\Http\Controllers\Admin\RegistrationWaveController::class, 'bulkAcceptance'])->name('santri.bulk-acceptance');
+        });
     });
-});
 
 // ==================== ADMIN PROGRAM ====================
-Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
-    Route::resource('program', ProgramController::class);
-});
+Route::middleware(['auth', 'admin'])  // ← HAPUS 'superadmin'
+    ->prefix('admin')->name('admin.')->group(function () {
+        Route::resource('program', ProgramController::class);
+    });
 
 // ==================== SUPERADMIN ROUTES ====================
 Route::prefix('admin')->name('admin.')->middleware(['auth', 'superadmin'])->group(function () {
@@ -201,8 +209,8 @@ Route::middleware(['auth', 'user'])->prefix('user')->name('user.')->group(functi
     Route::put('/santri/{id}', [UserController::class, 'santriUpdate'])->name('santri.update');
     Route::delete('/santri/{id}', [UserController::class, 'santriDestroy'])->name('santri.destroy');
 
- Route::get('/gallery', [UserController::class, 'galleryIndex'])->name('gallery.index');
-Route::get('/gallery/{id}', [UserController::class, 'galleryShow'])->name('gallery.show');
+    Route::get('/gallery', [UserController::class, 'galleryIndex'])->name('gallery.index');
+    Route::get('/gallery/{id}', [UserController::class, 'galleryShow'])->name('gallery.show');
     Route::get('/program', [UserController::class, 'programIndex'])->name('program.index');
     Route::get('/program/{id}', [UserController::class, 'programShow'])->name('program.show');
     Route::get('/struktur-organisasi', [UserController::class, 'strukturIndex'])->name('struktur.index');
@@ -215,19 +223,15 @@ Route::get('/gallery/{id}', [UserController::class, 'galleryShow'])->name('galle
     Route::get('/akta-wakaf/{id}', [UserController::class, 'aktaWakafShow'])->name('akta-wakaf.show');
 });
 
-// ==================== PENDAFTARAN USER ====================
 Route::middleware(['auth', 'user'])->prefix('pendaftaran')->name('user.pendaftaran.')->group(function () {
-    Route::get('/', [App\Http\Controllers\User\PendaftaranController::class, 'index'])->name('index');
-    Route::get('/form', [App\Http\Controllers\User\PendaftaranController::class, 'form'])->name('form');
-    Route::post('/store', [App\Http\Controllers\User\PendaftaranController::class, 'store'])->name('store');
-    Route::get('/status/{id}', [App\Http\Controllers\User\PendaftaranController::class, 'status'])->name('status');
-    Route::get('/cetak/{id}', [App\Http\Controllers\User\PendaftaranController::class, 'cetak'])->name('cetak');
-    Route::get('/download-pdf/{id}', [App\Http\Controllers\User\PendaftaranController::class, 'downloadPDF'])->name('download-pdf');
+    Route::get('/', [PendaftaranController::class, 'index'])->name('index');
+    Route::get('/form', [PendaftaranController::class, 'form'])->name('form');
+    Route::post('/store', [PendaftaranController::class, 'store'])->name('store');
+    Route::get('/status/{id}', [PendaftaranController::class, 'status'])->name('status');
+    Route::get('/cetak/{id}', [PendaftaranController::class, 'cetak'])->name('cetak');
+    Route::get('/download-pdf/{id}', [PendaftaranController::class, 'downloadPDF'])->name('download-pdf');
 });
 
-// ==================== TEST WHATSAPP ROUTE (HAPUS NANTI) ====================
-//Route::middleware(['auth', 'admin'])->get('/test-wa', function () {
-  //  $whatsapp = new \App\Services\WhatsAppService();
-  //  $result = $whatsapp->sendMessage('6281234567890', '🧪 Test dari Pondok Pesantren Al-Ifadah');
-  //  return response()->json($result);
-//});
+// Method cekStatusForm dan cekStatus untuk publik (tanpa middleware auth)
+Route::get('/pendaftaran/cek-status', [PendaftaranController::class, 'cekStatusForm'])->name('user.pendaftaran.cek-status');
+Route::post('/pendaftaran/cek-status', [PendaftaranController::class, 'cekStatus'])->name('user.pendaftaran.cek-status.post');

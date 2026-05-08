@@ -103,6 +103,52 @@
                     </div>
                 </div>
 
+                {{-- ================= RINCIAN BIAYA ================= --}}
+                <div class="form-group-section">
+                    <h3 class="section-title">
+                        <i class="bi bi-calculator-fill"></i>
+                        Rincian Biaya Pendidikan
+                    </h3>
+
+                    <div class="biaya-detail-box">
+                        @php
+                            $totalBiaya = 0;
+                        @endphp
+
+                        {{-- TEMPAT @foreach DI SINI --}}
+                        @foreach(getBiayaPendaftaran() as $biaya)
+                            @php $totalBiaya += $biaya->nominal; @endphp
+                            <div class="biaya-row">
+                                <div class="biaya-col">
+                                    <strong>{{ $biaya->nama_biaya }}</strong>
+                                    @if($biaya->keterangan)
+                                        <small>{{ $biaya->keterangan }}</small>
+                                    @endif
+                                </div>
+                                <div class="biaya-col text-end">
+                                    <span class="biaya-nominal">{{ $biaya->nominal_formatted }}</span>
+                                </div>
+                            </div>
+                        @endforeach
+
+                        <div class="biaya-total">
+                            <div class="biaya-row">
+                                <div class="biaya-col">
+                                    <strong>Total Biaya Awal</strong>
+                                </div>
+                                <div class="biaya-col text-end">
+                                    <strong class="text-success">{{ formatRupiah($totalBiaya) }}</strong>
+                                </div>
+                            </div>
+                            <small class="text-muted d-block mt-2">
+                                <i class="bi bi-info-circle"></i>
+                                Biaya dapat dibayarkan setelah pendaftaran diverifikasi.
+                            </small>
+                        </div>
+                    </div>
+                </div>
+
+
                 {{-- ================= UPLOAD ================= --}}
                 <div class="form-group-section">
                     <h3 class="section-title">
@@ -365,21 +411,71 @@
             border: 1px solid #f5c6cb;
         }
 
-        @media (max-width: 768px) {
-
-            .grid-form,
-            .upload-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .form-control.full-width {
-                grid-column: span 1;
-            }
-
-            .container-form {
-                padding: 20px;
-            }
+        <style>.biaya-detail-box {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 15px;
         }
+
+        .biaya-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px dashed #dee2e6;
+        }
+
+        .biaya-row:last-child {
+            border-bottom: none;
+        }
+
+        .biaya-col {
+            flex: 1;
+        }
+
+        .biaya-col.text-end {
+            text-align: right;
+        }
+
+        .biaya-nominal {
+            color: #005F02;
+            font-weight: 500;
+        }
+
+        .biaya-total {
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 2px solid #005F02;
+        }
+
+        .biaya-col small {
+            display: block;
+            font-size: 0.7rem;
+            color: #6c757d;
+            margin-top: 2px;
+        }
+
+        .text-success {
+            color: #005F02 !important;
+        }
+    </style>
+
+
+    @media (max-width: 768px) {
+
+    .grid-form,
+    .upload-grid {
+    grid-template-columns: 1fr;
+    }
+
+    .form-control.full-width {
+    grid-column: span 1;
+    }
+
+    .container-form {
+    padding: 20px;
+    }
+    }
     </style>
 
     <script>

@@ -118,63 +118,82 @@ class StrukturOrganisasiController extends Controller
         ]);
     }
 
-    public function update(Request $request, StrukturOrganisasi $strukturOrganisasi)
-    {
-        $request->validate([
-            'nama'      => 'required|string|max:255',
-            'jabatan'   => 'required|string|max:255',
-            'divisi'    => 'required|in:pengurus,pengawas,pelaksana,lainnya',
-            'urutan'    => 'nullable|integer|min:0',
-            'telepon'   => 'nullable|string|max:20',
-            'email'     => 'nullable|email|max:255',
-            'deskripsi' => 'nullable|string',
-            'foto'      => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
-        ]);
+   public function update(Request $request, StrukturOrganisasi $strukturOrganisasi)
+{
+    $request->validate([
+        'nama'      => 'required|string|max:255',
+        'jabatan'   => 'required|string|max:255',
+        'divisi'    => 'required|in:pengurus,pengawas,pelaksana',
+        'urutan'    => 'nullable|integer|min:0',
+        'telepon'   => 'nullable|string|max:20',
+        'email'     => 'nullable|email|max:255',
+        'deskripsi' => 'nullable|string',
+        'status'    => 'nullable|in:aktif,nonaktif',  // <-- TAMBAHKAN VALIDASI STATUS
+        'foto'      => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+    ]);
 
-        $data = $request->only([
-            'nama',
-            'jabatan',
-            'divisi',
-            'urutan',
-            'telepon',
-            'email',
-            'deskripsi',
-            'status',
-        ]);
+    $data = $request->only([
+        'nama',
+        'jabatan',
+        'divisi',
+        'urutan',
+        'telepon',
+        'email',
+        'deskripsi',
+        'status',  // <-- TAMBAHKAN INI
+    ]);
 
-        $data['urutan'] = $data['urutan'] ?? 0;
+    $data['urutan'] = $data['urutan'] ?? 0;
 
-        if ($request->hasFile('foto')) {
-            if ($strukturOrganisasi->foto) {
-                Storage::disk('public')->delete($strukturOrganisasi->foto);
-            }
-            $data['foto'] = $request->file('foto')->store('struktur-organisasi', 'public');
-        }
-
-        if ($request->has('hapus_foto') && $request->hapus_foto == '1') {
-            if ($strukturOrganisasi->foto) {
-                Storage::disk('public')->delete($strukturOrganisasi->foto);
-            }
-            $data['foto'] = null;
-        }
-
-        $strukturOrganisasi->update($data);
-
-        // PERBAIKI - redirect ke route yang benar
-        return redirect()->route('admin.data-master.struktur-organisasi.index')
-            ->with('success', 'Anggota organisasi berhasil diperbarui!');
+    // Set default status jika tidak ada
+    if (!isset($data['status'])) {
+        $data['status'] = 'aktif';
     }
 
-    public function destroy(StrukturOrganisasi $strukturOrganisasi)
-    {
+    if ($request->hasFile('foto')) {
         if ($strukturOrganisasi->foto) {
             Storage::disk('public')->delete($strukturOrganisasi->foto);
         }
-
-        $strukturOrganisasi->delete();
-
-        // PERBAIKI - redirect ke route yang benar
-        return redirect()->route('admin.data-master.struktur-organisasi.index')
-            ->with('success', 'Data struktur organisasi berhasil dihapus');
+        $data['foto'] = $request->file('foto')->store('struktur-organisasi', 'public');
     }
+
+    if ($request->has('hapus_foto') && $request->hapus_foto == '1') {
+        if ($strukturOrganisasi->foto) {
+            Storage::disk('public')->delete($strukturOrganisasi->foto);
+        }
+        $data['foto'] = null;
+    }
+
+    $strukturOrganisasi->update($data);
+
+    return redirect()->route('admin.data-master.struktur-organisasi.index')
+        ->with('success', 'Anggota organisasi berhasil diperbarui!');
+}
+
+    public function destroy($id)
+{
+    \Log::info('Destroy method called for ID: ' . $id);
+
+    try {
+        $anggota = StrukturOrganisasi::findOrFail($id);
+        \Log::info('Found anggota: ' . $anggota->nama);
+
+        if ($anggota->foto && Storage::disk('public')->exists($anggota->foto)) {
+            Storage::disk('public')->delete($anggota->foto);
+        }
+
+        $anggota->delete();
+        \Log::info('Anggota deleted successfully');
+
+        return redirect()->route('admin.data-master.struktur-organisasi.index')
+            ->with('success', 'Anggota struktur organisasi berhasil dihapus.');
+
+    } catch (\Exception $e) {
+        \Log::error('Delete error: ' . $e->getMessage());
+
+        return redirect()->route('admin.data-master.struktur-organisasi.index')
+            ->with('error', 'Gagal menghapus data: ' . $e->getMessage());
+    }
+}
+
 }

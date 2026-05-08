@@ -15,14 +15,18 @@
         <div class="container">
             <!-- INFORMASI USER YANG LOGIN -->
             @auth
-                <div class="user-info-card" style="background: linear-gradient(135deg, #005F02 0%, #0a8f0a 100%); border-radius: 16px; padding: 20px; margin-bottom: 30px; color: white;">
-                    <div class="user-info-wrapper" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
+                <div class="user-info-card"
+                    style="background: linear-gradient(135deg, #005F02 0%, #0a8f0a 100%); border-radius: 16px; padding: 20px; margin-bottom: 30px; color: white;">
+                    <div class="user-info-wrapper"
+                        style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
                         <div class="user-details">
                             <div style="display: flex; align-items: center; gap: 15px;">
                                 @if(Auth::user()->avatar)
-                                    <img src="{{ asset('storage/' . Auth::user()->avatar) }}" alt="Avatar" style="width: 60px; height: 60px; border-radius: 50%; object-fit: cover; border: 3px solid white;">
+                                    <img src="{{ asset('storage/' . Auth::user()->avatar) }}" alt="Avatar"
+                                        style="width: 60px; height: 60px; border-radius: 50%; object-fit: cover; border: 3px solid white;">
                                 @else
-                                    <div style="width: 60px; height: 60px; border-radius: 50%; background: rgba(255,255,255,0.2); display: flex; align-items: center; justify-content: center;">
+                                    <div
+                                        style="width: 60px; height: 60px; border-radius: 50%; background: rgba(255,255,255,0.2); display: flex; align-items: center; justify-content: center;">
                                         <i class="bi bi-person-fill" style="font-size: 30px;"></i>
                                     </div>
                                 @endif
@@ -36,7 +40,8 @@
                             </div>
                         </div>
                         <div class="user-actions" style="margin-top: 10px;">
-                            <a href="{{ route('user.profile') }}" style="background: rgba(255,255,255,0.2); padding: 8px 16px; border-radius: 8px; color: white; text-decoration: none; font-size: 0.85rem;">
+                            <a href="{{ route('user.profile') }}"
+                                style="background: rgba(255,255,255,0.2); padding: 8px 16px; border-radius: 8px; color: white; text-decoration: none; font-size: 0.85rem;">
                                 <i class="bi bi-pencil"></i> Edit Profil
                             </a>
                         </div>
@@ -47,7 +52,8 @@
             <!-- RIWAYAT PENDAFTARAN USER -->
             @auth
                 @if(isset($myRegistrations) && $myRegistrations->count() > 0)
-                    <div class="riwayat-pendaftaran" style="background: white; border-radius: 16px; padding: 20px; margin-bottom: 30px; box-shadow: 0 2px 10px rgba(0,0,0,0.05);">
+                    <div class="riwayat-pendaftaran"
+                        style="background: white; border-radius: 16px; padding: 20px; margin-bottom: 30px; box-shadow: 0 2px 10px rgba(0,0,0,0.05);">
                         <h3 style="margin: 0 0 20px 0; color: #005F02; font-size: 1.3rem;">
                             <i class="bi bi-clock-history"></i> Riwayat Pendaftaran Anda
                         </h3>
@@ -84,31 +90,34 @@
                                             </td>
                                             <td style="padding: 12px;">
                                                 @php
-                                                    $statusColor = [
-                                                        'pending' => '#ff9800',
-                                                        'verified' => '#4caf50',
-                                                        'rejected' => '#f44336',
-                                                        'diterima' => '#4caf50',
-                                                        'ditolak' => '#f44336',
-                                                    ][$reg->status] ?? '#9e9e9e';
+            $statusColor = [
+                'pending' => '#ff9800',
+                'verified' => '#4caf50',
+                'rejected' => '#f44336',
+                'diterima' => '#4caf50',
+                'ditolak' => '#f44336',
+            ][$reg->status] ?? '#9e9e9e';
 
-                                                    $statusText = [
-                                                        'pending' => 'Menunggu Verifikasi',
-                                                        'verified' => 'Terverifikasi',
-                                                        'rejected' => 'Ditolak',
-                                                        'diterima' => 'Diterima',
-                                                        'ditolak' => 'Ditolak',
-                                                    ][$reg->status] ?? ucfirst($reg->status);
+            $statusText = [
+                'pending' => 'Menunggu Verifikasi',
+                'verified' => 'Terverifikasi',
+                'rejected' => 'Ditolak',
+                'diterima' => 'Diterima',
+                'ditolak' => 'Ditolak',
+            ][$reg->status] ?? ucfirst($reg->status);
                                                 @endphp
-                                                <span style="background: {{ $statusColor }}; color: white; padding: 4px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 600;">
+                                                <span
+                                                    style="background: {{ $statusColor }}; color: white; padding: 4px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 600;">
                                                     {{ $statusText }}
                                                 </span>
                                             </td>
                                             <td style="padding: 12px;">
-                                                <a href="{{ route('user.pendaftaran.status', $reg->id) }}" style="background: #005F02; color: white; padding: 6px 12px; border-radius: 6px; text-decoration: none; font-size: 0.8rem;">
+                                                <a href="{{ route('user.pendaftaran.status', $reg->id) }}"
+                                                    style="background: #005F02; color: white; padding: 6px 12px; border-radius: 6px; text-decoration: none; font-size: 0.8rem;">
                                                     <i class="bi bi-eye"></i> Detail
                                                 </a>
-                                                <a href="{{ route('user.pendaftaran.download-pdf', $reg->id) }}" style="background: #2196f3; color: white; padding: 6px 12px; border-radius: 6px; text-decoration: none; font-size: 0.8rem; display: inline-block; margin-top: 5px;">
+                                                <a href="{{ route('user.pendaftaran.download-pdf', $reg->id) }}"
+                                                    style="background: #2196f3; color: white; padding: 6px 12px; border-radius: 6px; text-decoration: none; font-size: 0.8rem; display: inline-block; margin-top: 5px;">
                                                     <i class="bi bi-download"></i> PDF
                                                 </a>
                                             </td>
@@ -119,25 +128,30 @@
                         </div>
 
                         @if($myRegistrations->where('status', 'pending')->count() > 0)
-                            <div class="alert alert-warning" style="background: #fff3e0; border-left: 4px solid #ff9800; padding: 12px; margin-top: 15px; border-radius: 8px;">
+                            <div class="alert alert-warning"
+                                style="background: #fff3e0; border-left: 4px solid #ff9800; padding: 12px; margin-top: 15px; border-radius: 8px;">
                                 <i class="bi bi-info-circle"></i>
-                                Anda memiliki {{ $myRegistrations->where('status', 'pending')->count() }} pendaftaran yang sedang diproses.
+                                Anda memiliki {{ $myRegistrations->where('status', 'pending')->count() }} pendaftaran yang sedang
+                                diproses.
                                 Silakan cek secara berkala untuk mengetahui status terbaru.
                             </div>
                         @endif
 
                         @if($myRegistrations->where('status', 'verified')->count() > 0)
-                            <div class="alert alert-success" style="background: #e8f5e9; border-left: 4px solid #4caf50; padding: 12px; margin-top: 15px; border-radius: 8px;">
+                            <div class="alert alert-success"
+                                style="background: #e8f5e9; border-left: 4px solid #4caf50; padding: 12px; margin-top: 15px; border-radius: 8px;">
                                 <i class="bi bi-check-circle"></i>
                                 Selamat! Pendaftaran Anda telah terverifikasi. Silakan tunggu pengumuman lebih lanjut.
                             </div>
                         @endif
                     </div>
                 @else
-                    <div class="belum-daftar-card" style="background: #e3f2fd; border-radius: 16px; padding: 20px; margin-bottom: 30px; text-align: center; border-left: 4px solid #2196f3;">
+                    <div class="belum-daftar-card"
+                        style="background: #e3f2fd; border-radius: 16px; padding: 20px; margin-bottom: 30px; text-align: center; border-left: 4px solid #2196f3;">
                         <i class="bi bi-inbox" style="font-size: 40px; color: #2196f3;"></i>
                         <h3 style="margin: 10px 0; color: #1976d2;">Belum Ada Pendaftaran</h3>
-                        <p style="color: #555;">Anda belum melakukan pendaftaran santri. Silakan isi formulir pendaftaran di bawah.</p>
+                        <p style="color: #555;">Anda belum melakukan pendaftaran santri. Silakan isi formulir pendaftaran di bawah.
+                        </p>
                     </div>
                 @endif
             @endauth
@@ -192,7 +206,8 @@
                                 class="gelombang-box {{ $wave->is_active && $wave->start_date <= now() && $wave->end_date >= now() ? 'active-wave' : '' }}">
                                 <h4>{{ $wave->name }}</h4>
                                 <p>{{ \Carbon\Carbon::parse($wave->start_date)->translatedFormat('d F Y') }} -
-                                    {{ \Carbon\Carbon::parse($wave->end_date)->translatedFormat('d F Y') }}</p>
+                                    {{ \Carbon\Carbon::parse($wave->end_date)->translatedFormat('d F Y') }}
+                                </p>
                                 @if($wave->description)
                                     <small class="text-muted">{{ $wave->description }}</small>
                                 @endif
@@ -226,21 +241,23 @@
                         @endforelse
                     </div>
 
-                    <div class="biaya-card">
-                        <h4>Biaya Pendidikan</h4>
-                        <div class="row-biaya">
-                            <span>Biaya Pendaftaran</span>
-                            <span>Rp. 3.000.000</span>
-                        </div>
-                        <div class="row-biaya">
-                            <span>Uang Masuk</span>
-                            <span>Rp. 450.000</span>
-                        </div>
-                        <div class="row-biaya">
-                            <span>SPP</span>
-                            <span>Rp. 600.000</span>
-                        </div>
+            <div class="biaya-card">
+                <h4>Biaya Pendidikan</h4>
+
+                @foreach(getBiayaPendaftaran() as $biaya)
+                    <div class="row-biaya">
+                        <span class="biaya-name">{{ $biaya->nama_biaya }}</span>
+                        <span class="biaya-nominal">{{ $biaya->nominal_formatted }}</span>
                     </div>
+                @endforeach
+
+                <div class="total-biaya" style="margin-top: 15px; padding-top: 10px; border-top: 2px solid #005F02;">
+                    <div class="row-biaya">
+                        <strong>Total</strong>
+                        <strong>{{ formatRupiah(getTotalBiayaPendaftaran()) }}</strong>
+                    </div>
+                </div>
+            </div>
                 </div>
             </div>
 
@@ -248,14 +265,16 @@
                 @auth
                     @if($activeWave)
                         @php
-                            $hasPending = isset($myRegistrations) && $myRegistrations->whereIn('status', ['pending', 'verified'])->count() > 0;
+        $hasPending = isset($myRegistrations) && $myRegistrations->whereIn('status', ['pending', 'verified'])->count() > 0;
                         @endphp
                         @if($hasPending)
-                            <button class="btn-daftar disabled" disabled style="opacity: 0.6; cursor: not-allowed; background: #9e9e9e;">
+                            <button class="btn-daftar disabled" disabled
+                                style="opacity: 0.6; cursor: not-allowed; background: #9e9e9e;">
                                 Anda Sudah Mendaftar di Gelombang Ini
                             </button>
                             <p style="text-align: center; margin-top: 10px; font-size: 0.85rem; color: #ff9800;">
-                                <i class="bi bi-info-circle"></i> Anda sudah memiliki pendaftaran aktif. Silakan cek status pendaftaran Anda.
+                                <i class="bi bi-info-circle"></i> Anda sudah memiliki pendaftaran aktif. Silakan cek status pendaftaran
+                                Anda.
                             </p>
                         @else
                             <a href="{{ route('user.pendaftaran.form') }}" class="btn-daftar">
@@ -268,10 +287,12 @@
                         </button>
                     @endif
                 @else
-                    <div class="login-warning" style="text-align: center; padding: 20px; background: #fff3e0; border-radius: 12px;">
+                    <div class="login-warning"
+                        style="text-align: center; padding: 20px; background: #fff3e0; border-radius: 12px;">
                         <i class="bi bi-box-arrow-in-right" style="font-size: 30px; color: #ff9800;"></i>
                         <p style="margin: 10px 0;">Silakan login terlebih dahulu untuk melakukan pendaftaran</p>
-                        <a href="{{ route('login') }}" class="btn-daftar" style="display: inline-block; width: auto; padding: 10px 30px;">
+                        <a href="{{ route('login') }}" class="btn-daftar"
+                            style="display: inline-block; width: auto; padding: 10px 30px;">
                             Login Sekarang
                         </a>
                     </div>
@@ -300,7 +321,7 @@
         }
 
         .riwayat-pendaftaran:hover {
-            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
         }
 
         .belum-daftar-card {
@@ -309,7 +330,7 @@
 
         .belum-daftar-card:hover {
             transform: translateY(-2px);
-            box-shadow: 0 4px 15px rgba(33,150,243,0.2);
+            box-shadow: 0 4px 15px rgba(33, 150, 243, 0.2);
         }
 
         .gelombang-wrapper {
@@ -436,13 +457,58 @@
             border-radius: 3px;
         }
 
+        .biaya-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            margin-top: 20px;
+        }
+
+        .biaya-card h4 {
+            margin: 0 0 15px 0;
+            color: #005F02;
+            font-size: 1.1rem;
+            border-bottom: 2px solid #e8f5e9;
+            padding-bottom: 8px;
+        }
+
+        .row-biaya {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .row-biaya span:first-child {
+            color: #555;
+            font-weight: 500;
+        }
+
+        .row-biaya span:last-child {
+            color: #005F02;
+            font-weight: 600;
+        }
+
+        .biaya-keterangan {
+            font-size: 0.7rem;
+            color: #999;
+            margin-top: 5px;
+            line-height: 1.3;
+        }
+
         @media (max-width: 768px) {
             .user-info-wrapper {
                 flex-direction: column;
                 text-align: center;
             }
 
-            table, thead, tbody, th, td, tr {
+            table,
+            thead,
+            tbody,
+            th,
+            td,
+            tr {
                 display: block;
             }
 

@@ -20,10 +20,12 @@ class StrukturOrganisasi extends Model
         'telepon',
         'email',
         'deskripsi',
+        'status',  // <--- TAMBAHKAN INI
     ];
 
     protected $casts = [
         'urutan' => 'integer',
+        'status' => 'string',
     ];
 
     // Label divisi
@@ -36,7 +38,7 @@ class StrukturOrganisasi extends Model
             'lainnya'   => 'Lainnya',
         ];
     }
-    
+
     // Scope urut
     public function scopeTerurut($query)
     {

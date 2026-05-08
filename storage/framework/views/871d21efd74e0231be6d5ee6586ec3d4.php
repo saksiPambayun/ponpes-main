@@ -92,6 +92,21 @@
             transform: translateY(-4px);
         }
 
+        /* Card equal height untuk row */
+        .row {
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .row>[class*='col-'] {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .row>[class*='col-']>.card {
+            flex: 1;
+        }
+
         .btn-primary {
             background: linear-gradient(135deg, var(--green-main) 0%, var(--green-light) 100%);
             transition: all 0.3s ease;
@@ -299,15 +314,6 @@
             padding: 1rem 0.75rem;
         }
 
-        .card {
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-        }
-
-        .card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.08) !important;
-        }
-
         .btn {
             font-weight: 500;
             transition: all 0.2s ease;
@@ -361,6 +367,40 @@
             background: #fef2f2;
             color: #dc2626;
         }
+
+        /* Biaya card styling */
+        .biaya-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            margin-top: 20px;
+        }
+
+        .biaya-card h4 {
+            margin: 0 0 15px 0;
+            color: #005F02;
+            font-size: 1.1rem;
+            border-bottom: 2px solid #e8f5e9;
+            padding-bottom: 8px;
+        }
+
+        .row-biaya {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .row-biaya span:first-child {
+            color: #555;
+            font-weight: 500;
+        }
+
+        .row-biaya span:last-child {
+            color: #005F02;
+            font-weight: 600;
+        }
     </style>
 
     <?php echo $__env->yieldPushContent('styles'); ?>
@@ -399,8 +439,6 @@
                     </a>
                 </div>
 
-                <!-- Di dalam <nav class="flex-1 overflow-y-auto py-6 px-4"> -->
-
                 <!-- ADMINISTRASI MENU (HANYA UNTUK SUPERADMIN) -->
                 <?php if(auth()->check() && auth()->user()->role === 'superadmin'): ?>
                     <div class="mb-6">
@@ -415,8 +453,6 @@
                         </a>
                     </div>
                 <?php endif; ?>
-
-                <!-- LANJUTKAN MENU BERIKUTNYA (Pendaftaran, dll) -->
 
                 <!-- PENDAFTARAN -->
                 <div class="mb-6">
@@ -472,6 +508,16 @@
                             <i class="fas fa-wave-square"></i>
                         </div>
                         <span class="font-medium">Kelola Gelombang</span>
+                    </a>
+
+                    <!-- Biaya Pendaftaran -->
+                    <a href="<?php echo e(route('admin.biaya-pendaftaran.index')); ?>"
+                        class="sidebar-item flex items-center px-4 py-3 text-green-100 rounded-lg mb-1 <?php echo e(request()->routeIs('admin.biaya-pendaftaran.*') ? 'active' : ''); ?>">
+                        <div
+                            class="icon-wrapper w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center mr-3">
+                            <i class="fas fa-money-bill-wave"></i>
+                        </div>
+                        <span class="font-medium">Biaya Pendaftaran</span>
                     </a>
                 </div>
 
@@ -536,79 +582,78 @@
                         </div>
                         <span class="font-medium">Program</span>
                     </a>
+                </div>
 
-                    <!-- FEEDBACK / KRITIK & SARAN -->
-                    <div class="mb-6">
-                        <p class="text-xs font-semibold text-green-200 uppercase tracking-wider mb-3 px-3">Feedback</p>
-                        <a href="<?php echo e(route('admin.feedback.index')); ?>"
-                            class="sidebar-item flex items-center px-4 py-3 text-green-100 rounded-lg mb-1 <?php echo e(request()->routeIs('admin.feedback.*') ? 'active' : ''); ?>">
-                            <div
-                                class="icon-wrapper w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center mr-3">
-                                <i class="fas fa-comment-dots"></i>
-                            </div>
-                            <span class="font-medium">Kritik & Saran</span>
-                            <?php
-                                try {
-                                    $unreadFeedbackCount = \App\Models\Feedback::where('is_read', false)->count();
-                                } catch (\Exception $e) {
-                                    $unreadFeedbackCount = 0;
-                                }
-                            ?>
-                            <?php if($unreadFeedbackCount > 0): ?>
-                                <span class="ml-auto bg-red-500 text-white text-xs px-2 py-0.5 rounded-full animate-pulse">
-                                    <?php echo e($unreadFeedbackCount); ?>
+                <!-- FEEDBACK / KRITIK & SARAN -->
+                <div class="mb-6">
+                    <p class="text-xs font-semibold text-green-200 uppercase tracking-wider mb-3 px-3">Feedback</p>
+                    <a href="<?php echo e(route('admin.feedback.index')); ?>"
+                        class="sidebar-item flex items-center px-4 py-3 text-green-100 rounded-lg mb-1 <?php echo e(request()->routeIs('admin.feedback.*') ? 'active' : ''); ?>">
+                        <div
+                            class="icon-wrapper w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center mr-3">
+                            <i class="fas fa-comment-dots"></i>
+                        </div>
+                        <span class="font-medium">Kritik & Saran</span>
+                        <?php
+                            try {
+                                $unreadFeedbackCount = \App\Models\Feedback::where('is_read', false)->count();
+                            } catch (\Exception $e) {
+                                $unreadFeedbackCount = 0;
+                            }
+                        ?>
+                        <?php if($unreadFeedbackCount > 0): ?>
+                            <span class="ml-auto bg-red-500 text-white text-xs px-2 py-0.5 rounded-full animate-pulse">
+                                <?php echo e($unreadFeedbackCount); ?>
 
-                                </span>
-                            <?php endif; ?>
-                        </a>
-                    </div>
+                            </span>
+                        <?php endif; ?>
+                    </a>
+                </div>
 
+                <!-- DOKUMEN LEGAL -->
+                <div class="mb-6">
+                    <p class="text-xs font-semibold text-green-200 uppercase tracking-wider mb-3 px-3">Dokumen Legal</p>
 
-                    <!-- DOKUMEN LEGAL -->
-                    <div class="mb-6">
-                        <p class="text-xs font-semibold text-green-200 uppercase tracking-wider mb-3 px-3">Dokumen Legal
-                        </p>
+                    <a href="<?php echo e(route('admin.sk.index')); ?>"
+                        class="sidebar-item flex items-center px-4 py-3 text-green-100 rounded-lg mb-1 <?php echo e(request()->routeIs('admin.sk.*') ? 'active' : ''); ?>">
+                        <div
+                            class="icon-wrapper w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center mr-3">
+                            <i class="fas fa-file-signature"></i>
+                        </div>
+                        <span class="font-medium">Data SK</span>
+                    </a>
 
-                        <a href="<?php echo e(route('admin.sk.index')); ?>"
-                            class="sidebar-item flex items-center px-4 py-3 text-green-100 rounded-lg mb-1 <?php echo e(request()->routeIs('admin.sk.*') ? 'active' : ''); ?>">
-                            <div
-                                class="icon-wrapper w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center mr-3">
-                                <i class="fas fa-file-signature"></i>
-                            </div>
-                            <span class="font-medium">Data SK</span>
-                        </a>
+                    <a href="<?php echo e(route('admin.akta-yayasan.index')); ?>"
+                        class="sidebar-item flex items-center px-4 py-3 text-green-100 rounded-lg mb-1 <?php echo e(request()->routeIs('admin.akta-yayasan.*') ? 'active' : ''); ?>">
+                        <div
+                            class="icon-wrapper w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center mr-3">
+                            <i class="fas fa-scroll"></i>
+                        </div>
+                        <span class="font-medium">Akta Yayasan</span>
+                    </a>
 
-                        <a href="<?php echo e(route('admin.akta-yayasan.index')); ?>"
-                            class="sidebar-item flex items-center px-4 py-3 text-green-100 rounded-lg mb-1 <?php echo e(request()->routeIs('admin.akta-yayasan.*') ? 'active' : ''); ?>">
-                            <div
-                                class="icon-wrapper w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center mr-3">
-                                <i class="fas fa-scroll"></i>
-                            </div>
-                            <span class="font-medium">Akta Yayasan</span>
-                        </a>
+                    <a href="<?php echo e(route('admin.akta-wakaf.index')); ?>"
+                        class="sidebar-item flex items-center px-4 py-3 text-green-100 rounded-lg mb-1 <?php echo e(request()->routeIs('admin.akta-wakaf.*') ? 'active' : ''); ?>">
+                        <div
+                            class="icon-wrapper w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center mr-3">
+                            <i class="fas fa-landmark"></i>
+                        </div>
+                        <span class="font-medium">Akta Wakaf</span>
+                    </a>
+                </div>
 
-                        <a href="<?php echo e(route('admin.akta-wakaf.index')); ?>"
-                            class="sidebar-item flex items-center px-4 py-3 text-green-100 rounded-lg mb-1 <?php echo e(request()->routeIs('admin.akta-wakaf.*') ? 'active' : ''); ?>">
-                            <div
-                                class="icon-wrapper w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center mr-3">
-                                <i class="fas fa-landmark"></i>
-                            </div>
-                            <span class="font-medium">Akta Wakaf</span>
-                        </a>
-                    </div>
-
-                    <!-- PROFILE MENU -->
-                    <div class="mb-6">
-                        <p class="text-xs font-semibold text-green-200 uppercase tracking-wider mb-3 px-3">Akun</p>
-                        <a href="<?php echo e(route('admin.profile')); ?>"
-                            class="sidebar-item flex items-center px-4 py-3 text-green-100 rounded-lg mb-1 <?php echo e(request()->routeIs('admin.profile') ? 'active' : ''); ?>">
-                            <div
-                                class="icon-wrapper w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center mr-3">
-                                <i class="fas fa-user-circle"></i>
-                            </div>
-                            <span class="font-medium">Profil Saya</span>
-                        </a>
-                    </div>
+                <!-- PROFILE MENU -->
+                <div class="mb-6">
+                    <p class="text-xs font-semibold text-green-200 uppercase tracking-wider mb-3 px-3">Akun</p>
+                    <a href="<?php echo e(route('admin.profile')); ?>"
+                        class="sidebar-item flex items-center px-4 py-3 text-green-100 rounded-lg mb-1 <?php echo e(request()->routeIs('admin.profile') ? 'active' : ''); ?>">
+                        <div
+                            class="icon-wrapper w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center mr-3">
+                            <i class="fas fa-user-circle"></i>
+                        </div>
+                        <span class="font-medium">Profil Saya</span>
+                    </a>
+                </div>
 
             </nav>
 
@@ -889,8 +934,10 @@
             if (e.target === this) closeGlobalRejectModal();
         });
     </script>
+
     
     <?php echo $__env->make('admin.partials.toast', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
+
     
     <?php
         try {
