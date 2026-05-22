@@ -31,7 +31,24 @@ return new class extends Migration
 
             // Tambah kolom avatar jika belum ada
             if (!Schema::hasColumn('users', 'avatar')) {
-                $table->string('avatar')->nullable()->after('phone');
+                $table->string('avatar')->nullable()->after('address');
+            }
+
+            // ========== KOLOM YANG DIPERLUKAN UNTUK OTP ==========
+
+            // Tambah kolom whatsapp_number (DIPAKAI di RegisterController)
+            if (!Schema::hasColumn('users', 'whatsapp_number')) {
+                $table->string('whatsapp_number')->nullable()->after('phone');
+            }
+
+            // Tambah kolom is_verified (DIPAKAI di LoginController)
+            if (!Schema::hasColumn('users', 'is_verified')) {
+                $table->boolean('is_verified')->default(false)->after('status');
+            }
+
+            // Tambah kolom verified_at (opsional, untuk catatan waktu verifikasi)
+            if (!Schema::hasColumn('users', 'verified_at')) {
+                $table->timestamp('verified_at')->nullable()->after('is_verified');
             }
 
             // Ubah role agar mendukung 'user'
@@ -42,7 +59,16 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn(['username', 'email_verified_at', 'status', 'address', 'avatar']);
+            $table->dropColumn([
+                'username',
+                'email_verified_at',
+                'status',
+                'address',
+                'avatar',
+                'whatsapp_number',
+                'is_verified',
+                'verified_at'
+            ]);
             DB::statement("ALTER TABLE users MODIFY COLUMN role ENUM('superadmin', 'admin') NOT NULL DEFAULT 'admin'");
         });
     }

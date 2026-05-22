@@ -102,25 +102,38 @@ class OtpService
         ]);
     }
 
-    public function verifyOtp($identifier, $otp, $purpose)
-    {
-        $otpRecord = Otp::where('identifier', $identifier)
-            ->where('otp', $otp)
-            ->where('purpose', $purpose)
-            ->where('is_used', false)
-            ->where('expires_at', '>', Carbon::now('Asia/Jakarta'))
-            ->first();
+   public function verifyOtp($identifier, $otp, $purpose)
+{
+    // Tambahkan logging detail
+    \Log::info('Verifying OTP', [
+        'identifier' => $identifier,
+        'otp' => $otp,
+        'purpose' => $purpose,
+        'current_time_utc' => Carbon::now('UTC')->toDateTimeString(),
+        'current_time_jkt' => Carbon::now('Asia/Jakarta')->toDateTimeString(),
+    ]);
 
-        if ($otpRecord) {
-            $otpRecord->update(['is_used' => true]);
-            Log::info("OTP verified successfully for {$identifier}");
-            return true;
-        }
+    $otpRecord = Otp::where('identifier', $identifier)
+        ->where('otp', $otp)
+        ->where('purpose', $purpose)
+        ->where('is_used', false)
+        ->where('expires_at', '>', Carbon::now('Asia/Jakarta')) // Pastikan ini pakai Asia/Jakarta
+        ->first();
 
-        Log::warning("OTP verification failed for {$identifier} with OTP: {$otp}");
-        return false;
+    if ($otpRecord) {
+        \Log::info('OTP Record found:', [
+            'expires_at' => $otpRecord->expires_at,
+            'now' => Carbon::now('Asia/Jakarta')->toDateTimeString(),
+            'is_expired' => Carbon::now('Asia/Jakarta')->gt($otpRecord->expires_at)
+        ]);
+
+        $otpRecord->update(['is_used' => true]);
+        return true;
     }
 
+    \Log::warning('OTP verification failed - no valid record found');
+    return false;
+}
     public function checkOtpStatus($identifier, $otp, $purpose)
     {
         $otpRecord = Otp::where('identifier', $identifier)

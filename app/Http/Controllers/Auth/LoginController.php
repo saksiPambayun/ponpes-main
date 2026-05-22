@@ -152,77 +152,72 @@ if ($user->role === 'user' && !$user->is_verified) {
     }
 
     public function verifyOtp(Request $request)
-    {
-        \Log::info('========== OTP VERIFICATION ATTEMPT ==========');
-        \Log::info('Request data:', $request->all());
+{
+    \Log::info('========== OTP VERIFICATION ATTEMPT ==========');
+    \Log::info('Request data:', $request->all());
 
-        $request->validate([
-            'otp' => 'required|string|size:6',
-            'identifier' => 'required',
-            'purpose' => 'required|in:login,register,verify',
-        ]);
+    $request->validate([
+        'otp' => 'required|string|size:6',
+        'identifier' => 'required',
+        'purpose' => 'required|in:login,register,verify',
+    ]);
 
-        // Normalisasi identifier untuk nomor WhatsApp
-        $identifier = $request->identifier;
-        if ($request->purpose === 'register' && preg_match('/^0[0-9]{10,12}$/', $identifier)) {
-            // Ubah 082245102915 menjadi 6282245102915
-            $identifier = '62' . substr($identifier, 1);
-            \Log::info('Identifier normalized from ' . $request->identifier . ' to ' . $identifier);
-        }
+    // LANGSUNG PAKAI IDENTIFIER DARI FORM, TANPA NORMALISASI
+    $identifier = $request->identifier;
 
-        $verified = $this->otpService->verifyOtp(
-            $identifier,
-            $request->otp,
-            $request->purpose
-        );
+    $verified = $this->otpService->verifyOtp(
+        $identifier,
+        $request->otp,
+        $request->purpose
+    );
 
-        \Log::info('Verification result: ' . ($verified ? 'SUCCESS' : 'FAILED'));
+    \Log::info('Verification result: ' . ($verified ? 'SUCCESS' : 'FAILED'));
 
-        if ($verified) {
-            if ($request->purpose === 'register') {
-                $userData = Session::get('pending_registration');
-                if ($userData) {
-                    $user = User::create($userData);
-                    Session::forget('pending_registration');
+    if ($verified) {
+        if ($request->purpose === 'register') {
+            $userData = Session::get('pending_registration');
+            if ($userData) {
+                $user = User::create($userData);
+                Session::forget('pending_registration');
+                Auth::login($user);
+
+                return response()->json([
+                    'success' => true,
+                    'redirect' => route('home'),
+                    'message' => 'Registrasi berhasil!'
+                ]);
+            }
+        } elseif ($request->purpose === 'verify') {
+            $tempUserId = Session::get('temp_user_id');
+            if ($tempUserId) {
+                $user = User::find($tempUserId);
+                if ($user) {
+                    $user->update([
+                        'is_verified' => true,
+                        'verified_at' => now(),
+                    ]);
+                    Session::forget('temp_user_id');
                     Auth::login($user);
+
+                    $redirect = ($user->role === 'admin' || $user->role === 'superadmin')
+                        ? route('admin.dashboard')
+                        : route('home');
 
                     return response()->json([
                         'success' => true,
-                        'redirect' => route('home'),
-                        'message' => 'Registrasi berhasil!'
+                        'redirect' => $redirect,
+                        'message' => 'Verifikasi berhasil!'
                     ]);
-                }
-            } elseif ($request->purpose === 'verify') {
-                $tempUserId = Session::get('temp_user_id');
-                if ($tempUserId) {
-                    $user = User::find($tempUserId);
-                    if ($user) {
-                        $user->update([
-                            'is_verified' => true,
-                            'verified_at' => now(),
-                        ]);
-                        Session::forget('temp_user_id');
-                        Auth::login($user);
-
-                        $redirect = ($user->role === 'admin' || $user->role === 'superadmin')
-                            ? route('admin.dashboard')
-                            : route('home');
-
-                        return response()->json([
-                            'success' => true,
-                            'redirect' => $redirect,
-                            'message' => 'Verifikasi berhasil!'
-                        ]);
-                    }
                 }
             }
         }
-
-        return response()->json([
-            'success' => false,
-            'message' => 'Kode OTP tidak valid atau sudah kadaluarsa.'
-        ], 422);
     }
+
+    return response()->json([
+        'success' => false,
+        'message' => 'Kode OTP tidak valid atau sudah kadaluarsa.'
+    ], 422);
+}
 
 
         public function logout(Request $request)

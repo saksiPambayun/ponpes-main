@@ -4,21 +4,41 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddWhatsappReplyFieldsToFeedbacksTable extends Migration
+return new class extends Migration
 {
     public function up()
     {
         Schema::table('feedbacks', function (Blueprint $table) {
-            $table->text('whatsapp_reply')->nullable()->after('reply_message');
-            $table->timestamp('whatsapp_replied_at')->nullable()->after('whatsapp_reply');
-            $table->string('whatsapp_reply_status')->default('pending')->after('whatsapp_replied_at'); // pending, sent, failed
+            if (!Schema::hasColumn('feedbacks', 'whatsapp_reply')) {
+                $table->text('whatsapp_reply')->nullable()->after('reply_message');
+            }
+            if (!Schema::hasColumn('feedbacks', 'whatsapp_replied_at')) {
+                $table->timestamp('whatsapp_replied_at')->nullable()->after('whatsapp_reply');
+            }
+            if (!Schema::hasColumn('feedbacks', 'whatsapp_reply_status')) {
+                $table->enum('whatsapp_reply_status', ['pending', 'sent', 'failed'])->default('pending')->after('whatsapp_replied_at');
+            }
         });
     }
 
     public function down()
     {
         Schema::table('feedbacks', function (Blueprint $table) {
-            $table->dropColumn(['whatsapp_reply', 'whatsapp_replied_at', 'whatsapp_reply_status']);
+            // Hapus foreign key jika ada
+            if (Schema::hasColumn('feedbacks', 'replied_by')) {
+                $table->dropForeign(['replied_by']);
+            }
+
+            // Drop columns dengan pengecekan
+            if (Schema::hasColumn('feedbacks', 'whatsapp_reply')) {
+                $table->dropColumn('whatsapp_reply');
+            }
+            if (Schema::hasColumn('feedbacks', 'whatsapp_replied_at')) {
+                $table->dropColumn('whatsapp_replied_at');
+            }
+            if (Schema::hasColumn('feedbacks', 'whatsapp_reply_status')) {
+                $table->dropColumn('whatsapp_reply_status');
+            }
         });
     }
-}
+};

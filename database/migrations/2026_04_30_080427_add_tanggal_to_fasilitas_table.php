@@ -9,14 +9,25 @@ return new class extends Migration
     public function up()
     {
         Schema::table('fasilitas', function (Blueprint $table) {
-            $table->date('tanggal_fasilitas')->nullable()->after('deskripsi');
+            if (!Schema::hasColumn('fasilitas', 'tanggal_fasilitas')) {
+                $table->date('tanggal_fasilitas')->nullable()->after('deskripsi');
+            }
+
+            // Tambah index untuk filter tanggal
+            $table->index('tanggal_fasilitas')->after('tanggal_fasilitas');
         });
     }
 
     public function down()
     {
         Schema::table('fasilitas', function (Blueprint $table) {
-            $table->dropColumn('tanggal_fasilitas');
+            // Hapus index jika ada
+            $table->dropIndex(['tanggal_fasilitas']);
+
+            // Drop column jika ada
+            if (Schema::hasColumn('fasilitas', 'tanggal_fasilitas')) {
+                $table->dropColumn('tanggal_fasilitas');
+            }
         });
     }
 };
